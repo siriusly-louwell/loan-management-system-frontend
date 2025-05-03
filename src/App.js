@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import NavBar from './components/Navbar';
+import Login from './pages/Login';
+import Footer from './components/Footer';
+import ProductInfo from './pages/ProductInfo';
+import ProductList from './pages/ProductList';
+import Inventory from './pages/Inventory';
+import CreateProduct from './pages/CreateProduct';
+import Cashier from './pages/Cashier';
+import SideBar from './components/SideBar';
+import Dashboard from './pages/Dashboard';
+import ApplicationForm from './pages/ApplicationForm';
+import LoanInfo from './pages/LoanInfo';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* <Login /> */}
+      <NavBar />
+      {/* <ProductInfo /> */}
+      {/* <ProductList /> */}
+      {/* <Inventory /> */}
+      {/* <CreateProduct /> */}
+      {/* <Cashier /> */}
+      {/* <Dashboard /> */}
+      {/* <ApplicationForm /> */}
+      <LoanInfo />
+      <Footer />
     </div>
   );
 }

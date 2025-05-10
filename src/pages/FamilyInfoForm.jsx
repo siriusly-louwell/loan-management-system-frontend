@@ -23,7 +23,7 @@ export default function FamilyInfoForm() {
                         <FormCheck name="spouse_work[]" id="inline-2-check" label="No" value="" />
                     </div>
                 </div>
-                <FormInput label="Employer" type="text" name="prod_name" id="name" placeholder="Employer full name" />
+                {/* <FormInput label="Employer" type="text" name="prod_name" id="name" placeholder="Employer full name" /> */}
                 <div class="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                     <FormInput label="Number of Children" type="text" name="prod_name" id="name" placeholder="0" />
                     <FormInput label="Dep. Children" type="text" name="prod_name" id="name" placeholder="0" />

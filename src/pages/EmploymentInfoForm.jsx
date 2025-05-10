@@ -22,7 +22,7 @@ export default function EmploymentInfoForm() {
                 <FormInput label="Immediate Superior" type="text" name="prod_name" id="name" placeholder="Type superior name" />
                 <FormInput label="Employment Status" type="text" name="prod_name" id="name" placeholder="Type status" />
                 <FormInput label="Years in service" type="number" name="prod_name" id="name" placeholder="Years" />
-                <FormInput label="Employer" type="text" name="prod_name" id="name" placeholder="Type employer name" />
+                {/* <FormInput label="Employer" type="text" name="prod_name" id="name" placeholder="Type employer name" /> */}
                 <FormInput label="Monthly/Daily Rate" type="text" name="prod_name" id="name" placeholder="1,000 PHP" />
             </div>
 

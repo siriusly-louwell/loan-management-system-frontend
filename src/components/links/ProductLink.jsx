@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ProductLink({prodName}) {
     return (
-        <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{prodName}</a>
+        <Link to='/product' className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{prodName}</Link>
     );
 }

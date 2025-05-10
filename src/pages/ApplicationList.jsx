@@ -8,32 +8,27 @@ import Cancelled from "../components/badges/Cancelled";
 import PageNav from "../components/PageNav";
 import SearchInput from "../components/inputs/SearchInput";
 import Search from "../assets/icons/Search";
-import DropdownBttn from "../components/buttons/DropdownBttn";
-import Filter from "../assets/icons/Filter";
 
-export default function InvoiceList({headText, path}) {
+export default function ApplicationList() {
     return (
         <section class="bg-white py-8 w-full antialiased dark:bg-gray-800 md:py-10">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
                 <div class="mx-auto max-w-5xl">
                     <div class="gap-4 sm:flex sm:items-center sm:justify-between">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{headText}</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Loan Payments</h2>
 
                         <div class="mt-6 gap-4 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
-                            <SearchInput id="invoice_search" name="log_search" placeholder="Search ID, name...">
+                            <SearchInput id="invoice_search" name="log_search" placeholder="Search invoice...">
                                 <Search />
                             </SearchInput>
-                            <DropdownBttn text="Filters">
-                                <Filter />
-                            </DropdownBttn>
                         </div>
                     </div>
 
                     <LogList>
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Preorder />} path={path} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Transit />} path={path} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} />
+                        <LogRow id="FWB127364372" date="20.12.2023" unit="Kawasaki" badge={<Preorder />} />
+                        <LogRow id="FWB127364372" date="20.12.2023" unit="Kawasaki" badge={<Transit />} />
+                        <LogRow id="FWB127364372" date="20.12.2023" unit="Kawasaki" badge={<Confirmed />} />
+                        <LogRow id="FWB127364372" date="20.12.2023" unit="Kawasaki" badge={<Cancelled />} />
                     </LogList>
 
                     <PageNav />

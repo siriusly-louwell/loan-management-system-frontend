@@ -1,4 +1,5 @@
 import React from "react";
+import {useEffect, useRef, useState} from 'react';
 import ProductCard from "../components/cards/ProductCard";
 import ProductGrid from "../components/cards/ProductGrid";
 import FilterPanel from "../components/FilterPanel";
@@ -11,6 +12,24 @@ import Filter from "../assets/icons/Filter";
 import Sort from "../assets/icons/Sort";
 
 export default function ProductList() {
+    const [isFiltOn, setIsFiltOn] = useState(false);
+    const filtMenu = useRef(null);
+
+    // Toggle dropdown visibility
+    const toggleMenu = () => setIsFiltOn((prev) => !prev);
+
+    // Close dropdown if clicked outside
+    useEffect(() => {
+        const menuClicked = (event) => {
+            if (filtMenu.current && !filtMenu.current.contains(event.target)) {
+                setIsFiltOn(false);
+            }
+        };
+
+        document.addEventListener("mousedown", menuClicked);
+        return () => document.removeEventListener("mousedown", menuClicked);
+    }, []);
+
     return (
         <section class="bg-gray-50 py-8 antialiased dark:bg-gray-800 md:py-12">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -23,19 +42,19 @@ export default function ProductList() {
                         <DropdownBttn text="Filter">
                             <Filter />
                         </DropdownBttn>
-                        <DropdownBttn text="Sort">
+                        <DropdownBttn toggleMenu={toggleMenu} text="Sort">
                             <Sort />
                         </DropdownBttn>
-                        <DropdownMenu id="sort-dropdown">
-                            <MenuLink pathName="The most popular" />
-                            <MenuLink pathName="Newest" />
-                            <MenuLink pathName="Increasing price" />
-                            <MenuLink pathName="Decreasing price" />
-                            <MenuLink pathName="No. reviews" />
-                            <MenuLink pathName="Discount %" />
-                        </DropdownMenu>
                     </div>
                 </div>
+                <DropdownMenu ref={filtMenu} className={isFiltOn ? "block" : "hidden"}>
+                    <MenuLink pathName="The most popular" />
+                    <MenuLink pathName="Newest" />
+                    <MenuLink pathName="Increasing price" />
+                    <MenuLink pathName="Decreasing price" />
+                    <MenuLink pathName="No. reviews" />
+                    <MenuLink pathName="Discount %" />
+                </DropdownMenu>
                 
                 <ProductGrid>
                     <ProductCard

@@ -31,7 +31,6 @@ export default function PersonalInfoForm() {
                     </FormSelect>
                     <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Vocational" />
                 </div>
-                <FormInput label="Email Address" type="email" name="prod_name" id="name" placeholder="John@gmail.com" />
             </div>
 
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">

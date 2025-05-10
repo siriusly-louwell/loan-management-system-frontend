@@ -1,4 +1,5 @@
 import React from 'react';
+import {useEffect, useRef, useState} from 'react';
 import ProductRow from '../components/tables/ProductRow';
 import TableHead from '../components/tables/TableHead';
 import CustomBttn from '../components/buttons/CustomBttn';
@@ -15,6 +16,22 @@ import CreateProduct from './CreateProduct';
 import Alert from '../components/Alert';
 
 export default function Inventory() {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     return (
         <>
             <section class="bg-gray-50 dark:bg-gray-800 py-3 sm:p-5 antialiased">
@@ -39,7 +56,8 @@ export default function Inventory() {
                                 </form>
                             </div>
                             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                <CustomBttn text="Add Product" className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                <CustomBttn text="Add Product" className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                                    onclick={() => document.getElementById('createProduct').style.display = "block"}>
                                     <Plus />
                                 </CustomBttn>
                                 <DropdownBttn text="Filter products">
@@ -308,24 +326,14 @@ export default function Inventory() {
                                     </div>
                                 </div> */}
                                 <div class="flex items-center space-x-3 w-full md:w-auto">
-                                    <DropdownBttn text="Actions"></DropdownBttn>
-                                    <DropdownMenu>
-                                        <MenuLink pathName="Mass Edit" />
-                                        <MenuLink pathName="Delete All" />
-                                    </DropdownMenu>
-                                    {/* <div id="actionsDropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
-                                            <li>
-                                                <a href="#" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mass Edit</a>
-                                            </li>
-                                        </ul>
-                                        <div class="py-1">
-                                            <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete all</a>
-                                        </div>
-                                    </div> */}
+                                    <DropdownBttn text="Actions" toggleMenu={toggleDropdown} />
                                 </div>
                             </div>
                         </div>
+                        <DropdownMenu ref={dropdownRef} className={isOpen ? "block" : "hidden"}>
+                            <MenuLink pathName="Mass Edit" />
+                            <MenuLink pathName="Delete All" />
+                        </DropdownMenu>
                         <div class="overflow-x-auto">
                             <Table>
                                 <TableHead headers={['', 'Product', 'Category', 'Stock', 'Sales/Day', 'Sales/Month', 'Rating', 'Sales', 'Revenues', 'Last Update']} />
@@ -344,8 +352,7 @@ export default function Inventory() {
                 </div>
             </section>
             <CreateProduct />
-            {/* <Alert /> */}
+            <Alert id="delete_product" />
         </>
     );
 }
-{/* <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script> */}

@@ -12,7 +12,8 @@ export default function Donut() {
             script.onload = () => initializeChart();
             document.body.appendChild(script);
             
-        } else {
+        }
+        else {
             initializeChart();
         }
 

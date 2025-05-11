@@ -1,13 +1,7 @@
 import React from 'react';
 import SidebarLink from './links/SidebarLink';
-import Notif from '../assets/icons/Notif';
-import Chart from '../assets/icons/Chart';
-import Mailbox from '../assets/icons/Mailbox';
-import Widget from '../assets/icons/Widget';
-import Users from '../assets/icons/Users';
-import Basket from '../assets/icons/Basket';
 
-export default function SideBar() {
+export default function SideBar({sideLinks}) {
     return (
         <>
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -20,21 +14,11 @@ export default function SideBar() {
             <aside id="default-sidebar" class="sticky top-0 left-0 z-40 w-64 h-0 sm:h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <div class="h-full px-3 border border-gray-800 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-900">
                     <ul class="space-y-2 font-medium">
-                        <SidebarLink text="Overview" to="">
-                            <Widget />
-                        </SidebarLink>
-                        <SidebarLink text="Analytics" to="analytics">
-                            <Chart />
-                        </SidebarLink>
-                        <SidebarLink text="Notifications" to="notifications" notif={<Notif num="3" />}>
-                            <Mailbox />
-                        </SidebarLink>
-                        <SidebarLink text="Invoices" to="invoices">
-                            <Users />
-                        </SidebarLink>
-                        <SidebarLink text="Products" to="products">
-                            <Basket />
-                        </SidebarLink>
+                        {sideLinks.map(({ key, text, component, icon }) => (
+                            <SidebarLink text={text} to={key} notif={icon}>
+                                {component}
+                            </SidebarLink>
+                        ))}
                     </ul>
                 </div>
             </aside>

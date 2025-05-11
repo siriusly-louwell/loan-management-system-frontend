@@ -5,7 +5,7 @@ import Notification from "../links/Notification";
 
 export default function Notifications() {
     return (
-        <div class="w-full p-4">
+        <div class="w-full p-4 bg-white dark:bg-gray-800">
             <NotifGroup date="January 13th, 2025">
                 <Notification content="I wanted to share a webinar zeroheight.">
                     <NotifSpan text="John Doe" /> and <NotifSpan text="Steve Jobs" /> are late for payment

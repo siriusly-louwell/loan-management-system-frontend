@@ -5,7 +5,7 @@ export default function TableHead({headers}) {
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             {headers.map(text => (
                 <th scope="col" class="p-4">{text}</th>
-            ))};
+            ))}
         </thead>
     );
 }

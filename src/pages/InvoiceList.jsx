@@ -11,7 +11,7 @@ import Search from "../assets/icons/Search";
 import DropdownBttn from "../components/buttons/DropdownBttn";
 import Filter from "../assets/icons/Filter";
 
-export default function InvoiceList({headText, path}) {
+export default function InvoiceList({headText, path, bttnText ="View Details"}) {
     return (
         <section class="bg-white py-8 w-full antialiased dark:bg-gray-800 md:py-10">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -30,10 +30,10 @@ export default function InvoiceList({headText, path}) {
                     </div>
 
                     <LogList>
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Preorder />} path={path} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Transit />} path={path} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} />
+                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Preorder />} path={path} bttnText={bttnText} />
+                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Transit />} path={path} bttnText={bttnText} />
+                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
+                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} />
                     </LogList>
 
                     <PageNav />

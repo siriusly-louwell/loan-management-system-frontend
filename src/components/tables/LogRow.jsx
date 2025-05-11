@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import BasicButton from '../buttons/BasicBttn';
 
-export default function LogRow({id, date, badge, name, path}) {
+export default function LogRow({id, date, badge, name, path, bttnText}) {
     return (
         <div class="flex flex-wrap items-center gap-y-4 py-6">
             <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
@@ -30,7 +30,7 @@ export default function LogRow({id, date, badge, name, path}) {
             </dl>
 
             <Link to={path} class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <BasicButton text="View Details" />
+                <BasicButton text={bttnText} />
             </Link>
         </div>
     );

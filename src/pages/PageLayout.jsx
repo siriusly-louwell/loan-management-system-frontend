@@ -1,12 +1,12 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
-export default function PageLayout() {
+export default function PageLayout({links, path}) {
     return (
         <>
-            <Navbar />
+            <Navbar links={links} path={path} />
             <Outlet />
             <Footer />
         </>

@@ -9,7 +9,7 @@ export default function ApplicationForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const routerPaths = useMemo(() => ['/apply', '/apply/employinfo', '/apply/familyinfo', '/apply/requirements'], []);
+    const routerPaths = useMemo(() => ['/applicant/apply', '/applicant/apply/employinfo', '/applicant/apply/familyinfo', '/applicant/apply/requirements'], []);
 
     useEffect(() => {
         const index = routerPaths.indexOf(location.pathname);

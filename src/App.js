@@ -29,60 +29,89 @@ import EmploymentInfoForm from './pages/EmploymentInfoForm';
 import CILoanInfo from './pages/CILoanInfo';
 import CIAppForm from './pages/CIAppForm';
 import About from './pages/About';
+import Navbar from './components/Navbar';
+import GuestNav from './components/navigations/GuestNav';
+import AdminNav from './components/navigations/AdminNav';
+import ApplicantNav from './components/navigations/ApplicantNav';
+import CINav from './components/navigations/CINav';
+import CoMakerNav from './components/navigations/CoMakerNav';
 
 function App() {
   
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<PageLayout />}>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<DashOverview />} />
-            <Route path="overview" element={<DashOverview />} />
-            <Route path="notifications" element={<Notifications />} />
-            <Route path="invoices" element={<InvoiceList headText="Invoices" path="/invoice" />} />
+          <Route path="/" element={<PageLayout links={<GuestNav />} />}>
+            <Route index element={<ProductList />} />
+            <Route path="prodlist" element={<ProductList />} />
+            <Route path="about" element={<About />} />
           </Route>
-          <Route path="/accounts" element={<Accounts />}>
-            <Route index element={<AccApplicants />} />
-            <Route path="applicants" element={<AccApplicants />} />
-            <Route path="ci" element={<AccCI />} />
-            <Route path="admins" element={<AccAdmins />} />
-            <Route path="comakers" element={<AccComakers />} />
-          </Route>
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/loans" element={<InvoiceList headText="Loan Applications" path="/cashier" />} />
-          <Route path="/invoice" element={<Invoice />} />
-          <Route path="/loan" element={<LoanInfo />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/product" element={<ProductInfo />} />
-          <Route path="/cashier" element={<Cashier />} />
 
-          <Route path="/apply" element={<ApplicationForm />}>
-            <Route index element={<PersonalInfoForm />} />
-            <Route path="personalinfo" element={<PersonalInfoForm />} />
-            <Route path="employinfo" element={<EmploymentInfoForm />} />
-            <Route path="familyinfo" element={<FamilyInfoForm />} />
-            <Route path="requirements" element={<FormRequirements />} />
-          </Route>
-          <Route path="/history" element={<AppNotifications />} />
-          <Route path="/applications" element={<InvoiceList headText="Loan Applications" path="/loan" />} />
-          <Route path="/myloans" element={<InvoiceList headText="My Loans" path="" />} />
+          <Route path="/applicant" element={<PageLayout links={<ApplicantNav />} path="/applicant" />}>
+            <Route index element={<ProductList />} />
+            <Route path="prodlist" element={<ProductList />} />
+            <Route path="history" element={<AppNotifications />} />
+            <Route path="applications" element={<InvoiceList headText="Loan Applications" path="/applicant/loan" />} />
+            <Route path="myloans" element={<InvoiceList headText="My Loans" />} />
+            <Route path="loan" element={<LoanInfo />} />
+            <Route path="invoice" element={<Invoice />} />
+            <Route path="profile" element={<Profile />} />
 
-          {/* <Route path="/" element={<InvoiceList headText="Loan Applications" path="/ciloan" />} /> */}
-          <Route path="/evaluation" element={<InvoiceList headText="Loans Evaluation" path="/cireport" bttnText="Evaluate" />} />
-          <Route path="/recommendation" element={<InvoiceList headText="Evaluated Loans" path="" />} />
-          <Route path="/ciloan" element={<CILoanInfo />} />
-          <Route path="/cireport" element={<CIReport />} />
-          <Route path="/ciappform" element={<CIAppForm />} />
+            <Route path="apply" element={<ApplicationForm />}>
+              <Route index element={<PersonalInfoForm />} />
+              <Route path="personalinfo" element={<PersonalInfoForm />} />
+              <Route path="employinfo" element={<EmploymentInfoForm />} />
+              <Route path="familyinfo" element={<FamilyInfoForm />} />
+              <Route path="requirements" element={<FormRequirements />} />
+            </Route>
+          </Route>
+
+          <Route path="/comaker" element={<PageLayout links={<CoMakerNav />} path="/comaker" />}>
+            <Route index element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} />
+            <Route path="obligeloans" element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} />
+            <Route path="cosigned" element={<InvoiceList headText="Co-Signed Loans" path="/comaker/ciloan" />} />
+            <Route path="alerts" element={<Notifications />} />
+            <Route path="ciloan" element={<CILoanInfo />} />
+            <Route path="comakeform" element={<CoMakerForm />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
           
-          {/* <Route path="/" element={<InvoiceList headText="Liable Applications" path="/comakeform" bttnText="Oblige Loan" />} /> */}
-          <Route path="/cosigned" element={<InvoiceList headText="Co-Signed Loans" path="/ciloan" />} />
-          <Route path="/alerts" element={<Notifications />} />
-          <Route path="/comakeform" element={<CoMakerForm />} />
+          <Route path="/ci" element={<PageLayout links={<CINav />} path="/ci" />}>
+            <Route index element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
+            <Route path="loanapplications" element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
+            <Route path="evaluation" element={<InvoiceList headText="Loans Evaluation" path="/ci/cireport" bttnText="Evaluate" />} />
+            <Route path="recommendation" element={<InvoiceList headText="Evaluated Loans" />} />
+            <Route path="ciloan" element={<CILoanInfo />} />
+            <Route path="cireport" element={<CIReport />} />
+            <Route path="ciappform" element={<CIAppForm />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
 
-          <Route path="/about" element={<About />} />
-        </Route>
+          <Route path="/admin" element={<PageLayout links={<AdminNav />} path="/admin" />}>
+            <Route index element={<Inventory />} />
+            <Route path="inventory" element={<Inventory />} />
+            <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/admin/cashier" />} />
+            <Route path="invoice" element={<Invoice />} />
+            <Route path="loan" element={<LoanInfo />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="product" element={<ProductInfo />} />
+            <Route path="cashier" element={<Cashier />} />
+
+            <Route path="dashboard" element={<Dashboard />}>
+              <Route index element={<DashOverview />} />
+              <Route path="overview" element={<DashOverview />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="invoices" element={<InvoiceList headText="Invoices" path="/admin/invoice" />} />
+            </Route>
+
+            <Route path="accounts" element={<Accounts />}>
+              <Route index element={<AccApplicants />} />
+              <Route path="applicants" element={<AccApplicants />} />
+              <Route path="cis" element={<AccCI />} />
+              <Route path="admins" element={<AccAdmins />} />
+              <Route path="comakers" element={<AccComakers />} />
+            </Route>
+          </Route>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

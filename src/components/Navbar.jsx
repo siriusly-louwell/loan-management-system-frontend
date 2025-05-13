@@ -1,15 +1,15 @@
 import React from 'react';
 import {useEffect, useState, useRef} from 'react';
-import {useNavigate} from 'react-router-dom';
-import Navlink from './links/NavLink';
+import {useLocation, useNavigate} from 'react-router-dom';
 import DropdownMenu from './DropdownMenu';
 import HamburgerMenu from './buttons/HamburgerMenu';
 import AvatarBttn from './buttons/AvatarBttn';
 import MenuLink from './links/MenuLink';
 import Button from './buttons/Button';
 
-export default function Navbar() {
+export default function Navbar({links, path}) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -37,34 +37,14 @@ export default function Navbar() {
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Rhean Motor Center</span>
         </a>
         <div class="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">
-          <Button text="Login" onclick={() => navigate('/login')} />
-          {/* <AvatarBttn dropMenu={toggleDropdown} /> */}
+          {(location.pathname == "/" || location.pathname == "/about" || location.pathname == "/services" || location.pathname == "/prodlist")
+            ? (<Button text="Login" onclick={() => navigate('/login')} />)
+            : (<AvatarBttn dropMenu={toggleDropdown} />)}
           <HamburgerMenu />
         </div>
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
           <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            <Navlink pathName="Home" to="/" />
-            <Navlink pathName="About" to="/about" />
-            <Navlink pathName="Services" to="/services" />
-            
-            {/* <Navlink pathName="Home" to="/" />
-            <Navlink pathName="Dashboard" to="/dashboard" />
-            <Navlink pathName="Inventory" to="/inventory" />
-            <Navlink pathName="Loans" to="/loans" />
-            <Navlink pathName="Accounts" to="/accounts" /> */}
-            
-            {/* <Navlink pathName="Home" to="/" />
-            <Navlink pathName="Applications" to="/applications" />
-            <Navlink pathName="My Loans" to="/myloans" />
-            <Navlink pathName="Payment History" to="/history" /> */}
-
-            {/* <Navlink pathName="Applications" to="/" />
-            <Navlink pathName="Evaluation" to="/evaluation" />
-            <Navlink pathName="Eligibility Recommendations" to="/recommendation" /> */}
-
-            {/* <Navlink pathName="Liable Loans" to="/" />
-            <Navlink pathName="Co-Signed Loans" to="/cosigned" />
-            <Navlink pathName="Payment Alerts" to="/alerts" /> */}
+            {links}
           </ul>
         </div>
         </div>
@@ -74,7 +54,7 @@ export default function Navbar() {
           <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
           <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
         </div>
-        <MenuLink pathName="Profile" path="/profile" />
+        <MenuLink pathName="Profile" path={path + "/profile"} />
         <MenuLink pathName="Settings" path="" />
         <MenuLink pathName="Log out" path="/login" />
       </DropdownMenu>

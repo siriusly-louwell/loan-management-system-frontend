@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import LoanList from "../components/LoanList";
 import TrackList from "../components/TrackList";
-import CustomBttn from "../components/buttons/CustomBttn";
 import Button from "../components/buttons/Button";
 
 export default function CILoanInfo() {
@@ -61,7 +60,7 @@ export default function CILoanInfo() {
                             </ol>
 
                             <div class="gap-4 sm:flex sm:items-center">
-                                <Button text="View Form" onclick={() => navigate('/ciappform')} />
+                                <Button text="View Form" onclick={() => navigate('/ci/ciappform')} />
                             </div>
                         </div>
                     </div>

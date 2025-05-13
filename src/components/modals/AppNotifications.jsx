@@ -8,40 +8,40 @@ export default function AppNotifications() {
         <div class="w-full md:px-20 p-4 bg-white dark:bg-gray-800">
             <div class="w-full md:px-20">
                 <NotifGroup date="January 13th, 2025">
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
                 </NotifGroup>
                 <NotifGroup date="January 12th, 2025">
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
                 </NotifGroup>
                 <NotifGroup date="January 9th, 2025">
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
                 </NotifGroup>
                 <NotifGroup date="January 5th, 2025">
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/invoice">
+                    <Notification content="You have paid for this month's payment.." to="/applicant/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
                 </NotifGroup>

@@ -1,12 +1,15 @@
 import React from 'react';
 import {useEffect, useState, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
 import Navlink from './links/NavLink';
 import DropdownMenu from './DropdownMenu';
 import HamburgerMenu from './buttons/HamburgerMenu';
 import AvatarBttn from './buttons/AvatarBttn';
 import MenuLink from './links/MenuLink';
+import Button from './buttons/Button';
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -33,12 +36,17 @@ export default function Navbar() {
             <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Rhean Motor Center</span>
         </a>
-        <div class="justify-items-center md:order-2 sm:space-y-4 rtl:space-x-reverse">
-          <AvatarBttn dropMenu={toggleDropdown} />
+        <div class="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">
+          <Button text="Login" onclick={() => navigate('/login')} />
+          {/* <AvatarBttn dropMenu={toggleDropdown} /> */}
           <HamburgerMenu />
         </div>
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
           <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <Navlink pathName="Home" to="/" />
+            <Navlink pathName="About" to="/about" />
+            <Navlink pathName="Services" to="/services" />
+            
             {/* <Navlink pathName="Home" to="/" />
             <Navlink pathName="Dashboard" to="/dashboard" />
             <Navlink pathName="Inventory" to="/inventory" />
@@ -54,8 +62,9 @@ export default function Navbar() {
             <Navlink pathName="Evaluation" to="/evaluation" />
             <Navlink pathName="Eligibility Recommendations" to="/recommendation" /> */}
 
-            <Navlink pathName="Co-Signed Loans" to="/" />
-            <Navlink pathName="Payment Alerts" to="/alerts" />
+            {/* <Navlink pathName="Liable Loans" to="/" />
+            <Navlink pathName="Co-Signed Loans" to="/cosigned" />
+            <Navlink pathName="Payment Alerts" to="/alerts" /> */}
           </ul>
         </div>
         </div>

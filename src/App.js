@@ -28,6 +28,7 @@ import FamilyInfoForm from './pages/FamilyInfoForm';
 import EmploymentInfoForm from './pages/EmploymentInfoForm';
 import CILoanInfo from './pages/CILoanInfo';
 import CIAppForm from './pages/CIAppForm';
+import About from './pages/About';
 
 function App() {
   
@@ -35,7 +36,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<PageLayout />}>
-          {/* <Route path="/" element={<ProductList />} /> */}
+          <Route path="/" element={<ProductList />} />
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<DashOverview />} />
             <Route path="overview" element={<DashOverview />} />
@@ -75,8 +76,12 @@ function App() {
           <Route path="/cireport" element={<CIReport />} />
           <Route path="/ciappform" element={<CIAppForm />} />
           
-          <Route path="/" element={<InvoiceList headText="Co-Signed Loans" path="/ciloan" />} />
+          {/* <Route path="/" element={<InvoiceList headText="Liable Applications" path="/comakeform" bttnText="Oblige Loan" />} /> */}
+          <Route path="/cosigned" element={<InvoiceList headText="Co-Signed Loans" path="/ciloan" />} />
           <Route path="/alerts" element={<Notifications />} />
+          <Route path="/comakeform" element={<CoMakerForm />} />
+
+          <Route path="/about" element={<About />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<PageNotFound />} />

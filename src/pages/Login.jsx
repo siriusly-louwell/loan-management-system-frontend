@@ -1,9 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
-import Link from '../components/links/Link';
 import Checkbox from '../components/checkboxes/Checkbox';
-import SelectModal from '../components/modals/SelectModal';
 
 export default function Login() {
     return (
@@ -24,19 +23,17 @@ export default function Login() {
                                 <TextInput name="password" type="password" id="password" caption="Password" placeholder="••••••••" required={true} />
                                 <div class="flex items-center justify-between">
                                     <Checkbox name="" id="show_pass" text="Show password" required={false} />
-                                    <Link text="Forgot Password" style="text-sm" />
+                                    <Link class="font-medium text-blue-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">Forgot Password</Link>
                                 </div>
                                 <Button text="Login" />
                                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Don’t have an account yet? <span class="font-medium text-blue-500 hover:underline dark:text-primary-500 cursor-pointer"
-                                    onClick={() => document.getElementById('select_modal').style.display = 'block'}>Sign up</span>
+                                    Don’t have an account yet? <Link to="/applicant/apply" class="font-medium text-blue-500 hover:underline dark:text-primary-500 cursor-pointer">Sign up</Link>
                                 </p>
                             </form>
                         </div>
                     </div>
                 </div>
             </section>
-            <SelectModal />
         </>
     );
 }

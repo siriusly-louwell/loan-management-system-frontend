@@ -3,6 +3,7 @@ import Button from '../components/buttons/Button';
 import FormInput from "../components/inputs/FormInput";
 import SmallUpArrow from '../assets/icons/SmallUpArrow';
 import LoanList from "../components/LoanList";
+import PfpLabel from '../components/PfpLabel';
 
 export default function Cashier() {
     return (
@@ -27,19 +28,19 @@ export default function Cashier() {
                                         15%
                                     </span>
                                 </div>
-                                <FormInput label="Salary" type="text" placeholder="100,000 PHP" />
-                                <FormInput label="Co-maker" type="text" placeholder="John Doe" />
-                                <FormInput label="TIN Number" type="text" placeholder="9234RF4534DF" />
-                                <FormInput label="SSS/GSIS Number" type="text" placeholder="012345j43" />
+                                <PfpLabel caption="Salary" label="100,000 PHP" />
+                                <PfpLabel caption="Co-maker" label="John Doe" />
+                                <PfpLabel caption="TIN Number" label="9234RF4534DF" />
+                                <PfpLabel caption="SSS/GSIS Number" label="012345j43" />
                                 <div class="grid gap-4 sm:col-span-2 sm:grid-cols-4">
-                                    <FormInput label="Lot number" type="text" name="prod_name" id="name" placeholder="Lot number" />
-                                    <FormInput label="Phase" type="text" name="prod_name" id="name" placeholder="Type phase" />
-                                    <FormInput label="Sitio" type="text" name="prod_name" id="name" placeholder="Type sitio" />
-                                    <FormInput label="City/Municipality" type="text" name="prod_name" id="name" placeholder="Type city" />
-                                    <FormInput label="Blk number" type="text" name="prod_name" id="name" placeholder="Blk number" />
-                                    <FormInput label="Purok" type="text" name="prod_name" id="name" placeholder="Type purok" />
-                                    <FormInput label="Barangay" type="text" name="prod_name" id="name" placeholder="Type brgy" />
-                                    <FormInput label="District/Province" type="text" name="prod_name" id="name" placeholder="Type district" />
+                                    <PfpLabel caption="Lot number" label="Lot number" />
+                                    <PfpLabel caption="Phase" label="Type phase" />
+                                    <PfpLabel caption="Sitio" label="Type sitio" />
+                                    <PfpLabel caption="City/Municipality" label="Type city" />
+                                    <PfpLabel caption="Blk number" label="Blk number" />
+                                    <PfpLabel caption="Purok" label="Type purok" />
+                                    <PfpLabel caption="Barangay" label="Type brgy" />
+                                    <PfpLabel caption="District/Province" label="Type district" />
                                 </div>
 
                                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Products:</h2>

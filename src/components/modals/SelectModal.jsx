@@ -16,8 +16,8 @@ export default function SelectModal() {
                     <div class="p-4 md:p-5">
                         <p class="text-gray-500 dark:text-gray-400 mb-4">Select your user type:</p>
                         <ul class="space-y-4 mb-4">
-                            <CardBttn label="Applicant/Customer" text="Inquire/apply loans"to="/apply" />
-                            <CardBttn label="Co-maker" text="Gaurantor (Oblige applicant loans)"to="/comakeform" />
+                            <CardBttn label="Applicant/Customer" text="Inquire/apply loans"to="/applicant/apply" />
+                            <CardBttn label="Co-maker" text="Gaurantor (Oblige applicant loans)"to="/comakr/comakeform" />
                         </ul>
                     </div>
                 </div>

@@ -29,12 +29,12 @@ import EmploymentInfoForm from './pages/EmploymentInfoForm';
 import CILoanInfo from './pages/CILoanInfo';
 import CIAppForm from './pages/CIAppForm';
 import About from './pages/About';
-import Navbar from './components/Navbar';
 import GuestNav from './components/navigations/GuestNav';
 import AdminNav from './components/navigations/AdminNav';
 import ApplicantNav from './components/navigations/ApplicantNav';
 import CINav from './components/navigations/CINav';
 import CoMakerNav from './components/navigations/CoMakerNav';
+import EMICalculator from './pages/EMICalculator';
 
 function App() {
   
@@ -56,6 +56,8 @@ function App() {
             <Route path="loan" element={<LoanInfo />} />
             <Route path="invoice" element={<Invoice />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="calculate" element={<EMICalculator />} />
+            <Route path="product" element={<ProductInfo />} />
 
             <Route path="apply" element={<ApplicationForm />}>
               <Route index element={<PersonalInfoForm />} />
@@ -67,7 +69,7 @@ function App() {
           </Route>
 
           <Route path="/comaker" element={<PageLayout links={<CoMakerNav />} path="/comaker" />}>
-            <Route index element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} />
+            <Route index element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} /> 
             <Route path="obligeloans" element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} />
             <Route path="cosigned" element={<InvoiceList headText="Co-Signed Loans" path="/comaker/ciloan" />} />
             <Route path="alerts" element={<Notifications />} />
@@ -94,7 +96,6 @@ function App() {
             <Route path="invoice" element={<Invoice />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="product" element={<ProductInfo />} />
             <Route path="cashier" element={<Cashier />} />
 
             <Route path="dashboard" element={<Dashboard />}>

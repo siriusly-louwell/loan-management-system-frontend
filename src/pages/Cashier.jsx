@@ -4,6 +4,7 @@ import FormInput from "../components/inputs/FormInput";
 import SmallUpArrow from '../assets/icons/SmallUpArrow';
 import LoanList from "../components/LoanList";
 import PfpLabel from '../components/PfpLabel';
+import FormSelect from '../components/inputs/FormSelect';
 
 export default function Cashier() {
     return (
@@ -12,6 +13,12 @@ export default function Cashier() {
                 <div class="lg:flex lg:items-start lg:gap-12 xl:gap-16">
                     <div class="min-w-0 flex-1 space-y-8">
                         <div class="space-y-4">
+                            <div class="w-1/2">
+                                <FormSelect name="applicant" id="color" label="Select Applicant">
+                                    <option value={100000}>John Doe</option>
+                                    <option value={140000}>Steve Java</option>
+                                </FormSelect>
+                            </div>
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Account Details</h2>
 
                             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">

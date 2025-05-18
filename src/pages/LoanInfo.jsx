@@ -3,7 +3,7 @@ import LoanList from "../components/LoanList";
 import TrackList from "../components/TrackList";
 import CustomBttn from "../components/buttons/CustomBttn";
 
-export default function LoanInfo() {
+export default function LoanInfo({children}) {
     return (
         <section class="bg-white py-8 antialiased dark:bg-gray-800 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -57,7 +57,8 @@ export default function LoanInfo() {
                             </ol>
 
                             <div class="gap-4 sm:flex sm:items-center">
-                                <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+                                {children}
+                                {/* <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" /> */}
                             </div>
                         </div>
                     </div>

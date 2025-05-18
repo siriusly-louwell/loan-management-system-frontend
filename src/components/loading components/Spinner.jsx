@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function Spinner() {
+export default function Spinner({id, text}) {
     return (
-        <div class="w-full flex items-center justify-between dark:bg-gray-800">
+        <div id={id} class="fixed hidden left-0 right-0 md:inset-0 h-full w-full flex justify-center items-center bg-gray-100 bg-opacity-50 dark:bg-gray-700 dark:bg-opacity-50">
             {/* <div class="grid gap-3">
                 <div class="flex items-center justify-center">
                     <svg class="animate-spin border-indigo-600" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -36,7 +36,7 @@ export default function Spinner() {
                         </defs>
                     </svg>
                 </div>
-                <span class="text-black text-sm font-normal leading-snug dark:text-gray-300">Loading...</span>
+                <span class="text-black text-sm font-normal leading-snug dark:text-gray-300">{text}</span>
             </div>
 
             {/* <div class="grid gap-3">

@@ -4,9 +4,10 @@ import Navlink from '../links/NavLink';
 export default function AdminNav() {
     return (
         <>
-            <Navlink pathName="Dashboard" to="dashboard" />
-            <Navlink pathName="Accounts" to="accounts" />
+            <Navlink pathName="Inventory" to="inventory" />
             <Navlink pathName="Loans" to="loans" />
+            <Navlink pathName="Cashier" to="cashier" />
+            <Navlink pathName="Inquire Loan" to="emi" />
         </>
     );
 }

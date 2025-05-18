@@ -10,7 +10,7 @@ export default function Inventory() {
                 {key: "applicants", text: "Applicants", component: <Users />, icon: ""},
                 {key: "comakers", text: "Co-makers", component: <Users />, icon: ""},
                 {key: "cis", text: "Credit Investigators", component: <Users />, icon: ""},
-                {key: "admins", text: "Admins", component: <Users />, icon: ""},
+                {key: "staffs", text: "Staffs", component: <Users />, icon: ""},
             ]} />
             <Outlet />
         </div>

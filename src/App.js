@@ -31,10 +31,13 @@ import CIAppForm from './pages/CIAppForm';
 import About from './pages/About';
 import GuestNav from './components/navigations/GuestNav';
 import AdminNav from './components/navigations/AdminNav';
+import StaffNav from './components/navigations/StaffNav';
 import ApplicantNav from './components/navigations/ApplicantNav';
 import CINav from './components/navigations/CINav';
 import CoMakerNav from './components/navigations/CoMakerNav';
 import EMICalculator from './pages/EMICalculator';
+import CustomBttn from './components/buttons/CustomBttn';
+import Button from './components/buttons/Button';
 
 function App() {
   
@@ -53,7 +56,9 @@ function App() {
             <Route path="history" element={<AppNotifications />} />
             <Route path="applications" element={<InvoiceList headText="Loan Applications" path="/applicant/loan" />} />
             <Route path="myloans" element={<InvoiceList headText="My Loans" />} />
-            <Route path="loan" element={<LoanInfo />} />
+            <Route path="loan" element={<LoanInfo>
+              <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+            </LoanInfo>} />
             <Route path="invoice" element={<Invoice />} />
             <Route path="profile" element={<Profile />} />
             <Route path="calculate" element={<EMICalculator />} />
@@ -89,14 +94,26 @@ function App() {
             <Route path="profile" element={<Profile />} />
           </Route>
 
-          <Route path="/admin" element={<PageLayout links={<AdminNav />} path="/admin" />}>
+          <Route path="/staff" element={<PageLayout links={<StaffNav />} path="/staff" />}>
             <Route index element={<Inventory />} />
             <Route path="inventory" element={<Inventory />} />
-            <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/admin/cashier" />} />
+            <Route path="cashier" element={<Cashier />} />
+            <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/staff/loan" />} />
+            <Route path="loan" element={<LoanInfo>
+              <Button text="Accept Application" />
+            </LoanInfo>} />
+            <Route path="emi" element={<EMICalculator />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+          <Route path="/admin" element={<PageLayout links={<AdminNav />} path="/admin" />}>
+            <Route index element={<InvoiceList headText="Loan Applications" path="/admin/loan" />} />
+            {/* <Route path="inventory" element={<Inventory />} /> */}
+            <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/admin/loan" />} />
             <Route path="invoice" element={<Invoice />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="cashier" element={<Cashier />} />
+            {/* <Route path="cashier" element={<Cashier />} /> */}
 
             <Route path="dashboard" element={<Dashboard />}>
               <Route index element={<DashOverview />} />
@@ -109,7 +126,7 @@ function App() {
               <Route index element={<AccApplicants />} />
               <Route path="applicants" element={<AccApplicants />} />
               <Route path="cis" element={<AccCI />} />
-              <Route path="admins" element={<AccAdmins />} />
+              <Route path="staffs" element={<AccAdmins />} />
               <Route path="comakers" element={<AccComakers />} />
             </Route>
           </Route>

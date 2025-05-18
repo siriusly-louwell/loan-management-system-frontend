@@ -11,7 +11,7 @@ import MenuLink from '../components/links/MenuLink';
 import PageNav from '../components/PageNav';
 import Alert from '../components/Alert';
 
-export default function CRUDformat({children, addModal, label}) {
+export default function CRUDformat({children, addModal, label, modalId}) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -53,7 +53,7 @@ export default function CRUDformat({children, addModal, label}) {
                             </div>
                             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                                 <CustomBttn text={"Add " + label} className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                                    onclick={() => document.getElementById('createProduct').style.display = "block"}>
+                                    onclick={() => document.getElementById(modalId).style.display = "block"}>
                                     <Plus />
                                 </CustomBttn>
                                 <DropdownBttn text={"Filter " + label + "s"}>

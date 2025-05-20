@@ -2,7 +2,7 @@ import React from 'react';
 import TableData from '../tables/TableData';
 
 export default function ProductRow({data, recent}) {
-    const newRow = recent ? "bg-gray-100" : "";
+    const newRow = recent ? "bg-gray-100 dark:bg-gray-800" : "dark:bg-gray-700";
 
     return (
         <tr className={`border-b ${newRow} dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700`}>

@@ -14,7 +14,7 @@ export default function ApplicantsTable() {
     const [appLoad, setAppLoad] = useState(true);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/application')
+        fetch('http://localhost:8000/api/application')
             .then(response => response.json())
             .then(data => {
                 setApplicants(data);
@@ -56,7 +56,7 @@ export default function ApplicantsTable() {
                             {applicants.map(user => (
                                 <ProductRow key={user.id} recent={isThisWeek(user.created_at)} data={[
                                     <div className="flex items-center mr-3 space-x-2">
-                                        <img src={"http://127.0.0.1:8000/storage/"+user.id_pic} alt="applicant id" className="h-8 rounded-full w-auto mr-3" />
+                                        <img src={"http://localhost:8000/storage/"+user.id_pic} alt="applicant id" className="h-8 rounded-full w-auto mr-3" />
                                         {user.first_name} {user.last_name}
                                         {isThisWeek(user.created_at) ? <CustomBadge text="new" color="red" /> : ''}
                                     </div>,
@@ -86,7 +86,7 @@ export default function ApplicantsTable() {
                     )}
             </Table>
             {appLoad ? (
-                <div class="w-full h-40 py-20 bg-gray-100 flex justify-center items-center">
+                <div class="w-full h-40 py-20 bg-gray-100 dark:bg-gray-700 rounded-b-xl flex justify-center items-center">
                     <SmallSpin size={50}  />
                 </div>
             ) : ""}

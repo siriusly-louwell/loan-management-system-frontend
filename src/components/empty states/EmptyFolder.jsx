@@ -3,7 +3,7 @@ import Button from "../buttons/Button";
 
 export default function EmptyFolder() {
     return (
-        <div class="w-full flex items-center my-2 py-8 bg-gray-100 flex-wrap justify-center gap-10">
+        <div class="w-full flex items-center my-2 py-8 bg-gray-100 dark:bg-gray-700 rounded-b-xl flex-wrap justify-center gap-10">
             <div class="grid gap-4 w-60">
                 <svg class="mx-auto" xmlns="http://www.w3.org/2000/svg" width="148" height="144" viewBox="0 0 128 124" fill="none">
                     <g filter="url(#filter0_d_14133_718)">

@@ -33,7 +33,7 @@ export default function ProductList({url}) {
     }, []);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/motorcycle')
+        fetch('http://localhost:8000/api/motorcycle')
         .then(response => response.json())
         .then(data => {
                 setMotor(data);

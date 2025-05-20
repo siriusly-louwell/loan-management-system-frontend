@@ -16,7 +16,7 @@ export default function AccCI() {
     const [ciLoad, setCILoad] = useState(true);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/account')
+        fetch('http://localhost:8000/api/account')
         .then(response => response.json())
         .then(data => {
             setCI(data);
@@ -34,11 +34,7 @@ export default function AccCI() {
         <CRUDformat addModal={<CreateUser />} modalId='createUser' label="User">
             <Table>
                 <TableHead headers={['', 'Name', 'Email', 'Loans held', 'Last login', 'Status', 'Actions']} />
-                {ciLoad ? (
-                    <div className="w-full h-1/3 flex justify-center items-center">
-                        <div className="dark:text-white">Loading...</div>
-                    </div>
-                ) : (
+                {ciLoad ? "" : (
                     <tbody>
                         {accCI.map(account => (
                             account.role == 'ci' ? (
@@ -68,7 +64,7 @@ export default function AccCI() {
                 )}
             </Table>
             {ciLoad ? (
-                <div class="w-full h-40 py-20 bg-gray-100 flex justify-center items-center">
+                <div class="w-full h-40 py-20 bg-gray-100 dark:bg-gray-700 rounded-b-xl flex justify-center items-center">
                     <SmallSpin size={50}  />
                 </div>
             ) : ""}

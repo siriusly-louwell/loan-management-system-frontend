@@ -52,7 +52,7 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
     return (
         <section class="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
             <div class="mx-auto max-w-screen-x 2xl:px-0">
-                <div class="mx-auto max-w-5xl bg-white rounded-xl p-5">
+                <div class="mx-auto max-w-5xl bg-white dark:bg-gray-700 rounded-xl p-5">
                     <div class="gap-4 sm:flex sm:items-center sm:justify-between">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{headText}</h2>
 

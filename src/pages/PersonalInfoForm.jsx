@@ -114,16 +114,45 @@ export default function PersonalInfoForm() {
                     <option>Sto. Tomas</option>
                 </FormSelect>
                 <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange}>
-                    <option>Baranggay I</option>
-                    <option>Baranggay II</option>
-                    <option>Baranggay III</option>
-                    <option>Baranggay IV</option>
-                    <option>Baranggay V</option>
-                    <option>Baranggay VI</option>
-                    <option>Baranggay VII</option>
-                    <option>Baranggay VIII</option>
-                    <option>Baranggay IX</option>
-                    <option>Baranggay X</option>
+                    <option>A. O. Floriendo</option>
+                    <option>Buenavista</option>
+                    <option>Cacao</option>
+                    <option>Cagangohan</option>
+                    <option>Consolacion</option>
+                    <option>Dapco</option>
+                    <option>Datu Abdul Dadia</option>
+                    <option>Gredu</option>
+                    <option>J. P. Laurel</option>
+                    <option>Kasilak</option>
+                    <option>Katipunan</option>
+                    <option>Katualan</option>
+                    <option>Kiotoy</option>
+                    <option>Little Panay</option>
+                    <option>Lower Panaga</option>
+                    <option>Mabunao</option>
+                    <option>Maduao</option>
+                    <option>Malativas</option>
+                    <option>Manay</option>
+                    <option>Nanyo</option>
+                    <option>New Malaga</option>
+                    <option>New Malitbog</option>
+                    <option>New Pandan</option>
+                    <option>New Visayas</option>
+                    <option>Quezon</option>
+                    <option>Salvacion</option>
+                    <option>San Francisco</option>
+                    <option>San Nicolas</option>
+                    <option>San Pedro</option>
+                    <option>San Roque</option>
+                    <option>San Vicente</option>
+                    <option>Santa Cruz</option>
+                    <option>Santo Nino</option>
+                    <option>Sindaton</option>
+                    <option>Southern DAvao</option>
+                    <option>Tagpore</option>
+                    <option>Tibungol</option>
+                    <option>Upper Licanan</option>
+                    <option>Waterfall</option>
                 </FormSelect>
                 {/* <FormInput label="Lot number" type="text" name="prod_name" id="name" placeholder="Lot number" />
                 <FormInput label="Phase" type="text" name="prod_name" id="name" placeholder="Type phase" />
@@ -196,16 +225,45 @@ export default function PersonalInfoForm() {
                     <option>Sto. Tomas</option>
                 </FormSelect>
                 <FormSelect name="prev_brgy" label="Barangay" id="brgy" value={address.prev_brgy} onchange={addressChange}>
-                    <option>Baranggay I</option>
-                    <option>Baranggay II</option>
-                    <option>Baranggay III</option>
-                    <option>Baranggay IV</option>
-                    <option>Baranggay V</option>
-                    <option>Baranggay VI</option>
-                    <option>Baranggay VII</option>
-                    <option>Baranggay VIII</option>
-                    <option>Baranggay IX</option>
-                    <option>Baranggay X</option>
+                    <option>A. O. Floriendo</option>
+                    <option>Buenavista</option>
+                    <option>Cacao</option>
+                    <option>Cagangohan</option>
+                    <option>Consolacion</option>
+                    <option>Dapco</option>
+                    <option>Datu Abdul Dadia</option>
+                    <option>Gredu</option>
+                    <option>J. P. Laurel</option>
+                    <option>Kasilak</option>
+                    <option>Katipunan</option>
+                    <option>Katualan</option>
+                    <option>Kiotoy</option>
+                    <option>Little Panay</option>
+                    <option>Lower Panaga</option>
+                    <option>Mabunao</option>
+                    <option>Maduao</option>
+                    <option>Malativas</option>
+                    <option>Manay</option>
+                    <option>Nanyo</option>
+                    <option>New Malaga</option>
+                    <option>New Malitbog</option>
+                    <option>New Pandan</option>
+                    <option>New Visayas</option>
+                    <option>Quezon</option>
+                    <option>Salvacion</option>
+                    <option>San Francisco</option>
+                    <option>San Nicolas</option>
+                    <option>San Pedro</option>
+                    <option>San Roque</option>
+                    <option>San Vicente</option>
+                    <option>Santa Cruz</option>
+                    <option>Santo Nino</option>
+                    <option>Sindaton</option>
+                    <option>Southern DAvao</option>
+                    <option>Tagpore</option>
+                    <option>Tibungol</option>
+                    <option>Upper Licanan</option>
+                    <option>Waterfall</option>
                 </FormSelect>
                 {/* <FormInput label="Lot number" type="text" name="prod_name" id="name" placeholder="Lot number" />
                 <FormInput label="Phase" type="text" name="prod_name" id="name" placeholder="Type phase" />

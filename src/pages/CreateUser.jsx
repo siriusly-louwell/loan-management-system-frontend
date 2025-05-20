@@ -26,7 +26,7 @@ export default function CreateUser() {
         // const formData = {name, email, password};
 
         try {
-            const response = await fetch('http://localhost:8000/api/account', {
+            const response = await fetch('http://127.0.0.1:8000/api/account', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,12 +75,12 @@ export default function CreateUser() {
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                             <FormInput label="Full Name" type="text" value={user.name} onchange={handleChange} name="name" id="name" placeholder="Type full name" />
                             <FormInput label="email" type="text" name="email" id="email" value={user.email} onchange={handleChange} placeholder="john@gmail.com" />
-                            <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
+                            {/* <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                                 <FormSelect name="role" id="color" label="Role" value={user.role} onchange={handleChange}>
                                     <option value="red">Credit Investigator</option>
                                     <option value="orange">Staff</option>
                                 </FormSelect>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                             <Button text="Add user" type="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />

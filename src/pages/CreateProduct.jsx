@@ -46,6 +46,7 @@ export default function CreateProduct() {
         submitData.append('file', files);
 
         console.log(files);
+        document.getElementById('saving_data').style.display = "flex";
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/motorcycle', {
@@ -62,8 +63,9 @@ export default function CreateProduct() {
             const result = await response.json();
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Failed to save data');
+            document.getElementById('saving_data').style.display = "none";
             alert('Data saved successfully!');
-            resetInput();
+            setFormData({});
         } catch(error) {
             console.error('Error: ', error);
             alert('Failed to save data.');
@@ -71,10 +73,10 @@ export default function CreateProduct() {
 
     }
 
-    function resetInput() {
-        setFormData({});
-        document.getElementById('saving_data').style.display = "none";
-    }
+    // function resetInput() {
+    //     setFormData({});
+    //     document.getElementById('saving_data').style.display = "none";
+    // }
     
     function fileChange(event) {
         console.log(event.target.files);
@@ -165,7 +167,7 @@ export default function CreateProduct() {
                             {/* <FormFile id="dropzone-file" name="file" onChange={(e) => { console.log("Child called"); fileChange(e); }} file={file} /> */}
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                            <Button text="Add Unit" type="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />
+                            <Button text="Add Unit" bttnType="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />
                             {/* <CustomBttn text="Schedule" className="w-full sm:w-auto text-white justify-center inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                 <Calendar />
                             </CustomBttn> */}

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import ProductInfo from './pages/ProductInfo';
 import ProductList from './pages/ProductList';
 import Inventory from './pages/Inventory';
@@ -132,6 +133,7 @@ function App() {
             </Route>
           </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

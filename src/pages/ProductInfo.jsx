@@ -43,10 +43,10 @@ export default function ProductInfo() {
         }, []);
 
     return (
-        <section class="py-8 bg-gray-100 md:py-16 dark:bg-gray-800 antialiased">
+        <section className="py-8 bg-gray-100 md:py-16 dark:bg-gray-800 antialiased">
             {/* <NavPath /> */}
-            <div class="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
-                <div class="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
+            <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
+                <div className="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
                     {unitLoad ? (<div>Loading...</div>) : (
                         <>
                             <div className="relative w-full lg:max-w-3xl mx-auto overflow-hidden rounded-xl">
@@ -57,15 +57,15 @@ export default function ProductInfo() {
                                 </div>
 
                                 <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full">
-                                    <span class="text-2xl" aria-hidden="true">
-                                        <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <span className="text-2xl" aria-hidden="true">
+                                        <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m15 18-6-6 6-6"></path>
                                         </svg>
                                     </span>
                                 </button>
                                 <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full" >
-                                    <span class="text-2xl" aria-hidden="true">
-                                        <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <span className="text-2xl" aria-hidden="true">
+                                        <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m9 18 6-6-6-6"></path>
                                         </svg>
                                     </span>
@@ -78,10 +78,10 @@ export default function ProductInfo() {
                                 </div>
                             </div>
 
-                            <div class="mt-6 sm:mt-8 lg:mt-0">
-                                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">{unit.name} ({unit.brand})</h1>
-                                <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
-                                    <p class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">₱{unit.price}</p>
+                            <div className="mt-6 sm:mt-8 lg:mt-0">
+                                <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">{unit.name} ({unit.brand})</h1>
+                                <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
+                                    <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">₱{unit.price}</p>
 
                                     {/* <StarRating rating="(5.0)" rates="345 Reviews" /> */}
                                     <div className="flex space-x-2">
@@ -100,16 +100,24 @@ export default function ProductInfo() {
                                     <SmallLabel label="Stock" text={unit.quantity+" units"} />
                                 </div>
 
-                                <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                                <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
                                     <BttnwithIcon text="Add to favorites">
-                                        <svg class="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <svg className="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
                                         </svg>
                                     </BttnwithIcon>
                                     <AddtoCartBttn text="Apply Loan" />
                                 </div>
-                                <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
-                                <p class="mb-6 text-gray-500 dark:text-gray-400">{unit.description}</p>
+                                <div className="flex mt-5 items-center space-x-4">
+                                    <p className="text-gray-900 dark:text-white">Select Color: </p>
+                                    <div className="grid grid-cols-10 gap-y-2">
+                                        {unit.colors.map(color => (
+                                                <ColorLabel style={color.color} />
+                                            ))}
+                                    </div>
+                                </div>
+                                <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+                                <p className="mb-6 text-gray-500 dark:text-gray-400">{unit.description}</p>
                             </div>
                         </>
                     )}

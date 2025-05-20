@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
-import Checkbox from '../components/checkboxes/Checkbox';
 import RMCI from '../assets/images/RMCI.jpg';
 
-export default function Login() {
+export default function Register() {
     return (
         <>
             <section class="bg-gray-50 h-screen dark:bg-gray-900">
@@ -17,18 +16,16 @@ export default function Login() {
                     <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                Login to your account
+                                Register your account
                             </h1>
                             <form class="space-y-4 md:space-y-6" action="#">
+                                <TextInput name="record_id" type="text" id="id" caption="Input your record ID/application ID" placeholder="2025-0032" required={true} />
                                 <TextInput name="email" type="email" id="email" caption="Your email" placeholder="name@gmail.com" required={true} />
                                 <TextInput name="password" type="password" id="password" caption="Password" placeholder="••••••••" required={true} />
-                                <div class="flex items-center justify-between">
-                                    <Checkbox name="" id="show_pass" text="Show password" required={false} />
-                                    <Link class="font-medium text-blue-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">Forgot Password</Link>
-                                </div>
-                                <Button text="Login" />
+                                <TextInput name="confirm_pass" type="password" id="confirm" caption="Confirm Password" placeholder="••••••••" required={true} />
+                                <Button text="Register now" />
                                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Is your application accepted? <Link to="/register" class="font-medium text-blue-500 hover:underline dark:text-primary-500 cursor-pointer">Register here</Link>
+                                    Already have an account? <Link to="/login" class="font-medium text-blue-500 hover:underline dark:text-primary-500 cursor-pointer">Log in</Link>
                                 </p>
                             </form>
                         </div>

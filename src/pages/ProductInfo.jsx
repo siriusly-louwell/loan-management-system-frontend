@@ -3,6 +3,7 @@ import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
 import StarRating from "../components/StarRating";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import NavPath from "../components/NavPath";
+import EMICalculator from './EMICalculator';
 
 export default function ProductInfo() {
     return (
@@ -49,6 +50,7 @@ export default function ProductInfo() {
                     </div>
                 </div>
             </div>
+            <EMICalculator />
         </section>
     );
 }

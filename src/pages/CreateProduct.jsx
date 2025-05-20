@@ -25,7 +25,7 @@ export default function CreateProduct() {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/motorcycle', {
+            const response = await fetch('http://localhost:8000/api/motorcycle', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,10 +99,10 @@ export default function CreateProduct() {
                             <CustomBttn text="Schedule" className="w-full sm:w-auto text-white justify-center inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                 <Calendar />
                             </CustomBttn>
-                            <CustomBttn text="Discard" className="inline-flex justify-center w-full sm:w-auto items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            {/* <CustomBttn text="Discard" className="inline-flex justify-center w-full sm:w-auto items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                 onclick={() => document.getElementById('createProduct').style.display = "none"}>
                                 <Ex className="mr-1 -ml-1 w-5 h-5" />
-                            </CustomBttn>
+                            </CustomBttn> */}
                         </div>
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />

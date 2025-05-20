@@ -12,6 +12,7 @@ export default function CreateUser() {
         name: '',
         email: '',
         role: '',
+        status: 'active',
         password: 'password'
 
     });
@@ -19,25 +20,25 @@ export default function CreateUser() {
     async function handleSubmit(event) {
         event.preventDefault();
         
-        const name = user.name;
-        const email = user.email;
-        const password = user.password;
-        const formData = {name, email, password};
+        // const name = user.name;
+        // const email = user.email;
+        // const password = user.password;
+        // const formData = {name, email, password};
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/account', {
+            const response = await fetch('http://localhost:8000/api/account', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(user)
             });
 
-            if(!response.ok) throw new Error('Update failed');
             const result = await response.json();
             resetInput();
             console.log('Success: ', result);
+            if(!response.ok) throw new Error('Update failed');
             alert('Data saved successfully!');
         } catch(error) {
             console.error('Error: ', error);
@@ -83,10 +84,10 @@ export default function CreateUser() {
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                             <Button text="Add user" type="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />
-                            <CustomBttn text="Discard" className="inline-flex justify-center w-full sm:w-auto items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            {/* <CustomBttn text="Discard" className="inline-flex justify-center w-full sm:w-auto items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                                 onclick={() => document.getElementById('createUser').style.display = "none"}>
                                 <Ex className="mr-1 -ml-1 w-5 h-5" />
-                            </CustomBttn>
+                            </CustomBttn> */}
                         </div>
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />

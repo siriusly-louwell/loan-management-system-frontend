@@ -10,7 +10,7 @@ export default function Inventory() {
     const [loading, setLoad] = useState(true);
     
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/motorcycle')
+        fetch('http://localhost:8000/api/motorcycle')
         .then(response => response.json())
         .then(data => {
             setMotor(data);
@@ -20,7 +20,7 @@ export default function Inventory() {
             console.error('Error fetching data: ', error);
             setLoad(true);
         })
-    });
+    }, []);
     
     async function editMotor(id) {
         const response = await fetch("http://127.0.0.1:8000/api/motorcycle/" + id);

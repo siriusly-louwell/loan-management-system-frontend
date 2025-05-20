@@ -1,4 +1,5 @@
 import React from "react";
+import {useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import BttnwithIcon from '../components/buttons/BttnwithIcon';
@@ -9,38 +10,42 @@ import FormTBody from '../components/tables/FormTBody';
 import FormTD from '../components/tables/FormTD';
 
 export default function EmploymentInfoForm() {
+    const {handleChange, applicant} = useOutletContext();
+
     return (
         <>
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Employment Information:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormSelect name="income" label="Source of income" id="income">
-                    <option>Employment</option>
-                    <option>Business</option>
+                <FormSelect name="income" label="Source of income" id="income" value={applicant.income} onchange={handleChange}>
+                    <option value="employment">Employment</option>
+                    <option value="business">Business</option>
                 </FormSelect>
-                <FormInput label="Employer" type="text" name="prod_name" id="name" placeholder="Type employer name" />
-                <FormInput label="Employer Address" type="text" name="prod_name" id="name" placeholder="Type employer address" />
-                <FormInput label="Immediate Superior" type="text" name="prod_name" id="name" placeholder="Type superior name" />
-                <FormInput label="Employment Status" type="text" name="prod_name" id="name" placeholder="Type status" />
-                <FormInput label="Years in service" type="number" name="prod_name" id="name" placeholder="Years" />
+                <FormInput label="Immediate Superior" type="text" name="superior" id="superior" value={applicant.superior} onchange={handleChange} placeholder="Type superior name" />
+                <FormInput label="Employment Status" type="text" name="employment_status" id="emp_stat" value={applicant.employment_status} onchange={handleChange} placeholder="Type status" />
+                <FormInput label="Years in service" type="number" name="yrs_in_service" id="yrs" value={applicant.yrs_in_service} onchange={handleChange} placeholder="Years" />
                 {/* <FormInput label="Employer" type="text" name="prod_name" id="name" placeholder="Type employer name" /> */}
-                <FormInput label="Monthly/Daily Rate" type="text" name="prod_name" id="name" placeholder="1,000 PHP" />
+                <FormInput label="Monthly/Daily Rate" type="text" name="rate" id="rate" value={applicant.rate} onchange={handleChange} placeholder="1,000 PHP" />
+                <FormInput label="Employer" type="text" name="employer" id="employer" value={applicant.employer} onchange={handleChange} placeholder="Type employer name" />
+                <div class="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-1">
+                    <FormInput label="Employer Address (Brgy, municipality/city, province, region)" type="text" name="prod_name" id="name" placeholder="Type employer address" />
+                </div>
             </div>
 
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Income</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormInput label="Salary" type="text" name="prod_name" id="name" placeholder="15,000 PHP" />
-                <FormInput label="Business" type="text" name="prod_name" id="name" placeholder="Name your business" />
+                <FormInput label="Salary" type="text" name="salary" id="salary" value={applicant.salary} onchange={handleChange} placeholder="15,000 PHP" />
+                <FormInput label="Business" type="text" name="business" id="business" value={applicant.business} onchange={handleChange} placeholder="Name your business" />
                 <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Other income" />
             </div>
             
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Expenses</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormInput label="Living" type="text" name="prod_name" id="name" placeholder="Living expenses" />
-                <FormInput label="Rental" type="text" name="prod_name" id="name" placeholder="500 PHP/month" />
-                <FormInput label="Education" type="text" name="prod_name" id="name" placeholder="Education expenses" />
-                <FormInput label="Transportation" type="text" name="prod_name" id="name" placeholder="Transport expenses" />
-                <FormInput label="Insurance" type="text" name="prod_name" id="name" placeholder="Insurance" />
-                <FormInput label="Electricity/Water Bill" type="text" name="prod_name" id="name" placeholder="Billing expenses" />
+                <FormInput label="Living" type="text" name="living_exp" id="living" value={applicant.living_exp} onchange={handleChange} placeholder="Living expenses" />
+                <FormInput label="Rental" type="text" name="rental_exp" id="rental" value={applicant.rental_exp} onchange={handleChange} placeholder="500 PHP/month" />
+                <FormInput label="Education" type="text" name="education_exp" id="education" value={applicant.education_exp} onchange={handleChange} placeholder="Education expenses" />
+                <FormInput label="Transportation" type="text" name="transportation" id="transport" value={applicant.transportation} onchange={handleChange} placeholder="Transport expenses" />
+                <FormInput label="Insurance" type="text" name="insurance" id="insurance" value={applicant.insurance} onchange={handleChange} placeholder="Insurance" />
+                <FormInput label="Electricity/Water Bill" type="text" name="bills" id="bills" value={applicant.bills} onchange={handleChange} placeholder="Billing expenses" />
             </div>
             
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Real and/or Personal Properties:</h3>

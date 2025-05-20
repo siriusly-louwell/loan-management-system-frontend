@@ -24,7 +24,7 @@ export default function AccCI() {
             console.error('Error fetching data: ', error);
             setCILoad(true);
         })
-    });
+    }, []);
 
     return (
         <CRUDformat addModal={<CreateUser />} modalId='createUser' label="User">

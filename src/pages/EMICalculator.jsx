@@ -16,7 +16,6 @@ export default function EMICalculator() {
     const loanAmount = price - downPayment;
     const monthlyInterestRate = interestRate / 12 / 100;
 
-    // EMI Calculation
     const emi =
         loanAmount === 0 || interestRate === 0
         ? loanAmount / tenure
@@ -46,10 +45,10 @@ export default function EMICalculator() {
             <div class="py-20 sm:flex sm:space-x-20 items-center px-4 justify-center">
                 <div class="sm:w-1/2 p-2">
                     <div class="mb-6">
-                        <FormSelect name="unit" id="color" label="Select Motorcycle unit" onchange={(e) => setPrice(parseInt(e.target.value))}>
+                        {/* <FormSelect name="unit" id="color" label="Select Motorcycle unit" onchange={(e) => setPrice(parseInt(e.target.value))}>
                             <option value={100000}>Honda - Wave 100</option>
                             <option value={140000}>Honda - Click</option>
-                        </FormSelect>
+                        </FormSelect> */}
                     </div>
                     <div class="mb-6">
                         <div class="flex justify-between items-center mb-2">
@@ -67,7 +66,7 @@ export default function EMICalculator() {
                         </div>
                     </div>
 
-                    <div class="mb-6">
+                    {/* <div class="mb-6">
                         <div class="flex justify-between items-center mb-2">
                             <h3 class="font-medium text-gray-700 dark:text-gray-200">Rate of Interest</h3>
                             <span class="font-bold text-blue-600">{interestRate}%</span>
@@ -86,7 +85,7 @@ export default function EMICalculator() {
                             <span>33%</span>
                             <span>36%</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div class="mb-8">
                         <h3 class="font-medium text-gray-700 dark:text-gray-200 mb-3">Loan Tenure</h3>
@@ -114,7 +113,7 @@ export default function EMICalculator() {
                         </div>
                         <div class="justify-items-center">
                             <p class="text-gray-500 dark:text-gray-100 text-sm">Loan Amount</p>
-                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{loanAmount.toFixed(2)}</p>
+                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{price.toFixed(2)}</p>
                         </div>
                     </div>
                     <div class="border-t w-full justify-items-center border-gray-200 py-4">

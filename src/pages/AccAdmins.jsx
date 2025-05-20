@@ -24,7 +24,7 @@ export default function AccAdmins() {
             console.error('Error fetching data: ', error);
             setStaffLoad(true);
         })
-    });
+    }, []);
 
     return (
         <CRUDformat addModal={<CreateUser />} modalId='createUser' label="User">

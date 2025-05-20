@@ -33,19 +33,20 @@ export default function EmploymentInfoForm() {
 
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Income</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormInput label="Salary" type="text" name="salary" id="salary" value={applicant.salary} onchange={handleChange} placeholder="15,000 PHP" />
+                <FormInput label="Salary" type="number" name="salary" id="salary" value={applicant.salary} onchange={handleChange} placeholder="15,000 PHP/month" />
                 <FormInput label="Business" type="text" name="business" id="business" value={applicant.business} onchange={handleChange} placeholder="Name your business" />
                 <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Other income" />
             </div>
             
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Expenses</h3>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Write down all expenses spent every month</label>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormInput label="Living" type="text" name="living_exp" id="living" value={applicant.living_exp} onchange={handleChange} placeholder="Living expenses" />
-                <FormInput label="Rental" type="text" name="rental_exp" id="rental" value={applicant.rental_exp} onchange={handleChange} placeholder="500 PHP/month" />
-                <FormInput label="Education" type="text" name="education_exp" id="education" value={applicant.education_exp} onchange={handleChange} placeholder="Education expenses" />
-                <FormInput label="Transportation" type="text" name="transportation" id="transport" value={applicant.transportation} onchange={handleChange} placeholder="Transport expenses" />
+                <FormInput label="Living" type="number" name="living_exp" id="living" value={applicant.living_exp} onchange={handleChange} placeholder="Living expenses/month" />
+                <FormInput label="Rental" type="number" name="rental_exp" id="rental" value={applicant.rental_exp} onchange={handleChange} placeholder="500 PHP/month" />
+                <FormInput label="Education" type="number" name="education_exp" id="education" value={applicant.education_exp} onchange={handleChange} placeholder="Education expenses/month" />
+                <FormInput label="Transportation" type="number" name="transportation" id="transport" value={applicant.transportation} onchange={handleChange} placeholder="Transport expenses/month" />
                 <FormInput label="Insurance" type="text" name="insurance" id="insurance" value={applicant.insurance} onchange={handleChange} placeholder="Insurance" />
-                <FormInput label="Electricity/Water Bill" type="text" name="bills" id="bills" value={applicant.bills} onchange={handleChange} placeholder="Billing expenses" />
+                <FormInput label="Electricity/Water Bill" type="number" name="bills" id="bills" value={applicant.bills} onchange={handleChange} placeholder="Billing expenses/month" />
             </div>
             
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Real and/or Personal Properties:</h3>

@@ -1,12 +1,34 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import LoanList from "../components/LoanList";
 import TrackList from "../components/TrackList";
 import CustomBttn from "../components/buttons/CustomBttn";
+import ProfileCard from '../components/cards/ProfileCard';
+import SmallUpArrow from '../assets/icons/SmallUpArrow';
 
 export default function LoanInfo({children}) {
+    const [loan, setLoan] = useState({});
+    const dti = (loan.rental_exp/loan.salary) * 100;
+    const ltv = (100000 / 98000) * 100;
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/application/1')
+        .then(response => response.json())
+        .then(data => {
+            setLoan(data);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        })
+    }, []);
+
     return (
         <section class="bg-white py-8 antialiased dark:bg-gray-800 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+                <div class="grid grid-cols-2 gap-6 py-4 lg:grid-cols-4 xl:gap-16">
+                    <ProfileCard label="Credit Score" amount={0} text={loan.income} arrow={<SmallUpArrow />} percent="10.3%" />
+                    <ProfileCard label="Debt-to-Income(DTI) Ratio" amount={dti.toFixed(2)} text=" ???" arrow={<SmallUpArrow />} percent="10.3%" />
+                    <ProfileCard label="Loan-to-Value(LTV) Ratio" amount={ltv.toFixed(2)} text=" ???" arrow={<SmallUpArrow />} percent="10.3%" />
+                </div>
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan #957684673</h2>
 
                 <div class="mt-6 sm:mt-8 lg:flex lg:gap-8">

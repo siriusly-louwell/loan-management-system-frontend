@@ -10,8 +10,9 @@ export default function ApplicationForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const routerPaths = useMemo(() => ['/applicant/apply', '/applicant/apply/employinfo', '/applicant/apply/familyinfo', '/applicant/apply/requirements'], []);
+    const routerPaths = useMemo(() => ['/customer/apply', '/customer/apply/employinfo', '/customer/apply/familyinfo', '/customer/apply/requirements'], []);
     const [applicant, setApplicant] = useState({});
+    const [address, setAddress] = useState({});
 
     useEffect(() => {
         const index = routerPaths.indexOf(location.pathname);
@@ -33,8 +34,15 @@ export default function ApplicationForm() {
     async function handleSubmit(event) {
         event.preventDefault();
 
+        applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
+        applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
+        applicant.parent_pres = address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country;
+        applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
+        applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
+        applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
+
         try {
-            const response = await fetch('http://localhost:8000/api/application', {
+            const response = await fetch('http://127.0.0.1:8000/api/application', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,9 +51,10 @@ export default function ApplicationForm() {
                 body: JSON.stringify(applicant)
             });
 
-            const result = await response.json();
+            // const result = await response.json();
             resetInput();
-            console.log('Success: ', result);
+            console.log(applicant);
+            // console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
             alert('Data saved successfully!');
         } catch(error) {
@@ -59,6 +68,13 @@ export default function ApplicationForm() {
         document.getElementById('saving_data').style.display = "none";
     }
 
+    function addressChange(event) {
+        setAddress({
+            ...address,
+            [event.target.name]: event.target.value
+        });
+    }
+
     function handleChange(event) {
         setApplicant({
             ...applicant,
@@ -66,7 +82,7 @@ export default function ApplicationForm() {
         });
     }
 
-    const outletContext = {handleChange, applicant};
+    const outletContext = {handleChange, addressChange, applicant, address};
 
     return (
         <div class="overflow-y-auto overflow-x-hidden sm:flex flex-start fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
@@ -80,7 +96,7 @@ export default function ApplicationForm() {
             <div class="relative p-4 w-full max-w-5xl h-full md:h-auto">
                 <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
                     <div class="flex justify-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">REGISTRATION FORM</h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">APPLICATION FORM</h3>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <Outlet context={outletContext} />

@@ -11,8 +11,10 @@ import NavPath from "../components/NavPath";
 import Filter from "../assets/icons/Filter";
 import Sort from "../assets/icons/Sort";
 
-export default function ProductList() {
+export default function ProductList({url}) {
     const [isFiltOn, setIsFiltOn] = useState(false);
+    const [motors, setMotor] = useState([]);
+    const [motorLoad, setMotorLoad] = useState(true);
     const filtMenu = useRef(null);
 
     // Toggle dropdown visibility
@@ -30,15 +32,28 @@ export default function ProductList() {
         return () => document.removeEventListener("mousedown", menuClicked);
     }, []);
 
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/api/motorcycle')
+        .then(response => response.json())
+        .then(data => {
+                setMotor(data);
+                setMotorLoad(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+                setMotorLoad(true);
+            })
+    }, []);
+
     return (
-        <section class="bg-gray-50 py-8 antialiased dark:bg-gray-800 md:py-12">
-            <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
+        <section className="bg-gray-100 py-8 antialiased dark:bg-gray-800 md:py-12">
+            <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+                <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
                     <div>
-                        <NavPath />
-                        <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Electronics</h2>
+                        {/* <NavPath /> */}
+                        <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Available Units</h2>
                     </div>
-                    <div class="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4">
                         <DropdownBttn text="Filter">
                             <Filter />
                         </DropdownBttn>
@@ -57,40 +72,13 @@ export default function ProductList() {
                 </DropdownMenu>
                 
                 <ProductGrid>
-                    <ProductCard
-                        prodName='Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='Apple iPhone 15 Pro Max, 256GB, Blue Titanium'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/iphone-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='iPad Pro 13-Inch (M4): XDR Display, 512GB'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='PlayStation®5 Console – 1TB, PRO Controller'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ps5-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='Microsoft Xbox Series X 1TB Gaming Console'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/xbox-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='Apple MacBook PRO Laptop with M2 chip'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/macbook-pro-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='MApple Watch SE [GPS 40mm], Smartwatch'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/apple-watch-dark.svg"
-                    />
-                    <ProductCard
-                        prodName='Microsoft Surface Pro, Copilot+ PC, 13 Inch'
-                        img="https://flowbite.s3.amazonaws.com/blocks/e-commerce/ipad-keyboard-dark.svg"
-                    />
+                    {motorLoad ? (<div>Loading...</div>) : (
+                        motors.map(motor => (
+                            <ProductCard key={motor.id} unit={motor} url={url}/>
+                        ))
+                    )}
                 </ProductGrid>
-                <div class="w-full text-center">
+                <div className="w-full text-center">
                     <BasicButton text="Show more" />
                 </div>
             </div>

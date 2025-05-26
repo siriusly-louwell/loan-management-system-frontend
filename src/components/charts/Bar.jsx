@@ -21,13 +21,13 @@ export default function Bar() {
             const chart = new window.ApexCharts(chartRef.current, {
                     series: [
                         {
-                            name: "Income",
+                            name: "Punctual payments",
                             color: "#31C48D",
-                            data: ["1420", "1620", "1820", "1420", "1650", "2120"],
+                            data: ["5", "10", "20", "5", "9", "11"],
                         },
                         {
-                            name: "Expense",
-                            data: ["788", "810", "866", "788", "1100", "1200"],
+                            name: "Late payments",
+                            data: ["7", "3", "4", "2", "8", "5"],
                             color: "#F05252",
                         }
                     ],
@@ -67,7 +67,7 @@ export default function Bar() {
                         shared: true,
                         intersect: false,
                         formatter: function (value) {
-                            return "$" + value
+                            return value
                         }
                     },
                     xaxis: {
@@ -78,7 +78,7 @@ export default function Bar() {
                                 cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
                             },
                             formatter: function(value) {
-                                return "$" + value
+                                return value
                             }
                         },
                         categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -123,26 +123,26 @@ export default function Bar() {
             <div class="max-w-sm w-full bg-white rounded-lg shadow-sm dark:bg-gray-700 p-4 md:p-6">
                 <div class="flex justify-between border-gray-200 border-b dark:border-gray-700 pb-3">
                     <dl>
-                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Profit</dt>
-                        <dd class="leading-none text-3xl font-bold text-gray-900 dark:text-white">$5,405</dd>
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Payments</dt>
+                        <dd class="leading-none text-3xl font-bold text-gray-900 dark:text-white">108</dd>
                     </dl>
                     <div>
                         <span class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300">
                             <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4"/>
                             </svg>
-                            Profit rate 23.5%
+                            Payment rate 23.5%
                         </span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 py-3">
                     <dl>
-                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Income</dt>
-                        <dd class="leading-none text-xl font-bold text-green-500 dark:text-green-400">$23,635</dd>
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Punctual payments</dt>
+                        <dd class="leading-none text-xl font-bold text-green-500 dark:text-green-400">75</dd>
                     </dl>
                     <dl>
-                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Expense</dt>
-                        <dd class="leading-none text-xl font-bold text-red-600 dark:text-red-500">-$18,230</dd>
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Late payments</dt>
+                        <dd class="leading-none text-xl font-bold text-red-600 dark:text-red-500">30</dd>
                     </dl>
                 </div>
                 <div ref={chartRef}></div>

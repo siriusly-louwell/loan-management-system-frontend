@@ -5,28 +5,28 @@ import FormSelect from "../components/inputs/FormSelect";
 import StepCard from '../components/cards/StepCard';
 import BttnSmall from '../components/buttons/BttnSmall';
 
-export default function EMICalculator() {
+export default function EMICalculator({name, brand, motorPrice, years, interest}) {
     const navigate = useNavigate();
-    const [price, setPrice] = useState(100000);
     const [downPaymentPercent, setDownPaymentPercent] = useState(20);
-    const [interestRate, setInterestRate] = useState(10);
-    const [tenure, setTenure] = useState(24);
+    const [tenure, setTenure] = useState(12);
 
-    const downPayment = (price * downPaymentPercent) / 100;
-    const loanAmount = price - downPayment;
-    const monthlyInterestRate = interestRate / 12 / 100;
+    const downPayment = (motorPrice * downPaymentPercent) / 100;
+    const loanAmount = motorPrice - downPayment;
+    const monthlyRate = interest / 12 / 100;
 
     const emi =
-        loanAmount === 0 || interestRate === 0
+        loanAmount === 0 || interest === 0
         ? loanAmount / tenure
-        : (loanAmount * monthlyInterestRate *
-            Math.pow(1 + monthlyInterestRate, tenure)) /
-            (Math.pow(1 + monthlyInterestRate, tenure) - 1);
+        : (loanAmount * monthlyRate *
+            Math.pow(1 + monthlyRate, tenure)) /
+            (Math.pow(1 + monthlyRate, tenure) - 1);
+    
+            console.log(emi);
 
     return (
-        <div class="w-full overflow-hidden bg-gray-200 dark:bg-gray-800">
+        <div class="w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
             <div class="sm:px-10 py-20 w-full">
-                <div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-xl shadow-lg justify-items-center space-y-5">
+                <div class="bg-blue-300 dark:bg-gray-700 p-5 rounded-xl shadow-lg justify-items-center space-y-5">
                     <h1 class="dark:text-white font-bold text-3xl">How Do I Apply?</h1>
                     <ul class="relative flex flex-col md:flex-row gap-2 w-full">
                         <StepCard num={1} label="Calculate your Loan" context="Calculate your motorcycle loan below and adjust the the fields to fit your preferences." />
@@ -91,21 +91,15 @@ export default function EMICalculator() {
                         <h3 class="font-medium text-gray-700 dark:text-gray-200 mb-3">Loan Tenure</h3>
                         <div class="grid grid-cols-5 gap-2">
                             <input type="radio" value checked={tenure === 12} class="hidden" />
-                            <BttnSmall text="1 Year" click={() => setTenure(12)} />
-                            <BttnSmall text="2 Year" click={() => setTenure(24)} />
-                            <BttnSmall text="3 Year" click={() => setTenure(36)} />
-                            <BttnSmall text="4 Year" click={() => setTenure(48)} />
-                            <BttnSmall text="5 Year" click={() => setTenure(60)} />
-                            <BttnSmall text="6 Year" click={() => setTenure(72)} />
-                            <BttnSmall text="7 Year" click={() => setTenure(84)} />
-                            <BttnSmall text="8 Year" click={() => setTenure(96)} />
-                            <BttnSmall text="9 Year" click={() => setTenure(108)} />
-                            <BttnSmall text="10 Year" click={() => setTenure(120)} />
+                            {[...Array(years)].map((_, i) => (
+                                <BttnSmall key={i+1} text={(i+1)+" Year" } click={() => setTenure(12 * (i+1))} />    
+                            ))}
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-white dark:bg-gray-600 rounded-2x1 shadow-lg sm:w-1/3 justify-items-center rounded-xl p-5 mb-4">
+                    <p class="text-xl font-bold text-gray-800 dark:text-white mb-5">{brand} - {name}</p>
                     <div class="flex justify-between items-center space-x-5 mb-4">
                         <div class="justify-items-center">
                             <p class="text-gray-500 dark:text-gray-100 text-sm">Down Payment</p>
@@ -113,15 +107,15 @@ export default function EMICalculator() {
                         </div>
                         <div class="justify-items-center">
                             <p class="text-gray-500 dark:text-gray-100 text-sm">Loan Amount</p>
-                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{price.toFixed(2)}</p>
+                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{loanAmount.toFixed(2)}</p>
                         </div>
                     </div>
                     <div class="border-t w-full justify-items-center border-gray-200 py-4">
-                        <p class="text-gray-500 dark:text-gray-100 text-sm">Estimated Monthly EMI</p>
+                        <p class="text-gray-500 dark:text-gray-100 text-sm">Monthly EMI</p>
                         <p class="text-2xl font-bold text-blue-600 dark:text-blue-500">₱{emi.toFixed(2)}</p>
                     </div>
 
-                    <Button text="Apply Loan" onclick={() => navigate('/applicant/apply')} />
+                    <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} />
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
@@ -11,7 +11,8 @@ import FormTBody from '../components/tables/FormTBody';
 import FormTD from '../components/tables/FormTD';
 
 export default function FamilyInfoForm() {
-    const {handleChange, applicant} = useOutletContext();
+    const {handleChange, addressChange, applicant, address} = useOutletContext();
+    const [relatives, setRelative] = useState(['']);
 
     return (
         <>
@@ -53,7 +54,7 @@ export default function FamilyInfoForm() {
 
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Parent's Present Address:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2">
-                <FormSelect name="country" label="Country" id="country">
+                <FormSelect name="p_country" label="Country" id="country" value={address.p_country} onchange={addressChange}>
                     <option>Nigeria</option>
                     <option>Greece</option>
                     <option>USA</option>
@@ -69,7 +70,7 @@ export default function FamilyInfoForm() {
                     <option>France</option>
                     <option>Great Britain</option>
                 </FormSelect>
-                <FormSelect name="region" label="Region" id="region">
+                <FormSelect name="p_region" label="Region" id="region" value={address.p_region} onchange={addressChange}>
                     <option>Region I</option>
                     <option>Region II</option>
                     <option>Region III</option>
@@ -85,7 +86,7 @@ export default function FamilyInfoForm() {
                     <option>Region XIII</option>
                     <option>Region XIV</option>
                 </FormSelect>
-                <FormSelect name="province" label="Province" id="province">
+                <FormSelect name="p_province" label="Province" id="province" value={address.p_province} onchange={addressChange}>
                     <option>Zamboanga del norte</option>
                     <option>Zamboanga del sur</option>
                     <option>Zamboanga sibugay</option>
@@ -98,7 +99,7 @@ export default function FamilyInfoForm() {
                     <option>Sarangani</option>
                     <option>South Cotabato</option>
                 </FormSelect>
-                <FormSelect name="city" label="Municipality/City" id="city">
+                <FormSelect name="p_city" label="Municipality/City" id="city" value={address.p_city} onchange={addressChange}>
                     <option>Davao City</option>
                     <option>Panabo City</option>
                     <option>Tagum City</option>
@@ -112,7 +113,7 @@ export default function FamilyInfoForm() {
                     <option>New Corilla</option>
                     <option>Sto. Tomas</option>
                 </FormSelect>
-                <FormSelect name="brgy" label="Barangay" id="brgy">
+                <FormSelect name="p_brgy" label="Barangay" id="brgy" value={address.p_brgy} onchange={addressChange}>
                     <option>Baranggay I</option>
                     <option>Baranggay II</option>
                     <option>Baranggay III</option>
@@ -135,7 +136,7 @@ export default function FamilyInfoForm() {
             </div>
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Parent's Previous Address:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormSelect name="country" label="Country" id="country">
+                <FormSelect name="p_prev_country" label="Country" id="country" value={address.p_prev_country} onchange={addressChange}>
                     <option>Nigeria</option>
                     <option>Greece</option>
                     <option>USA</option>
@@ -151,7 +152,7 @@ export default function FamilyInfoForm() {
                     <option>France</option>
                     <option>Great Britain</option>
                 </FormSelect>
-                <FormSelect name="region" label="Region" id="region">
+                <FormSelect name="p_prev_region" label="Region" id="region" value={address.p_prev_region} onchange={addressChange}>
                     <option>Region I</option>
                     <option>Region II</option>
                     <option>Region III</option>
@@ -167,7 +168,7 @@ export default function FamilyInfoForm() {
                     <option>Region XIII</option>
                     <option>Region XIV</option>
                 </FormSelect>
-                <FormSelect name="province" label="Province" id="province">
+                <FormSelect name="p_prev_province" label="Province" id="province" value={address.p_prev_province} onchange={addressChange}>
                     <option>Zamboanga del norte</option>
                     <option>Zamboanga del sur</option>
                     <option>Zamboanga sibugay</option>
@@ -180,7 +181,7 @@ export default function FamilyInfoForm() {
                     <option>Sarangani</option>
                     <option>South Cotabato</option>
                 </FormSelect>
-                <FormSelect name="city" label="Municipality/City" id="city">
+                <FormSelect name="p_prev_city" label="Municipality/City" id="city" value={address.p_prev_city} onchange={addressChange}>
                     <option>Davao City</option>
                     <option>Panabo City</option>
                     <option>Tagum City</option>
@@ -194,7 +195,7 @@ export default function FamilyInfoForm() {
                     <option>New Corilla</option>
                     <option>Sto. Tomas</option>
                 </FormSelect>
-                <FormSelect name="brgy" label="Barangay" id="brgy">
+                <FormSelect name="p_prev_brgy" label="Barangay" id="brgy" value={address.p_prev_brgy} onchange={addressChange}>
                     <option>Baranggay I</option>
                     <option>Baranggay II</option>
                     <option>Baranggay III</option>
@@ -218,7 +219,7 @@ export default function FamilyInfoForm() {
             
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Spouse's Present Address:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2">
-                <FormSelect name="country" label="Country" id="country">
+                <FormSelect name="sp_country" label="Country" id="country" value={address.sp_country} onchange={addressChange}>
                     <option>Nigeria</option>
                     <option>Greece</option>
                     <option>USA</option>
@@ -234,7 +235,7 @@ export default function FamilyInfoForm() {
                     <option>France</option>
                     <option>Great Britain</option>
                 </FormSelect>
-                <FormSelect name="region" label="Region" id="region">
+                <FormSelect name="sp_region" label="Region" id="region" value={address.sp_region} onchange={addressChange}>
                     <option>Region I</option>
                     <option>Region II</option>
                     <option>Region III</option>
@@ -250,7 +251,7 @@ export default function FamilyInfoForm() {
                     <option>Region XIII</option>
                     <option>Region XIV</option>
                 </FormSelect>
-                <FormSelect name="province" label="Province" id="province">
+                <FormSelect name="sp_province" label="Province" id="province" value={address.sp_province} onchange={addressChange}>
                     <option>Zamboanga del norte</option>
                     <option>Zamboanga del sur</option>
                     <option>Zamboanga sibugay</option>
@@ -263,7 +264,7 @@ export default function FamilyInfoForm() {
                     <option>Sarangani</option>
                     <option>South Cotabato</option>
                 </FormSelect>
-                <FormSelect name="city" label="Municipality/City" id="city">
+                <FormSelect name="sp_city" label="Municipality/City" id="city" value={address.sp_city} onchange={addressChange}>
                     <option>Davao City</option>
                     <option>Panabo City</option>
                     <option>Tagum City</option>
@@ -277,7 +278,7 @@ export default function FamilyInfoForm() {
                     <option>New Corilla</option>
                     <option>Sto. Tomas</option>
                 </FormSelect>
-                <FormSelect name="brgy" label="Barangay" id="brgy">
+                <FormSelect name="sp_brgy" label="Barangay" id="brgy" value={address.sp_brgy} onchange={addressChange}>
                     <option>Baranggay I</option>
                     <option>Baranggay II</option>
                     <option>Baranggay III</option>
@@ -300,7 +301,7 @@ export default function FamilyInfoForm() {
             </div>
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Spouse's Previous Address:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormSelect name="country" label="Country" id="country">
+                <FormSelect name="sp_prev_country" label="Country" id="country" value={address.sp_prev_country} onchange={addressChange}>
                     <option>Nigeria</option>
                     <option>Greece</option>
                     <option>USA</option>
@@ -316,7 +317,7 @@ export default function FamilyInfoForm() {
                     <option>France</option>
                     <option>Great Britain</option>
                 </FormSelect>
-                <FormSelect name="region" label="Region" id="region">
+                <FormSelect name="sp_prev_region" label="Region" id="region" value={address.sp_prev_region} onchange={addressChange}>
                     <option>Region I</option>
                     <option>Region II</option>
                     <option>Region III</option>
@@ -332,7 +333,7 @@ export default function FamilyInfoForm() {
                     <option>Region XIII</option>
                     <option>Region XIV</option>
                 </FormSelect>
-                <FormSelect name="province" label="Province" id="province">
+                <FormSelect name="sp_prev_province" label="Province" id="province" value={address.sp_prev_province} onchange={addressChange}>
                     <option>Zamboanga del norte</option>
                     <option>Zamboanga del sur</option>
                     <option>Zamboanga sibugay</option>
@@ -345,7 +346,7 @@ export default function FamilyInfoForm() {
                     <option>Sarangani</option>
                     <option>South Cotabato</option>
                 </FormSelect>
-                <FormSelect name="city" label="Municipality/City" id="city">
+                <FormSelect name="sp_prev_city" label="Municipality/City" id="city" value={address.sp_prev_city} onchange={addressChange}>
                     <option>Davao City</option>
                     <option>Panabo City</option>
                     <option>Tagum City</option>
@@ -359,7 +360,7 @@ export default function FamilyInfoForm() {
                     <option>New Corilla</option>
                     <option>Sto. Tomas</option>
                 </FormSelect>
-                <FormSelect name="brgy" label="Barangay" id="brgy">
+                <FormSelect name="sp_prev_brgy" label="Barangay" id="brgy" value={address.sp_prev_brgy} onchange={addressChange}>
                     <option>Baranggay I</option>
                     <option>Baranggay II</option>
                     <option>Baranggay III</option>
@@ -391,13 +392,17 @@ export default function FamilyInfoForm() {
                         <FormTH label="Contact number" />
                     </FormTHead>
                     <FormTBody>
-                        <FormTD placeholder="Full name here" />
-                        <FormTD placeholder="Address here" />
-                        <FormTD placeholder="Cellphone number" />
+                        {relatives.map(i => (
+                            <tr>
+                                <FormTD placeholder="Full name here" />
+                                <FormTD placeholder="Address here" />
+                                <FormTD placeholder="Cellphone number" />
+                            </tr>
+                        ))}
                     </FormTBody>
                 </table>
                 <div class="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon text="Add row">
+                    <BttnwithIcon text="Add row" type="button" click={() => setRelative([...relatives, ''])}>
                         <Plus />
                     </BttnwithIcon>
                 </div>

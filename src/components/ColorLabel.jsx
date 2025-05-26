@@ -1,12 +1,12 @@
 import React from "react";
 
 export default function ColorLabel({color, style}) {
-    const className = "h-4 w-4 rounded-full inline-block mr-2 bg-"+style+"-700";
+    const colStyle = style == 'black' ? "bg-black" : (style == 'white' ? "bg-white border border-gray-500" : `bg-${style}-500`);
 
     return (
-        <div class="flex items-center">
-            <div class={className}></div>
-            {color}
-        </div>
+            <div className={`h-4 w-4 rounded-full inline-block mr-1 ${colStyle}`}></div>
+        // <div className="flex items-center">
+        //     {color}
+        // </div>
     );
 }

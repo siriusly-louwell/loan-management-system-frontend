@@ -45,16 +45,17 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<PageLayout links={<GuestNav />} />}>
-            <Route index element={<ProductList />} />
-            <Route path="prodlist" element={<ProductList />} />
+            <Route index element={<ProductList url="/product" />} />
+            <Route path="prodlist" element={<ProductList url="/product" />} />
             <Route path="about" element={<About />} />
+            <Route path="product" element={<ProductInfo />} />
           </Route>
 
-          <Route path="/applicant" element={<PageLayout links={<ApplicantNav />} path="/applicant" />}>
-            <Route index element={<ProductList />} />
-            <Route path="prodlist" element={<ProductList />} />
+          <Route path="/customer" element={<PageLayout links={<ApplicantNav />} path="/customer" />}>
+            <Route index element={<ProductList url="/customer/product" />} />
+            <Route path="prodlist" element={<ProductList url="/customer/product" />} />
             <Route path="history" element={<AppNotifications />} />
-            <Route path="myloans" element={<InvoiceList headText="Loan Applications" path="/applicant/loan" />} />
+            <Route path="myloans" element={<InvoiceList headText="Loan Applications" path="/customer/loan" />} />
             {/* <Route path="myloans" element={<InvoiceList headText="My Loans" />} /> */}
             <Route path="loan" element={<LoanInfo>
               <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
@@ -95,8 +96,8 @@ function App() {
           </Route>
 
           <Route path="/staff" element={<PageLayout links={<StaffNav />} path="/staff" />}>
-            <Route index element={<Inventory />} />
-            <Route path="inventory" element={<Inventory />} />
+            <Route index element={<Cashier />} />
+            {/* <Route path="inventory" element={<Inventory />} /> */}
             <Route path="cashier" element={<Cashier />} />
             <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/staff/loan" />} />
             <Route path="loan" element={<LoanInfo>
@@ -107,8 +108,8 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<PageLayout links={<AdminNav />} path="/admin" />}>
-            <Route index element={<InvoiceList headText="Loan Applications" path="/admin/loan" />} />
-            {/* <Route path="inventory" element={<Inventory />} /> */}
+            <Route index element={<Inventory />} />
+            <Route path="inventory" element={<Inventory />} />
             <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/admin/loan" />} />
             <Route path="invoice" element={<Invoice />} />
             <Route path="loan" element={<LoanInfo />} />
@@ -127,7 +128,7 @@ function App() {
               <Route path="applicants" element={<AccApplicants />} />
               <Route path="cis" element={<AccCI />} />
               <Route path="staffs" element={<AccAdmins />} />
-              <Route path="comakers" element={<AccComakers />} />
+              <Route path="customers" element={<AccComakers />} />
             </Route>
           </Route>
         <Route path="/login" element={<Login />} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
@@ -11,6 +11,8 @@ import FormTD from '../components/tables/FormTD';
 
 export default function EmploymentInfoForm() {
     const {handleChange, applicant} = useOutletContext();
+    const [properties, setProperty] = useState(['']);
+    const [references, setReference] = useState(['']);
 
     return (
         <>
@@ -27,7 +29,7 @@ export default function EmploymentInfoForm() {
                 <FormInput label="Monthly/Daily Rate" type="text" name="rate" id="rate" value={applicant.rate} onchange={handleChange} placeholder="1,000 PHP" />
                 <FormInput label="Employer" type="text" name="employer" id="employer" value={applicant.employer} onchange={handleChange} placeholder="Type employer name" />
                 <div class="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-1">
-                    <FormInput label="Employer Address (Brgy, municipality/city, province, region)" type="text" name="prod_name" id="name" placeholder="Type employer address" />
+                    <FormInput label="Employer Address (Brgy, municipality/city, province, region)" type="text" name="employer_address" id="name" value={applicant.employment_address} onchange={handleChange} placeholder="Type employer address" />
                 </div>
             </div>
 
@@ -65,16 +67,20 @@ export default function EmploymentInfoForm() {
                         <FormTH label="Status" />
                     </FormTHead>
                     <FormTBody>
-                        <FormTD placeholder="Property name here" />
-                        <FormTD placeholder="Location here" />
-                        <FormTD placeholder="Assessment" style="flex justify-between">
-                            <input type="text" placeholder="Material" class="bg-gray-50 ml-1 border-b border-gray-300 text-gray-900 text-sm focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
-                        </FormTD>
-                        <FormTD placeholder="Current status" />
+                        {properties.map(i => (
+                            <tr>
+                                <FormTD placeholder="Property name here" />
+                                <FormTD placeholder="Location here" />
+                                <FormTD placeholder="Assessment" style="flex justify-between">
+                                    <input type="text" placeholder="Material" class="bg-gray-50 ml-1 border-b border-gray-300 text-gray-900 text-sm focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" />
+                                </FormTD>
+                                <FormTD placeholder="Current status" />
+                            </tr>
+                        ))}
                     </FormTBody>
                 </table>
                 <div class="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon text="Add row">
+                    <BttnwithIcon type="button" click={() => setProperty([...properties, ''])} text="Add row">
                         <Plus />
                     </BttnwithIcon>
                 </div>
@@ -93,16 +99,20 @@ export default function EmploymentInfoForm() {
                         <FormTH label="M/A" />
                     </FormTHead>
                     <FormTBody>
-                        <FormTD placeholder="Property name here" />
-                        <FormTD placeholder="Location here" />
-                        <FormTD placeholder="Current status" />
-                        <FormTD placeholder="Property name here" />
-                        <FormTD placeholder="Location here" />
-                        <FormTD placeholder="Current status" />
+                        {references.map(i => (
+                            <tr>
+                                <FormTD placeholder="Property name here" />
+                                <FormTD placeholder="Location here" />
+                                <FormTD placeholder="Current status" />
+                                <FormTD placeholder="Property name here" />
+                                <FormTD placeholder="Location here" />
+                                <FormTD placeholder="Current status" />
+                            </tr>
+                        ))}
                     </FormTBody>
                 </table>
                 <div class="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon text="Add row">
+                    <BttnwithIcon text="Add row" type="button" click={() => setReference([...references, ''])}>
                         <Plus />
                     </BttnwithIcon>
                 </div>

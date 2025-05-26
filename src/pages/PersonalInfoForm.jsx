@@ -4,7 +4,7 @@ import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 
 export default function PersonalInfoForm() {
-    const {handleChange, applicant} = useOutletContext();
+    const {handleChange, addressChange, applicant, address} = useOutletContext();
 
     return (
         <>
@@ -54,7 +54,7 @@ export default function PersonalInfoForm() {
 
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Present Address:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2">
-                <FormSelect name="country" label="Country" id="country">
+                <FormSelect name="country" label="Country" id="country" value={address.country} onchange={addressChange}>
                     <option>Nigeria</option>
                     <option>Greece</option>
                     <option>USA</option>
@@ -70,7 +70,7 @@ export default function PersonalInfoForm() {
                     <option>France</option>
                     <option>Great Britain</option>
                 </FormSelect>
-                <FormSelect name="region" label="Region" id="region">
+                <FormSelect name="region" label="Region" id="region" value={address.region} onchange={addressChange}>
                     <option>Region I</option>
                     <option>Region II</option>
                     <option>Region III</option>
@@ -86,7 +86,7 @@ export default function PersonalInfoForm() {
                     <option>Region XIII</option>
                     <option>Region XIV</option>
                 </FormSelect>
-                <FormSelect name="province" label="Province" id="province">
+                <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange}>
                     <option>Zamboanga del norte</option>
                     <option>Zamboanga del sur</option>
                     <option>Zamboanga sibugay</option>
@@ -99,7 +99,7 @@ export default function PersonalInfoForm() {
                     <option>Sarangani</option>
                     <option>South Cotabato</option>
                 </FormSelect>
-                <FormSelect name="city" label="Municipality/City" id="city">
+                <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange}>
                     <option>Davao City</option>
                     <option>Panabo City</option>
                     <option>Tagum City</option>
@@ -113,7 +113,7 @@ export default function PersonalInfoForm() {
                     <option>New Corilla</option>
                     <option>Sto. Tomas</option>
                 </FormSelect>
-                <FormSelect name="brgy" label="Barangay" id="brgy">
+                <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange}>
                     <option>Baranggay I</option>
                     <option>Baranggay II</option>
                     <option>Baranggay III</option>
@@ -136,7 +136,7 @@ export default function PersonalInfoForm() {
             </div>
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Previous Address:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormSelect name="country" label="Country" id="country">
+                <FormSelect name="prev_country" label="Country" id="country" value={address.prev_country} onchange={addressChange}>
                     <option>Nigeria</option>
                     <option>Greece</option>
                     <option>USA</option>
@@ -152,7 +152,7 @@ export default function PersonalInfoForm() {
                     <option>France</option>
                     <option>Great Britain</option>
                 </FormSelect>
-                <FormSelect name="region" label="Region" id="region">
+                <FormSelect name="prev_region" label="Region" id="region" value={address.prev_region} onchange={addressChange}>
                     <option>Region I</option>
                     <option>Region II</option>
                     <option>Region III</option>
@@ -168,7 +168,7 @@ export default function PersonalInfoForm() {
                     <option>Region XIII</option>
                     <option>Region XIV</option>
                 </FormSelect>
-                <FormSelect name="province" label="Province" id="province">
+                <FormSelect name="prev_province" label="Province" id="province" value={address.prev_province} onchange={addressChange}>
                     <option>Zamboanga del norte</option>
                     <option>Zamboanga del sur</option>
                     <option>Zamboanga sibugay</option>
@@ -181,7 +181,7 @@ export default function PersonalInfoForm() {
                     <option>Sarangani</option>
                     <option>South Cotabato</option>
                 </FormSelect>
-                <FormSelect name="city" label="Municipality/City" id="city">
+                <FormSelect name="prev_city" label="Municipality/City" id="city" value={address.prev_city} onchange={addressChange}>
                     <option>Davao City</option>
                     <option>Panabo City</option>
                     <option>Tagum City</option>
@@ -195,7 +195,7 @@ export default function PersonalInfoForm() {
                     <option>New Corilla</option>
                     <option>Sto. Tomas</option>
                 </FormSelect>
-                <FormSelect name="brgy" label="Barangay" id="brgy">
+                <FormSelect name="prev_brgy" label="Barangay" id="brgy" value={address.prev_brgy} onchange={addressChange}>
                     <option>Baranggay I</option>
                     <option>Baranggay II</option>
                     <option>Baranggay III</option>

@@ -10,7 +10,7 @@ export default function Inventory() {
     const [loading, setLoad] = useState(true);
     
     useEffect(() => {
-        fetch('http://localhost:8000/api/motorcycle')
+        fetch('http://127.0.0.1:8000/api/motorcycle')
         .then(response => response.json())
         .then(data => {
             setMotor(data);
@@ -23,7 +23,7 @@ export default function Inventory() {
     }, []);
     
     async function editMotor(id) {
-        const response = await fetch("http://localhost:8000/api/motorcycle/" + id);
+        const response = await fetch("http://127.0.0.1:8000/api/motorcycle/" + id);
 
         if(!response.ok) {
             throw new Error('Motorcycle not found');
@@ -33,6 +33,18 @@ export default function Inventory() {
         setRow(data);
         document.getElementById('editProduct').style.display = 'block';
     }
+
+    // const motor = {
+    //     id: row.id,
+    //     name: row.name,
+    //     brand: row.brand,
+    //     price: row.price,
+    //     quantity: row.quantity,
+    //     interest: row.interest,
+    //     rebate: row.rebate,
+    //     tenure: row.tenure,
+    //     file_path: row.file_path
+    // };
 
     return (
         <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Product">

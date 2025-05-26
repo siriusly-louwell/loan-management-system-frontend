@@ -30,7 +30,7 @@ export default function CRUDformat({children, addModal, label, modalId}) {
 
     return (
         <>
-            <section class="bg-gray-50 dark:bg-gray-800 w-full py-3 sm:p-5 antialiased">
+            <section class="bg-gray-200 dark:bg-gray-800 w-full py-3 sm:p-5 antialiased">
                 <div class="mx-auto px-4 lg:px-4">
                     <div class="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">

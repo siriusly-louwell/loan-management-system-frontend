@@ -8,15 +8,13 @@ export default function About() {
                     <header class="mb-4 lg:mb-6 not-format">
                         <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">About Rhean Motor Center</h1>
                     </header>
-                    <p class="lead">Flowbite is an open-source library of UI components built with the utility-first
-                        classes from Tailwind CSS. It also includes interactive elements such as dropdowns, modals,
-                        datepickers.</p>
-                    <p>Before going digital, you might benefit from scribbling down some ideas in a sketchbook. This way,
-                        you can think things through before committing to an actual design project.</p>
-                    <p>But then I found a <a href="https://flowbite.com">component library based on Tailwind CSS called
-                            Flowbite</a>. It comes with the most commonly used UI components, such as buttons, navigation
-                        bars, cards, form elements, and more which are conveniently built with the utility classes from
-                        Tailwind CSS.</p>
+                    <p class="lead">Rhean Motor Center Inc. is a trusted name in the online lending industry, dedicated to providing fast, reliable, and accessible financial solutions to Filipinos nationwide.</p>
+                    <p>Rhean Motor Center Inc. — Your Partner on the Road to Financial Freedom.</p>
+                    <p>Established with a mission to empower individuals through flexible loan services, we specialize in motor vehicle financing, refinancing, and collateral-based lending.</p>
+                    <p>With years of experience in the automotive and finance sectors, Rhean Motor Center Inc. combines deep industry knowledge with the convenience of modern technology. Our online platform allows clients to apply for loans from the comfort of their homes—with transparency, quick approvals, and personalized customer support every step of the way.</p>
+                    <p>At the heart of our business is a commitment to integrity, efficiency, and customer care.</p>
+                    <p>Whether you're looking to purchase a new motorcycle, refinance an existing unit, or unlock the value of your vehicle through a loan, Rhean Motor Center Inc. is here to help you move forward—confidently and securely.</p>
+                    <p>Join thousands of satisfied clients who have trusted us to finance their journeys.</p>
                     <figure><img src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png" alt="" />
                         <figcaption>Digital art by Anonymous</figcaption>
                     </figure>

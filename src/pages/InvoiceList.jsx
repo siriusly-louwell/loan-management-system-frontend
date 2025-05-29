@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LogList from "../components/LogList";
 import LogRow from "../components/tables/LogRow";
 import Preorder from '../components/badges/Preorder';
@@ -10,12 +10,36 @@ import SearchInput from "../components/inputs/SearchInput";
 import Search from "../assets/icons/Search";
 import DropdownBttn from "../components/buttons/DropdownBttn";
 import Filter from "../assets/icons/Filter";
+import CustomBadge from "../components/badges/CustomBadge";
 
 export default function InvoiceList({headText, path, bttnText ="View Details"}) {
+    const [loans, setLoans] = useState([]);
+    const [loanLoad, setLoanLoad] = useState(true);
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/api/application')
+            .then(response => response.json())
+            .then(data => {
+                setLoans(data);
+                setLoanLoad(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+            setLoanLoad(true);
+        })
+    }, []);
+
+    function dateConvert(date) {
+        const newDate = new Date(date);
+        const formatted = new Intl.DateTimeFormat('en-GB').format(newDate);
+
+        return formatted;
+    }
+
     return (
-        <section class="bg-white py-8 w-full antialiased dark:bg-gray-800 md:py-10">
-            <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <div class="mx-auto max-w-5xl">
+        <section class="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
+            <div class="mx-auto max-w-screen-x 2xl:px-0">
+                <div class="mx-auto max-w-5xl bg-white rounded-xl p-5">
                     <div class="gap-4 sm:flex sm:items-center sm:justify-between">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{headText}</h2>
 
@@ -30,10 +54,14 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
                     </div>
 
                     <LogList>
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Preorder />} path={path} bttnText={bttnText} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Transit />} path={path} bttnText={bttnText} />
+                        {loans.map(loan => (
+                            <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
+                                !loan.user_id ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />)
+                            } path={path} bttnText={bttnText} state={loan.id} />
+                        ))}
+                        {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} />
                         <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} />
+                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} /> */}
                     </LogList>
 
                     <PageNav />

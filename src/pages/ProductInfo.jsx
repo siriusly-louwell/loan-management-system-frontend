@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
 import StarRating from "../components/StarRating";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
@@ -7,8 +7,10 @@ import NavPath from "../components/NavPath";
 import EMICalculator from './EMICalculator';
 import ColorLabel from '../components/ColorLabel';
 import SmallLabel from '../components/texts/SmallLabel';
+import Button from '../components/buttons/Button';
 
 export default function ProductInfo() {
+    const navigate = useNavigate();
     const {state} = useLocation();
     const id = state?.id;
     const [unit, setUnit] = useState({});
@@ -106,7 +108,8 @@ export default function ProductInfo() {
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
                                         </svg>
                                     </BttnwithIcon>
-                                    <AddtoCartBttn text="Apply Loan" />
+                                     {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
+                                    <AddtoCartBttn text="Apply Loan" url="/customer/apply"/>
                                 </div>
                                 <div className="flex mt-5 items-center space-x-4">
                                     <p className="text-gray-900 dark:text-white">Select Color: </p>

@@ -1,8 +1,25 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Download from "../assets/icons/Download";
+import ProductGrid from "../components/cards/ProductGrid";
+import ProductCard from "../components/cards/ProductCard";
 
 export default function Invoice() {
+    const [motors, setMotor] = useState([]);
+    const [motorLoad, setMotorLoad] = useState(true);
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/api/motorcycle')
+        .then(response => response.json())
+        .then(data => {
+                setMotor(data);
+                setMotorLoad(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+                setMotorLoad(true);
+            })
+    }, []);
     return (
         <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto py-4 bg-white dark:bg-gray-800 sm:py-10">
             <div class="mb-5 pb-5 flex justify-between items-center border-b border-gray-200">
@@ -115,7 +132,7 @@ export default function Invoice() {
                 <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
                     <div class="col-span-full sm:col-span-2">
                         <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Item</h5>
-                        <p class="font-medium text-gray-800 dark:text-gray-200">Design UX and UI</p>
+                        <p class="font-medium text-gray-800 dark:text-gray-200">Yamaha 460T</p>
                     </div>
                     <div>
                         <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Qty</h5>
@@ -127,7 +144,7 @@ export default function Invoice() {
                     </div>
                     <div>
                         <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Amount</h5>
-                        <p class="sm:text-end text-gray-800 dark:text-gray-200">$500</p>
+                        <p class="sm:text-end text-gray-800 dark:text-gray-200">₱500</p>
                     </div>
                 </div>
 
@@ -148,7 +165,7 @@ export default function Invoice() {
                     </div>
                     <div>
                         <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Amount</h5>
-                        <p class="sm:text-end text-gray-800 dark:text-gray-200">$1250</p>
+                        <p class="sm:text-end text-gray-800 dark:text-gray-200">₱1250</p>
                     </div>
                 </div>
 
@@ -169,7 +186,7 @@ export default function Invoice() {
                     </div>
                     <div>
                         <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">Amount</h5>
-                        <p class="sm:text-end text-gray-800 dark:text-gray-200">$2000</p>
+                        <p class="sm:text-end text-gray-800 dark:text-gray-200">₱2000</p>
                     </div>
                 </div>
             </div>
@@ -179,31 +196,41 @@ export default function Invoice() {
                     <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
                         <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
                             <dt class="col-span-3 text-gray-500">Subotal:</dt>
-                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">$2750.00</dd>
+                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">₱2750.00</dd>
                         </dl>
 
                         <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
                             <dt class="col-span-3 text-gray-500">Total:</dt>
-                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">$2750.00</dd>
+                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">₱2750.00</dd>
                         </dl>
 
                         <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
                             <dt class="col-span-3 text-gray-500">Tax:</dt>
-                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">$39.00</dd>
+                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">₱39.00</dd>
                         </dl>
 
                         <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
                             <dt class="col-span-3 text-gray-500">Amount paid:</dt>
-                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">$2789.00</dd>
+                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">₱2789.00</dd>
                         </dl>
 
                         <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
                             <dt class="col-span-3 text-gray-500">Due balance:</dt>
-                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">$0.00</dd>
+                            <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">₱0.00</dd>
                         </dl>
                     </div>
                 </div>
             </div>
+            <h2 class="text-2xl font-semibold mt-5 text-gray-800 dark:text-gray-200">Recommendations</h2>
+            <ProductGrid>
+                {motorLoad ? (<div>Loading...</div>) : (
+                    <>
+                        <ProductCard key={motors[0].id} unit={motors[0]} url="/customer/product" />
+                        <ProductCard key={motors[1].id} unit={motors[1]} url="/customer/product" />
+                        <ProductCard key={motors[2].id} unit={motors[2]} url="/customer/product" />
+                    </>
+                )}
+            </ProductGrid>
         </div>
     );
 }

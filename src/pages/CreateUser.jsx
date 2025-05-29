@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import Button from "../components/buttons/Button";
@@ -8,10 +9,11 @@ import CloseBttn from "../components/buttons/CloseBttn";
 import Spinner from "../components/loading components/Spinner";
 
 export default function CreateUser() {
+    const location = useLocation();
     const [user, setUser] = useState({
         name: '',
         email: '',
-        role: '',
+        role: location.pathname === '/admin/accounts/cis' ? 'ci' : 'staff',
         status: 'active',
         password: 'password'
 
@@ -19,11 +21,6 @@ export default function CreateUser() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        
-        // const name = user.name;
-        // const email = user.email;
-        // const password = user.password;
-        // const formData = {name, email, password};
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/account', {
@@ -51,7 +48,9 @@ export default function CreateUser() {
         setUser({
             name: '',
             email: '',
-            role: '',
+            role: 'admin',
+            status: 'active',
+            password: 'password'
         });
         document.getElementById('saving_data').style.display = "none";
     }

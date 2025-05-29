@@ -15,6 +15,7 @@ export default function ApplicationForm() {
     const [applicant, setApplicant] = useState({});
     const [address, setAddress] = useState({});
     const [files, setFiles] = useState([]);
+    const [recordId, setRecordId] = useState('');
     const submitData = new FormData();
 
     useEffect(() => {
@@ -25,7 +26,6 @@ export default function ApplicationForm() {
     function handleNext () {
         const nextIndex = currentIndex + 1;
         if(nextIndex < routerPaths.length)navigate(routerPaths[nextIndex]);
-        console.log(applicant);
     }
 
     function handlePrev() {
@@ -110,10 +110,10 @@ export default function ApplicationForm() {
                 body: JSON.stringify(applicant)
             });
 
-            // const result = await response.json();
+            const result = await response.json();
+            setRecordId(result.record_id);
             // console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
-            alert('Data saved successfully!');
             document.getElementById('saving_application').style.display = "none"
             document.getElementById('application_submit').style.display = "block";
             setApplicant({});
@@ -168,12 +168,12 @@ export default function ApplicationForm() {
                         {currentIndex < routerPaths.length - 1 ? (
                             <Button text="Next" bttnType="button" onclick={handleNext} />
                         ) : (
-                            <Button text="Done" bttnType="submit" />
+                            <Button text="Done" bttnType="submit" onclick={() => document.getElementById('saving_application').style.display = 'flex'} />
                         )}
                         </div>
                     </form>
                     <Spinner id="saving_application" text="Submitting application. Please wait..." />
-                    <Alert id="application_submit" text="Your application has been submitted! Your Record Id is 2025-0001">
+                    <Alert id="application_submit" text={`Your application has been submitted! Your Record Id is ${recordId}`}>
                         <Button text="Got it" type="button" onclick={() => document.getElementById('application_submit').style.display = "none"} />
                     </Alert>
                 </div>

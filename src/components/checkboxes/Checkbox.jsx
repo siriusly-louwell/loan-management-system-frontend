@@ -2,12 +2,12 @@ import React from 'react';
 
 export default function Checkbox({text, id, name, required}) {
     return (
-        <div class="flex items-start">
-            <div class="flex items-center h-5">
-                <input id={id} aria-describedby={id} name={name} type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required={required} />
+        <div className="flex items-start">
+            <div className="flex items-center h-5">
+                <input id={id} aria-describedby={id} name={name} type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required={required} />
             </div>
-            <div class="ml-3 text-sm">
-                <label for={id} class="text-gray-500 dark:text-gray-300">{text}</label>
+            <div className="ml-3 text-sm">
+                <label htmlFor={id} className="text-gray-500 dark:text-gray-300">{text}</label>
             </div>
         </div>
     );

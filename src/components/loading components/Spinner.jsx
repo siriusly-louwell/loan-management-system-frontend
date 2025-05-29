@@ -36,7 +36,7 @@ export default function Spinner({id, text}) {
                         </defs>
                     </svg>
                 </div>
-                <span class="text-black text-sm font-normal leading-snug dark:text-gray-300">{text}</span>
+                <span class="text-gray-700 text-sm font-normal leading-snug dark:text-gray-300">{text}</span>
             </div>
 
             {/* <div class="grid gap-3">

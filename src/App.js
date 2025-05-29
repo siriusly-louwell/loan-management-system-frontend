@@ -39,9 +39,9 @@ import CoMakerNav from './components/navigations/CoMakerNav';
 import EMICalculator from './pages/EMICalculator';
 import CustomBttn from './components/buttons/CustomBttn';
 import Button from './components/buttons/Button';
+import AppliedForm from './pages/AppliedForm';
 
-function App() {
-  
+function App() {  
   return (
     <BrowserRouter>
       <Routes>
@@ -101,9 +101,7 @@ function App() {
             {/* <Route path="inventory" element={<Inventory />} /> */}
             <Route path="cashier" element={<Cashier />} />
             <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/staff/loan" />} />
-            <Route path="loan" element={<LoanInfo>
-              <Button text="Accept Application" />
-            </LoanInfo>} />
+            <Route path="loan" element={<LoanInfo />} />
             <Route path="emi" element={<EMICalculator />} />
             <Route path="profile" element={<Profile />} />
           </Route>
@@ -115,7 +113,13 @@ function App() {
             <Route path="invoice" element={<Invoice />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="profile" element={<Profile />} />
-            {/* <Route path="cashier" element={<Cashier />} /> */}
+            <Route path="apply" element={<AppliedForm url="/admin" />}>
+              <Route index element={<PersonalInfoForm />} />
+              <Route path="personalinfo" element={<PersonalInfoForm />} />
+              <Route path="employinfo" element={<EmploymentInfoForm />} />
+              <Route path="familyinfo" element={<FamilyInfoForm />} />
+              <Route path="requirements" element={<FormRequirements />} />
+            </Route>
 
             <Route path="dashboard" element={<Dashboard />}>
               <Route index element={<DashOverview />} />

@@ -10,7 +10,7 @@ import FormTBody from '../components/tables/FormTBody';
 import FormTD from '../components/tables/FormTD';
 
 export default function EmploymentInfoForm() {
-    const {handleChange, applicant} = useOutletContext();
+    const {handleChange, applicant, address} = useOutletContext();
     const [properties, setProperty] = useState(['']);
     const [references, setReference] = useState(['']);
 
@@ -29,7 +29,7 @@ export default function EmploymentInfoForm() {
                 <FormInput label="Monthly/Daily Rate" type="text" name="rate" id="rate" value={applicant.rate} onchange={handleChange} placeholder="1,000 PHP" />
                 <FormInput label="Employer" type="text" name="employer" id="employer" value={applicant.employer} onchange={handleChange} placeholder="Type employer name" />
                 <div class="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-1">
-                    <FormInput label="Employer Address (Brgy, municipality/city, province, region)" type="text" name="employer_address" id="name" value={applicant.employment_address} onchange={handleChange} placeholder="Type employer address" />
+                    <FormInput label="Employer Address (Brgy, municipality/city, province, region)" type="text" name="employer_address" id="name" value={applicant.view ? address.employer_address : applicant.employment_address} onchange={handleChange} placeholder="Type employer address" />
                 </div>
             </div>
 

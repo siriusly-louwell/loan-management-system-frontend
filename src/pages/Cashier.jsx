@@ -52,11 +52,11 @@ export default function Cashier() {
 
                                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Products:</h2>
                                 <div class="divide-y grid sm:col-span-2 sm:grid-cols-2 divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600">
-                                    <LoanList id="BJ8364850" price="$1,499" units="1" name="PC system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24' Retina 4.5K, 8GB, SSD 256GB, 10-core GPU, macOS Sonoma, Blue, Keyboard layout INT" />
-                                    <LoanList id="BJ8364850" price="$1,500" units="3" name="Wave 100" />
-                                    <LoanList id="BJ8364850" price="$1,500" units="3" name="XRM" />
-                                    <LoanList id="BJ8364850" price="$1,500" units="3" name="Click" />
-                                    <LoanList id="BJ8364850" price="$1,500" units="3" name="Kawasaki" />
+                                    <LoanList id="BJ8364850" price="₱103,499" units="1" name="Kawasaki 45RF0" />
+                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="Wave 100" />
+                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="XRM" />
+                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="Click" />
+                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="Kawasaki" />
                                 </div>
                             </div>
                         </div>

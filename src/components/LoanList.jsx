@@ -13,7 +13,7 @@ export default function LoanList({price, units, id, img, name}) {
             </div>
 
             <div class="flex items-center justify-between gap-4">
-                <p class="text-sm font-normal text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Product ID:</span> {id}</p>
+                <p class="text-sm font-normal text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Unit ID:</span> {id}</p>
 
                 <div class="flex items-center justify-end gap-4">
                     <p class="text-base font-normal text-gray-900 dark:text-white">x{units}</p>

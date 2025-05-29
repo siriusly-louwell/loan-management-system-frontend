@@ -25,18 +25,6 @@ export default function EMICalculator({name, brand, motorPrice, years, interest}
 
     return (
         <div class="w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
-            <div class="sm:px-10 py-20 w-full">
-                <div class="bg-blue-300 dark:bg-gray-700 p-5 rounded-xl shadow-lg justify-items-center space-y-5">
-                    <h1 class="dark:text-white font-bold text-3xl">How Do I Apply?</h1>
-                    <ul class="relative flex flex-col md:flex-row gap-2 w-full">
-                        <StepCard num={1} label="Calculate your Loan" context="Calculate your motorcycle loan below and adjust the the fields to fit your preferences." />
-                        <StepCard num={2} label="Fillout the Application" context="After you calculate your estimated monthly EMI, click 'Apply Loan' and apply by filling out an application form." />
-                        <StepCard num={3} label="Submit your Documents" context="After filling out the application form, upload your documents to the system." />
-                        <StepCard num={4} label="Leave the rest to us" context="Your loan will be processed. We will notify you once it is done." />
-                    </ul>
-                </div>
-            </div>
-
             <div class="w-full justify-items-center px-5">
                 <h1 class="dark:text-white font-bold text-3xl">Motorcycle Loan Calculator</h1>
                 <p class="text-gray-800 dark:text-gray-300">Calculate the monthly EMI based on motorcycle loan amount, tenure and interest rate</p>
@@ -115,9 +103,22 @@ export default function EMICalculator({name, brand, motorPrice, years, interest}
                         <p class="text-2xl font-bold text-blue-600 dark:text-blue-500">₱{emi.toFixed(2)}</p>
                     </div>
 
-                    <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} />
+                    {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
                 </div>
             </div>
+
+            <div class="sm:px-10 py-20 w-full">
+                <div class="bg-blue-300 dark:bg-gray-700 p-5 rounded-xl shadow-lg justify-items-center space-y-5">
+                    <h1 class="dark:text-white font-bold text-3xl">How Do I Apply?</h1>
+                    <ul class="relative flex flex-col md:flex-row gap-2 w-full">
+                        <StepCard num={1} label="Calculate your Loan" context="Calculate your motorcycle loan below and adjust the the fields to fit your preferences." />
+                        <StepCard num={2} label="Fillout the Application" context="After you calculate your estimated monthly EMI, click 'Apply Loan' and apply by filling out an application form." />
+                        <StepCard num={3} label="Submit your Documents" context="After filling out the application form, upload your documents to the system." />
+                        <StepCard num={4} label="Leave the rest to us" context="Your loan will be processed. We will notify you once it is done." />
+                    </ul>
+                </div>
+            </div>
+
         </div>
     );
 }

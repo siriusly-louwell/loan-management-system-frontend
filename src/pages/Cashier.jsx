@@ -8,7 +8,7 @@ import FormSelect from '../components/inputs/FormSelect';
 
 export default function Cashier() {
     return (
-        <section class="bg-white py-8 antialiased dark:bg-gray-800 md:py-16">
+        <section class="bg-gray-100 py-8 antialiased dark:bg-gray-800 md:py-16">
             <form action="#" class="mx-auto max-w-screen-xl px-2 2xl:px-0">
                 <div class="lg:flex lg:items-start lg:gap-12 xl:gap-16">
                     <div class="min-w-0 flex-1 space-y-8">

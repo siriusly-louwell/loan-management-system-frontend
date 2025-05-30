@@ -60,7 +60,7 @@ export default function CILoanInfo() {
                             </ol>
 
                             <div class="gap-4 sm:flex sm:items-center">
-                                <Button text="View Form" onclick={() => navigate('/ci/ciappform')} />
+                                <Button text="View Form" onclick={() => navigate('/admin/apply')} state={{id: 1}} />
                             </div>
                         </div>
                     </div>

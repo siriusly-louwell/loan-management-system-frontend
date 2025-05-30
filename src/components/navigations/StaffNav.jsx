@@ -7,7 +7,7 @@ export default function StaffNav() {
             {/* <Navlink pathName="Inventory" to="inventory" /> */}
             <Navlink pathName="Loans" to="loans" />
             <Navlink pathName="Cashier" to="cashier" />
-            {/* <Navlink pathName="Inquire Loan" to="emi" /> */}
+            <Navlink pathName="History" to="history" />
         </>
     );
 }

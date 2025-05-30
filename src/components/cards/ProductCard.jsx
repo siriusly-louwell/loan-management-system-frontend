@@ -6,7 +6,7 @@ import ColorLabel from "../ColorLabel";
 
 export default function ProductCard({unit, url}) {
     return (
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-700">
+        <button type="button" className="rounded-lg border focus:border-blue-500 focus:border-4 hover:bg-gray-200 border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-700">
             <div className="h-56 w-full">
                 <a href="#">
                     <img className="mx-auto object-contain h-full dark:hidden" src={"http://127.0.0.1:8000/storage/"+unit.file_path} alt="Product Image" />
@@ -74,6 +74,6 @@ export default function ProductCard({unit, url}) {
                     <AddtoCartBttn id={unit.id} url={url} text="Inquire" />
                 </div>
             </div>
-        </div>
+        </button>
     );
 }

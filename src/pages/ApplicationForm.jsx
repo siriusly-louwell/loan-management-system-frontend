@@ -11,7 +11,13 @@ export default function ApplicationForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const [currentIndex, setCurrentIndex] = useState(0);
-    const routerPaths = useMemo(() => ['/customer/apply', '/customer/apply/employinfo', '/customer/apply/familyinfo', '/customer/apply/requirements'], []);
+    const routerPaths = useMemo(() => [
+        '/customer/apply',
+        '/customer/apply/employinfo',
+        '/customer/apply/familyinfo',
+        '/customer/apply/requirements',
+        '/customer/apply/comakerform'
+    ], []);
     const [applicant, setApplicant] = useState({});
     const [address, setAddress] = useState({});
     const [files, setFiles] = useState([]);
@@ -135,6 +141,41 @@ export default function ApplicationForm() {
         });
     }
 
+    function copyAddress(type) {
+        switch (type) {
+            case "personal":
+                setAddress({
+                    ...address,
+                    prev_country: address.country,
+                    prev_region: address.region,
+                    prev_province: address.province,
+                    prev_city: address.city,
+                    prev_brgy: address.brgy
+                });
+                break;
+            case "parent":
+                setAddress({
+                    ...address,
+                    p_prev_country: address.p_country,
+                    p_prev_region: address.p_region,
+                    p_prev_province: address.p_province,
+                    p_prev_city: address.p_city,
+                    p_prev_brgy: address.p_brgy
+                });
+                break;
+            case "spouse":
+                setAddress({
+                    ...address,
+                    sp_prev_country: address.sp_country,
+                    sp_prev_region: address.sp_region,
+                    sp_prev_province: address.sp_province,
+                    sp_prev_city: address.sp_city,
+                    sp_prev_brgy: address.sp_brgy
+                });
+                break;
+        }
+    }
+
     function handleChange(event) {
         setApplicant({
             ...applicant,
@@ -142,7 +183,7 @@ export default function ApplicationForm() {
         });
     }
 
-    const outletContext = {handleChange, addressChange, applicant, address, fileChange};
+    const outletContext = {handleChange, addressChange, applicant, address, copyAddress, fileChange};
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
@@ -151,7 +192,8 @@ export default function ApplicationForm() {
                 <Step label="2. Family/Relative Information" status="current" />
                 <Step label="3. Employment, Properties, & Income/Expenses" status="pend" />
                 <Step label="4. Upload Requirements" status="pend" />
-                <Step label="5. Account Credentials" status="pend" />
+                <Step label="5. Comaker Form" status="pend" />
+                <Step label="6. Account Credentials" status="pend" />
             </Stepper>
             <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">
                 <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">

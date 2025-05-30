@@ -38,8 +38,8 @@ import CINav from './components/navigations/CINav';
 import CoMakerNav from './components/navigations/CoMakerNav';
 import EMICalculator from './pages/EMICalculator';
 import CustomBttn from './components/buttons/CustomBttn';
-import Button from './components/buttons/Button';
 import AppliedForm from './pages/AppliedForm';
+import ComakerInfo from './pages/ComakerInfo';
 
 function App() {  
   return (
@@ -72,6 +72,7 @@ function App() {
               <Route path="employinfo" element={<EmploymentInfoForm />} />
               <Route path="familyinfo" element={<FamilyInfoForm />} />
               <Route path="requirements" element={<FormRequirements />} />
+              <Route path="comakerform" element={<ComakerInfo />} />
             </Route>
           </Route>
 
@@ -89,10 +90,10 @@ function App() {
             <Route index element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
             <Route path="loanapplications" element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
             <Route path="evaluation" element={<InvoiceList headText="Loans Evaluation" path="/ci/cireport" bttnText="Evaluate" />} />
-            <Route path="recommendation" element={<InvoiceList headText="Evaluated Loans" />} />
+            {/* <Route path="recommendation" element={<InvoiceList headText="Evaluated Loans" />} /> */}
             <Route path="ciloan" element={<CILoanInfo />} />
             <Route path="cireport" element={<CIReport />} />
-            <Route path="ciappform" element={<CIAppForm />} />
+            {/* <Route path="ciappform" element={<CIAppForm />} /> */}
             <Route path="profile" element={<Profile />} />
           </Route>
 
@@ -103,6 +104,7 @@ function App() {
             <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/staff/loan" />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="emi" element={<EMICalculator />} />
+            <Route path="history" element={<AppNotifications />} />
             <Route path="profile" element={<Profile />} />
           </Route>
 

@@ -5,7 +5,7 @@ import Notification from "../links/Notification";
 
 export default function AppNotifications() {
     return (
-        <div class="w-full md:px-20 p-4 bg-white dark:bg-gray-800">
+        <div class="w-full md:px-20 p-4 bg-gray-100 dark:bg-gray-800">
             <div class="w-full md:px-20">
                 <NotifGroup date="January 13th, 2025">
                     <Notification content="You have paid for this month's payment.." to="/customer/invoice">

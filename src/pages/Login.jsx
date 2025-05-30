@@ -43,7 +43,7 @@ export default function Login() {
     
     return (
         <>
-            <section className="bg-gray-50 h-screen dark:bg-gray-900">
+            <section className="bg-gray-200 h-screen dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="#" className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
                         <img src={RMCI} className="h-8 rounded border border-gray-400 mr-2" alt="Rhean Motor Logo" />

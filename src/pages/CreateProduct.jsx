@@ -13,7 +13,7 @@ import Cloud from '../assets/icons/Cloud';
 import Spinner from "../components/loading components/Spinner";
 
 export default function CreateProduct() {
-    const [files, setFiles] = useState(null);
+    const [files, setFiles] = useState([]);
     const [formData, setFormData] = useState({});
     const [colors, setColors] = useState(['']);
     const submitData = new FormData();
@@ -43,10 +43,11 @@ export default function CreateProduct() {
         submitData.append('interest', formData.interest);
         submitData.append('rebate', formData.rebate);
         submitData.append('tenure', formData.tenure);
-        submitData.append('file', files);
+        // submitData.append('file', files);
+        files.forEach(file => submitData.append('files[]', file));
 
         console.log(files);
-        document.getElementById('saving_data').style.display = "flex";
+        // document.getElementById('save_unit').style.display = "flex";
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/motorcycle', {
@@ -63,25 +64,26 @@ export default function CreateProduct() {
             const result = await response.json();
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Failed to save data');
-            document.getElementById('saving_data').style.display = "none";
+            document.getElementById('save_unit').style.display = "none";
             alert('Data saved successfully!');
             setFormData({});
         } catch(error) {
             console.error('Error: ', error);
             alert('Failed to save data.');
+            document.getElementById('save_unit').style.display = "none";
         }
 
     }
 
     // function resetInput() {
     //     setFormData({});
-    //     document.getElementById('saving_data').style.display = "none";
+    //     document.getElementById('save_unit').style.display = "none";
     // }
     
     function fileChange(event) {
-        console.log(event.target.files);
-        // setFiles([...event.target.files]);
-        setFiles(event.target.files[0]);
+        // console.log(event.target.files);
+        setFiles([...event.target.files]);
+        // setFiles(event.target.files[0]);
         console.log(files);
     }
 
@@ -150,10 +152,9 @@ export default function CreateProduct() {
                                 <label htmlFor="dropzone" className="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                     <div className="flex flex-col justify-center items-center pt-5 pb-6">
                                         <Cloud />
-                                        {/* {files.length > 0 */}
-                                        {files ? (
-                                            <span className="font-semibold dark:text-white">{files.name}</span>
-                                            // files.map(file => <span className="font-semibold dark:text-white">{file.name}</span>)
+                                        {files.length > 0 ? (
+                                            // <span className="font-semibold dark:text-white">{files.name}</span>
+                                            files.map(file => <span className="font-semibold dark:text-white">{file.name}</span>)
                                         ) : (
                                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                                             <span className="font-semibold">Click to upload </span>or drag and drop</p>
@@ -161,13 +162,13 @@ export default function CreateProduct() {
                                         
                                         <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG or JPG (MAX. 800x400px)</p>
                                     </div>
-                                    <input id="dropzone" name="file" type="file" class="hidden" onChange={fileChange} />
+                                    <input id="dropzone" name="file" type="file" class="hidden" onChange={fileChange} multiple />
                                 </label>
                             </div>
                             {/* <FormFile id="dropzone-file" name="file" onChange={(e) => { console.log("Child called"); fileChange(e); }} file={file} /> */}
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                            <Button text="Add Unit" bttnType="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />
+                            <Button text="Add Unit" bttnType="submit" onclick={() => document.getElementById('save_unit').style.display = "flex"} />
                             {/* <CustomBttn text="Schedule" className="w-full sm:w-auto text-white justify-center inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                 <Calendar />
                             </CustomBttn> */}
@@ -177,7 +178,7 @@ export default function CreateProduct() {
                             </CustomBttn> */}
                         </div>
                     </form>
-                    <Spinner id="saving_data" text="Saving data..." />
+                    <Spinner id="save_unit" text="Saving data..." />
                 </div>
             </div>
         </div>

@@ -8,6 +8,10 @@ import EMICalculator from './EMICalculator';
 import ColorLabel from '../components/ColorLabel';
 import SmallLabel from '../components/texts/SmallLabel';
 import Button from '../components/buttons/Button';
+import Plus from '../assets/icons/Plus';
+import ProductGrid from '../components/cards/ProductGrid';
+import ProductCard from '../components/cards/ProductCard';
+import CloseBttn from '../components/buttons/CloseBttn';
 
 export default function ProductInfo() {
     const navigate = useNavigate();
@@ -15,13 +19,10 @@ export default function ProductInfo() {
     const id = state?.id;
     const [unit, setUnit] = useState({});
     const [unitLoad, setUnitLoad] = useState(true);
+    const [addUnit, setUnits] = useState([]);
+    const [addLoad, setUnitsLoad] = useState(true);
     const [current, setCurrent] = useState(0);
-    const images = [
-        "http://127.0.0.1:8000/storage/" + unit.file_path,
-        'https://via.placeholder.com/800x400/7FB3FF/333333?text=Slide+2',
-        'https://via.placeholder.com/800x400/7FFF7F/333333?text=Slide+3',
-    ];
-    const totalSlides = images.length;
+    const images = [];
 
     const nextSlide = () => {
         setCurrent((prev) => (prev + 1) % totalSlides);
@@ -42,7 +43,28 @@ export default function ProductInfo() {
                 console.error('Error fetching data: ', error);
                 setUnitLoad(true);
             })
+    }, []);
+
+    useEffect(() => {
+            fetch('http://127.0.0.1:8000/api/motorcycle')
+            .then(response => response.json())
+            .then(data => {
+                    setUnits(data);
+                    setUnitsLoad(false);
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                    setUnitsLoad(true);
+                })
         }, []);
+
+    if(!unitLoad)unit.images.map(file => {
+        images.push("http://127.0.0.1:8000/storage/" + file.path);
+    });
+
+    const totalSlides = images.length;
+
+    console.log(unit.images);
 
     return (
         <section className="py-8 bg-gray-100 md:py-16 dark:bg-gray-800 antialiased">
@@ -102,7 +124,7 @@ export default function ProductInfo() {
                                     <SmallLabel label="Stock" text={unit.quantity+" units"} />
                                 </div>
 
-                                <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                                <div className="mt-6 sm:gap-4 space-y-2 sm:items-center sm:flex sm:mt-8">
                                     <BttnwithIcon text="Add to favorites">
                                         <svg className="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
@@ -110,7 +132,11 @@ export default function ProductInfo() {
                                     </BttnwithIcon>
                                      {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
                                     <AddtoCartBttn text="Apply Loan" url="/customer/apply"/>
+                                    <AddtoCartBttn text="Pay in Cash" />
                                 </div>
+                                <BttnwithIcon text="Add more units" click={() => document.getElementById('add_units').style.display = "block"}>
+                                    <Plus />
+                                </BttnwithIcon>
                                 <div className="flex mt-5 items-center space-x-4">
                                     <p className="text-gray-900 dark:text-white">Select Color: </p>
                                     <div className="grid grid-cols-10 gap-y-2">
@@ -127,6 +153,25 @@ export default function ProductInfo() {
                 </div>
             </div>
             <EMICalculator name={unit.name} brand={unit.brand} motorPrice={unit.price} years={unit.tenure} interest={unit.interest} />
+            <div id="add_units" className="overflow-y-auto overflow-x-hidden hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+                <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
+                    <div className="relative p-4 bg-white h-fit rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
+                        <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select units</h3>
+                            <CloseBttn id="add_units" />
+                        </div>
+                        <ProductGrid addunit={true}>
+                            {addLoad ? (<div>Loading...</div>) : (
+                                addUnit.map(motor => (
+                                <ProductCard key={motor.id} unit={motor} />
+                                ))
+                            )}
+                        </ProductGrid>
+                    </div>
+                    {/* <div className="h-screen bg-white h-fit dark:bg-gray-800">
+                    </div> */}
+                </div>
+            </div>
         </section>
     );
 }

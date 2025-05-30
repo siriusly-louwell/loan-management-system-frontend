@@ -36,6 +36,19 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
         return formatted;
     }
 
+    function displayLoan(loan) {
+        if(bttnText == "Evaluate") {
+            if(loan.user_id) return (
+                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
+                badge={<CustomBadge text="Approved" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
+            );
+        } else return (
+            <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
+                !loan.user_id ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />)
+            } path={path} bttnText={bttnText} state={loan.id} />
+        );
+    }
+
     return (
         <section class="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
             <div class="mx-auto max-w-screen-x 2xl:px-0">
@@ -55,12 +68,14 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
 
                     <LogList>
                         {loans.map(loan => (
-                            <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
-                                !loan.user_id ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />)
-                            } path={path} bttnText={bttnText} state={loan.id} />
+                            loanLoad ? (
+                                <div>Loading...</div>
+                            )
+                            : displayLoan(loan)
                         ))}
-                        {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
+                        <LogRow id="FWB127364372" name="John Doe" date="20/12/2023" state={100}
+                        badge={<CustomBadge text="Evaluated" color="yellow" />} path={path} bttnText={bttnText} />
+                        {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
                         <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} /> */}
                     </LogList>
 

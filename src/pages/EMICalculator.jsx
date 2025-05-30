@@ -4,13 +4,14 @@ import Button from '../components/buttons/Button';
 import FormSelect from "../components/inputs/FormSelect";
 import StepCard from '../components/cards/StepCard';
 import BttnSmall from '../components/buttons/BttnSmall';
+import FormInput from '../components/inputs/FormInput';
 
 export default function EMICalculator({name, brand, motorPrice, years, interest}) {
     const navigate = useNavigate();
-    const [downPaymentPercent, setDownPaymentPercent] = useState(20);
+    const [downPayment, setDownPayment] = useState(50000);
     const [tenure, setTenure] = useState(12);
 
-    const downPayment = (motorPrice * downPaymentPercent) / 100;
+    // const downPayment = (motorPrice * downPayment) / 100;
     const loanAmount = motorPrice - downPayment;
     const monthlyRate = interest / 12 / 100;
 
@@ -41,9 +42,11 @@ export default function EMICalculator({name, brand, motorPrice, years, interest}
                     <div class="mb-6">
                         <div class="flex justify-between items-center mb-2">
                             <h3 class="font-medium text-gray-700 dark:text-gray-200">Downpayment</h3>
-                            <span class="font-bold text-blue-600">{downPaymentPercent}%</span>
+                            <h3 class="font-medium text-gray-700 dark:text-gray-200">Minimum Payment: <span class="font-bold text-blue-600">₱50,000</span></h3>
+                            {/* <span class="font-bold text-blue-600">{downPaymentPercent}%</span> */}
                         </div>
-                        <input type="range" min="10" max="60" step="10" onChange={(e) => setDownPaymentPercent(Number(e.target.value))} class="w-full h-2 bg-gray-300 dark:bg-gray-400 rounded-lg appearance-none cursor-pointer" />
+                        <FormInput type="number" onchange={(e) => setDownPayment(Number(e.target.value))} placeholder="Input downpayment here" />
+                        {/* <input type="range" min="10" max="60" step="10" onChange={(e) => setDownPaymentPercent(Number(e.target.value))} class="w-full h-2 bg-gray-300 dark:bg-gray-400 rounded-lg appearance-none cursor-pointer" />
                         <div class="flex justify-between text-xs text-gray-500 mt-1">
                             <span>10%</span>
                             <span>20%</span>
@@ -51,7 +54,7 @@ export default function EMICalculator({name, brand, motorPrice, years, interest}
                             <span>40%</span>
                             <span>50%</span>
                             <span>60%</span>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* <div class="mb-6">

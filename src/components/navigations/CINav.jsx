@@ -6,7 +6,7 @@ export default function CINav() {
         <>
             <Navlink pathName="Applications" to="loanapplications" />
             <Navlink pathName="Evaluation" to="evaluation" />
-            <Navlink pathName="Eligibility Recommendations" to="recommendation" />
+            {/* <Navlink pathName="Eligibility Recommendations" to="recommendation" /> */}
         </>
     );
 }

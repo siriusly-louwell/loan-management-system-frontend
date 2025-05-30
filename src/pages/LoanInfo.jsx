@@ -26,30 +26,23 @@ export default function LoanInfo({children}) {
         })
     }, []);
 
-    async function handleSubmit(event) {
-        event.preventDefault();
+    async function handleSubmit() {
+        // event.preventDefault();
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/account', {
-                method: 'POST',
+            const response = await fetch('http://127.0.0.1:8000/api/application/'+loan.id, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: loan.first_name + " " + loan.last_name,
-                    email: loan.first_name + "@gmail.com",
-                    password: "password",
-                    status: "active",
-                    role: "customer",
-                    id: loan.id
-                })
+                body: JSON.stringify({apply_status: 'approved'})
             });
 
             const result = await response.json();
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
-            alert('Data saved successfully!');
+            alert('Data updated successfully!');
         } catch(error) {
             console.error('Error: ', error);
             alert('Failed to save data.');
@@ -118,8 +111,14 @@ export default function LoanInfo({children}) {
                             <div class="gap-4 grid grid-cols-1">
                                 {children}
                                 <Button text="View Form" bttnType="button" onclick={() => navigate('/admin/apply')} state={{id: loan.id}} />
-                                <CustomBttn text="Approve Application" className="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
-                                <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+                                {id == 100 ? (
+                                    <CustomBttn text="View Evaluation" onclick={() => navigate('/ci/cireport')} className="flex items-center w-full justify-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-teal-600 dark:border-teal-500 dark:text-teal-200 dark:hover:text-white dark:hover:bg-teal-800 dark:focus:ring-teal-900" />
+                                ) : (
+                                    <>
+                                        <CustomBttn text="Approve Application" onclick={handleSubmit} className="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                                        <CustomBttn text="Deny Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

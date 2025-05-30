@@ -2,9 +2,10 @@ import React from "react";
 import {useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
+import FormCheck from "../components/checkboxes/FormCheck";
 
 export default function PersonalInfoForm() {
-    const {handleChange, addressChange, applicant, address} = useOutletContext();
+    const {handleChange, addressChange, applicant, address, copyAddress} = useOutletContext();
 
     return (
         <>
@@ -161,214 +162,21 @@ export default function PersonalInfoForm() {
                     </>
                 )}
             </div>
+            
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Previous Address:</h3>
+            <FormCheck label="Copy Present Address" type="checkbox" id="copy_address" style="mb-4" change={() => copyAddress('personal')} />
             <div className={"grid gap-4 mb-4 pb-2 " + (applicant.view ? 'flex w-full' : 'sm:grid-cols-3')}>
                 {applicant.view ? (
                     <FormInput type="text" placeholder="Present Address" value={address.personal_pres} />
                 ) : (
                     <>
-                        <FormSelect name="prev_country" label="Country" id="country" value={address.prev_country} onchange={addressChange}>
-                            <option>Nigeria</option>
-                            <option>Greece</option>
-                            <option>USA</option>
-                            <option>Philippines</option>
-                            <option>Italy</option>
-                            <option>Germany</option>
-                            <option>Afganistan</option>
-                            <option>India</option>
-                            <option>Pakistan</option>
-                            <option>Bulgaria</option>
-                            <option>Bahrain</option>
-                            <option>Botswana</option>
-                            <option>France</option>
-                            <option>Great Britain</option>
-                        </FormSelect>
-                        <FormSelect name="prev_region" label="Region" id="region" value={address.prev_region} onchange={addressChange}>
-                            <option>Region I</option>
-                            <option>Region II</option>
-                            <option>Region III</option>
-                            <option>Region IV</option>
-                            <option>Region V</option>
-                            <option>Region VI</option>
-                            <option>Region VII</option>
-                            <option>Region VIII</option>
-                            <option>Region IX</option>
-                            <option>Region X</option>
-                            <option>Region XI</option>
-                            <option>Region XII</option>
-                            <option>Region XIII</option>
-                            <option>Region XIV</option>
-                        </FormSelect>
-                        <FormSelect name="prev_province" label="Province" id="province" value={address.prev_province} onchange={addressChange}>
-                            <option>Zamboanga del norte</option>
-                            <option>Zamboanga del sur</option>
-                            <option>Zamboanga sibugay</option>
-                            <option>Davao del norte</option>
-                            <option>Davao del sur</option>
-                            <option>Davao de oro(Compostela Valley)</option>
-                            <option>Davao oriental</option>
-                            <option>Davao Occidental</option>
-                            <option>Cotabato</option>
-                            <option>Sarangani</option>
-                            <option>South Cotabato</option>
-                        </FormSelect>
-                        <FormSelect name="prev_city" label="Municipality/City" id="city" value={address.prev_city} onchange={addressChange}>
-                            <option>Davao City</option>
-                            <option>Panabo City</option>
-                            <option>Tagum City</option>
-                            <option>Samal Island</option>
-                            <option>Digos City</option>
-                            <option>Mati City</option>
-                            <option>Talaingod</option>
-                            <option>San Isidro</option>
-                            <option>Carmen</option>
-                            <option>Kapalong</option>
-                            <option>New Corilla</option>
-                            <option>Sto. Tomas</option>
-                        </FormSelect>
-                        <FormSelect name="prev_brgy" label="Barangay" id="brgy" value={address.prev_brgy} onchange={addressChange}>
-                            <option>A. O. Floriendo</option>
-                            <option>Buenavista</option>
-                            <option>Cacao</option>
-                            <option>Cagangohan</option>
-                            <option>Consolacion</option>
-                            <option>Dapco</option>
-                            <option>Datu Abdul Dadia</option>
-                            <option>Gredu</option>
-                            <option>J. P. Laurel</option>
-                            <option>Kasilak</option>
-                            <option>Katipunan</option>
-                            <option>Katualan</option>
-                            <option>Kiotoy</option>
-                            <option>Little Panay</option>
-                            <option>Lower Panaga</option>
-                            <option>Mabunao</option>
-                            <option>Maduao</option>
-                            <option>Malativas</option>
-                            <option>Manay</option>
-                            <option>Nanyo</option>
-                            <option>New Malaga</option>
-                            <option>New Malitbog</option>
-                            <option>New Pandan</option>
-                            <option>New Visayas</option>
-                            <option>Quezon</option>
-                            <option>Salvacion</option>
-                            <option>San Francisco</option>
-                            <option>San Nicolas</option>
-                            <option>San Pedro</option>
-                            <option>San Roque</option>
-                            <option>San Vicente</option>
-                            <option>Santa Cruz</option>
-                            <option>Santo Nino</option>
-                            <option>Sindaton</option>
-                            <option>Southern DAvao</option>
-                            <option>Tagpore</option>
-                            <option>Tibungol</option>
-                            <option>Upper Licanan</option>
-                            <option>Waterfall</option>
-                        </FormSelect>
+                        <FormInput label="Country" type="text" name="prev_country" id="country" value={address.prev_country} onchange={addressChange} placeholder="Type country here" />
+                        <FormInput label="Region" type="text" name="prev_region" id="region" value={address.prev_region} onchange={addressChange} placeholder="Type region here" />
+                        <FormInput label="Province" type="text" name="prev_province" id="province" value={address.prev_province} onchange={addressChange} placeholder="Type province here" />
+                        <FormInput label="City/Municipality" type="text" name="prev_city" id="city" value={address.prev_city} onchange={addressChange} placeholder="Type city here" />
+                        <FormInput label="Barangay" type="text" name="prev_brgy" id="brgy" value={address.prev_brgy} onchange={addressChange} placeholder="Type barangay here" />
                     </>
                 )}
-                {/* <FormSelect name="prev_country" label="Country" id="country" value={address.prev_country} onchange={addressChange}>
-                    <option>Nigeria</option>
-                    <option>Greece</option>
-                    <option>USA</option>
-                    <option>Philippines</option>
-                    <option>Italy</option>
-                    <option>Germany</option>
-                    <option>Afganistan</option>
-                    <option>India</option>
-                    <option>Pakistan</option>
-                    <option>Bulgaria</option>
-                    <option>Bahrain</option>
-                    <option>Botswana</option>
-                    <option>France</option>
-                    <option>Great Britain</option>
-                </FormSelect>
-                <FormSelect name="prev_region" label="Region" id="region" value={address.prev_region} onchange={addressChange}>
-                    <option>Region I</option>
-                    <option>Region II</option>
-                    <option>Region III</option>
-                    <option>Region IV</option>
-                    <option>Region V</option>
-                    <option>Region VI</option>
-                    <option>Region VII</option>
-                    <option>Region VIII</option>
-                    <option>Region IX</option>
-                    <option>Region X</option>
-                    <option>Region XI</option>
-                    <option>Region XII</option>
-                    <option>Region XIII</option>
-                    <option>Region XIV</option>
-                </FormSelect>
-                <FormSelect name="prev_province" label="Province" id="province" value={address.prev_province} onchange={addressChange}>
-                    <option>Zamboanga del norte</option>
-                    <option>Zamboanga del sur</option>
-                    <option>Zamboanga sibugay</option>
-                    <option>Davao del norte</option>
-                    <option>Davao del sur</option>
-                    <option>Davao de oro(Compostela Valley)</option>
-                    <option>Davao oriental</option>
-                    <option>Davao Occidental</option>
-                    <option>Cotabato</option>
-                    <option>Sarangani</option>
-                    <option>South Cotabato</option>
-                </FormSelect>
-                <FormSelect name="prev_city" label="Municipality/City" id="city" value={address.prev_city} onchange={addressChange}>
-                    <option>Davao City</option>
-                    <option>Panabo City</option>
-                    <option>Tagum City</option>
-                    <option>Samal Island</option>
-                    <option>Digos City</option>
-                    <option>Mati City</option>
-                    <option>Talaingod</option>
-                    <option>San Isidro</option>
-                    <option>Carmen</option>
-                    <option>Kapalong</option>
-                    <option>New Corilla</option>
-                    <option>Sto. Tomas</option>
-                </FormSelect>
-                <FormSelect name="prev_brgy" label="Barangay" id="brgy" value={address.prev_brgy} onchange={addressChange}>
-                    <option>A. O. Floriendo</option>
-                    <option>Buenavista</option>
-                    <option>Cacao</option>
-                    <option>Cagangohan</option>
-                    <option>Consolacion</option>
-                    <option>Dapco</option>
-                    <option>Datu Abdul Dadia</option>
-                    <option>Gredu</option>
-                    <option>J. P. Laurel</option>
-                    <option>Kasilak</option>
-                    <option>Katipunan</option>
-                    <option>Katualan</option>
-                    <option>Kiotoy</option>
-                    <option>Little Panay</option>
-                    <option>Lower Panaga</option>
-                    <option>Mabunao</option>
-                    <option>Maduao</option>
-                    <option>Malativas</option>
-                    <option>Manay</option>
-                    <option>Nanyo</option>
-                    <option>New Malaga</option>
-                    <option>New Malitbog</option>
-                    <option>New Pandan</option>
-                    <option>New Visayas</option>
-                    <option>Quezon</option>
-                    <option>Salvacion</option>
-                    <option>San Francisco</option>
-                    <option>San Nicolas</option>
-                    <option>San Pedro</option>
-                    <option>San Roque</option>
-                    <option>San Vicente</option>
-                    <option>Santa Cruz</option>
-                    <option>Santo Nino</option>
-                    <option>Sindaton</option>
-                    <option>Southern DAvao</option>
-                    <option>Tagpore</option>
-                    <option>Tibungol</option>
-                    <option>Upper Licanan</option>
-                    <option>Waterfall</option>
-                </FormSelect> */}
             </div>
         </>
     );

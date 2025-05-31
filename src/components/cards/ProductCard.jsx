@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import StarRating from "../StarRating";
 import AddtoCartBttn from "../buttons/AddtoCartBttn";
 import ProductLink from "../links/ProductLink";
@@ -8,10 +9,9 @@ export default function ProductCard({unit, url}) {
     return (
         <button type="button" className="rounded-lg border focus:border-blue-500 focus:border-4 hover:bg-gray-200 border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-700">
             <div className="h-56 w-full">
-                <a href="#">
-                    <img className="mx-auto object-contain h-full dark:hidden" src={"http://127.0.0.1:8000/storage/"+unit.file_path} alt="Product Image" />
-                    <img className="mx-auto object-contain hidden h-full dark:block" src={"http://127.0.0.1:8000/storage/"+unit.file_path} alt="Product Image" />
-                </a>
+                <Link to={url} state={{id: unit.id}}>
+                    <img className="mx-auto object-contain h-full" src={"http://127.0.0.1:8000/storage/"+unit.file_path} alt="Product Image" />
+                </Link>
             </div>
             <div className="pt-6">
                 <div className="mb-4 flex items-center justify-between gap-4">
@@ -64,12 +64,12 @@ export default function ProductCard({unit, url}) {
                         {/* <svg className="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                         </svg> */}
-                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Rebate: ₱{unit.rebate}</p>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Rebate: ₱{parseFloat(unit.rebate).toLocaleString()}</p>
                     </li>
                 </ul>
 
                 <div className="mt-4 flex items-center justify-between gap-4">
-                    <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">₱{unit.price}</p>
+                    <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">₱{parseFloat(unit.price).toLocaleString()}</p>
 
                     <AddtoCartBttn id={unit.id} url={url} text="Inquire" />
                 </div>

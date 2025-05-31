@@ -103,7 +103,7 @@ function App() {
             <Route path="cashier" element={<Cashier />} />
             <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/staff/loan" />} />
             <Route path="loan" element={<LoanInfo />} />
-            <Route path="emi" element={<EMICalculator />} />
+            <Route path="product" element={<ProductInfo staff={true} />} />
             <Route path="history" element={<AppNotifications />} />
             <Route path="profile" element={<Profile />} />
           </Route>

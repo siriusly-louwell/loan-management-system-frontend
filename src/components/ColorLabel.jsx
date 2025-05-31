@@ -1,12 +1,33 @@
 import React from "react";
+import Check from "../assets/icons/Check";
 
-export default function ColorLabel({color, style}) {
-    const colStyle = style == 'black' ? "bg-black" : (style == 'white' ? "bg-white border border-gray-500" : `bg-${style}-500`);
+export default function ColorLabel({style, size = 4, selected = ''}) {
+    let colStyle;
+
+    if(style.includes('#') && style != '#fffff0' && style != '#fff5ee' && style != '#fdf5e6' && style != '#faf0e6') {
+        colStyle = `bg-[${style}]`;
+    } else {
+        switch(style) {
+            case "black":
+                colStyle = "bg-black border border-gray-500";
+                break;
+            case 'white':
+                colStyle = "bg-white border border-gray-500";
+                break;
+            case '#fffff0':
+            case '#faf0e6':
+            case '#fff5ee':
+            case '#fdf5e6':
+                colStyle = `bg-[${style}] border border-gray-500`;
+                break;
+            default:
+                colStyle = `bg-${style}-500`;
+        }
+    }
 
     return (
-            <div className={`h-4 w-4 rounded-full inline-block mr-1 ${colStyle}`}></div>
-        // <div className="flex items-center">
-        //     {color}
-        // </div>
+        <div className={`h-${size} w-${size} ${colStyle} ${selected} rounded-full inline-block mr-1 hover:opacity-70 flex justify-center items-center px-1`}>
+            {selected !== "" ? <Check /> : ""}
+        </div>
     );
 }

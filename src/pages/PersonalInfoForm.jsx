@@ -11,15 +11,15 @@ export default function PersonalInfoForm() {
         <>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Buyer's Personal Infomation:</h3>
             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                <FormInput label="First Name" type="text" name="first_name" id="first_name" value={applicant.first_name} onchange={handleChange} placeholder="Type first name" />
-                <FormInput label="Middle Name" type="text" name="middle_name" id="mid_name" value={applicant.middle_name} onchange={handleChange} placeholder="Type middle name" />
-                <FormInput label="Last Name" type="text" name="last_name" id="last_name" value={applicant.last_name} onchange={handleChange} placeholder="Type last name" />
-                <FormSelect name="gender" label="Sex" id="gender" value={applicant.gender} onchange={handleChange}>
+                <FormInput label="First Name" type="text" name="first_name" id="first_name" value={applicant.first_name} onchange={handleChange} placeholder="Type first name" require={true} />
+                <FormInput label="Middle Name" type="text" name="middle_name" id="mid_name" value={applicant.middle_name} onchange={handleChange} placeholder="Type middle name" require={true} />
+                <FormInput label="Last Name" type="text" name="last_name" id="last_name" value={applicant.last_name} onchange={handleChange} placeholder="Type last name" require={true} />
+                <FormSelect name="gender" label="Sex" id="gender" value={applicant.gender} onchange={handleChange} require={true}>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Prefer not to say</option>
                 </FormSelect>
-                <FormSelect name="status" label="Marital Status" id="status" value={applicant.status} onchange={handleChange}>
+                <FormSelect name="status" label="Marital Status" id="status" value={applicant.status} onchange={handleChange} require={true}>
                     <option value="single">Single</option>
                     <option value="relationship">In a relationship</option>
                     <option value="married">Married</option>
@@ -27,19 +27,19 @@ export default function PersonalInfoForm() {
                     <option value="separated">Separated</option>
                 </FormSelect>
                 <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
-                    <FormSelect name="educ_attain" label="Educ. Attainment" id="educ_attain" value={applicant.educ_attain} onchange={handleChange}>
+                    <FormSelect name="educ_attain" label="Educ. Attainment" id="educ_attain" value={applicant.educ_attain} onchange={handleChange} require={true}>
                         <option value="highschool">High School</option>
                         <option value="college">College Level</option>
                         <option value="graduate">College Graduate</option>
                         <option value="post">Post Graduate</option>
                     </FormSelect>
-                    <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Vocational" />
+                    <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Others" />
                 </div>
             </div>
 
             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                 <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
-                    <FormSelect name="residence" label="Residential Status" id="residence" value={applicant.residence} onchange={handleChange}>
+                    <FormSelect name="residence" label="Residential Status" id="residence" value={applicant.residence} onchange={handleChange} require={true}>
                         <option value="owned">Owned</option>
                         <option value="mortgaged">Owned(Mortgaged)</option>
                         <option value="rented">Rented</option>
@@ -47,8 +47,8 @@ export default function PersonalInfoForm() {
                     </FormSelect>
                     <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Other reason" />
                 </div>
-                <FormInput label="Amortization Monthly" type="number" name="amortization" id="amortization" value={applicant.amortization} onchange={handleChange} placeholder="PHP" />
-                <FormInput label="Rent Monthly" type="number" name="rent" id="rent" value={applicant.rent} onchange={handleChange} placeholder="PHP" />
+                <FormInput label="Amortization Monthly" type="number" name="amortization" id="amortization" value={applicant.amortization} onchange={handleChange} placeholder="₱5,000" />
+                <FormInput label="Rent Monthly" type="number" name="rent" id="rent" value={applicant.rent} onchange={handleChange} placeholder="₱500" />
                 <FormInput label="SSS/GSIS #" type="text" name="sss" id="sss" value={applicant.sss} onchange={handleChange} placeholder="Type SSS/GSIS number" />
                 <FormInput label="TIN #" type="text" name="tin" id="tin" value={applicant.tin} onchange={handleChange} placeholder="Type TIN number" />
             </div>
@@ -59,7 +59,7 @@ export default function PersonalInfoForm() {
                     <FormInput type="text" placeholder="Present Address" value={address.personal_pres} />
                 ) : (
                     <>
-                        <FormSelect name="country" label="Country" id="country" value={address.country} onchange={addressChange}>
+                        <FormSelect name="country" label="Country" id="country" value={address.country} onchange={addressChange} require={true}>
                             <option>Nigeria</option>
                             <option>Greece</option>
                             <option>USA</option>
@@ -75,7 +75,7 @@ export default function PersonalInfoForm() {
                             <option>France</option>
                             <option>Great Britain</option>
                         </FormSelect>
-                        <FormSelect name="region" label="Region" id="region" value={address.region} onchange={addressChange}>
+                        <FormSelect name="region" label="Region" id="region" value={address.region} onchange={addressChange} require={true}>
                             <option>Region I</option>
                             <option>Region II</option>
                             <option>Region III</option>
@@ -91,7 +91,7 @@ export default function PersonalInfoForm() {
                             <option>Region XIII</option>
                             <option>Region XIV</option>
                         </FormSelect>
-                        <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange}>
+                        <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange} require={true}>
                             <option>Zamboanga del norte</option>
                             <option>Zamboanga del sur</option>
                             <option>Zamboanga sibugay</option>
@@ -104,7 +104,7 @@ export default function PersonalInfoForm() {
                             <option>Sarangani</option>
                             <option>South Cotabato</option>
                         </FormSelect>
-                        <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange}>
+                        <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange} require={true}>
                             <option>Davao City</option>
                             <option>Panabo City</option>
                             <option>Tagum City</option>
@@ -118,7 +118,7 @@ export default function PersonalInfoForm() {
                             <option>New Corilla</option>
                             <option>Sto. Tomas</option>
                         </FormSelect>
-                        <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange}>
+                        <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange} require={true}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>
@@ -170,11 +170,11 @@ export default function PersonalInfoForm() {
                     <FormInput type="text" placeholder="Present Address" value={address.personal_pres} />
                 ) : (
                     <>
-                        <FormInput label="Country" type="text" name="prev_country" id="country" value={address.prev_country} onchange={addressChange} placeholder="Type country here" />
+                        <FormInput label="Country" type="text" name="prev_country" id="country" value={address.prev_country} onchange={addressChange} placeholder="Type country here" require={true} />
                         <FormInput label="Region" type="text" name="prev_region" id="region" value={address.prev_region} onchange={addressChange} placeholder="Type region here" />
-                        <FormInput label="Province" type="text" name="prev_province" id="province" value={address.prev_province} onchange={addressChange} placeholder="Type province here" />
-                        <FormInput label="City/Municipality" type="text" name="prev_city" id="city" value={address.prev_city} onchange={addressChange} placeholder="Type city here" />
-                        <FormInput label="Barangay" type="text" name="prev_brgy" id="brgy" value={address.prev_brgy} onchange={addressChange} placeholder="Type barangay here" />
+                        <FormInput label="Province" type="text" name="prev_province" id="province" value={address.prev_province} onchange={addressChange} placeholder="Type province here" require={true} />
+                        <FormInput label="City/Municipality" type="text" name="prev_city" id="city" value={address.prev_city} onchange={addressChange} placeholder="Type city here" require={true} />
+                        <FormInput label="Barangay" type="text" name="prev_brgy" id="brgy" value={address.prev_brgy} onchange={addressChange} placeholder="Type barangay here" require={true} />
                     </>
                 )}
             </div>

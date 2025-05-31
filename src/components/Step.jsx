@@ -8,7 +8,7 @@ export default function Step({label, status}) {
         : "text-gray-900 bg-gray-100 border-gray-300 dark:border-gray-700 dark:text-gray-400");
     
     const className = "w-full p-4 border rounded-lg dark:bg-gray-800 " + style;
-    const icon = status == 'current' ? <LeftArrow /> : (status == 'done' ? <Check /> : "");
+    const icon = status == 'current' ? <LeftArrow /> : (status == 'done' ? <Check color='green' /> : "");
 
     return (
         <li>

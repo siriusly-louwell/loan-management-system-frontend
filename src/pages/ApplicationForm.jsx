@@ -42,6 +42,7 @@ export default function ApplicationForm() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        document.getElementById('saving_application').style.display = 'flex';
 
         // if (!files[0]) {
         //     alert('Please select a file');
@@ -126,6 +127,7 @@ export default function ApplicationForm() {
         } catch(error) {
             console.error('Error: ', error);
             alert('Failed to save data.');
+            document.getElementById('saving_application').style.display = "none";
         }
     }
 
@@ -193,12 +195,13 @@ export default function ApplicationForm() {
                 <Step label="3. Employment, Properties, & Income/Expenses" status="pend" />
                 <Step label="4. Upload Requirements" status="pend" />
                 <Step label="5. Comaker Form" status="pend" />
-                <Step label="6. Account Credentials" status="pend" />
             </Stepper>
             <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">
                 <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
                     <div className="flex justify-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">APPLICATION FORM</h3>
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                            {location.pathname == "/customer/apply/comakerform" ? "COMAKER FORM" : "APPLICATION FORM"}
+                        </h3>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <Outlet context={outletContext} />
@@ -210,7 +213,7 @@ export default function ApplicationForm() {
                         {currentIndex < routerPaths.length - 1 ? (
                             <Button text="Next" bttnType="button" onclick={handleNext} />
                         ) : (
-                            <Button text="Done" bttnType="submit" onclick={() => document.getElementById('saving_application').style.display = 'flex'} />
+                            <Button text="Done" bttnType="submit" />
                         )}
                         </div>
                     </form>

@@ -7,6 +7,7 @@ import CustomBttn from "../components/buttons/CustomBttn";
 import Ex from "../assets/icons/Ex";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Spinner from "../components/loading components/Spinner";
+import FileInput from "../components/inputs/FileInput";
 
 export default function CreateUser() {
     const location = useLocation();
@@ -71,22 +72,20 @@ export default function CreateUser() {
                         <CloseBttn id="createUser" />
                     </div>
                     <form onSubmit={handleSubmit}>
-                        <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                            <FormInput label="Full Name" type="text" value={user.name} onchange={handleChange} name="name" id="name" placeholder="Type full name" />
-                            <FormInput label="email" type="text" name="email" id="email" value={user.email} onchange={handleChange} placeholder="john@gmail.com" />
-                            {/* <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                <FormSelect name="role" id="color" label="Role" value={user.role} onchange={handleChange}>
-                                    <option value="red">Credit Investigator</option>
-                                    <option value="orange">Staff</option>
-                                </FormSelect>
-                            </div> */}
+                        <div className="grid gap-4 mb-4 sm:grid-cols-3">
+                            <FormInput label="First name" type="text" value={user.name} onchange={handleChange} name="name" id="name" placeholder="Type first name" />
+                            <FormInput label="Middle name" type="text" name="mid_name" id="mname" placeholder="Type middle name" />
+                            <FormInput label="Last name" type="text" name="last_name" id="lname" placeholder="Type last name" />
+                            <FormInput label="Email Address" type="text" name="email" id="email" value={user.email} onchange={handleChange} placeholder="john@gmail.com" />
+                            <FormInput label="Contact number" type="number" name="contact" id="number" placeholder="Phone number here" />
+                            <FormSelect name="gender" id="gender" label="Gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </FormSelect>
                         </div>
+                        <FileInput label="Upload Profile picture:" type="img" />
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                             <Button text="Add user" type="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />
-                            {/* <CustomBttn text="Discard" className="inline-flex justify-center w-full sm:w-auto items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                onclick={() => document.getElementById('createUser').style.display = "none"}>
-                                <Ex className="mr-1 -ml-1 w-5 h-5" />
-                            </CustomBttn> */}
                         </div>
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />

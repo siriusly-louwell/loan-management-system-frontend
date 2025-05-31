@@ -1,8 +1,8 @@
 import React from "react";
 
-export default function CustomBttn({text, className, children, onclick}) {
+export default function CustomBttn({text, classname, children, onclick}) {
     return (
-        <button type="button" className={className} onClick={onclick}>
+        <button type="button" className={classname} onClick={onclick}>
             {children}
             {text}
         </button>

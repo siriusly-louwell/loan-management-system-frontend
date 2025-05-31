@@ -6,7 +6,7 @@ import StepCard from '../components/cards/StepCard';
 import BttnSmall from '../components/buttons/BttnSmall';
 import FormInput from '../components/inputs/FormInput';
 
-export default function EMICalculator({name, brand, motorPrice, years, interest}) {
+export default function EMICalculator({name, brand, motorPrice, years, interest, staff}) {
     const navigate = useNavigate();
     const [downPayment, setDownPayment] = useState(50000);
     const [tenure, setTenure] = useState(12);
@@ -94,33 +94,35 @@ export default function EMICalculator({name, brand, motorPrice, years, interest}
                     <div class="flex justify-between items-center space-x-5 mb-4">
                         <div class="justify-items-center">
                             <p class="text-gray-500 dark:text-gray-100 text-sm">Down Payment</p>
-                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{downPayment.toFixed(2)}</p>
+                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{parseFloat(downPayment).toLocaleString()}</p>
                         </div>
                         <div class="justify-items-center">
                             <p class="text-gray-500 dark:text-gray-100 text-sm">Loan Amount</p>
-                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{loanAmount.toFixed(2)}</p>
+                            <p class="text-xl font-bold text-gray-800 dark:text-white">₱{parseFloat(loanAmount).toLocaleString()}</p>
                         </div>
                     </div>
                     <div class="border-t w-full justify-items-center border-gray-200 py-4">
                         <p class="text-gray-500 dark:text-gray-100 text-sm">Monthly EMI</p>
-                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-500">₱{emi.toFixed(2)}</p>
+                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-500">₱{parseFloat(emi).toLocaleString()}</p>
                     </div>
 
                     {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
                 </div>
             </div>
 
-            <div class="sm:px-10 py-20 w-full">
-                <div class="bg-blue-300 dark:bg-gray-700 p-5 rounded-xl shadow-lg justify-items-center space-y-5">
-                    <h1 class="dark:text-white font-bold text-3xl">How Do I Apply?</h1>
-                    <ul class="relative flex flex-col md:flex-row gap-2 w-full">
-                        <StepCard num={1} label="Calculate your Loan" context="Calculate your motorcycle loan below and adjust the the fields to fit your preferences." />
-                        <StepCard num={2} label="Fillout the Application" context="After you calculate your estimated monthly EMI, click 'Apply Loan' and apply by filling out an application form." />
-                        <StepCard num={3} label="Submit your Documents" context="After filling out the application form, upload your documents to the system." />
-                        <StepCard num={4} label="Leave the rest to us" context="Your loan will be processed. We will notify you once it is done." />
-                    </ul>
+            {!staff ? (
+                <div class="sm:px-10 py-20 w-full">
+                    <div class="bg-blue-300 dark:bg-gray-700 p-5 rounded-xl shadow-lg justify-items-center space-y-5">
+                        <h1 class="dark:text-white font-bold text-3xl">How Do I Apply?</h1>
+                        <ul class="relative flex flex-col md:flex-row gap-2 w-full">
+                            <StepCard num={1} label="Calculate your Loan" context="Calculate your motorcycle loan below and adjust the the fields to fit your preferences." />
+                            <StepCard num={2} label="Fillout the Application" context="After you calculate your estimated monthly EMI, click 'Apply Loan' and apply by filling out an application form." />
+                            <StepCard num={3} label="Submit your Documents" context="After filling out the application form, upload your documents to the system." />
+                            <StepCard num={4} label="Leave the rest to us" context="Your loan will be processed. We will notify you once it is done." />
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            ) : ""}
 
         </div>
     );

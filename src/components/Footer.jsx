@@ -7,7 +7,7 @@ export default function Footer() {
         <footer class="p-4 bg-white md:p-8 lg:p-10 dark:bg-gray-900">
         <div class="mx-auto max-w-screen-xl text-center">
             <a href="#" class="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white">
-                <img src={RMCI} class="h-8 mr-2 rounded border border-gray-400" alt="Rhean Motor Logo" />
+                <img src={RMCI} class="h-10 mr-2" alt="Rhean Motor Logo" />
                 Rhean Motor Center    
             </a>
             <p class="my-6 text-gray-500 dark:text-gray-400">Open-source library of over 400+ web components and interactive elements built for better web.</p>

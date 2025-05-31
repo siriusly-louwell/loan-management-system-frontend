@@ -7,16 +7,18 @@ import NavPath from "../components/NavPath";
 import EMICalculator from './EMICalculator';
 import ColorLabel from '../components/ColorLabel';
 import SmallLabel from '../components/texts/SmallLabel';
+import FormSelect from '../components/inputs/FormSelect';
 import Button from '../components/buttons/Button';
 import Plus from '../assets/icons/Plus';
 import ProductGrid from '../components/cards/ProductGrid';
 import ProductCard from '../components/cards/ProductCard';
 import CloseBttn from '../components/buttons/CloseBttn';
 
-export default function ProductInfo() {
+export default function ProductInfo({staff = false}) {
     const navigate = useNavigate();
     const {state} = useLocation();
-    const id = state?.id;
+    // const id = staff ? 5 : state?.id;
+    const [id, setId] = useState(staff ? 5 : state?.id);
     const [unit, setUnit] = useState({});
     const [unitLoad, setUnitLoad] = useState(true);
     const [addUnit, setUnits] = useState([]);
@@ -43,40 +45,51 @@ export default function ProductInfo() {
                 console.error('Error fetching data: ', error);
                 setUnitLoad(true);
             })
-    }, []);
+    }, [id]);
 
     useEffect(() => {
-            fetch('http://127.0.0.1:8000/api/motorcycle')
-            .then(response => response.json())
-            .then(data => {
-                    setUnits(data);
-                    setUnitsLoad(false);
-                })
-                .catch(error => {
-                    console.error('Error fetching data: ', error);
-                    setUnitsLoad(true);
-                })
-        }, []);
+        fetch('http://127.0.0.1:8000/api/motorcycle')
+        .then(response => response.json())
+        .then(data => {
+                setUnits(data);
+                setUnitsLoad(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+                setUnitsLoad(true);
+            })
+    }, []);
 
     if(!unitLoad)unit.images.map(file => {
         images.push("http://127.0.0.1:8000/storage/" + file.path);
     });
 
+
+    function changeUnit(event) {
+        setUnit(addUnit[event.target.value]);
+        setUnitLoad(true);
+    }
+
     const totalSlides = images.length;
 
-    console.log(unit.images);
-
     return (
-        <section className="py-8 bg-gray-100 md:py-16 dark:bg-gray-800 antialiased">
+        <section className="py-6 bg-gray-100 md:py-10 dark:bg-gray-800 antialiased">
             {/* <NavPath /> */}
             <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
                     {unitLoad ? (<div>Loading...</div>) : (
                         <>
-                            <div className="relative w-full lg:max-w-3xl mx-auto overflow-hidden rounded-xl">
+                            <div className="relative w-full space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
+                                {staff ? (
+                                    <FormSelect name="motor" id="motor" value={`${unit.brand}: ${unit.name} - ₱${parseFloat(unit.price).toLocaleString()}`} label="Select Unit" onchange={(e) => setId(e.target.value)}>
+                                        {addUnit.map(motor => (
+                                            <option value={motor.id}>{motor.brand}: {motor.name} - ₱{parseFloat(motor.price).toLocaleString()}</option>
+                                        ))}
+                                    </FormSelect>
+                                ) : ""}
                                 <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${current * 100}%)` }}>
                                     {images.map((src, index) => (
-                                    <img key={index} src={src} alt={`Slide ${index + 1}`} className="w-full flex-shrink-0 bg-blue-800"/>
+                                    <img key={index} src={src} alt={`Slide ${index + 1}`} className="w-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"/>
                                     ))}
                                 </div>
 
@@ -105,7 +118,7 @@ export default function ProductInfo() {
                             <div className="mt-6 sm:mt-8 lg:mt-0">
                                 <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">{unit.name} ({unit.brand})</h1>
                                 <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
-                                    <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">₱{unit.price}</p>
+                                    <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">₱{parseFloat(unit.price).toLocaleString()}</p>
 
                                     {/* <StarRating rating="(5.0)" rates="345 Reviews" /> */}
                                     <div className="flex space-x-2">
@@ -119,7 +132,7 @@ export default function ProductInfo() {
 
                                 <div className='grid sm:grid-cols-2'>
                                     <SmallLabel label="Annual Interest" text={unit.interest+"%"} />
-                                    <SmallLabel label="Rebate" text={"₱"+unit.rebate} />
+                                    <SmallLabel label="Rebate" text={"₱"+parseFloat(unit.rebate).toLocaleString()} />
                                     <SmallLabel label="Loan Tenure" text={unit.tenure+" years"} />
                                     <SmallLabel label="Stock" text={unit.quantity+" units"} />
                                 </div>
@@ -152,7 +165,7 @@ export default function ProductInfo() {
                     )}
                 </div>
             </div>
-            <EMICalculator name={unit.name} brand={unit.brand} motorPrice={unit.price} years={unit.tenure} interest={unit.interest} />
+            <EMICalculator name={unit.name} brand={unit.brand} motorPrice={unit.price} years={unit.tenure} interest={unit.interest} staff={staff} />
             <div id="add_units" className="overflow-y-auto overflow-x-hidden hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
                 <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
                     <div className="relative p-4 bg-white h-fit rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
@@ -168,8 +181,6 @@ export default function ProductInfo() {
                             )}
                         </ProductGrid>
                     </div>
-                    {/* <div className="h-screen bg-white h-fit dark:bg-gray-800">
-                    </div> */}
                 </div>
             </div>
         </section>

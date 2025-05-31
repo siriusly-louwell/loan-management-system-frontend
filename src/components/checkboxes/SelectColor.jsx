@@ -76,6 +76,23 @@ export default function SelectColor({text, size, colors, changeColor}) {
                 <label htmlFor="#2a3439"><ColorLabel style="#2a3439" size={size} selected={colors.includes('#2a3439') ? "border-blue-500 border-2" : ""} /></label>
                 <label htmlFor="#0a1128"><ColorLabel style="#0a1128" size={size} selected={colors.includes('#0a1128') ? "border-blue-500 border-2" : ""} /></label>
                 <label htmlFor="black"><ColorLabel style="black" size={size} selected={colors.includes('black') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#7b3f00"><ColorLabel style="#7b3f00" size={size} selected={colors.includes('#7b3f00') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#635147"><ColorLabel style="#635147" size={size} selected={colors.includes('#635147') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#d68a59"><ColorLabel style="#d68a59" size={size} selected={colors.includes('#d68a59') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#80461b"><ColorLabel style="#80461b" size={size} selected={colors.includes('#80461b') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#e97451"><ColorLabel style="#e97451" size={size} selected={colors.includes('#e97451') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#4b3621"><ColorLabel style="#4b3621" size={size} selected={colors.includes('#4b3621') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#5c4033"><ColorLabel style="#5c4033" size={size} selected={colors.includes('#5c4033') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#964b00"><ColorLabel style="#964b00" size={size} selected={colors.includes('#964b00') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#a56b46"><ColorLabel style="#a56b46" size={size} selected={colors.includes('#a56b46') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#3d2b1f"><ColorLabel style="#3d2b1f" size={size} selected={colors.includes('#3d2b1f') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#88421d"><ColorLabel style="#88421d" size={size} selected={colors.includes('#88421d') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#a9746e"><ColorLabel style="#a9746e" size={size} selected={colors.includes('#a9746e') ? "border-blue-500 border-2" : ""} /></label>
+
+                <label htmlFor="#a25f2a"><ColorLabel style="#a25f2a" size={size} selected={colors.includes('#a25f2a') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#967117"><ColorLabel style="#967117" size={size} selected={colors.includes('#967117') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#d2691e"><ColorLabel style="#d2691e" size={size} selected={colors.includes('#d2691e') ? "border-blue-500 border-2" : ""} /></label>
+                <label htmlFor="#87413f"><ColorLabel style="#87413f" size={size} selected={colors.includes('#87413f') ? "border-blue-500 border-2" : ""} /></label>
 
                 <input type="checkbox" value="#66023c" id="#66023c" className="hidden" check={colors.includes('#66023c')} onChange={(e) => changeColor(e.target.value)} />
                 <input type="checkbox" value="#6a0dad" id="#6a0dad" className="hidden" check={colors.includes('#6a0dad')} onChange={(e) => changeColor(e.target.value)} />

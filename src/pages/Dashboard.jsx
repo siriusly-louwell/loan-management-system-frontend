@@ -10,7 +10,7 @@ import Basket from '../assets/icons/Basket';
 
 export default function Dashboard() {
     return (
-        <div class="sm:flex bg-white dark:bg-gray-800">
+        <div class="sm:flex bg-gray-100 dark:bg-gray-800">
             <SideBar sideLinks={[
                 {key: "overview", text: "Overview", component: <Widget />, icon: ""},
                 {key: "analytics", text: "Analytics", component: <Chart />, icon: ""},

@@ -7,7 +7,7 @@ import ColorLabel from "../ColorLabel";
 
 export default function ProductCard({unit, url}) {
     return (
-        <button type="button" className="rounded-lg border focus:border-blue-500 focus:border-4 hover:bg-gray-200 border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-700">
+        <button type="button" className="rounded-lg border focus:border-rose-600 focus:border-4 hover:bg-gray-200 border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-700">
             <div className="h-56 w-full">
                 <Link to={url} state={{id: unit.id}}>
                     <img className="mx-auto object-contain h-full" src={"http://127.0.0.1:8000/storage/"+unit.file_path} alt="Product Image" />
@@ -15,7 +15,7 @@ export default function ProductCard({unit, url}) {
             </div>
             <div className="pt-6">
                 <div className="mb-4 flex items-center justify-between gap-4">
-                    <span className="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-blue-500 dark:text-blue-100">{unit.interest}% Interest rate</span>
+                    <span className="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-rose-500 dark:text-rose-100">{unit.interest}% Interest rate</span>
 
                     <div className="flex items-center justify-end gap-1">
                         <button type="button" data-tooltip-target="tooltip-quick-look" className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">

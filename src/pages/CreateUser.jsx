@@ -8,6 +8,7 @@ import Ex from "../assets/icons/Ex";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Spinner from "../components/loading components/Spinner";
 import FileInput from "../components/inputs/FileInput";
+import Alert from "../components/Alert";
 
 export default function CreateUser() {
     const location = useLocation();
@@ -89,6 +90,9 @@ export default function CreateUser() {
                         </div>
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />
+                    <Alert id="createUser" text={alert.text} icon={alert.icon}>
+                        <Button text="Ok" onclick={() => document.getElementById('createUnit').style.display = 'none'} />
+                    </Alert>
                 </div>
             </div>
         </div>

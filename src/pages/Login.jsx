@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
 import Checkbox from '../components/checkboxes/Checkbox';
-import RMCI from '../assets/images/RMCI.jpg';
+import RMCI from '../assets/images/RMCI.png';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function Login() {
             <section className="bg-gray-200 h-screen dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="#" className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
-                        <img src={RMCI} className="h-8 rounded border border-gray-400 mr-2" alt="Rhean Motor Logo" />
+                        <img src={RMCI} className="h-8 mr-2" alt="Rhean Motor Logo" />
                         Rhean Motor Center    
                     </a>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

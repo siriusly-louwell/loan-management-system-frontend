@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
-import RMCI from '../assets/images/RMCI.jpg';
+import RMCI from '../assets/images/RMCI.png';
 import Alert from '../components/Alert';
 
 export default function Register() {
@@ -45,10 +45,10 @@ export default function Register() {
 
     return (
         <>
-            <section class="bg-gray-200 h-screen dark:bg-gray-900">
-                <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <section class="bg-gray-200 dark:bg-gray-900 p-10">
+                <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
                     <a href="#" class="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
-                        <img src={RMCI} class="h-8 rounded border border-gray-400 mr-2" alt="Rhean Motor Logo" />
+                        <img src={RMCI} class="h-8 mr-2" alt="Rhean Motor Logo" />
                         Rhean Motor Center    
                     </a>
                     <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -69,7 +69,7 @@ export default function Register() {
                             </form>
                         </div>
                     </div>
-                    <Alert id="register_alert" text={popup}>
+                    <Alert id="register_alert" text={popup} icon="warn">
                         <Button text="Got it" type="button" onclick={() => document.getElementById('register_alert').style.display = "none"} />
                     </Alert>
                 </div>

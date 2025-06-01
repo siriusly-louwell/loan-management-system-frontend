@@ -4,12 +4,12 @@ import Check from "../assets/icons/Check";
 export default function ColorLabel({style, size = 4, selected = ''}) {
     let colStyle;
 
-    if(style.includes('#') && style != '#fffff0' && style != '#fff5ee' && style != '#fdf5e6' && style != '#faf0e6') {
+    if(style.includes('#') && style !== '#fffff0' && style !== '#fff5ee' && style !== '#fdf5e6' && style !== '#faf0e6') {
         colStyle = `bg-[${style}]`;
     } else {
         switch(style) {
             case "black":
-                colStyle = "bg-black border border-gray-500";
+                colStyle = "bg-black";
                 break;
             case 'white':
                 colStyle = "bg-white border border-gray-500";

@@ -7,11 +7,13 @@ import CloseBttn from "../components/buttons/CloseBttn";
 import Cloud from '../assets/icons/Cloud';
 import Spinner from "../components/loading components/Spinner";
 import SelectColor from "../components/checkboxes/SelectColor";
+import Alert from "../components/Alert";
 
 export default function CreateProduct() {
     const [files, setFiles] = useState([]);
     const [formData, setFormData] = useState({});
     const [colors, setColors] = useState([]);
+    const [alert, setAlert] = useState({});
     const submitData = new FormData();
 
     function changeColor(newColor) {
@@ -20,29 +22,37 @@ export default function CreateProduct() {
             : [...colors, newColor];
 
         setColors(updatedColors);
-        console.log(colors);
     };
 
     async function handleSubmit(event) {
         event.preventDefault();
 
-        if (!files) {
-            alert('Please select a file');
+        if (files.length == 0) {
+            setAlert({
+                text: "Please select images for the unit.",
+                icon: "warn"
+            });
+            document.getElementById('createUnit').style.display = "block";
             return;
         }
 
-        submitData.append('name', formData.name);
-        submitData.append('brand', formData.brand);
-        submitData.append('color', 'red');
+        for(let key in formData) {
+            submitData.append(`${key}`, formData[key]);
+            console.log(key, formData[key]);
+        }
+
         colors.forEach(color => submitData.append('colors[]', color));
-        submitData.append('price', formData.price);
-        submitData.append('description', formData.description);
-        submitData.append('quantity', formData.quantity);
-        submitData.append('interest', formData.interest);
-        submitData.append('rebate', formData.rebate);
-        submitData.append('tenure', formData.tenure);
-        // submitData.append('file', files);
         files.forEach(file => submitData.append('files[]', file));
+        // submitData.append('name', formData.name);
+        // submitData.append('brand', formData.brand);
+        // submitData.append('color', 'red');
+        // submitData.append('price', formData.price);
+        // submitData.append('description', formData.description);
+        // submitData.append('quantity', formData.quantity);
+        // submitData.append('interest', formData.interest);
+        // submitData.append('rebate', formData.rebate);
+        // submitData.append('downpayment', formData.downpayment);
+        // submitData.append('tenure', formData.tenure);
 
         document.getElementById('save_unit').style.display = "flex";
 
@@ -62,12 +72,21 @@ export default function CreateProduct() {
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Failed to save data');
             document.getElementById('save_unit').style.display = "none";
-            alert('Data saved successfully!');
+            // alert('Data saved successfully!');
+            setAlert({
+                text: "Unit created succcessfully!",
+                icon: "done"
+            });
+            document.getElementById('createUnit').style.display = "block";
             setFormData({});
         } catch(error) {
             console.error('Error: ', error);
-            alert('Failed to save data.');
+            setAlert({
+                text: "Failed to save data",
+                icon: "warn"
+            });
             document.getElementById('save_unit').style.display = "none";
+            document.getElementById('createUnit').style.display = "block";
         }
 
     }
@@ -81,7 +100,6 @@ export default function CreateProduct() {
         // console.log(event.target.files);
         setFiles([...event.target.files]);
         // setFiles(event.target.files[0]);
-        console.log(files);
     }
 
     function handleChange(event) {
@@ -107,7 +125,7 @@ export default function CreateProduct() {
                                 <FormInput label="Brand Name" type="text" name="brand" id="brand" value={formData.brand} onchange={handleChange} placeholder="Type brand name" />
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                                     <FormInput label="Price" type="number" id="price" name="price" value={formData.price} onchange={handleChange} placeholder="₱150,000" />
-                                    <FormInput label="Minimum Downpayment" type="number" id="tenure" name="tenure" value={formData.tenure} onchange={handleChange} placeholder="₱25,000" />
+                                    <FormInput label="Minimum Downpayment" type="number" id="down" name="downpayment" value={formData.downpayment} onchange={handleChange} placeholder="₱25,000" />
                                     <FormInput label="Rebate" type="number" id="rebate" name="rebate" value={formData.rebate} onchange={handleChange} placeholder="₱15,000" />
                                     <FormInput label="Quantity" type="number" id="quantity" name="quantity" value={formData.quantity} onchange={handleChange} placeholder="25 units" />
                                     <FormInput label="Interest Rate (%)" type="number" id="interest" name="interest" value={formData.interest} onchange={handleChange} placeholder="10%" />
@@ -142,57 +160,57 @@ export default function CreateProduct() {
                         <section className="lg:w-1/2 border-l border-gray-300 lg:pl-3">
                             <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">Specifications</h3>
                             <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                                <FormInput label="Engine" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Single-cylinder, Parallel twin, V-twin" />
-                                <FormInput label="Compression Ratio" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Efficiency/performance indicator" />
+                                <FormInput label="Engine" type="text" value={formData.engine} onchange={handleChange} name="engine" id="name" placeholder="Single-cylinder, Parallel twin, V-twin" />
+                                <FormInput label="Compression Ratio" type="text" value={formData.compression} onchange={handleChange} name="compression" id="name" placeholder="Efficiency/performance indicator" />
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                    <FormInput label="Displacement (cc)" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="125cc" />
-                                    <FormInput label="Horsepower (hp)" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Power output" />
-                                    <FormInput label="Torque (Nm)" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Turning force" />
-                                    <FormInput label="Fuel System" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Carburetor or Fuel injection (FI)" />
-                                    <FormInput label="Final Drive" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Chain, Belt, or Shaft" />
-                                    <FormInput label="Transmission" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Manual, 5-speed or 6-speed" />
+                                    <FormInput label="Displacement (cc)" type="text" value={formData.displacement} onchange={handleChange} name="displacement" id="name" placeholder="125cc" />
+                                    <FormInput label="Horsepower (hp)" type="text" value={formData.horsepower} onchange={handleChange} name="horsepower" id="name" placeholder="Power output" />
+                                    <FormInput label="Torque (Nm)" type="text" value={formData.torque} onchange={handleChange} name="torque" id="name" placeholder="Turning force" />
+                                    <FormInput label="Fuel System" type="text" value={formData.fuel} onchange={handleChange} name="fuel" id="name" placeholder="Carburetor or Fuel injection (FI)" />
+                                    <FormInput label="Final Drive" type="text" value={formData.drive} onchange={handleChange} name="drive" id="name" placeholder="Chain, Belt, or Shaft" />
+                                    <FormInput label="Transmission" type="text" value={formData.transmission} onchange={handleChange} name="transmission" id="name" placeholder="Manual, 5-speed or 6-speed" />
                                 </div>
-                                <FormInput label="Cooling System" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Air-cooled, Liquid-cooled, Oil-cooled" />
+                                <FormInput label="Cooling System" type="text" value={formData.cooling} onchange={handleChange} name="cooling" id="name" placeholder="Air-cooled, Liquid-cooled, Oil-cooled" />
                             </div>
                             <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                                <FormInput label="Front Suspension" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Telescopic forks, Inverted forks" />
-                                <FormInput label="Rear Suspension" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Mono-shock or Dual shock absorbers" />
+                                <FormInput label="Front Suspension" type="text" value={formData.front_suspension} onchange={handleChange} name="front_suspension" id="name" placeholder="Telescopic forks, Inverted forks" />
+                                <FormInput label="Rear Suspension" type="text" value={formData.rear_suspension} onchange={handleChange} name="rear_suspension" id="name" placeholder="Mono-shock or Dual shock absorbers" />
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                    <FormInput label="Frame Type" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Steel trellis, Aluminum twin-spar" />
-                                    <FormInput label="Front/Rear Travel (mm/in)" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Suspension travel distance" />
-                                    <FormInput label="Swingarm Type" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Standard, Single-sided" />
-                                </div>
-                            </div>
-                            <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                    <FormInput label="Dry Weight" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Without fuel/fluids" />
-                                    <FormInput label="Wet weight" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Fully fueled and ready to ride" />
-                                    <FormInput label="Seat Height (mm/in)" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Input seat measurements" />
-                                    <FormInput label="Wheelbase" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Distance between front and rear axle" />
-                                    <FormInput label="Fuel Tank Capacity" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Engine Type" />
-                                    <FormInput label="Ground Clearance" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Important for off-roading" />
+                                    <FormInput label="Frame Type" type="text" value={formData.frame} onchange={handleChange} name="frame" id="name" placeholder="Steel trellis, Aluminum twin-spar" />
+                                    <FormInput label="Front/Rear Travel (mm/in)" type="text" value={formData.travel} onchange={handleChange} name="travel" id="name" placeholder="Suspension travel distance" />
+                                    <FormInput label="Swingarm Type" type="text" value={formData.swingarm} onchange={handleChange} name="swingarm" id="name" placeholder="Standard, Single-sided" />
                                 </div>
                             </div>
                             <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                    <FormInput label="Tire Size" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="120/70ZR17" />
-                                    <FormInput label="Wheel Type" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Spoke or alloy wheels" />
-                                    <FormInput label="Brakes" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Disc (single/double), ABS" />
+                                    <FormInput label="Dry Weight" type="text" value={formData.dry_weight} onchange={handleChange} name="dry_weight" id="name" placeholder="Without fuel/fluids" />
+                                    <FormInput label="Wet weight" type="text" value={formData.wet_weight} onchange={handleChange} name="wet_weight" id="name" placeholder="Fully fueled and ready to ride" />
+                                    <FormInput label="Seat Height (mm/in)" type="text" value={formData.seat} onchange={handleChange} name="seat" id="name" placeholder="Input seat measurements" />
+                                    <FormInput label="Wheelbase" type="text" value={formData.wheelbase} onchange={handleChange} name="wheelbase" id="name" placeholder="Distance between front and rear axle" />
+                                    <FormInput label="Fuel Tank Capacity" type="text" value={formData.fuel_tank} onchange={handleChange} name="fuel_tank" id="name" placeholder="Engine Type" />
+                                    <FormInput label="Ground Clearance" type="text" value={formData.clearance} onchange={handleChange} name="clearance" id="name" placeholder="Important for off-roading" />
                                 </div>
                             </div>
                             <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                                <FormInput label="ABS" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Anti-lock braking system" />
-                                <FormInput label="Traction Control" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Prevents wheel slip" />
-                                <FormInput label="TFT Display" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="TFT Digital Screen" />
-                                <FormInput label="Lighting" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="LED, Halogen, DRLs" />
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                    <FormInput label="Riding Modes" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="E.g., Sport, Rain, Touring" />
-                                    <FormInput label="Quickshifter" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="Clutchless upshifts/downshifts" />
-                                    <FormInput label="Cruise Control" type="text" value={formData.name} onchange={handleChange} name="name" id="name" placeholder="For long-distance riding" />
+                                    <FormInput label="Tire Size" type="text" value={formData.tires} onchange={handleChange} name="tires" id="name" placeholder="120/70ZR17" />
+                                    <FormInput label="Wheel Type" type="text" value={formData.wheel} onchange={handleChange} name="wheel" id="name" placeholder="Spoke or alloy wheels" />
+                                    <FormInput label="Brakes" type="text" value={formData.brakes} onchange={handleChange} name="brakes" id="name" placeholder="Disc (single/double), ABS" />
+                                </div>
+                            </div>
+                            <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
+                                <FormInput label="ABS" type="text" value={formData.abs} onchange={handleChange} name="abs" id="name" placeholder="Anti-lock braking system" />
+                                <FormInput label="Traction Control" type="text" value={formData.traction} onchange={handleChange} name="traction" id="name" placeholder="Prevents wheel slip" />
+                                <FormInput label="TFT Display" type="text" value={formData.tft} onchange={handleChange} name="tft" id="name" placeholder="TFT Digital Screen" />
+                                <FormInput label="Lighting" type="text" value={formData.lighting} onchange={handleChange} name="lighting" id="name" placeholder="LED, Halogen, DRLs" />
+                                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
+                                    <FormInput label="Riding Modes" type="text" value={formData.ride_mode} onchange={handleChange} name="ride_mode" id="name" placeholder="E.g., Sport, Rain, Touring" />
+                                    <FormInput label="Quickshifter" type="text" value={formData.quickshifter} onchange={handleChange} name="quickshifter" id="name" placeholder="Clutchless upshifts/downshifts" />
+                                    <FormInput label="Cruise Control" type="text" value={formData.cruise} onchange={handleChange} name="cruise" id="name" placeholder="For long-distance riding" />
                                 </div>
                             </div>
                             <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                                <Button text="Add Unit" bttnType="submit" />
+                                <Button text="Add Unit" bttnType="submit"/>
                                 {/* <CustomBttn text="Schedule" className="w-full sm:w-auto text-white justify-center inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                     <Calendar />
                                 </CustomBttn> */}
@@ -204,6 +222,9 @@ export default function CreateProduct() {
                         </section>
                     </form>
                     <Spinner id="save_unit" text="Saving data..." />
+                    <Alert id="createUnit" text={alert.text} icon={alert.icon}>
+                        <Button text="Ok" onclick={() => document.getElementById('createUnit').style.display = 'none'} />
+                    </Alert>
                 </div>
             </div>
         </div>

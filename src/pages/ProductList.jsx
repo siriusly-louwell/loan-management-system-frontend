@@ -10,6 +10,7 @@ import DropdownBttn from "../components/buttons/DropdownBttn";
 import NavPath from "../components/NavPath";
 import Filter from "../assets/icons/Filter";
 import Sort from "../assets/icons/Sort";
+import CardSkeleton from "../components/loading components/CardSkeleton";
 
 export default function ProductList({url}) {
     const [isFiltOn, setIsFiltOn] = useState(false);
@@ -72,7 +73,14 @@ export default function ProductList({url}) {
                 </DropdownMenu>
                 
                 <ProductGrid>
-                    {motorLoad ? (<div>Loading...</div>) : (
+                    {motorLoad ? (
+                        <>
+                            <CardSkeleton />
+                            <CardSkeleton />
+                            <CardSkeleton />
+                            <CardSkeleton />
+                        </>
+                    ) : (
                         motors.map(motor => (
                             <ProductCard key={motor.id} unit={motor} url={url}/>
                         ))

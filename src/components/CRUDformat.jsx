@@ -55,8 +55,8 @@ export default function CRUDformat({children, addModal, label, modalId}) {
                                 </form>
                             </div>
                             <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                                {location.pathname != "/admin/accounts/applicants" && location.pathname != "/admin/accounts/customers" && location.pathname != "/admin/accounts" ? (
-                                    <CustomBttn text={"Add " + label} classname="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                                {location.pathname !== "/admin/accounts/applicants" && location.pathname !== "/admin/accounts/customers" && location.pathname !== "/admin/accounts" ? (
+                                    <CustomBttn text={"Add " + label} classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                                         onclick={() => document.getElementById(modalId).style.display = "block"}>
                                         <Plus />
                                     </CustomBttn>
@@ -81,8 +81,8 @@ export default function CRUDformat({children, addModal, label, modalId}) {
                 </div>
             </section>
             {addModal}
-            <Alert id="delete_product" text="Are you sure you want to move this unit to archives?">
-                <CustomBttn text="Yes, I'm sure" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
+            <Alert id="delete_product" text="Are you sure you want to move this unit to archives?" icon="warn">
+                <CustomBttn text="Yes, I'm sure" classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
                 <BasicBttn text="No, cancel" onclick={() => document.getElementById('delete_product').style.display = "none"} />
             </Alert>
         </>

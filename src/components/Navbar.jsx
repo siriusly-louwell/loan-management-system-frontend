@@ -6,7 +6,7 @@ import HamburgerMenu from './buttons/HamburgerMenu';
 import AvatarBttn from './buttons/AvatarBttn';
 import MenuLink from './links/MenuLink';
 import Button from './buttons/Button';
-import RMCI from '../assets/images/RMCI.jpg';
+import RMCI from '../assets/images/RMCI.png';
 
 export default function Navbar({links, path}) {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function Navbar({links, path}) {
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src={RMCI} className="h-10" alt="Rhean Motor Logo" />
+            <img src={RMCI} className="h-8" alt="Rhean Motor Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Rhean Motor Center</span>
         </a>
         <div className="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">

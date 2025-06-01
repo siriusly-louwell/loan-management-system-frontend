@@ -11,6 +11,11 @@ export default function ApplicationForm() {
     const navigate = useNavigate();
     const location = useLocation();
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [applicant, setApplicant] = useState({});
+    const [address, setAddress] = useState({});
+    const [files, setFiles] = useState({});
+    const [alert, setAlert] = useState({});
+    const submitData = new FormData();
     const routerPaths = useMemo(() => [
         '/customer/apply',
         '/customer/apply/employinfo',
@@ -18,11 +23,6 @@ export default function ApplicationForm() {
         '/customer/apply/requirements',
         '/customer/apply/comakerform'
     ], []);
-    const [applicant, setApplicant] = useState({});
-    const [address, setAddress] = useState({});
-    const [files, setFiles] = useState([]);
-    const [recordId, setRecordId] = useState('');
-    const submitData = new FormData();
 
     useEffect(() => {
         const index = routerPaths.indexOf(location.pathname);
@@ -44,11 +44,15 @@ export default function ApplicationForm() {
         event.preventDefault();
         document.getElementById('saving_application').style.display = 'flex';
 
-        // if (!files[0]) {
-        //     alert('Please select a file');
-        //     console.log(files[0]);
-        //     return;
-        // }
+        if (files.length == 0) {
+            setAlert({
+                text: "Please upload a file in the requirements section.",
+                icon: "warn"
+            });
+            document.getElementById('application_submit').style.display = "block";
+            document.getElementById('saving_application').style.display = 'none';
+            return;
+        }
 
         applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
         applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
@@ -56,84 +60,51 @@ export default function ApplicationForm() {
         applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
         applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
         applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
-        // applicant.valid_id = files[0];
-        // applicant.id_pic = files[1];
-        // applicant.residence_proof = files[2];
-        // applicant.income_proof = files[3];
 
-        // submitData.append('first_name', applicant.first_name);
-        // submitData.append('last_name', applicant.last_name);
-        // submitData.append('middle_name', applicant.middle_name);
-        // submitData.append('gender', applicant.gender);
-        // submitData.append('status', applicant.status);
-        // submitData.append('educ_attain', applicant.educ_attain);
-        // submitData.append('amortization', applicant.amortization);
-        // submitData.append('residence', applicant.residence);
-        // submitData.append('rent', applicant.rent);
-        // submitData.append('sss', applicant.sss);
-        // submitData.append('tin', applicant.tin);
-        // submitData.append('income', applicant.income);
-        // submitData.append('superior', applicant.superior);
-        // submitData.append('employment_status', applicant.employment_status);
-        // submitData.append('yrs_in_service', applicant.yrs_in_service);
-        // submitData.append('rate', applicant.rate);
-        // submitData.append('employer', applicant.employer);
-        // submitData.append('salary', applicant.salary);
-        // submitData.append('business', applicant.business);
-        // submitData.append('living_exp', applicant.living_exp);
-        // submitData.append('rental_exp', applicant.rental_exp);
-        // submitData.append('education_exp', applicant.education_exp);
-        // submitData.append('transportation', applicant.transportation);
-        // submitData.append('insurance', applicant.insurance);
-        // submitData.append('bills', applicant.bills);
-        // submitData.append('spouse_name', applicant.spouse_name);
-        // submitData.append('b_date', applicant.b_date);
-        // submitData.append('spouse_work', applicant.spouse_work);
-        // submitData.append('children_num', applicant.children_num);
-        // submitData.append('children_dep', applicant.children_dep);
-        // submitData.append('school', applicant.school);
-        // submitData.append('personal_pres', applicant.personal_pres);
-        // submitData.append('personal_prev', applicant.personal_prev);
-        // submitData.append('parent_pres', applicant.parent_pres);
-        // submitData.append('parent_prev', applicant.parent_prev);
-        // submitData.append('spouse_pres', applicant.spouse_pres);
-        // submitData.append('spouse_prev', applicant.spouse_prev);
-        // submitData.append('employer_address', applicant.employer_address);
-        // submitData.append('valid_id', files[0]);
-        // submitData.append('id_pic', files[1]);
-        // submitData.append('residence_proof', files[2]);
-        // submitData.append('income_proof', files[3]);
-        console.log(applicant);
-        // document.getElementById('saving_data').style.display = "flex"
+        for(let key in applicant) {
+            submitData.append(`${key}`, applicant[key]);
+        }
+
+        Object.entries(files).forEach(([key, file]) => {
+            submitData.append(key, file);
+        });
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/application', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                // body: submitData
-                body: JSON.stringify(applicant)
+                // headers: {
+                //     'Content-Type': 'application/json',
+                //     'Accept': 'application/json'
+                // },
+                body: submitData
+                // body: JSON.stringify(applicant)
             });
 
             const result = await response.json();
-            setRecordId(result.record_id);
-            // console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
+            setAlert({
+                text: `Your application has been submitted! Your Record ID is ${result.record_id}`,
+                icon: "done"
+            });
             document.getElementById('saving_application').style.display = "none"
             document.getElementById('application_submit').style.display = "block";
             setApplicant({});
         } catch(error) {
             console.error('Error: ', error);
-            alert('Failed to save data.');
+            setAlert({
+                text: "Failed to save data",
+                icon: "warn"
+            });
+            document.getElementById('application_submit').style.display = "block";
             document.getElementById('saving_application').style.display = "none";
         }
     }
 
     function fileChange(event) {
-        setFiles([...files, event.target.files[0]]);
-        console.log(files);
+        setFiles({
+            ...files,
+            [event.target.name]: event.target.files[0]
+        });
     }
 
     function addressChange(event) {
@@ -218,8 +189,8 @@ export default function ApplicationForm() {
                         </div>
                     </form>
                     <Spinner id="saving_application" text="Submitting application. Please wait..." />
-                    <Alert id="application_submit" text={`Your application has been submitted! Your Record Id is ${recordId}`}>
-                        <Button text="Got it" type="button" onclick={() => document.getElementById('application_submit').style.display = "none"} />
+                    <Alert id="application_submit" text={alert.text} icon={alert.icon}>
+                        <Button text="Ok" type="button" onclick={() => document.getElementById('application_submit').style.display = "none"} />
                     </Alert>
                 </div>
             </div>

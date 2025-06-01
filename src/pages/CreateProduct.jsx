@@ -27,7 +27,7 @@ export default function CreateProduct() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        if (files.length == 0) {
+        if (files.length === 0) {
             setAlert({
                 text: "Please select images for the unit.",
                 icon: "warn"
@@ -38,21 +38,10 @@ export default function CreateProduct() {
 
         for(let key in formData) {
             submitData.append(`${key}`, formData[key]);
-            console.log(key, formData[key]);
         }
 
         colors.forEach(color => submitData.append('colors[]', color));
         files.forEach(file => submitData.append('files[]', file));
-        // submitData.append('name', formData.name);
-        // submitData.append('brand', formData.brand);
-        // submitData.append('color', 'red');
-        // submitData.append('price', formData.price);
-        // submitData.append('description', formData.description);
-        // submitData.append('quantity', formData.quantity);
-        // submitData.append('interest', formData.interest);
-        // submitData.append('rebate', formData.rebate);
-        // submitData.append('downpayment', formData.downpayment);
-        // submitData.append('tenure', formData.tenure);
 
         document.getElementById('save_unit').style.display = "flex";
 
@@ -72,7 +61,6 @@ export default function CreateProduct() {
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Failed to save data');
             document.getElementById('save_unit').style.display = "none";
-            // alert('Data saved successfully!');
             setAlert({
                 text: "Unit created succcessfully!",
                 icon: "done"
@@ -97,7 +85,6 @@ export default function CreateProduct() {
     // }
     
     function fileChange(event) {
-        // console.log(event.target.files);
         setFiles([...event.target.files]);
         // setFiles(event.target.files[0]);
     }

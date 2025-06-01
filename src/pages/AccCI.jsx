@@ -8,6 +8,7 @@ import CustomBttn from '../components/buttons/CustomBttn';
 import Table from '../components/tables/Table';
 import Eye from '../assets/icons/Eye';
 import CustomBadge from '../components/badges/CustomBadge';
+import EmptyRows from '../components/empty states/EmptyRows';
 
 export default function AccCI() {
     const [accCI, setCI] = useState([]);
@@ -65,6 +66,9 @@ export default function AccCI() {
                     </tbody>
                 )}
             </Table>
+            {accCI.length === 0 && !ciLoad ? (
+                <EmptyRows />
+            ) : ""}
         </CRUDformat>
     );
 }

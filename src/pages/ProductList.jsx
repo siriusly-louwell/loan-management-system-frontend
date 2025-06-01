@@ -11,6 +11,7 @@ import NavPath from "../components/NavPath";
 import Filter from "../assets/icons/Filter";
 import Sort from "../assets/icons/Sort";
 import CardSkeleton from "../components/loading components/CardSkeleton";
+import EmptySearch from "../components/empty states/EmptySearch";
 
 export default function ProductList({url}) {
     const [isFiltOn, setIsFiltOn] = useState(false);
@@ -18,10 +19,8 @@ export default function ProductList({url}) {
     const [motorLoad, setMotorLoad] = useState(true);
     const filtMenu = useRef(null);
 
-    // Toggle dropdown visibility
     const toggleMenu = () => setIsFiltOn((prev) => !prev);
 
-    // Close dropdown if clicked outside
     useEffect(() => {
         const menuClicked = (event) => {
             if (filtMenu.current && !filtMenu.current.contains(event.target)) {
@@ -86,6 +85,9 @@ export default function ProductList({url}) {
                         ))
                     )}
                 </ProductGrid>
+                {motors.length === 0 && !motorLoad ? (
+                    <EmptySearch />
+                ) : ""}
                 <div className="w-full text-center">
                     <BasicButton text="Show more" />
                 </div>

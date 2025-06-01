@@ -22,7 +22,6 @@ export default function ApplicantsTable() {
             console.error('Error fetching data: ', error);
             setAppLoad(true);
         })
-        console.log(applicants);
     }, []);
 
     function dateConvert(date) {
@@ -56,9 +55,9 @@ export default function ApplicantsTable() {
                 ) : (
                     <tbody>
                         {applicants.map(user => (
-                            <ProductRow key={user.id} recent={isThisWeek(user.created_at)} key={user.id} data={[
+                            <ProductRow key={user.id} recent={isThisWeek(user.created_at)} data={[
                                 <div className="flex items-center mr-3 space-x-2">
-                                    <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png" alt="iMac Front Image" className="h-8 rounded-full w-auto mr-3" />
+                                    <img src={"http://127.0.0.1:8000/storage/"+user.id_pic} alt="applicant id" className="h-8 rounded-full w-auto mr-3" />
                                     {user.first_name} {user.last_name}
                                     {isThisWeek(user.created_at) ? <CustomBadge text="new" color="red" /> : ''}
                                 </div>,
@@ -70,7 +69,7 @@ export default function ApplicantsTable() {
                                 //     </span>
                                 // </div>,
                                 user.record_id,
-                                dateConvert(user.created_at) + ` ${isThisWeek(user.created_at)}`,
+                                dateConvert(user.created_at),
                                 user.apply_status == 'pending' ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />),
                                 <div className="flex items-center space-x-4">
                                     <Link to="/admin/loan" state={{id: user.id}}>

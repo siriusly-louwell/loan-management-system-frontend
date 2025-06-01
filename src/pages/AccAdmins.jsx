@@ -8,6 +8,7 @@ import CustomBttn from '../components/buttons/CustomBttn';
 import Table from '../components/tables/Table';
 import Eye from '../assets/icons/Eye';
 import CustomBadge from '../components/badges/CustomBadge';
+import EmptyRows from '../components/empty states/EmptyRows';
 
 export default function AccAdmins() {
     const [accStaff, setStaff] = useState([]);
@@ -64,6 +65,9 @@ export default function AccAdmins() {
                     </tbody>
                 )}
             </Table>
+            {accStaff.length === 0 && !staffLoad ? (
+                <EmptyRows />
+            ) : ""}
         </CRUDformat>
     );
 }

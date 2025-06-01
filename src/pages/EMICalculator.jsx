@@ -8,7 +8,7 @@ import FormInput from '../components/inputs/FormInput';
 
 export default function EMICalculator({name, brand, motorPrice, years, interest, dp, staff}) {
     const navigate = useNavigate();
-    const [downPayment, setDownPayment] = useState(50000);
+    const [downPayment, setDownPayment] = useState(dp);
     const [tenure, setTenure] = useState(12);
 
     // const downPayment = (motorPrice * downPayment) / 100;
@@ -47,7 +47,7 @@ export default function EMICalculator({name, brand, motorPrice, years, interest,
                             </h3>
                             {/* <span class="font-bold text-blue-600">{downPaymentPercent}%</span> */}
                         </div>
-                        <FormInput type="number" onchange={(e) => setDownPayment(Number(e.target.value))} placeholder="Input downpayment here" />
+                        <FormInput type="number" min={dp} value={downPayment} onchange={(e) => setDownPayment(Number(e.target.value))} placeholder="Input downpayment here" />
                         {/* <input type="range" min="10" max="60" step="10" onChange={(e) => setDownPaymentPercent(Number(e.target.value))} class="w-full h-2 bg-gray-300 dark:bg-gray-400 rounded-lg appearance-none cursor-pointer" />
                         <div class="flex justify-between text-xs text-gray-500 mt-1">
                             <span>10%</span>

@@ -59,11 +59,11 @@ export default function Login() {
                                 <TextInput name="password" type="password" id="password" caption="Password" value={loginData.password} change={handleChange} placeholder="••••••••" required={true} />
                                 <div className="flex items-center justify-between">
                                     <Checkbox name="" id="show_pass" text="Show password" required={false} />
-                                    <Link className="font-medium text-blue-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">Forgot Password</Link>
+                                    <Link className="font-medium text-rose-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">Forgot Password</Link>
                                 </div>
                                 <Button text="Login" />
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Is your application accepted? <Link to="/register" className="font-medium text-blue-500 hover:underline dark:text-primary-500 cursor-pointer">Register here</Link>
+                                    Is your application accepted? <Link to="/register" className="font-medium text-rose-500 hover:underline dark:text-primary-500 cursor-pointer">Register here</Link>
                                 </p>
                             </form>
                         </div>

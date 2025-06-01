@@ -9,6 +9,7 @@ import Table from '../components/tables/Table';
 import Eye from '../assets/icons/Eye';
 import CustomBadge from '../components/badges/CustomBadge';
 import EmptyRows from '../components/empty states/EmptyRows';
+import SmallSpin from '../components/loading components/SmallSpin';
 
 export default function AccAdmins() {
     const [accStaff, setStaff] = useState([]);
@@ -65,6 +66,11 @@ export default function AccAdmins() {
                     </tbody>
                 )}
             </Table>
+            {staffLoad ? (
+                <div class="w-full h-40 py-20 bg-gray-100 flex justify-center items-center">
+                    <SmallSpin size={50}  />
+                </div>
+            ) : ""}
             {accStaff.length === 0 && !staffLoad ? (
                 <EmptyRows />
             ) : ""}

@@ -7,6 +7,8 @@ import TableHead from '../components/tables/TableHead';
 import CustomBttn from '../components/buttons/CustomBttn';
 import Table from '../components/tables/Table';
 import Eye from '../assets/icons/Eye';
+import SmallSpin from '../components/loading components/SmallSpin';
+import EmptyRows from '../components/empty states/EmptyRows';
 
 export default function AccComakers() {
     const [customer, setCustomer] = useState([]);
@@ -73,6 +75,15 @@ export default function AccComakers() {
                     ))}
                 </tbody>
             </Table>
+            {console.log(customer)}
+            {customLoad ? (
+                <div class="w-full h-40 py-20 bg-gray-100 flex justify-center items-center">
+                    <SmallSpin size={50}  />
+                </div>
+            ) : ""}
+            {customer.length === 0 && !customLoad ? (
+                <EmptyRows />
+            ) : ""}
         </CRUDformat>
     );
 }

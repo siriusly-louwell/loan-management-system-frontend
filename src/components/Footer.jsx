@@ -1,9 +1,20 @@
 import React from "react";
 import FooterLink from "./links/FooterLink";
 import RMCI from '../assets/images/RMCI.png';
+import { useLocation } from "react-router-dom";
 
 export default function Footer() {
-    return (
+    const location = useLocation();
+    const apply = [
+        '/customer/apply',
+        '/customer/apply/employinfo',
+        '/customer/apply/familyinfo',
+        '/customer/apply/requirements',
+        '/customer/apply/comakerform'
+    ];
+    const applyPath = apply.find(path => location.pathname === path);
+
+    return applyPath ? "" : (
         <footer class="p-4 bg-white md:p-8 lg:p-10 dark:bg-gray-900">
         <div class="mx-auto max-w-screen-xl text-center">
             <a href="#" class="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white">

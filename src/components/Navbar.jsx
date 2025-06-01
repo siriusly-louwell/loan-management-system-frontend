@@ -13,6 +13,13 @@ export default function Navbar({links, path}) {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const apply = [
+    '/customer/apply',
+    '/customer/apply/employinfo',
+    '/customer/apply/familyinfo',
+    '/customer/apply/requirements',
+    '/customer/apply/comakerform'
+  ];
 
   // Toggle dropdown visibility
   const toggleDropdown = () => setIsOpen((prev) => !prev);
@@ -29,7 +36,9 @@ export default function Navbar({links, path}) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  return (
+  const applyPath = apply.find(path => location.pathname === path);
+
+  return applyPath ? "" : (
     <>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

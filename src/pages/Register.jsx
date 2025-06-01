@@ -64,7 +64,7 @@ export default function Register() {
                                 <TextInput name="confirm_pass" type="password" id="confirm" caption="Confirm Password" placeholder="••••••••" required={true} />
                                 <Button text="Register now" />
                                 <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    Already have an account? <Link to="/login" class="font-medium text-blue-500 hover:underline dark:text-primary-500 cursor-pointer">Log in</Link>
+                                    Already have an account? <Link to="/login" class="font-medium text-rose-500 hover:underline dark:text-primary-500 cursor-pointer">Log in</Link>
                                 </p>
                             </form>
                         </div>

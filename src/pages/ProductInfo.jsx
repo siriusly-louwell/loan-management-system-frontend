@@ -74,6 +74,8 @@ export default function ProductInfo({staff = false}) {
 
     const totalSlides = images.length;
 
+    // console.log(unit.downpayment);
+
     return (
         <section className="py-6 bg-gray-100 md:py-10 dark:bg-gray-800 antialiased">
             {/* <NavPath /> */}
@@ -249,7 +251,7 @@ export default function ProductInfo({staff = false}) {
                     )}
                 </div>
             </div>
-            <EMICalculator name={unit.name} brand={unit.brand} motorPrice={unit.price} years={unit.tenure} dp={unit.downpayment} interest={unit.interest} staff={staff} />
+            <EMICalculator name={unit.name} brand={unit.brand} motorPrice={unit.price} years={unit.tenure} down={unit.downpayment} interest={unit.interest} staff={staff} />
             <div id="add_units" className="overflow-y-auto overflow-x-hidden hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
                 <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
                     <div className="relative p-4 bg-white h-fit rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">

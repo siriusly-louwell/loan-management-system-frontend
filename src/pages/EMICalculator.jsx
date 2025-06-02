@@ -6,10 +6,11 @@ import StepCard from '../components/cards/StepCard';
 import BttnSmall from '../components/buttons/BttnSmall';
 import FormInput from '../components/inputs/FormInput';
 
-export default function EMICalculator({name, brand, motorPrice, years, interest, dp, staff}) {
+export default function EMICalculator({name, brand, motorPrice, years, interest, down, staff}) {
     const navigate = useNavigate();
-    const [downPayment, setDownPayment] = useState(dp);
+    const [downPayment, setDownPayment] = useState(25000);
     const [tenure, setTenure] = useState(12);
+    // if(downPayment == 0)setDownPayment(down);
 
     // const downPayment = (motorPrice * downPayment) / 100;
     const loanAmount = motorPrice - downPayment;
@@ -22,7 +23,7 @@ export default function EMICalculator({name, brand, motorPrice, years, interest,
             Math.pow(1 + monthlyRate, tenure)) /
             (Math.pow(1 + monthlyRate, tenure) - 1);
     
-            console.log(emi);
+            // console.log(downPayment);
 
     return (
         <div class="w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
@@ -43,11 +44,11 @@ export default function EMICalculator({name, brand, motorPrice, years, interest,
                         <div class="flex justify-between items-center mb-2">
                             <h3 class="font-medium text-gray-700 dark:text-gray-200">Downpayment</h3>
                             <h3 class="font-medium text-gray-700 dark:text-gray-200">
-                                Minimum Payment: <span class="font-bold text-rose-600">₱{parseFloat(dp).toLocaleString()}</span>
+                                Minimum Payment: <span class="font-bold text-rose-600">₱{parseFloat(down).toLocaleString()}</span>
                             </h3>
                             {/* <span class="font-bold text-blue-600">{downPaymentPercent}%</span> */}
                         </div>
-                        <FormInput type="number" min={dp} value={downPayment} onchange={(e) => setDownPayment(Number(e.target.value))} placeholder="Input downpayment here" />
+                        <FormInput type="number" min={down} value={downPayment} onchange={(e) => setDownPayment(Number(e.target.value))} placeholder="Input downpayment here" />
                         {/* <input type="range" min="10" max="60" step="10" onChange={(e) => setDownPaymentPercent(Number(e.target.value))} class="w-full h-2 bg-gray-300 dark:bg-gray-400 rounded-lg appearance-none cursor-pointer" />
                         <div class="flex justify-between text-xs text-gray-500 mt-1">
                             <span>10%</span>

@@ -12,7 +12,7 @@ export default function EmptySearch() {
                     </svg>
                 </div>
                 <div>
-                    <h2 className="text-center text-gray-500 text-xl font-semibold leading-loose pb-2">It seems there's no results</h2>
+                    <h2 className="text-center text-gray-500 text-xl font-semibold leading-loose pb-2">No results found</h2>
                     <p className="text-center text-gray-500 text-base font-normal leading-relaxed pb-4">Try changing your filters to <br />see appointments </p>
                 </div>
             </div>

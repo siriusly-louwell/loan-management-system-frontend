@@ -19,7 +19,7 @@ export default function Alert({id, text, children, icon}) {
                                     <Check color='green' size={7} />                                
                                 </div>
                             )}
-                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{text}</h3>
+                        <h3 class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-300">{text}</h3>
                         {children}
                     </div>
                 </div>

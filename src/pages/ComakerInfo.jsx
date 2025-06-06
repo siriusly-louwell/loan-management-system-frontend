@@ -173,13 +173,13 @@ export default function ComakerInfo() {
                 <FormInput label="Employment Status" type="date" name="prod_name" id="name" require={true}/>
                 <FormInput label="Contact Number" type="text" name="prod_name" id="name" placeholder="Phone number here" require={true} />
                 <FormInput label="Email Address" type="email" name="prod_name" id="name" placeholder="doe@gmail.com" />
-                <FormInput label="Facebook Account" type="text" name="prod_name" id="name" placeholder="Facebook name here" require={true} />
+                <FormInput label="Facebook Account" type="text" name="prod_name" id="name" placeholder="Facebook name here" />
                 <FormInput label="Business Name/Employer" type="text" name="prod_name" id="name" placeholder="Name of business or employer" />
                 <FormInput label="Business/Employer Address" type="text" name="prod_name" id="name" placeholder="Type business address here" />
                 <div class="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                     <FormSelect name="educ_attain" label="Educ. Attainment" id="educ_attain" require={true}>
                         <option>High School</option>
-                        <option>Colege Level</option>
+                        <option>College Level</option>
                         <option>College Graduate</option>
                         <option>Post Graduate</option>
                     </FormSelect>
@@ -332,7 +332,10 @@ export default function ComakerInfo() {
             </div>
 
             <div class="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-                <FileInput label="Sketch Image" type="img" />
+                <FileInput label="Sketch Image" type="img" require={true} />
+                <FileInput label="Valid ID" type="img" require={true} />
+                <FileInput label="2x2 ID picture" type="img" require={true} />
+                <FileInput label="Proof of Residence" type="img" require={true} />
             </div>
         </>
     );

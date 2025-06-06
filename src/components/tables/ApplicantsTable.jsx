@@ -14,7 +14,7 @@ export default function ApplicantsTable() {
     const [appLoad, setAppLoad] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/application')
+        fetch('http://127.0.0.1:8000/api/application')
             .then(response => response.json())
             .then(data => {
                 setApplicants(data);

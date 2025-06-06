@@ -71,7 +71,7 @@ export default function ApplicationForm() {
         });
 
         try {
-            const response = await fetch('http://localhost:8000/api/application', {
+            const response = await fetch('http://127.0.0.1:8000/api/application', {
                 method: 'POST',
                 // headers: {
                 //     'Content-Type': 'application/json',
@@ -84,8 +84,10 @@ export default function ApplicationForm() {
             const result = await response.json();
             if(!response.ok) throw new Error('Update failed');
             setAlert({
-                text: `Your application has been submitted! Your Record ID is ${result.record_id}`,
-                icon: "done"
+                text: `Your application has been submitted!`,
+                icon: "done",
+                id: result.record_id,
+                contact: result.contact
             });
             document.getElementById('saving_application').style.display = "none"
             document.getElementById('application_submit').style.display = "block";
@@ -196,7 +198,22 @@ export default function ApplicationForm() {
                     </form>
                     <Spinner id="saving_application" text="Submitting application. Please wait..." />
                     <Alert id="application_submit" text={alert.text} icon={alert.icon}>
-                        <Button text="Ok" type="button" onclick={() => document.getElementById('application_submit').style.display = "none"} />
+                        {alert.icon === "warn" ? (
+                            <Button text="Ok" type="button" onclick={() => document.getElementById('application_submit').style.display = "none"} />
+                        ) : (
+                            <>
+                                <h2 className="text-gray-600 dark:text-white">Your Record ID: <strong className="text-rose-500">{alert.id}</strong></h2>
+                                <p className="text-rose-500 mb-2">Please save or take a photo of your record ID.</p>
+                                <p className="text-gray-600 dark:text-white mb-5">
+                                    Your application is under review, we will notify you once it is done.
+                                    A notification will be sent to you via SMS on <strong className="text-rose-500">{alert.contact}</strong>. Please check for more detailed information.
+                                </p>
+                                <Button text="Finish" type="button" onclick={() => {
+                                    document.getElementById('application_submit').style.display = "none";
+                                    navigate('/');
+                                }} />
+                            </>
+                        )}
                     </Alert>
                 </div>
             </div>

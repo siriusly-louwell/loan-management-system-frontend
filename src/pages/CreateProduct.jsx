@@ -46,7 +46,7 @@ export default function CreateProduct() {
         document.getElementById('save_unit').style.display = "flex";
 
         try {
-            const response = await fetch('http://localhost:8000/api/motorcycle', {
+            const response = await fetch('http://127.0.0.1:8000/api/motorcycle', {
                 method: 'POST',
                 // headers: {
                 //     'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ export default function AccCI() {
     const [ciLoad, setCILoad] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/account')
+        fetch('http://127.0.0.1:8000/api/account')
         .then(response => response.json())
         .then(data => {
             setCI(data);

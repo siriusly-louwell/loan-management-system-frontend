@@ -38,7 +38,7 @@ export default function InventoryTable({motorcycles, loading, editMotor}) {
                         {motorcycles.map(motor => (
                             <ProductRow key={motor.id} recent={isThisWeek(motor.created_at)} data={[
                                 <div class="flex items-center mr-3 space-x-2">
-                                    <img src={"http://localhost:8000/storage/"+motor.file_path} alt="unit image" class="h-8 w-auto mr-3 rounded-lg" />
+                                    <img src={"http://127.0.0.1:8000/storage/"+motor.file_path} alt="unit image" class="h-8 w-auto mr-3 rounded-lg" />
                                     {motor.name}
                                     {isThisWeek(motor.created_at) ? <CustomBadge text="new" color="red" /> : ''}
                                 </div>,

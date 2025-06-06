@@ -19,6 +19,8 @@ export default function PersonalInfoForm() {
                     <option value="female">Female</option>
                     <option value="other">Prefer not to say</option>
                 </FormSelect>
+                <FormInput label="Contact Number" type="number" name="contact_num" id="contact_num" value={applicant.contact_num} onchange={handleChange} placeholder="+63 912 3456 789" require={true} />
+                <FormInput label="Email Address" type="email" name="email" id="email" value={applicant.email} onchange={handleChange} placeholder="doe@gmail.com" />
                 <FormSelect name="status" label="Marital Status" id="status" value={applicant.status} onchange={handleChange} require={true}>
                     <option value="single">Single</option>
                     <option value="relationship">In a relationship</option>
@@ -171,7 +173,7 @@ export default function PersonalInfoForm() {
                 ) : (
                     <>
                         <FormInput label="Country" type="text" name="prev_country" id="country" value={address.prev_country} onchange={addressChange} placeholder="Type country here" require={true} />
-                        <FormInput label="Region" type="text" name="prev_region" id="region" value={address.prev_region} onchange={addressChange} placeholder="Type region here" />
+                        <FormInput label="Region" type="text" name="prev_region" id="region" value={address.prev_region} onchange={addressChange} placeholder="Type region here" require={true} />
                         <FormInput label="Province" type="text" name="prev_province" id="province" value={address.prev_province} onchange={addressChange} placeholder="Type province here" require={true} />
                         <FormInput label="City/Municipality" type="text" name="prev_city" id="city" value={address.prev_city} onchange={addressChange} placeholder="Type city here" require={true} />
                         <FormInput label="Barangay" type="text" name="prev_brgy" id="brgy" value={address.prev_brgy} onchange={addressChange} placeholder="Type barangay here" require={true} />

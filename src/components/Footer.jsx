@@ -7,6 +7,7 @@ export default function Footer() {
     const location = useLocation();
     const apply = [
         '/customer/apply',
+        '/customer/apply/personalinfo',
         '/customer/apply/employinfo',
         '/customer/apply/familyinfo',
         '/customer/apply/requirements',

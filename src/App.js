@@ -40,6 +40,7 @@ import EMICalculator from './pages/EMICalculator';
 import CustomBttn from './components/buttons/CustomBttn';
 import AppliedForm from './pages/AppliedForm';
 import ComakerInfo from './pages/ComakerInfo';
+import TransactionForm from './pages/TransactionForm';
 
 function App() {  
   return (
@@ -67,7 +68,8 @@ function App() {
             <Route path="product" element={<ProductInfo />} />
 
             <Route path="apply" element={<ApplicationForm />}>
-              <Route index element={<PersonalInfoForm />} />
+              <Route index element={<TransactionForm />} />
+              <Route path="transaction" element={<TransactionForm />} />
               <Route path="personalinfo" element={<PersonalInfoForm />} />
               <Route path="employinfo" element={<EmploymentInfoForm />} />
               <Route path="familyinfo" element={<FamilyInfoForm />} />

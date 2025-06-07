@@ -7,7 +7,6 @@ import BasicButton from "../components/buttons/BasicBttn";
 import DropdownMenu from "../components/DropdownMenu";
 import MenuLink from "../components/links/MenuLink";
 import DropdownBttn from "../components/buttons/DropdownBttn";
-import NavPath from "../components/NavPath";
 import Filter from "../assets/icons/Filter";
 import Sort from "../assets/icons/Sort";
 import CardSkeleton from "../components/loading components/CardSkeleton";

@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
-import StarRating from "../components/StarRating";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
-import NavPath from "../components/NavPath";
 import EMICalculator from './EMICalculator';
 import ColorLabel from '../components/ColorLabel';
 import SmallLabel from '../components/texts/SmallLabel';
 import FormSelect from '../components/inputs/FormSelect';
 import Button from '../components/buttons/Button';
-import Plus from '../assets/icons/Plus';
 import ProductGrid from '../components/cards/ProductGrid';
 import ProductCard from '../components/cards/ProductCard';
 import CloseBttn from '../components/buttons/CloseBttn';
 import PfpLabel from '../components/PfpLabel';
 import SmallSpin from '../components/loading components/SmallSpin';
+import BasicTabs from '../components/tabs/BasicTabs';
 
 export default function ProductInfo({staff = false}) {
     const navigate = useNavigate();
@@ -25,6 +24,7 @@ export default function ProductInfo({staff = false}) {
     const [unitLoad, setUnitLoad] = useState(true);
     const [addUnit, setUnits] = useState([]);
     const [addLoad, setUnitsLoad] = useState(true);
+    const [selected, setSelected] = useState([id]);
     const [current, setCurrent] = useState(0);
     const images = [];
 
@@ -34,6 +34,14 @@ export default function ProductInfo({staff = false}) {
 
     const prevSlide = () => {
         setCurrent((prev) => (prev - 1 + totalSlides) % totalSlides);
+    };
+
+    function selectUnits(unit) {
+        const newSelected = selected.includes(unit)
+            ? selected.filter(select => select !== unit)
+            : [...selected, unit];
+
+        setSelected(newSelected);
     };
 
     useEffect(() => {
@@ -53,19 +61,36 @@ export default function ProductInfo({staff = false}) {
         fetch('http://127.0.0.1:8000/api/motorcycle')
         .then(response => response.json())
         .then(data => {
-                setUnits(data);
-                setUnitsLoad(false);
-            })
-            .catch(error => {
-                console.error('Error fetching data: ', error);
-                setUnitsLoad(true);
-            })
+            setUnits(data);
+            setUnitsLoad(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+            setUnitsLoad(true);
+        })
     }, []);
+
+    async function fetchSelect() {
+        document.getElementById('product_spin').style.display = 'flex';
+
+        await axios.get('/api/products', {
+            params: { ids: selected }
+        })
+        .then(response => {
+            console.log('Products:', response.data);
+        })
+        .then(data => {
+            setUnits(data);
+            setUnitsLoad(false);
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+        });
+    }
 
     if(!unitLoad)unit.images.map(file => {
         images.push("http://127.0.0.1:8000/storage/" + file.path);
     });
-
 
     function changeUnit(event) {
         setUnit(addUnit[event.target.value]);
@@ -74,12 +99,10 @@ export default function ProductInfo({staff = false}) {
 
     const totalSlides = images.length;
 
-    // console.log(unit.downpayment);
-
     return (
         <section className="py-6 bg-gray-100 md:py-10 dark:bg-gray-800 antialiased">
-            {/* <NavPath /> */}
             <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
+                <BasicTabs ids={selected} state={id} setId={setId} />
                 <div className="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
                     {(
                         <>
@@ -147,7 +170,7 @@ export default function ProductInfo({staff = false}) {
                                     {unitLoad ? (
                                         <p className="h-8 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-40 mb-4"></p>
                                     ) : (
-                                        <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">₱{parseFloat(unit.price).toLocaleString()}</p>
+                                        <p className="text-2xl font-extrabold text-rose-600 sm:text-3xl dark:text-rose-500">₱{parseFloat(unit.price).toLocaleString()}</p>
                                     )}
                                     <div className="flex space-x-2">
                                         <div className='grid grid-cols-10 gap-y-2'>
@@ -174,21 +197,8 @@ export default function ProductInfo({staff = false}) {
                                         </svg>
                                     </BttnwithIcon>
                                     {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
-                                    <AddtoCartBttn text="Apply Loan" url="/customer/apply"/>
+                                    <AddtoCartBttn text="Apply Loan" id={id} url="/customer/apply"/>
                                     <AddtoCartBttn text="Pay in Cash" />
-                                </div>
-                                <BttnwithIcon text="Add more units" click={() => document.getElementById('add_units').style.display = "block"}>
-                                    <Plus />
-                                </BttnwithIcon>
-                                <div className="flex mt-5 items-center space-x-4">
-                                    <p className="text-gray-900 dark:text-white">Select Color: </p>
-                                    <div className="grid grid-cols-10 gap-y-2">
-                                        {unitLoad ? "" :
-                                            unit.colors.map(color => (
-                                                <ColorLabel style={color.color} />
-                                            ))
-                                        }
-                                    </div>
                                 </div>
                                 <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
                                 <p className="mb-6 text-gray-500 dark:text-gray-400">
@@ -215,7 +225,7 @@ export default function ProductInfo({staff = false}) {
                                 </p>
                             </div>
 
-                            <div className="grid gap-4 sm:gap-5 col-span-2 lg:grid-cols-5 grid-cols-2 md:grid-cols-3">
+                            <div className="grid gap-4 sm:gap-5 col-span-2 mb-5 lg:grid-cols-5 grid-cols-2 md:grid-cols-3">
                                 <PfpLabel caption="Engine" label={unit.engine} />
                                 <PfpLabel caption="Compression Ratio" label={unit.compression} />
                                 <PfpLabel caption="Displacement (cc)" label={unit.displacement} />
@@ -254,18 +264,20 @@ export default function ProductInfo({staff = false}) {
             <EMICalculator name={unit.name} brand={unit.brand} motorPrice={unit.price} years={unit.tenure} down={unit.downpayment} interest={unit.interest} staff={staff} load={unitLoad} />
             <div id="add_units" className="overflow-y-auto overflow-x-hidden hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
                 <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
-                    <div className="relative p-4 bg-white h-fit rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
+                    <div className="relative p-4 bg-gray-100 h-fit rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
                         <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select units</h3>
-                            <CloseBttn id="add_units" />
+                            <CloseBttn id="add_units" cancel={[]} trigger={setSelected} />
                         </div>
                         <ProductGrid addunit={true}>
                             {addLoad ? (<div>Loading...</div>) : (
-                                addUnit.map(motor => (
-                                <ProductCard key={motor.id} unit={motor} />
-                                ))
+                                addUnit.map(motor => {
+                                    return id !== motor.id ? (<ProductCard key={motor.id} id={motor.id} unit={motor} selected={selected} selectUnits={selectUnits} />) : "";
+                                })
                             )}
                         </ProductGrid>
+                        <Button text="Done" onclick={() => document.getElementById('add_units').style.display = 'none'} />
+                        {/* <Spinner id="product_spin" /> */}
                     </div>
                 </div>
             </div>

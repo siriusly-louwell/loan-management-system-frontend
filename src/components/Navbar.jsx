@@ -15,6 +15,7 @@ export default function Navbar({links, path}) {
   const dropdownRef = useRef(null);
   const apply = [
     '/customer/apply',
+    '/customer/apply/personalinfo',
     '/customer/apply/employinfo',
     '/customer/apply/familyinfo',
     '/customer/apply/requirements',

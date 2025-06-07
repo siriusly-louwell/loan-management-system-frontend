@@ -39,7 +39,6 @@ export default function EMICalculator({name, brand, motorPrice, years, interest,
             Math.pow(1 + monthlyRate, tenure)) /
             (Math.pow(1 + monthlyRate, tenure) - 1);
     
-            console.log(downPayment, down);
     return (
         <div className="w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
             <div className="w-full justify-items-center px-5">

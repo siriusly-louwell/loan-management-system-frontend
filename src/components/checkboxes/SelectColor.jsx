@@ -1,7 +1,7 @@
 import React from "react";
 import ColorLabel from "../ColorLabel";
 
-export default function SelectColor({text, size, colors, changeColor, arr = []}) {
+export default function SelectColor({text, size, colors, changeColor, index, arr = []}) {
     const bool = arr.length > 0;
     const spectrum = bool ? arr : [
         '#ffb6b9', '#ff6b6b', 'pink', 'rose', 'red', '#c41e3a', '#d99058', 'orange', '#ff7f50', 'amber', 'yellow', '#daa520',
@@ -18,13 +18,16 @@ export default function SelectColor({text, size, colors, changeColor, arr = []})
             <div className='grid grid-cols-10 lg:grid-cols-9 gap-x-7 mt-4 sm:mt-0 sm:gap-y-3 sm:gap-x-10'>
                 {spectrum.map(color => {
                     const newColor = bool ? color.color : color;
-                    const including = bool ? colors == newColor : colors.includes(`${newColor}`);
+                    const including = bool ? colors[index] === newColor : colors.includes(`${newColor}`);
 
                     return (<>
-                        <label htmlFor={newColor}>
+                        <label htmlFor={`${newColor}_${index}`}>
                             <ColorLabel style={newColor} size={size} selected={including ? "border-blue-500 border-2" : ""} />
                         </label>
-                        <input type="checkbox" value={newColor} id={newColor} className="hidden" check={including} onChange={(e) => changeColor(e.target.value)} />
+                        <input type="checkbox" value={newColor} id={`${newColor}_${index}`} className="hidden" check={including} onChange={(e) => {
+                            if(index > 0 || index === 0)changeColor(index, e.target.value);
+                            else changeColor(e.target.value);
+                        }} />
                     </>)
                 })}
             </div>

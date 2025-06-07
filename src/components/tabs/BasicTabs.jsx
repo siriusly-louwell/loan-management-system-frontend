@@ -9,10 +9,10 @@ export default function BasicTabs({ids, state, setId}) {
     }
 
     return (
-        <ul className="overflow-x-hidden sm:px-10 flex w-full text-center space-x-5 text-gray-500 bg-gray-100 rounded-lg space-x-4 mb-3">
+        <ul className="overflow-x-auto whitespace-nowrap border-y border-gray-300 divide-x divide-gray-400 py-2 flex w-full text-center text-gray-500 bg-gray-200 mb-3">
             {ids.map((id, i) => (
-                <li>
-                    <button type="button" onClick={() => setId(id)} className={"flex justify-center p-4 " + unitCheck(id)}>Unit {i + 1}</button>
+                <li key={i} className="flex-shrink-0">
+                    <button type="button" onClick={() => setId(id)} className={"flex justify-center p-4 mx-3 " + unitCheck(id)}>Unit {i + 1}</button>
                 </li>
             ))}
             {/* <li>
@@ -21,9 +21,11 @@ export default function BasicTabs({ids, state, setId}) {
             <li>
                 <a href="#page2" className="flex justify-center bg-white rounded-lg shadow text-rose-500 p-4">Titan maintenance</a>
             </li> */}
-            <BttnwithIcon text="Add more units" click={() => document.getElementById('add_units').style.display = "block"}>
-                <Plus />
-            </BttnwithIcon>
+            <li className="flex items-center px-3">
+                <BttnwithIcon text="Add more units" click={() => document.getElementById('add_units').style.display = "block"}>
+                    <Plus />
+                </BttnwithIcon>
+            </li>
         </ul>
     );
 }

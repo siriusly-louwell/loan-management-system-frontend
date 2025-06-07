@@ -174,8 +174,8 @@ export default function ApplicationForm() {
             : (currentIndex > index ? "done" : "pend");
     }
 
-    const id = state?.id;
-    const outletContext = {handleChange, handleTransaction, transactForm, addressChange, applicant, address, copyAddress, fileChange, id};
+    const ids = state?.selected;
+    const outletContext = {handleChange, handleTransaction, transactForm, addressChange, applicant, address, copyAddress, fileChange, ids};
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

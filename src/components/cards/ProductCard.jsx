@@ -80,7 +80,7 @@ export default function ProductCard({unit, url, id, selected, selectUnits}) {
                     <div className="mt-4 flex items-center justify-between gap-4">
                         <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">₱{parseFloat(unit.price).toLocaleString()}</p>
                         {location.pathname !== "/product" ? (
-                            <AddtoCartBttn id={unit.id} url={url} text="Inquire" />
+                            <AddtoCartBttn state={{id: unit.id}} url={url} text="Inquire" />
                         ) : (
                             <div className={`rounded-full h-6 w-6 border border-2 flex p-1 justify-center items-center ${including ? 'border-rose-500 bg-rose-500' : 'border-gray-400 dark:border-gray-500'}`}>
                                 {including ? (<Check color="white" />) : ""}

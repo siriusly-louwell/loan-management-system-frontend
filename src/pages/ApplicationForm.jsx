@@ -14,7 +14,7 @@ export default function ApplicationForm() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [applicant, setApplicant] = useState({});
     const [address, setAddress] = useState({});
-    const [transactForm, setTransactForm] = useState({});
+    const [transactForm, setTransactForm] = useState([]);
     const [files, setFiles] = useState({});
     const [alert, setAlert] = useState({});
     const submitData = new FormData();
@@ -32,21 +32,27 @@ export default function ApplicationForm() {
         if(index >= 0 && index !== currentIndex)setCurrentIndex(index);
         window.scrollTo(0, 0);
     }, [location, routerPaths, currentIndex]);
+    
+    useEffect(() => {
+        // const len = Array(state?.selected.length).fill().map(() => ({}));
+        const len = state?.selected.map(id => ({motorcycle_id: id}));
+        setTransactForm(len);
+    }, []);
 
     function handleNext () {
         const nextIndex = currentIndex + 1;
-        if(nextIndex < routerPaths.length)navigate(routerPaths[nextIndex]);
+        if(nextIndex < routerPaths.length)navigate(routerPaths[nextIndex], {state: {selected: state?.selected}});
     }
 
     function handlePrev() {
         const prevIndex = currentIndex - 1;
-        if(prevIndex >= 0)navigate(routerPaths[prevIndex]);
+        if(prevIndex >= 0)navigate(routerPaths[prevIndex], {state: {selected: state?.selected}});
     }
 
 
     async function handleSubmit(event) {
         event.preventDefault();
-        document.getElementById('saving_application').style.display = 'flex';
+        // document.getElementById('saving_application').style.display = 'flex';
 
         if (files.length === 0) {
             setAlert({
@@ -58,52 +64,67 @@ export default function ApplicationForm() {
             return;
         }
 
-        applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
-        applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
-        applicant.parent_pres = address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country;
-        applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
-        applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
-        applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
+        setApplicant({
+            ...applicant,
+            personal_pres: address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country,
+            personal_prev: address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country,
+            parent_pres: address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country,
+            parent_prev: address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country,
+            spouse_pres: address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country,
+            spouse_prev: address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country,
+            transactions: transactForm
+        });
+
+        // applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
+        // applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
+        // applicant.parent_pres = address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country;
+        // applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
+        // applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
+        // applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
 
         for(let key in applicant) {
             submitData.append(`${key}`, applicant[key]);
         }
 
+        transactForm.forEach(trans => submitData.append('transactions[]', trans));
+
         Object.entries(files).forEach(([key, file]) => {
             submitData.append(key, file);
         });
 
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/application', {
-                method: 'POST',
-                // headers: {
-                //     'Content-Type': 'application/json',
-                //     'Accept': 'application/json'
-                // },
-                body: submitData
-                // body: JSON.stringify(applicant)
-            });
+        console.log(applicant);
 
-            const result = await response.json();
-            if(!response.ok) throw new Error('Update failed');
-            setAlert({
-                text: `Your application has been submitted!`,
-                icon: "done",
-                id: result.record_id,
-                contact: result.contact
-            });
-            document.getElementById('saving_application').style.display = "none"
-            document.getElementById('application_submit').style.display = "block";
-            setApplicant({});
-        } catch(error) {
-            console.error('Error: ', error);
-            setAlert({
-                text: "Failed to save data",
-                icon: "warn"
-            });
-            document.getElementById('application_submit').style.display = "block";
-            document.getElementById('saving_application').style.display = "none";
-        }
+        // try {
+        //     const response = await fetch('http://127.0.0.1:8000/api/application', {
+        //         method: 'POST',
+        //         // headers: {
+        //         //     'Content-Type': 'application/json',
+        //         //     'Accept': 'application/json'
+        //         // },
+        //         body: submitData
+        //         // body: JSON.stringify(applicant)
+        //     });
+
+        //     const result = await response.json();
+        //     if(!response.ok) throw new Error('Update failed');
+        //     setAlert({
+        //         text: `Your application has been submitted!`,
+        //         icon: "done",
+        //         id: result.record_id,
+        //         contact: result.contact
+        //     });
+        //     document.getElementById('saving_application').style.display = "none"
+        //     document.getElementById('application_submit').style.display = "block";
+        //     setApplicant({});
+        // } catch(error) {
+        //     console.error('Error: ', error);
+        //     setAlert({
+        //         text: "Failed to save data",
+        //         icon: "warn"
+        //     });
+        //     document.getElementById('application_submit').style.display = "block";
+        //     document.getElementById('saving_application').style.display = "none";
+        // }
     }
 
     function fileChange(event) {
@@ -162,11 +183,24 @@ export default function ApplicationForm() {
         });
     }
 
-    function handleTransaction(event) {
-        setTransactForm({
-            ...transactForm,
+    function handleTransaction(i, event) {
+        const form = [...transactForm];
+        form[i] = {
+            ...transactForm[i],
             [event.target.name]: event.target.value
-        });
+        };
+
+        setTransactForm(form);
+    }
+
+    function handleTransForm(i, num, key) {
+        const form = [...transactForm];
+        form[i] = {
+            ...transactForm[i],
+            [key]: num
+        };
+
+        setTransactForm(form);
     }
 
     function stepCheck(index) {
@@ -175,7 +209,8 @@ export default function ApplicationForm() {
     }
 
     const ids = state?.selected;
-    const outletContext = {handleChange, handleTransaction, transactForm, addressChange, applicant, address, copyAddress, fileChange, ids};
+    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, addressChange, applicant, address, copyAddress, fileChange, ids};
+    console.log(transactForm);
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

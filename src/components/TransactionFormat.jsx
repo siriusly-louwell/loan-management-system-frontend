@@ -6,7 +6,7 @@ import QuantityInput from "./buttons/QuantityInput";
 import FormInput from "./inputs/FormInput";
 import FormSelect from "./inputs/FormSelect";
 
-export default function TransactionFormat({transact, transactForm, handleTransaction, colors, changeColor, downPayment, index, handleDown}) {
+export default function TransactionFormat({transact, transactForm, handleTransaction, colors, changeColor, downPayment, index, handleDown, handleTransForm}) {
     useEffect(() => {
         if(downPayment < transact.downpayment) {
             document.getElementById(`down_warn_${index}`).style.display = 'block';
@@ -36,7 +36,7 @@ export default function TransactionFormat({transact, transactForm, handleTransac
             <div className="flex py-5 border-b border-gray-400 dark:border-gray-600 items-center space-x-4 mb-5">
                 <div className="grid lg:grid-cols-2 gap-x-5 gap-y-4">
                     <SelectColor text="Select Color:" size={6} colors={colors} changeColor={changeColor} index={index} arr={transact.colors} />
-                    <QuantityInput label="Quantity" max={transact.tenure} number={transactForm.quantity} change={handleTransaction} require={true} />
+                    <QuantityInput label="Quantity" max={transact.tenure} number={transactForm.quantity} index={index} change={handleTransForm} require={true} />
                     <div>
                         <div className="flex justify-between items-center mb-2">
                             <h3 className="font-medium text-gray-700 dark:text-gray-200">Downpayment</h3>
@@ -47,7 +47,7 @@ export default function TransactionFormat({transact, transactForm, handleTransac
                         <FormInput type="number" id={`downpayment_${index}`} value={downPayment} onchange={(e) => handleDown(index, Number(e.target.value))} placeholder="Input downpayment here" />
                         <p id={`down_warn_${index}` }className="text-red-500">* Downpayment must not go below the minimum payment</p>
                     </div>
-                    <FormSelect name="tenure" label="Loan Years" id="tenure" value={transactForm.tenure} onchange={handleTransaction} require={true}>
+                    <FormSelect name="tenure" label="Loan Years" id="tenure" value={transactForm.tenure} onchange={(e) => handleTransaction(index, e)} require={true}>
                         {[...Array(transact.tenure)].map((_, i) => (
                             <option value={i+1}>{i+1} {i+1 > 1 ? 'years' : 'year'}</option>
                         ))}

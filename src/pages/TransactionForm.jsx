@@ -9,7 +9,7 @@ import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 
 export default function TransactionForm() {
-    const {ids, handleTransaction, transactForm} = useOutletContext();
+    const {ids, handleTransaction, transactForm, handleTransForm} = useOutletContext();
     const [transact, setTransact] = useState([]);
     const [transLoad, setTransLoad] = useState(true);
     const [colors, setColors] = useState('');
@@ -21,6 +21,8 @@ export default function TransactionForm() {
             updated[i] = newColor;
             return updated;
         });
+
+        handleTransForm(i, newColor, 'color');
     };
 
     useEffect(() => {
@@ -48,6 +50,8 @@ export default function TransactionForm() {
             updated[i] = downpayment;
             return updated;
         });
+
+        handleTransForm(i, downpayment, 'downpayment');
     }
 
     return (
@@ -77,7 +81,7 @@ export default function TransactionForm() {
                                 </div>
                                 <FormInput type="number" placeholder="Input downpayment here" />
                             </div>
-                            <FormSelect name="tenure" label="Loan Years" id="tenure" value={transactForm.tenure} onchange={handleTransaction} require={true}>
+                            <FormSelect name="tenure" label="Loan Years">
                                 <option>Loading...</option>
                             </FormSelect>
                         </div>
@@ -85,7 +89,7 @@ export default function TransactionForm() {
                 </div>
             ) : transact.map((select, i) => (
                 <TransactionFormat key={select.id} index={i}
-                    transact={select} transactForm={transactForm} handleTransaction={handleTransaction}
+                    transact={select} transactForm={transactForm[i]} handleTransaction={handleTransaction} handleTransForm={handleTransForm}
                     colors={colors} changeColor={changeColor} downPayment={downPayment[i]} handleDown={handleDown}
                 />
             ))}

@@ -34,8 +34,8 @@ export default function ApplicationForm() {
     }, [location, routerPaths, currentIndex]);
     
     useEffect(() => {
-        // const len = Array(state?.selected.length).fill().map(() => ({}));
-        const len = state?.selected.map(id => ({motorcycle_id: id}));
+        const len = Array(state?.selected.length).fill().map(() => ({}));
+        // const len = state?.selected.map(id => ({motorcycle_id: id}));
         setTransactForm(len);
     }, []);
 
@@ -52,7 +52,7 @@ export default function ApplicationForm() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        // document.getElementById('saving_application').style.display = 'flex';
+        document.getElementById('saving_application').style.display = 'flex';
 
         if (files.length === 0) {
             setAlert({
@@ -64,29 +64,20 @@ export default function ApplicationForm() {
             return;
         }
 
-        setApplicant({
-            ...applicant,
-            personal_pres: address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country,
-            personal_prev: address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country,
-            parent_pres: address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country,
-            parent_prev: address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country,
-            spouse_pres: address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country,
-            spouse_prev: address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country,
-            transactions: transactForm
-        });
-
-        // applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
-        // applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
-        // applicant.parent_pres = address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country;
-        // applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
-        // applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
-        // applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
+        applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
+        applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
+        applicant.parent_pres = address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country;
+        applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
+        applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
+        applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
 
         for(let key in applicant) {
             submitData.append(`${key}`, applicant[key]);
         }
 
-        transactForm.forEach(trans => submitData.append('transactions[]', trans));
+        transactForm.forEach((trans, index) => {
+            submitData.append(`transactions[${index}]`, JSON.stringify(trans));
+        });
 
         Object.entries(files).forEach(([key, file]) => {
             submitData.append(key, file);
@@ -94,37 +85,37 @@ export default function ApplicationForm() {
 
         console.log(applicant);
 
-        // try {
-        //     const response = await fetch('http://127.0.0.1:8000/api/application', {
-        //         method: 'POST',
-        //         // headers: {
-        //         //     'Content-Type': 'application/json',
-        //         //     'Accept': 'application/json'
-        //         // },
-        //         body: submitData
-        //         // body: JSON.stringify(applicant)
-        //     });
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/application', {
+                method: 'POST',
+                // headers: {
+                //     'Content-Type': 'application/json',
+                //     'Accept': 'application/json'
+                // },
+                body: submitData
+                // body: JSON.stringify(applicant)
+            });
 
-        //     const result = await response.json();
-        //     if(!response.ok) throw new Error('Update failed');
-        //     setAlert({
-        //         text: `Your application has been submitted!`,
-        //         icon: "done",
-        //         id: result.record_id,
-        //         contact: result.contact
-        //     });
-        //     document.getElementById('saving_application').style.display = "none"
-        //     document.getElementById('application_submit').style.display = "block";
-        //     setApplicant({});
-        // } catch(error) {
-        //     console.error('Error: ', error);
-        //     setAlert({
-        //         text: "Failed to save data",
-        //         icon: "warn"
-        //     });
-        //     document.getElementById('application_submit').style.display = "block";
-        //     document.getElementById('saving_application').style.display = "none";
-        // }
+            const result = await response.json();
+            if(!response.ok) throw new Error('Update failed');
+            setAlert({
+                text: `Your application has been submitted!`,
+                icon: "done",
+                id: result.record_id,
+                contact: result.contact
+            });
+            document.getElementById('saving_application').style.display = "none"
+            document.getElementById('application_submit').style.display = "block";
+            // setApplicant({});
+        } catch(error) {
+            console.error('Error: ', error);
+            setAlert({
+                text: "Failed to save data",
+                icon: "warn"
+            });
+            document.getElementById('application_submit').style.display = "block";
+            document.getElementById('saving_application').style.display = "none";
+        }
     }
 
     function fileChange(event) {
@@ -209,8 +200,7 @@ export default function ApplicationForm() {
     }
 
     const ids = state?.selected;
-    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, addressChange, applicant, address, copyAddress, fileChange, ids};
-    console.log(transactForm);
+    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange, ids};
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-export default function QuantityInput({label, max, require, subtext, index, change}) {
-    const [number, setNumber] = useState(0);
+export default function QuantityInput({label, max, require, index, change}) {
+    const [number, setNumber] = useState(1);
 
     function handleNumber(type) {
-        if(type === 'increment') {
+        if(type === 'increment' && number < max) {
             setNumber(number + 1);
             change(index, number + 1, 'quantity');
         }
-        else {
+
+        if(type === 'decrement' && number > 1) {
             setNumber(number - 1);
             change(index, number - 1, 'quantity');
         }
@@ -30,7 +31,7 @@ export default function QuantityInput({label, max, require, subtext, index, chan
                     </svg>
                 </button>
             </div>
-            <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">{subtext}</p>
+            <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">Must not exceed <strong>{max}</strong> units</p>
         </div>
     );
 }

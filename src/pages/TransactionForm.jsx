@@ -9,7 +9,7 @@ import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 
 export default function TransactionForm() {
-    const {ids, handleTransaction, transactForm, handleTransForm} = useOutletContext();
+    const {ids, handleTransaction, transactForm, handleTransForm, setTransactForm} = useOutletContext();
     const [transact, setTransact] = useState([]);
     const [transLoad, setTransLoad] = useState(true);
     const [colors, setColors] = useState('');
@@ -54,6 +54,16 @@ export default function TransactionForm() {
         handleTransForm(i, downpayment, 'downpayment');
     }
 
+    useEffect(() => {
+        const initializedForm = transact.map((t, i) => ({
+            motorcycle_id: t.id,
+            downpayment: t.downpayment,
+            quantity: 1
+        }));
+
+        setTransactForm(initializedForm);
+    }, [transact]);
+
     return (
         <>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Loan Customization:</h3>
@@ -88,7 +98,7 @@ export default function TransactionForm() {
                     </div>
                 </div>
             ) : transact.map((select, i) => (
-                <TransactionFormat key={select.id} index={i}
+                <TransactionFormat key={select.id} index={i} id={select.id}
                     transact={select} transactForm={transactForm[i]} handleTransaction={handleTransaction} handleTransForm={handleTransForm}
                     colors={colors} changeColor={changeColor} downPayment={downPayment[i]} handleDown={handleDown}
                 />

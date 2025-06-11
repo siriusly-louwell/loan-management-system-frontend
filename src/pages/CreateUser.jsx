@@ -91,7 +91,7 @@ export default function CreateUser() {
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />
                     <Alert id="createUser" text={alert.text} icon={alert.icon}>
-                        <Button text="Ok" onclick={() => document.getElementById('createUnit').style.display = 'none'} />
+                        <Button text="Ok" onclick={() => document.getElementById('createUser').style.display = 'none'} />
                     </Alert>
                 </div>
             </div>

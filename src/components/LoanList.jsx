@@ -1,24 +1,54 @@
 import React from 'react';
+import ColorLabel from './ColorLabel';
+import ImageSkeleton from './loading components/ImageSkeleton';
+import SmallSpin from './loading components/SmallSpin';
 
-export default function LoanList({price, units, id, img, name}) {
+export default function LoanList({price, units, downpayment, img, name, color, load}) {
     return (
-        <div class="space-y-4 p-6">
-            <div class="flex items-center gap-6">
-                <a href="#" class="h-14 w-14 shrink-0">
-                    <img class="h-full w-full dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="imac image" />
-                    <img class="hidden h-full w-full dark:block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg" alt="imac image" />
-                </a>
-
-                <a href="#" class="min-w-0 flex-1 font-medium text-gray-900 hover:underline dark:text-white">{name}</a>
+        <div className="space-y-4 p-6">
+            <div className="flex items-center gap-6">
+                {load ? (
+                    <div className="h-20 w-20 object-contain flex-shrink-0">
+                        <ImageSkeleton size={8} />
+                    </div>
+                ) : (
+                    <img className="h-20 w-20 object-contain flex-shrink-0" src={`http://127.0.0.1:8000/storage/${img}`} alt="unit image" />
+                )}
+                
+                <div className="flex items-center space-x-1">
+                    {load ? (
+                        <div className="w-20 h-5 rounded-lg bg-gray-200 dark:bg-gray-600 animate-pulse"></div>
+                    ) : (
+                        <>
+                            <ColorLabel style={color} />
+                            <a href="#" className="min-w-0 font-medium text-gray-900 hover:underline dark:text-white">{name}</a>
+                        </>
+                    )}
+                    
+                </div>
             </div>
 
-            <div class="flex items-center justify-between gap-4">
-                <p class="text-sm font-normal text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Unit ID:</span> {id}</p>
+            <div className="flex items-center justify-between gap-4">
+                <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+                    <span className="font-medium text-gray-900 dark:text-white">Downpayment: </span> 
+                    {load ? (
+                        <SmallSpin size={20} />
+                    ) : `₱${parseFloat(downpayment).toLocaleString()}`}
+                </p>
 
-                <div class="flex items-center justify-end gap-4">
-                    <p class="text-base font-normal text-gray-900 dark:text-white">x{units}</p>
+                <div className="flex items-center justify-end gap-4">
+                    <p className="text-base font-normal text-gray-900 dark:text-white">
+                        {load ? (
+                            <SmallSpin size={20} />
+                        ) : `x${units}`}
+                        </p>
 
-                    <p class="text-xl font-bold leading-tight text-gray-900 dark:text-white">{price}</p>
+                    {load ? (
+                        <p className="w-20 h-8 bg-gray-200 dark:bg-gray-600 rounded-lg animate-pulse"></p>
+                    ) : (
+                        <p className="text-xl font-bold leading-tight text-gray-900 dark:text-white">₱{parseFloat(price).toLocaleString()}</p>
+                    )}
+                    
                 </div>
             </div>
         </div>

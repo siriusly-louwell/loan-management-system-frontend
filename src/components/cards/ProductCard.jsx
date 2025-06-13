@@ -55,8 +55,8 @@ export default function ProductCard({unit, url, id, selected, selectUnits}) {
                     <div className="flex space-x-2">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">Colors: </p>
                         <div className='grid grid-cols-10 gap-y-2'>
-                            {unit.colors.map(color => (
-                                <ColorLabel style={color.color} />
+                            {unit.colors.map((color, i) => (
+                                <ColorLabel key={i} style={color.color} />
                             ))}
                         </div>
                     </div>

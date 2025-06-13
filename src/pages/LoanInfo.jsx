@@ -6,7 +6,6 @@ import CustomBttn from "../components/buttons/CustomBttn";
 import ProfileCard from '../components/cards/ProfileCard';
 import SmallUpArrow from '../assets/icons/SmallUpArrow';
 import Button from "../components/buttons/Button";
-import Alert from "../components/Alert";
 import SmallSpin from "../components/loading components/SmallSpin";
 import AssignCI from "../components/AssignCI";
 import DeclineApplicant from "../components/DeclineApplicant";
@@ -31,7 +30,7 @@ export default function LoanInfo({children}) {
         .catch(error => {
             console.error('Error fetching data: ', error);
         })
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         if(!loanLoad) {
@@ -40,7 +39,7 @@ export default function LoanInfo({children}) {
             
             setTotal({price: down, downpayment: price});
         }
-    }, [loan]);
+    }, [loan, loanLoad]);
 
     return (
         <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
@@ -125,7 +124,7 @@ export default function LoanInfo({children}) {
                             <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
                                 <TrackList label="Loan Submission" sublabel="Loan application was successful" isDone="done" />
                                 <TrackList label="Approved" sublabel="The application is viable for applying a loan" isDone={loan.apply_status === 'approved' ? "done" : (loan.apply_status === 'declined' ? 'decline' : 'current')} />
-                                <TrackList label="Credit Investigation" sublabel="The application is under investigation" isDone={loan.apply_status === 'approved' ? "current" : 'pend'} />
+                                <TrackList label="Credit Investigation" sublabel="Applicant has been interviewed by the assigned Credit Investigator" isDone={loan.apply_status === 'approved' ? "current" : 'pend'} />
                                 <TrackList label="Accepted" sublabel="The application has passed the investigation" isDone="pend" />
                                 <TrackList label="Initial Payment" sublabel="The loan application has been successful" isDone="pend" />
                                 <TrackList label="Paid!" sublabel="The loan has been fully paid" isDone="pend" />

@@ -11,13 +11,16 @@ import Search from "../assets/icons/Search";
 import DropdownBttn from "../components/buttons/DropdownBttn";
 import Filter from "../assets/icons/Filter";
 import CustomBadge from "../components/badges/CustomBadge";
+import EmptySearch from "../components/empty states/EmptySearch";
+import { useLocation } from "react-router-dom";
 
-export default function InvoiceList({headText, path, bttnText ="View Details"}) {
+export default function InvoiceList({headText, record = '', path, bttnText = "View Details"}) {
     const [loans, setLoans] = useState([]);
     const [loanLoad, setLoanLoad] = useState(true);
+    const location = useLocation();
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/application')
+        fetch(`http://127.0.0.1:8000/api/application${record}`)
             .then(response => response.json())
             .then(data => {
                 setLoans(data);
@@ -26,8 +29,9 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
         .catch(error => {
             console.error('Error fetching data: ', error);
             setLoanLoad(true);
+            setLoans({});
         })
-    }, []);
+    }, [record]);
 
     function dateConvert(date) {
         const newDate = new Date(date);
@@ -37,7 +41,7 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
     }
 
     function displayLoan(loan) {
-        if(bttnText == "Evaluate") {
+        if(bttnText === "Evaluate") {
             if(loan.user_id) return (
                 <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
                 badge={<CustomBadge text="Approved" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
@@ -56,30 +60,39 @@ export default function InvoiceList({headText, path, bttnText ="View Details"}) 
                     <div class="gap-4 sm:flex sm:items-center sm:justify-between">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{headText}</h2>
 
-                        <div class="mt-6 gap-4 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
-                            <SearchInput id="invoice_search" name="log_search" placeholder="Search ID, name...">
-                                <Search />
-                            </SearchInput>
-                            <DropdownBttn text="Filters">
-                                <Filter />
-                            </DropdownBttn>
-                        </div>
+                        {location.pathname === '/find' ? '' : (
+                            <div class="mt-6 gap-4 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+                                <SearchInput id="invoice_search" name="log_search" placeholder="Search ID, name...">
+                                    <Search />
+                                </SearchInput>
+                                <DropdownBttn text="Filters">
+                                    <Filter />
+                                </DropdownBttn>
+                            </div>
+                        )}
                     </div>
 
-                    <LogList>
-                        {loans.map(loan => (
-                            loanLoad ? (
-                                <div>Loading...</div>
-                            )
-                            : displayLoan(loan)
-                        ))}
-                        <LogRow id="FWB127364372" name="John Doe" date="20/12/2023" state={100}
-                        badge={<CustomBadge text="Evaluated" color="yellow" />} path={path} bttnText={bttnText} />
-                        {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
-                        <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} /> */}
-                    </LogList>
+                    {Object.keys(loans).length === 0 ? (
+                        <EmptySearch label="No results" context="It seems no such data exists" />
+                    ) : (
+                        <>
+                            <LogList>
+                                {loanLoad ? (
+                                    <div>Loading...</div>
+                                ) : (
+                                    loans.length > 1 ?
+                                        loans.map(loan => (displayLoan(loan))
+                                    ) : displayLoan(loans)
+                                )}
+                                <LogRow id="FWB127364372" name="John Doe" date="20/12/2023" state={100}
+                                badge={<CustomBadge text="Evaluated" color="yellow" />} path={path} bttnText={bttnText} />
+                                {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
+                                <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} /> */}
+                            </LogList>
 
-                    <PageNav />
+                            <PageNav />
+                        </>
+                    )}
                 </div>
             </div>
         </section>

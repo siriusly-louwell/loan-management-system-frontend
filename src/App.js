@@ -41,6 +41,7 @@ import CustomBttn from './components/buttons/CustomBttn';
 import AppliedForm from './pages/AppliedForm';
 import ComakerInfo from './pages/ComakerInfo';
 import TransactionForm from './pages/TransactionForm';
+import SearchPage from './pages/SearchPage';
 
 function App() {  
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/" element={<PageLayout links={<GuestNav />} />}>
             <Route index element={<ProductList url="/product" />} />
             <Route path="prodlist" element={<ProductList url="/product" />} />
+            <Route path="find" element={<SearchPage />} />
             <Route path="about" element={<About />} />
             <Route path="product" element={<ProductInfo />} />
           </Route>

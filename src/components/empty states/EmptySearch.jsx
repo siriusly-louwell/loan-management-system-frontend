@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function EmptySearch() {
+export default function EmptySearch({label, context}) {
     return (
         <div className="w-full flex items-center my-20 px-10 py-5 flex-wrap justify-center gap-10">
             <div className="grid gap-4 w-60">
@@ -12,8 +12,8 @@ export default function EmptySearch() {
                     </svg>
                 </div>
                 <div>
-                    <h2 className="text-center text-gray-500 text-xl font-semibold leading-loose pb-2">No results found</h2>
-                    <p className="text-center text-gray-500 text-base font-normal leading-relaxed pb-4">Try changing your filters to <br />see appointments </p>
+                    <h2 className="text-center text-gray-500 text-xl font-semibold leading-loose pb-2">{label}</h2>
+                    <p className="text-center text-gray-500 text-base font-normal leading-relaxed pb-4">{context}</p>
                 </div>
             </div>
         </div>

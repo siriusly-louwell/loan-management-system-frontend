@@ -18,10 +18,10 @@ export default function TrackList({label, sublabel, isDone}) {
                 {isDone !== 'decline' ? (
                     <BlueCheck />
                 ) : (
-                    <Ex className="w-4 h-4" />
+                    <Ex className="w-5 h-5" />
                 )}
             </span>
-            <h4 class={"mb-0.5 text-base font-semibold " + labelColor}>{label} {isDone == 'current' ? '(In progress...)' : ''}</h4>
+            <h4 class={"mb-0.5 text-base font-semibold " + labelColor}>{label} {isDone === 'current' ? '(In progress...)' : ''}</h4>
             <p class={"text-sm font-normal " + subColor}>{sublabel}</p>
         </li>
     );

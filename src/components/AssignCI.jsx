@@ -8,7 +8,7 @@ import FormTextarea from "./inputs/FormTextarea";
 import Spinner from "./loading components/Spinner";
 import { useNavigate } from "react-router-dom";
 
-export default function AssignCI({id, record, name, submit}) {
+export default function AssignCI({id, record, name}) {
     const navigate = useNavigate();
     const today = new Date().toISOString().split('T')[0];
     const [appCI, setAppCI] = useState([]);
@@ -22,7 +22,6 @@ export default function AssignCI({id, record, name, submit}) {
         .then(data => {
             setAppCI(data);
             setCiLoad(false);
-            console.log(data);
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -70,8 +69,6 @@ export default function AssignCI({id, record, name, submit}) {
         }
     }
 
-    console.log(applicant);
-
     return (
         <div id="addCI" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
@@ -88,7 +85,11 @@ export default function AssignCI({id, record, name, submit}) {
                                     if(acc.role === 'ci')return (<option value={acc.id}>{acc.name}</option>);
                                 })}
                             </FormSelect>
-                            <FormInput label="Set meeting schedule" type="date" value={applicant.schedule} onchange={handleChange} name="schedule" id="schedule" min={today} />
+                            <p className="text-md font-medium text-gray-900 dark:text-white">Set meeting schedule</p>
+                            <div className="grid grid-cols-2 gap-2">
+                                <FormInput label="From" type="date" value={applicant.from_sched} onchange={handleChange} name="from_sched" id="from_sched" min={today} />
+                                <FormInput label="To" type="date" value={applicant.to_sched} onchange={handleChange} name="to_sched" id="to_sched" min={applicant.from_sched} />
+                            </div>
                             <FormTextarea label="Add a message to the applicant (optional):" placeholder="Write your message here..." />
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">

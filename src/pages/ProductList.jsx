@@ -85,7 +85,7 @@ export default function ProductList({url}) {
                     )}
                 </ProductGrid>
                 {motors.length === 0 && !motorLoad ? (
-                    <EmptySearch />
+                    <EmptySearch label="No results found" context="Try changing the filter or go to a different category" />
                 ) : ""}
                 <div className="w-full text-center">
                     <BasicButton text="Show more" />

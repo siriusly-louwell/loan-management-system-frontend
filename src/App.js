@@ -51,18 +51,19 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<PageLayout links={<GuestNav />} />}>
-            <Route index element={<ProductList url="/product" />} />
-            <Route path="prodlist" element={<ProductList url="/product" />} />
+            <Route index element={<ProductList url="/unit" />} />
+            <Route path="prodlist" element={<ProductList url="/unit" />} />
             <Route path="find" element={<SearchPage />} />
             <Route path="about" element={<About />} />
-            <Route path="product" element={<ProductInfo />} />
+            <Route path="unit" element={<ProductInfo />} />
+            <Route path="application" element={<LoanInfo />} />
           </Route>
 
           <Route path="/customer" element={<PageLayout links={<ApplicantNav />} img={log.pfp} path="/customer" />}>
             <Route index element={<ProductList url="/customer/product" />} />
             <Route path="prodlist" element={<ProductList url="/customer/product" />} />
             <Route path="history" element={<AppNotifications />} />
-            <Route path="myloans" element={<InvoiceList headText="Loan Applications" path="/customer/loan" />} />
+            <Route path="myloans" element={<InvoiceList headText="Loan Applications" path="/customer/loan" record={`/${log.id}?by=user_id`} />} />
             {/* <Route path="myloans" element={<InvoiceList headText="My Loans" />} /> */}
             <Route path="loan" element={<LoanInfo>
               <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />

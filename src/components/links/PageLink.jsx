@@ -5,7 +5,7 @@ export default function PageLink({extra, children}) {
     
     return (
         <li>
-            <a href="#" class={style}>
+            <a className={style}>
                 {children}
             </a>
         </li>

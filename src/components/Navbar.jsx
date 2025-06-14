@@ -48,7 +48,7 @@ export default function Navbar({links, path, img}) {
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Rhean Motor Center</span>
         </a>
         <div className="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">
-          {(location.pathname == "/" || location.pathname == "/about" || location.pathname == "/find" || location.pathname == "/services" || location.pathname == "/prodlist")
+          {(location.pathname == "/" || location.pathname == "/about" || location.pathname == "/find" || location.pathname == "/application" || location.pathname == "/unit" || location.pathname == "/services" || location.pathname == "/prodlist")
             ? (<Button text="Login" onclick={() => navigate('/login')} />)
             : (<AvatarBttn dropMenu={toggleDropdown} img={img} />)}
           <HamburgerMenu />

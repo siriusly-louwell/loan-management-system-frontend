@@ -73,7 +73,7 @@ export default function CRUDformat({children, addModal, label, modalId}) {
                             <MenuLink pathName="Mass Edit" />
                             <MenuLink pathName="Delete All" />
                         </DropdownMenu>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto min-h-40">
                             {children}
                         </div>
                         <PageNav />

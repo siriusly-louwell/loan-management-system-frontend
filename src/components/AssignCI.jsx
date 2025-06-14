@@ -82,7 +82,7 @@ export default function AssignCI({id, record, name}) {
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">{record} - {name}</h3>
                             <FormSelect name="ci_id" id="ci" label="Credit Investigator" value={applicant.ci_id} onchange={handleChange} >
                                 {ciLoad ? "" : appCI.map(acc => {
-                                    if(acc.role === 'ci')return (<option value={acc.id}>{acc.name}</option>);
+                                    if(acc.role === 'ci')return (<option value={acc.id}>{acc.first_name} {acc.last_name}</option>);
                                 })}
                             </FormSelect>
                             <p className="text-md font-medium text-gray-900 dark:text-white">Set meeting schedule</p>

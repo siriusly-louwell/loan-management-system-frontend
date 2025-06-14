@@ -41,7 +41,7 @@ export default function AccCI() {
                                 <ProductRow key={account.id} data={[
                                     <div className="flex items-center mr-3">
                                         <img src={`http://localhost:8000/storage/${account.pfp}`} alt="iMac Front Image" className="h-8 rounded-lg w-auto mr-3" />
-                                        {account.name}
+                                        {account.first_name} {account.last_name}
                                     </div>,
                                     account.email,
                                     5,

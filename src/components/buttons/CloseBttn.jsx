@@ -7,9 +7,9 @@ export default function CloseBttn({id, cancel, trigger}) {
         document.getElementById(id).style.display = "none";
     }
     return (
-        <button type="button" onClick={click} class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+        <button type="button" onClick={click} className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
             <Ex className="w-5 h-5" />
-            <span class="sr-only">Close modal</span>
+            <span className="sr-only">Close modal</span>
         </button>
     );
 }

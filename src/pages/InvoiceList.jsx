@@ -54,14 +54,14 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
     }
 
     return (
-        <section class="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
-            <div class="mx-auto max-w-screen-x 2xl:px-0">
-                <div class="mx-auto max-w-5xl bg-white dark:bg-gray-700 rounded-xl p-5">
-                    <div class="gap-4 sm:flex sm:items-center sm:justify-between">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{headText}</h2>
+        <section className="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
+            <div className="mx-auto max-w-screen-x 2xl:px-0">
+                <div className="mx-auto max-w-5xl bg-white dark:bg-gray-700 rounded-xl p-5">
+                    <div className="gap-4 sm:flex sm:items-center sm:justify-between">
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">{headText}</h2>
 
                         {location.pathname === '/find' ? '' : (
-                            <div class="mt-6 gap-4 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+                            <div className="mt-6 gap-4 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
                                 <SearchInput id="invoice_search" name="log_search" placeholder="Search ID, name...">
                                     <Search />
                                 </SearchInput>

@@ -4,10 +4,13 @@ import Button from '../components/buttons/Button';
 import TextInput from '../components/inputs/TextInput';
 import Checkbox from '../components/checkboxes/Checkbox';
 import RMCI from '../assets/images/RMCI.png';
+import Spinner from '../components/loading components/Spinner';
+import Alert from '../components/Alert';
 
 export default function Login({setUser}) {
     const navigate = useNavigate();
     const [loginData, setLogin] = useState({});
+    const [alert, setAlert] = useState({});
 
     function handleChange(event) {
         setLogin({
@@ -18,7 +21,8 @@ export default function Login({setUser}) {
 
     async function login(event) {
         event.preventDefault();
-        console.log(loginData);
+        document.getElementById('login_spin').style.display = 'flex';
+
         try {
             const response = await fetch('http://localhost:8000/api/login', {
                 method: 'POST',
@@ -32,14 +36,27 @@ export default function Login({setUser}) {
             
             if(!response.ok) {
                 console.error('Login failed:', data);
-                alert(data.message);
+                setAlert({
+                    text: data.message,
+                    icon: 'warn'
+                })
+                document.getElementById('login_spin').style.display = 'none';
+                document.getElementById('login_alert').style.display = 'block';
+                // alert(data.message);
             } else {
                 localStorage.setItem('token', data.token);
                 setUser(data.user);
+                document.getElementById('login_spin').style.display = 'none';
                 navigate('/'+data.user.role);
             }
         } catch (error) {
             console.error(error.response.data);
+            setAlert({
+                text: 'Unexpected Error!',
+                icon: 'warn'
+            })
+            document.getElementById('login_alert').style.display = 'block';
+            document.getElementById('login_spin').style.display = 'none';
         }
     };
     
@@ -70,6 +87,10 @@ export default function Login({setUser}) {
                             </form>
                         </div>
                     </div>
+                    <Alert id="login_alert" text={alert.text} icon={alert.icon}>
+                        <Button text="Ok" type="button" onclick={() => document.getElementById('login_alert').style.display = "none"} />
+                    </Alert>
+                    <Spinner id="login_spin" />
                 </div>
             </section>
         </>

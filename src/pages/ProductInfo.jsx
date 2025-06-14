@@ -110,15 +110,15 @@ export default function ProductInfo({staff = false}) {
                                 {unitLoad ? "" : (
                                     <>
                                         <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full">
-                                            <span className="text-2xl" aria-hidden="true">
-                                                <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <span className="text-2xl">
+                                                <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                     <path d="m15 18-6-6 6-6"></path>
                                                 </svg>
                                             </span>
                                         </button>
                                         <button onClick={nextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full" >
-                                            <span className="text-2xl" aria-hidden="true">
-                                                <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <span className="text-2xl">
+                                                <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                     <path d="m9 18 6-6-6-6"></path>
                                                 </svg>
                                             </span>
@@ -148,8 +148,8 @@ export default function ProductInfo({staff = false}) {
                                     <div className="flex space-x-2">
                                         <div className='grid grid-cols-10 gap-y-2'>
                                             {unitLoad ? "":
-                                                unit.colors.map(color => (
-                                                    <ColorLabel style={color.color} />
+                                                unit.colors.map((color, i) => (
+                                                    <ColorLabel key={i} style={color.color} />
                                                 ))
                                             }
                                         </div>
@@ -165,8 +165,8 @@ export default function ProductInfo({staff = false}) {
 
                                 <div className="mt-6 sm:gap-4 space-y-2 sm:items-center sm:flex sm:mt-8">
                                     <BttnwithIcon text="Add to favorites">
-                                        <svg className="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                                        <svg className="w-5 h-5 -ms-2 me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
                                         </svg>
                                     </BttnwithIcon>
                                     {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
@@ -174,20 +174,20 @@ export default function ProductInfo({staff = false}) {
                                     <AddtoCartBttn text="Pay in Cash" />
                                 </div>
                                 <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
-                                <p className="mb-6 text-gray-500 dark:text-gray-400">
+                                <div className="mb-6 text-gray-500 dark:text-gray-400">
                                     {unitLoad ? (
                                         <>
                                             <div className='w-full flex justify-between items-start animate-pulse'>
                                                 <div className="block">
-                                                    <h3 className='h-3 bg-gray-300 dark:bg-gray-500 rounded-full  w-48 mb-4'></h3>
+                                                    <div className='h-3 bg-gray-300 dark:bg-gray-500 rounded-full  w-48 mb-4'></div>
                                                     <p className='h-2 bg-gray-300 dark:bg-gray-500 rounded-full w-32 mb-2.5'></p>
                                                 </div>
                                                 <span className="h-2 bg-gray-300 dark:bg-gray-500 rounded-full w-16 "></span>
                                             </div>
                                             <div className=' w-full flex justify-between items-start animate-pulse'>
                                                 <div className="block">
-                                                    <h3 className='h-3 bg-gray-300 dark:bg-gray-500 rounded-full  w-60 mb-4'></h3>
-                                                    <h3 className='h-3 bg-gray-300 dark:bg-gray-500 rounded-full  w-58 mb-4'></h3>
+                                                    <div className='h-3 bg-gray-300 dark:bg-gray-500 rounded-full  w-60 mb-4'></div>
+                                                    <div className='h-3 bg-gray-300 dark:bg-gray-500 rounded-full  w-58 mb-4'></div>
                                                     <p className='h-2 bg-gray-300 dark:bg-gray-500 rounded-full w-40 mb-2.5'></p>
                                                     <p className='h-2 bg-gray-300 dark:bg-gray-500 rounded-full w-50 mb-2.5'></p>
                                                     <p className='h-2 bg-gray-300 dark:bg-gray-500 rounded-full w-50 mb-2.5'></p>
@@ -195,7 +195,7 @@ export default function ProductInfo({staff = false}) {
                                             </div>
                                         </>
                                     ) : `${unit.description}`}
-                                </p>
+                                </div>
                             </div>
 
                             <div className="grid gap-4 sm:gap-5 col-span-2 mb-5 lg:grid-cols-5 grid-cols-2 md:grid-cols-3">

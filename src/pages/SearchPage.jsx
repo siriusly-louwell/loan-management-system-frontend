@@ -17,7 +17,7 @@ export default function SearchPage() {
                 {search === '' ? (
                     <EmptySearch label="No data to show" context="Use the search bar to find applications" />
                 ) : (
-                    <InvoiceList record={`/${search}?by=record_id`} />
+                    <InvoiceList record={`/${search}?by=record_id`} path="/application" />
                 )}
             </div>
         </section>

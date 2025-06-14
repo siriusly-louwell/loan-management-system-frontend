@@ -12,6 +12,7 @@ import DeclineApplicant from "../components/DeclineApplicant";
 
 export default function LoanInfo({children}) {
     const navigate = useNavigate();
+    const location = useLocation();
     const {state} = useLocation();
     const id = state?.id;
     const [loan, setLoan] = useState({});
@@ -136,10 +137,12 @@ export default function LoanInfo({children}) {
                                 {id === 100 ? (
                                     <CustomBttn text="View Evaluation" onclick={() => navigate('/ci/cireport')} classname="flex items-center w-full justify-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-teal-600 dark:border-teal-500 dark:text-teal-200 dark:hover:text-white dark:hover:bg-teal-800 dark:focus:ring-teal-900" />
                                 ) : (
-                                    <>
-                                        <CustomBttn text="Approve Application" onclick={() => document.getElementById('addCI').style.display = 'flex'} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
-                                        <CustomBttn text="Deny Application" onclick={() => document.getElementById('declineApp').style.display = 'flex'} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
-                                    </>
+                                    location.pathname !== '/application' ? (
+                                        <>
+                                            <CustomBttn text="Approve Application" onclick={() => document.getElementById('addCI').style.display = 'flex'} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                                            <CustomBttn text="Deny Application" onclick={() => document.getElementById('declineApp').style.display = 'flex'} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+                                        </>
+                                    ) : ''
                                 )}
                             </div>
                         </div>

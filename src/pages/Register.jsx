@@ -13,7 +13,12 @@ export default function Register({setUser}) {
     const navigate =  useNavigate();
     const [record, setRecord] = useState('');
     const [applicant, setApplicant] = useState({});
-    const [register, setRegister] = useState({role: 'customer', status: 'active'});
+    const [register, setRegister] = useState({
+        role: 'customer',
+        status: 'active',
+        contact: '',
+        gender: 'male'
+    });
     const [alert, setAlert] = useState({});
 
     useEffect(() => {
@@ -24,14 +29,15 @@ export default function Register({setUser}) {
                 setApplicant(data);
                 setRegister({
                     ...register,
-                    name: `${data.first_name} ${data.last_name}`,
+                    first_name: data.first_name,
+                    last_name: data.last_name,
                     email: data.email,
                     record_id: data.record_id
                 });
             })
             .catch(() => setApplicant({none: 0}))
         }
-    }, [record, register]);
+    }, [record]);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -100,16 +106,16 @@ export default function Register({setUser}) {
                                 <div className={`flex h-16 space-x-5`}>
                                     {Object.keys(applicant).length === 0 ? (
                                         <>
-                                            <div class="h-16 w-16 rounded-lg flex justify-center items-center bg-gray-200 dark:bg-gray-600"><Image size={10} /></div>
+                                            <div className="h-16 w-16 rounded-lg flex justify-center items-center bg-gray-200 dark:bg-gray-600"><Image size={10} /></div>
                                             <PfpLabel caption="Name" label="- - -" />
                                         </>
                                     ) : (Object.keys(applicant).length === 1 ? (
-                                        <div class="flex w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-600">
-                                            <p class="text-gray-400 dark:text-gray-700 text-lg font-small">Record doesn't exist</p>
+                                        <div className="flex w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-600">
+                                            <p className="text-gray-400 dark:text-gray-700 text-lg font-small">Record doesn't exist</p>
                                         </div>
                                     ) : (
                                         <>
-                                            <img class="h-16 w-16 rounded-lg" src={`http://localhost:8000/storage/${applicant.id_pic}`} alt="Helene avatar" />
+                                            <img className="h-16 w-16 rounded-lg" src={`http://localhost:8000/storage/${applicant.id_pic}`} alt="Helene avatar" />
                                             <div>
                                                 <p className="text-gray-500 dark:text-gray-400">{`${applicant.first_name} ${applicant.last_name}`}</p>
                                                 <p className="text-rose-400 text-sm font-medium mb-1">{applicant.email}</p>

@@ -83,8 +83,6 @@ export default function ApplicationForm() {
             submitData.append(key, file);
         });
 
-        console.log(applicant);
-
         try {
             const response = await fetch('http://127.0.0.1:8000/api/application', {
                 method: 'POST',

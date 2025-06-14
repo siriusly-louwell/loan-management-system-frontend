@@ -3,8 +3,6 @@ import { useLocation } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import Button from "../components/buttons/Button";
-import CustomBttn from "../components/buttons/CustomBttn";
-import Ex from "../assets/icons/Ex";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Spinner from "../components/loading components/Spinner";
 import FileInput from "../components/inputs/FileInput";
@@ -12,9 +10,12 @@ import Alert from "../components/Alert";
 
 export default function CreateUser() {
     const location = useLocation();
+    const [pfp, setPfp] = useState({});
+    const submitData = new FormData();
+    const [alert, setAlert] = useState({});
     const [user, setUser] = useState({
-        name: '',
-        email: '',
+        middle_name: '',
+        contact: '',
         role: location.pathname === '/admin/accounts/cis' ? 'ci' : 'staff',
         status: 'active',
         password: 'password'
@@ -24,37 +25,57 @@ export default function CreateUser() {
     async function handleSubmit(event) {
         event.preventDefault();
 
+        for(let key in user) {
+            submitData.append(`${key}`, user[key]);
+        }
+        submitData.append('pfp', pfp);
+
         try {
             const response = await fetch('http://127.0.0.1:8000/api/account', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(user)
+                // headers: {
+                //     'Content-Type': 'application/json',
+                //     'Accept': 'application/json'
+                // },
+                body: submitData
+                // body: JSON.stringify(user)
             });
 
             const result = await response.json();
-            resetInput();
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
-            alert('Data saved successfully!');
+            setAlert({
+                text: "User added succcessfully!",
+                icon: "done"
+            });
+            resetInput();
+            document.getElementById('alertUser').style.display = "block";
         } catch(error) {
             console.error('Error: ', error);
-            alert('Failed to save data.');
+            setAlert({
+                text: "Failed to save data",
+                icon: "warn"
+            });
+            document.getElementById('saving_data').style.display = "none";
+            document.getElementById('alertUser').style.display = "block";
         }
 
     }
 
     function resetInput() {
         setUser({
-            name: '',
-            email: '',
-            role: 'admin',
+            middle_name: '',
+            contact: '',
+            role: location.pathname === '/admin/accounts/cis' ? 'ci' : 'staff',
             status: 'active',
             password: 'password'
         });
+        setPfp({});
         document.getElementById('saving_data').style.display = "none";
+    }
+
+    function pfpChange(event)  {
+        setPfp(event.target.files[0]);
     }
 
     function handleChange(event) {
@@ -74,24 +95,24 @@ export default function CreateUser() {
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="grid gap-4 mb-4 sm:grid-cols-3">
-                            <FormInput label="First name" type="text" value={user.name} onchange={handleChange} name="name" id="name" placeholder="Type first name" />
-                            <FormInput label="Middle name" type="text" name="mid_name" id="mname" placeholder="Type middle name" />
-                            <FormInput label="Last name" type="text" name="last_name" id="lname" placeholder="Type last name" />
-                            <FormInput label="Email Address" type="text" name="email" id="email" value={user.email} onchange={handleChange} placeholder="john@gmail.com" />
-                            <FormInput label="Contact number" type="number" name="contact" id="number" placeholder="Phone number here" />
-                            <FormSelect name="gender" id="gender" label="Gender">
+                            <FormInput label="First name" type="text" value={user.first_name || ''} onchange={handleChange} name="first_name" id="name" placeholder="Type first name" require={true} />
+                            <FormInput label="Middle name" type="text" name="middle_name" id="mname" value={user.middle_name || ''} onchange={handleChange} placeholder="Type middle name" />
+                            <FormInput label="Last name" type="text" name="last_name" id="lname" value={user.last_name || ''} onchange={handleChange} placeholder="Type last name" require={true} />
+                            <FormInput label="Email Address" type="text" name="email" id="email" value={user.email || ''} onchange={handleChange} placeholder="john@gmail.com" require={true} />
+                            <FormInput label="Contact number" type="number" name="contact" id="number" value={user.contact || ''} onchange={handleChange} placeholder="Phone number here" />
+                            <FormSelect name="gender" id="gender" label="Gender" require={true}>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </FormSelect>
                         </div>
-                        <FileInput label="Upload Profile picture:" type="img" />
+                        <FileInput label="Upload Profile picture:" type="img" name="pfp" change={pfpChange} require={true} />
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                             <Button text="Add user" type="submit" onclick={() => document.getElementById('saving_data').style.display = "flex"} />
                         </div>
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />
-                    <Alert id="createUser" text={alert.text} icon={alert.icon}>
-                        <Button text="Ok" onclick={() => document.getElementById('createUser').style.display = 'none'} />
+                    <Alert id="alertUser" text={alert.text} icon={alert.icon}>
+                        <Button text="Ok" onclick={() => document.getElementById('alertUser').style.display = 'none'} />
                     </Alert>
                 </div>
             </div>

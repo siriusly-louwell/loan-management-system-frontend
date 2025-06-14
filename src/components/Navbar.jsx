@@ -8,7 +8,7 @@ import MenuLink from './links/MenuLink';
 import Button from './buttons/Button';
 import RMCI from '../assets/images/RMCI.png';
 
-export default function Navbar({links, path}) {
+export default function Navbar({links, path, img}) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -48,9 +48,9 @@ export default function Navbar({links, path}) {
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Rhean Motor Center</span>
         </a>
         <div className="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">
-          {(location.pathname == "/" || location.pathname == "/about" || location.pathname == "/services" || location.pathname == "/prodlist")
+          {(location.pathname == "/" || location.pathname == "/about" || location.pathname == "/find" || location.pathname == "/services" || location.pathname == "/prodlist")
             ? (<Button text="Login" onclick={() => navigate('/login')} />)
-            : (<AvatarBttn dropMenu={toggleDropdown} />)}
+            : (<AvatarBttn dropMenu={toggleDropdown} img={img} />)}
           <HamburgerMenu />
         </div>
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">

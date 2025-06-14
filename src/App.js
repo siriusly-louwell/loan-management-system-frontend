@@ -42,8 +42,11 @@ import AppliedForm from './pages/AppliedForm';
 import ComakerInfo from './pages/ComakerInfo';
 import TransactionForm from './pages/TransactionForm';
 import SearchPage from './pages/SearchPage';
+import { useState } from 'react';
 
-function App() {  
+function App() {
+  const [log, setLog] = useState({});
+
   return (
     <BrowserRouter>
       <Routes>
@@ -55,7 +58,7 @@ function App() {
             <Route path="product" element={<ProductInfo />} />
           </Route>
 
-          <Route path="/customer" element={<PageLayout links={<ApplicantNav />} path="/customer" />}>
+          <Route path="/customer" element={<PageLayout links={<ApplicantNav />} img={log.pfp} path="/customer" />}>
             <Route index element={<ProductList url="/customer/product" />} />
             <Route path="prodlist" element={<ProductList url="/customer/product" />} />
             <Route path="history" element={<AppNotifications />} />
@@ -90,7 +93,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
           </Route>
           
-          <Route path="/ci" element={<PageLayout links={<CINav />} path="/ci" />}>
+          <Route path="/ci" element={<PageLayout links={<CINav />} img={log.pfp} path="/ci" />}>
             <Route index element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
             <Route path="loanapplications" element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
             <Route path="evaluation" element={<InvoiceList headText="Loans Evaluation" path="/ci/cireport" bttnText="Evaluate" />} />
@@ -101,7 +104,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
           </Route>
 
-          <Route path="/staff" element={<PageLayout links={<StaffNav />} path="/staff" />}>
+          <Route path="/staff" element={<PageLayout links={<StaffNav />} img={log.pfp} path="/staff" />}>
             <Route index element={<Cashier />} />
             {/* <Route path="inventory" element={<Inventory />} /> */}
             <Route path="cashier" element={<Cashier />} />
@@ -142,8 +145,8 @@ function App() {
               <Route path="customers" element={<AccComakers />} />
             </Route>
           </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login setUser={setLog} />} />
+        <Route path="/register" element={<Register setUser={setLog} />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

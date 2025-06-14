@@ -40,7 +40,7 @@ export default function AccCI() {
                             account.role == 'ci' ? (
                                 <ProductRow key={account.id} data={[
                                     <div className="flex items-center mr-3">
-                                        <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png" alt="iMac Front Image" className="h-8 rounded-lg w-auto mr-3" />
+                                        <img src={`http://localhost:8000/storage/${account.pfp}`} alt="iMac Front Image" className="h-8 rounded-lg w-auto mr-3" />
                                         {account.name}
                                     </div>,
                                     account.email,

@@ -35,7 +35,7 @@ export default function Inventory() {
     }
 
     return (
-        <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Product">
+        <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Unit">
             <InventoryTable motorcycles={motorcycles} loading={loading} editMotor={editMotor} />
             <EditProduct motor={row} />
         </CRUDformat>

@@ -83,7 +83,7 @@ export default function ProductInfo({staff = false}) {
                 <div className="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
                     {(
                         <>
-                            <div className="relative w-full space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
+                            <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
                                 {!unitLoad ? (
                                     staff ? (
                                         <FormSelect name="motor" id="motor" value={`${unit.brand}: ${unit.name} - ₱${parseFloat(unit.price).toLocaleString()}`} label="Select Unit" onchange={(e) => setId(e.target.value)}>
@@ -100,9 +100,9 @@ export default function ProductInfo({staff = false}) {
                                         <ImageSkeleton />
                                     </div>
                                 ) : (
-                                    <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${current * 100}%)` }}>
+                                    <div className="flex h-full transition-transform duration-500 ease-out" style={{ transform: `translateX(-${current * 100}%)` }}>
                                         {images.map((src, index) => (
-                                        <img key={index} src={src} alt={`Slide ${index + 1}`} className="w-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"/>
+                                        <img key={index} src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"/>
                                         ))}
                                     </div>
                                 )}

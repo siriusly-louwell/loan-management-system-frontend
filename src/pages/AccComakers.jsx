@@ -41,7 +41,7 @@ export default function AccComakers() {
             return custom.user.role == 'customer' ?
                 (<ProductRow key={custom.id} data={[ 
                     <div className="flex items-center mr-3">
-                        <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png" alt="iMac Front Image" className="h-8 rounded-full w-auto mr-3" />
+                        <img src={`http://localhost:8000/storage/${custom.user.pfp}`} alt="iMac Front Image" className="h-8 rounded-full w-auto mr-3" />
                         {custom.first_name} {custom.last_name}
                     </div>,
                     custom.record_id,

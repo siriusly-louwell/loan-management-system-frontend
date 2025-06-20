@@ -43,6 +43,8 @@ import ComakerInfo from './pages/ComakerInfo';
 import TransactionForm from './pages/TransactionForm';
 import SearchPage from './pages/SearchPage';
 import { useState } from 'react';
+import UnitsAll from './pages/UnitsAll';
+import UnitsNew from './pages/UnitsNew';
 
 function App() {
   const [log, setLog] = useState({});
@@ -51,8 +53,18 @@ function App() {
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<PageLayout links={<GuestNav />} />}>
-            <Route index element={<ProductList url="/unit" />} />
-            <Route path="prodlist" element={<ProductList url="/unit" />} />
+            <Route path="" element={<ProductList url="/unit" />}>
+              <Route index element={<UnitsAll />} />
+              <Route path="new" element={<UnitsNew />} />
+              <Route path="top" element={<UnitsNew />} />
+              <Route path="repo" element={<UnitsNew />} />
+            </Route>
+            <Route path="prodlist" element={<ProductList url="/unit" />}>
+              <Route index element={<UnitsAll />} />
+              <Route path="new" element={<UnitsNew />} />
+              <Route path="top" element={<UnitsNew />} />
+              <Route path="repo" element={<UnitsNew />} />
+            </Route>
             <Route path="find" element={<SearchPage />} />
             <Route path="about" element={<About />} />
             <Route path="unit" element={<ProductInfo />} />
@@ -60,11 +72,23 @@ function App() {
           </Route>
 
           <Route path="/customer" element={<PageLayout links={<ApplicantNav />} img={log.pfp} path="/customer" />}>
-            <Route index element={<ProductList url="/customer/product" />} />
-            <Route path="prodlist" element={<ProductList url="/customer/product" />} />
+            {/* <Route index element={<ProductList url="/customer/product" />} /> */}
+            <Route path="" element={<ProductList url="/customer/product" />}>
+              <Route index element={<UnitsAll />} />
+              <Route path="new" element={<UnitsNew />} />
+              <Route path="top" element={<UnitsNew />} />
+              <Route path="repo" element={<UnitsNew />} />
+            </Route>
+            <Route path="prodlist" element={<ProductList url="/customer/product" />}>
+              <Route index element={<UnitsAll />} />
+              <Route path="new" element={<UnitsNew />} />
+              <Route path="top" element={<UnitsNew />} />
+              <Route path="repo" element={<UnitsNew />} />
+            </Route>
+            {/* <Route path="prodlist" element={<ProductList url="/customer/product" />} /> */}
             <Route path="history" element={<AppNotifications />} />
-            <Route path="myloans" element={<InvoiceList headText="Loan Applications" path="/customer/loan" record={`/${log.id}?by=user_id`} />} />
-            {/* <Route path="myloans" element={<InvoiceList headText="My Loans" />} /> */}
+            <Route path="myloans" element={<InvoiceList id={log.id} headText="Loan Applications" path="/customer/loan" record={`/${log.id}?by=user_id`} />} />
+            {/* <Route path="myloans" element={<InvoiceList id={log.id} headText="My Loans" />} /> */}
             <Route path="loan" element={<LoanInfo>
               <CustomBttn text="Cancel Application" className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
             </LoanInfo>} />
@@ -85,9 +109,9 @@ function App() {
           </Route>
 
           <Route path="/comaker" element={<PageLayout links={<CoMakerNav />} path="/comaker" />}>
-            <Route index element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} /> 
-            <Route path="obligeloans" element={<InvoiceList headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} />
-            <Route path="cosigned" element={<InvoiceList headText="Co-Signed Loans" path="/comaker/ciloan" />} />
+            <Route index element={<InvoiceList id={log.id} headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} /> 
+            <Route path="obligeloans" element={<InvoiceList id={log.id} headText="Liable Applications" path="/comaker/comakeform" bttnText="Oblige Loan" />} />
+            <Route path="cosigned" element={<InvoiceList id={log.id} headText="Co-Signed Loans" path="/comaker/ciloan" />} />
             <Route path="alerts" element={<Notifications />} />
             <Route path="ciloan" element={<CILoanInfo />} />
             <Route path="comakeform" element={<CoMakerForm />} />
@@ -95,11 +119,11 @@ function App() {
           </Route>
           
           <Route path="/ci" element={<PageLayout links={<CINav />} img={log.pfp} path="/ci" />}>
-            <Route index element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
-            <Route path="loanapplications" element={<InvoiceList headText="Loan Applications" path="/ci/ciloan" />} />
-            <Route path="evaluation" element={<InvoiceList headText="Loans Evaluation" path="/ci/cireport" bttnText="Evaluate" />} />
-            {/* <Route path="recommendation" element={<InvoiceList headText="Evaluated Loans" />} /> */}
-            <Route path="ciloan" element={<CILoanInfo />} />
+            <Route index element={<InvoiceList id={log.id} headText="Loan Applications" path="/ci/ciloan" />} />
+            <Route path="loanapplications" element={<InvoiceList id={log.id} headText="Loan Applications" path="/ci/ciloan" />} />
+            <Route path="evaluation" element={<InvoiceList id={log.id} headText="Loans Evaluation" path="/ci/cireport" bttnText="Evaluate" />} />
+            {/* <Route path="recommendation" element={<InvoiceList id={log.id} headText="Evaluated Loans" />} /> */}
+            <Route path="ciloan" element={<LoanInfo />} />
             <Route path="cireport" element={<CIReport />} />
             {/* <Route path="ciappform" element={<CIAppForm />} /> */}
             <Route path="profile" element={<Profile />} />
@@ -109,7 +133,7 @@ function App() {
             <Route index element={<Cashier />} />
             {/* <Route path="inventory" element={<Inventory />} /> */}
             <Route path="cashier" element={<Cashier />} />
-            <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/staff/loan" />} />
+            <Route path="loans" element={<InvoiceList id={log.id} headText="Loan Applications" path="/staff/loan" />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="product" element={<ProductInfo staff={true} />} />
             <Route path="history" element={<AppNotifications />} />
@@ -117,9 +141,9 @@ function App() {
           </Route>
 
           <Route path="/admin" element={<PageLayout links={<AdminNav />} path="/admin" />}>
-            <Route index element={<Inventory />} />
+            <Route path="" element={<Inventory />} />
             <Route path="inventory" element={<Inventory />} />
-            <Route path="loans" element={<InvoiceList headText="Loan Applications" path="/admin/loan" />} />
+            <Route path="loans" element={<InvoiceList id={log.id} headText="Loan Applications" path="/admin/loan" />} />
             <Route path="invoice" element={<Invoice />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="profile" element={<Profile />} />
@@ -135,7 +159,7 @@ function App() {
               <Route index element={<DashOverview />} />
               <Route path="overview" element={<DashOverview />} />
               <Route path="notifications" element={<Notifications />} />
-              <Route path="invoices" element={<InvoiceList headText="Invoices" path="/admin/invoice" />} />
+              <Route path="invoices" element={<InvoiceList id={log.id} headText="Invoices" path="/admin/invoice" />} />
             </Route>
 
             <Route path="accounts" element={<Accounts />}>

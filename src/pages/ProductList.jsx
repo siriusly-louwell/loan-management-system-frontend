@@ -15,7 +15,8 @@ import CreditBanner from "../components/cards/CreditBanner";
 import BasicBanner from "../components/cards/BasicBanner";
 import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";
 import StickyBanner from "../components/cards/StickyBanner";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import UnderlineTabs from "../components/tabs/UnderlineTabs";
 
 export default function ProductList({url}) {
     const [isFiltOn, setIsFiltOn] = useState(false);
@@ -68,6 +69,8 @@ export default function ProductList({url}) {
         setCurrent((prev) => (prev - 1 + 3) % 3);
     };
 
+    const context = {toggleMenu, filtMenu, isFiltOn, motorLoad, motors, url};
+
     return (
         <section className="bg-gray-100 py-8 justify-items-center antialiased dark:bg-gray-800 md:py-12">
             {location.pathname !== '/customer' ? (
@@ -102,9 +105,10 @@ export default function ProductList({url}) {
                         <button className={`w-2 h-2 rounded-full ${current === 2 ? 'bg-rose-500' : 'bg-gray-300'}`} onClick={() => setCurrent(2)} />
                     </div>
                 </div>
-                <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
+                <UnderlineTabs />
+                <Outlet context={context} />
+                {/* <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
                     <div>
-                        {/* <NavPath /> */}
                         <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Available Units</h2>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -144,7 +148,7 @@ export default function ProductList({url}) {
                 ) : ""}
                 <div className="w-full text-center">
                     <BasicButton text="Show more" />
-                </div>
+                </div> */}
             </div>
             <FilterPanel />
         </section>

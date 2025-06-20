@@ -14,7 +14,7 @@ import CustomBadge from "../components/badges/CustomBadge";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useLocation } from "react-router-dom";
 
-export default function InvoiceList({headText, record = '', path, bttnText = "View Details"}) {
+export default function InvoiceList({headText, record = '', path, bttnText = "View Details", id}) {
     const [loans, setLoans] = useState([]);
     const [loanLoad, setLoanLoad] = useState(true);
     const location = useLocation();
@@ -41,16 +41,18 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
     }
 
     function displayLoan(loan) {
-        if(bttnText === "Evaluate") {
-            if(loan.user_id) return (
-                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
-                badge={<CustomBadge text="Approved" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
+        if(loan.ci_id === id) {
+            if(bttnText === "Evaluate") {
+                if(loan.user_id) return (
+                    <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
+                    badge={<CustomBadge text="Approved" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
+                );
+            } else return (
+                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
+                    !loan.user_id ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />)
+                } path={path} bttnText={bttnText} state={loan.id} />
             );
-        } else return (
-            <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
-                !loan.user_id ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />)
-            } path={path} bttnText={bttnText} state={loan.id} />
-        );
+        }
     }
 
     return (
@@ -84,8 +86,8 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
                                         loans.map(loan => (displayLoan(loan))
                                     ) : displayLoan(loans)
                                 )}
-                                <LogRow id="FWB127364372" name="John Doe" date="20/12/2023" state={100}
-                                badge={<CustomBadge text="Evaluated" color="yellow" />} path={path} bttnText={bttnText} />
+                                {/* <LogRow id="FWB127364372" name="John Doe" date="20/12/2023" state={100}
+                                badge={<CustomBadge text="Evaluated" color="yellow" />} path={path} bttnText={bttnText} /> */}
                                 {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
                                 <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} /> */}
                             </LogList>

@@ -13,7 +13,7 @@ export default function AppliedForm({url}) {
     const [applicant, setApplicant] = useState({view: true});
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/application/1')
+        fetch('http://127.0.0.1:8000/api/application/1?by=id')
         .then(response => response.json())
         .then(data => {
             setApplicant({...applicant, ...data});

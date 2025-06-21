@@ -45,6 +45,7 @@ import SearchPage from './pages/SearchPage';
 import { useState } from 'react';
 import UnitsAll from './pages/UnitsAll';
 import UnitsNew from './pages/UnitsNew';
+import ReportReview from './pages/ReportReview';
 
 function App() {
   const [log, setLog] = useState({});
@@ -125,6 +126,7 @@ function App() {
             {/* <Route path="recommendation" element={<InvoiceList id={log.id} headText="Evaluated Loans" />} /> */}
             <Route path="ciloan" element={<LoanInfo />} />
             <Route path="cireport" element={<CIReport />} />
+            <Route path="review" element={<ReportReview />} />
             {/* <Route path="ciappform" element={<CIAppForm />} /> */}
             <Route path="profile" element={<Profile />} />
           </Route>

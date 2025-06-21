@@ -13,7 +13,7 @@ export default function AppliedForm({url}) {
     const [applicant, setApplicant] = useState({view: true});
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/application/1?by=id')
+        fetch(`http://127.0.0.1:8000/api/application/2?by=id`)
         .then(response => response.json())
         .then(data => {
             setApplicant({...applicant, ...data});
@@ -41,6 +41,7 @@ export default function AppliedForm({url}) {
 
     const address = applicant.address;
     // const outletContext = {applicant, address};
+    console.log(applicant);
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex justify-center fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

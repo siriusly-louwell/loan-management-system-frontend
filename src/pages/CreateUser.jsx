@@ -100,7 +100,7 @@ export default function CreateUser() {
                             <FormInput label="Last name" type="text" name="last_name" id="lname" value={user.last_name || ''} onchange={handleChange} placeholder="Type last name" require={true} />
                             <FormInput label="Email Address" type="text" name="email" id="email" value={user.email || ''} onchange={handleChange} placeholder="john@gmail.com" require={true} />
                             <FormInput label="Contact number" type="number" name="contact" id="number" value={user.contact || ''} onchange={handleChange} placeholder="Phone number here" />
-                            <FormSelect name="gender" id="gender" label="Gender" require={true}>
+                            <FormSelect name="gender" id="gender" label="Gender" value={user.gender || ''} onchange={handleChange} require={true}>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </FormSelect>

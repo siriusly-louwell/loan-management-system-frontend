@@ -12,22 +12,79 @@ import FormTextarea from '../components/inputs/FormTextarea';
 import FormCheck from '../components/checkboxes/FormCheck';
 import FileInput from '../components/inputs/FileInput';
 import PfpLabel from '../components/PfpLabel';
+import Spinner from '../components/loading components/Spinner';
+import Alert from '../components/Alert';
 
 export default function CIReport() {
     const {state} = useLocation();
     const [report, setReport] = useState({});
     const [appReport, setAppReport] = useState({});
+    const [sketch, setSketch] = useState({});
+    const [alert, setAlert] = useState({});
+    const submitData = new FormData();
 
     useEffect(() => {
         fetch(`http://localhost:8000/api/application/${state.id}?by=id`)
         .then(response => response.json())
         .then(data => {
             setAppReport(data);
+            setReport({...report, application_id: data.id});
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
         })
     }, [state.id]);
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        document.getElementById('report_spin').style.display = 'flex';
+
+        if (!sketch && !sketch instanceof File) {
+            setAlert({
+                text: "Please upload a sketch image.",
+                icon: "warn"
+            });
+            document.getElementById('ciReport').style.display = "block";
+            document.getElementById('report_spin').style.display = 'none';
+            return;
+        }
+
+        for(let key in report) {
+            submitData.append(`${key}`, report[key]);
+        }
+        submitData.append('sketch', sketch);
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/report', {
+                method: 'POST',
+                // headers: {
+                //     'Content-Type': 'application/json',
+                //     'Accept': 'application/json'
+                // },
+                body: submitData
+                // body: JSON.stringify(applicant)
+            });
+
+            const result = await response.json();
+            if(!response.ok) throw new Error('Update failed');
+            setAlert({
+                text: `Report for ${appReport.first_name} ${appReport.last_name} has been submitted!`,
+                icon: "done",
+                id: result.record_id,
+                contact: result.contact
+            });
+            document.getElementById('report_spin').style.display = "none"
+            document.getElementById('ciReport').style.display = "block";
+        } catch(error) {
+            console.error('Error: ', error);
+            setAlert({
+                text: "Failed to submit report",
+                icon: "warn"
+            });
+            document.getElementById('ciReport').style.display = "block";
+            document.getElementById('report_spin').style.display = "none";
+        }
+    }
 
     function handleChange(event) {
         setReport({
@@ -43,7 +100,7 @@ export default function CIReport() {
                     <div className="flex justify-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">CREDIT INVESTIGATION REPORT</h3>
                     </div>
-                    <form action="#">
+                    <form onSubmit={handleSubmit}>
                         <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                             <PfpLabel caption="Applicant Name" label={`${appReport.first_name} ${appReport.last_name}`} />
                             <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={report.birth_day} onchange={handleChange} require={true} />
@@ -140,8 +197,8 @@ export default function CIReport() {
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject is recommended for</label>
                                 <div className="space-y-4 sm:flex sm:space-y-0">
-                                    <FormCheck name="recommendation[]" type="radio" id="recomm-1" label="Approval" value="approval" check={report.recommendation === 'approval'} change={handleChange} require={true} />
-                                    <FormCheck name="recommendation[]" type="radio" id="recomm-2" label="disapproval" value="disapproval" check={report.recommendation === 'disapproval'} change={handleChange} />
+                                    <FormCheck name="recommendation" type="radio" id="recomm-1" label="Approval" value="approval" check={report.recommendation === 'approval'} change={handleChange} require={true} />
+                                    <FormCheck name="recommendation" type="radio" id="recomm-2" label="Disapproval" value="disapproval" check={report.recommendation === 'disapproval'} change={handleChange} />
                                 </div>
                             </div>
                             <FormTextarea name="remarks" id="remarks" label="Other remarks" placeholder="Write remarks here" />
@@ -150,25 +207,27 @@ export default function CIReport() {
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit verification:</h3>
                         <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
                             <FormInput label="First Unit applied" type="text" name="first_unit" id="name" value={report.first_unit} onchange={handleChange} placeholder="Type unit name here" />
-                            <FileInput label="Sketch Image" type="img" />
+                            <FileInput label="Sketch Image" name="sketch" type="img" change={(e) => setSketch(e.target.files[0])} require={true} />
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivered?</label>
                                 <div className="space-y-4 sm:flex sm:space-y-0">
-                                    <FormCheck name="delivered[]" type="radio" id="deliver-1" label="Yes" value="yes" check={report.delivered === 'yes'} change={handleChange} />
-                                    <FormCheck name="delivered[]" type="radio" id="deliver-2" label="No" value="no" check={report.delivered === 'no'} change={handleChange} />
+                                    <FormCheck name="delivered" type="radio" id="deliver-1" label="Yes" value="yes" check={report.delivered === 'yes'} change={handleChange} />
+                                    <FormCheck name="delivered" type="radio" id="deliver-2" label="No" value="no" check={report.delivered === 'no'} change={handleChange} />
                                 </div>
                             </div>
                             <FormInput label="Outlet" type="text" name="outlet" id="outlet" value={report.outlet} onchange={handleChange} placeholder="Type outlet here" />
                         </div>
-
-                        <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500"></div>
         
                         <div className="space-y-4 sm:flex sm:w-1/3 sm:space-y-0 sm:space-x-4">
-                            <Button text="Done" />
+                            <Button bttnType="submit" text="Done" />
                         </div>
                     </form>
                 </div>
+                <Alert id="ciReport" text={alert.text} icon={alert.icon}>
+                    <Button text="Ok" onclick={() => document.getElementById('ciReport').style.display = 'none'} />
+                </Alert>
             </div>
+            <Spinner id="report_spin" text="Submitting report..." />
         </div>
     );
 }

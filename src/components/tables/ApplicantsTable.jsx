@@ -48,8 +48,22 @@ export default function ApplicantsTable() {
     }
 
     function statusBadge(status) {
-        return status === 'pending' ? (<CustomBadge text="Pending" color="blue" />)
-            : (status === 'declined' ? (<CustomBadge text="Declined" color="red" />) : (<CustomBadge text="Approved" color="green" />))
+        let type = [];
+
+        switch (status) {
+            case 'approved':
+                type = ['Approved', 'blue'];
+                break;
+            case 'declined':
+                type = ['Declined', 'red'];
+                break;
+            case 'evaluated':
+                type = ['Evaluated', 'yellow'];
+                break;
+            default:
+                type = ['Pending', 'pending'];
+        }
+        return (<CustomBadge text={type[0]} color={type[1]} />);
     }
 
     return (

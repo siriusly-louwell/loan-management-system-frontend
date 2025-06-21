@@ -124,9 +124,9 @@ export default function LoanInfo({children}) {
 
                             <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
                                 <TrackList label="Loan Submission" sublabel="Loan application was successful" isDone="done" />
-                                <TrackList label="Approved" sublabel="The application is viable for applying a loan" isDone={loan.apply_status === 'approved' ? "done" : (loan.apply_status === 'declined' ? 'decline' : 'current')} />
-                                <TrackList label="Credit Investigation" sublabel="Applicant has been interviewed by the assigned Credit Investigator" isDone={loan.apply_status === 'approved' ? "current" : 'pend'} />
-                                <TrackList label="Accepted" sublabel="The application has passed the investigation" isDone="pend" />
+                                <TrackList label="Approved" sublabel="The application is viable for applying a loan" isDone={loan.apply_status === 'approved' || loan.apply_status === 'evaluated' ? "done" : (loan.apply_status === 'declined' ? 'decline' : 'current')} />
+                                <TrackList label="Credit Investigation" sublabel="Applicant has been interviewed by the assigned Credit Investigator" isDone={loan.apply_status === 'evaluated' ? 'done' : (loan.apply_status === 'approved' ? "current" : 'pend')} />
+                                <TrackList label="Accepted" sublabel="The application has passed the investigation" isDone={loan.apply_status === 'evaluated' ? "current" : 'pend'} />
                                 <TrackList label="Initial Payment" sublabel="The loan application has been successful" isDone="pend" />
                                 <TrackList label="Paid!" sublabel="The loan has been fully paid" isDone="pend" />
                             </ol>
@@ -134,16 +134,19 @@ export default function LoanInfo({children}) {
                             <div class="gap-4 grid grid-cols-1">
                                 {children}
                                 <Button text="View Form" bttnType="button" onclick={() => navigate('/admin/apply')} state={{id: loan.id}} />
-                                {id === 100 ? (
-                                    <CustomBttn text="View Evaluation" onclick={() => navigate('/ci/cireport')} classname="flex items-center w-full justify-center text-teal-700 hover:text-white border border-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-teal-600 dark:border-teal-500 dark:text-teal-200 dark:hover:text-white dark:hover:bg-teal-800 dark:focus:ring-teal-900" />
-                                ) : (
-                                    location.pathname !== '/application' && location.pathname !== '/ci/ciloan' ? (
+                                {loan.apply_status === 'evaluated' ? (
+                                    <CustomBttn text="View Evaluation" onclick={() => navigate('/ci/review', {
+                                        state: {
+                                            id: loan.id,
+                                            name: `${loan.first_name} ${loan.last_name}`
+                                        }
+                                    })} classname="flex items-center w-full justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" />
+                                ) : location.pathname !== '/application' && location.pathname !== '/ci/ciloan' ? (
                                         <>
                                             <CustomBttn text="Approve Application" onclick={() => document.getElementById('addCI').style.display = 'flex'} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
                                             <CustomBttn text="Deny Application" onclick={() => document.getElementById('declineApp').style.display = 'flex'} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
                                         </>
-                                    ) : ''
-                                )}
+                                ) : ''}
                             </div>
                         </div>
                     </div>

@@ -23,7 +23,8 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
         fetch(`http://127.0.0.1:8000/api/application${record}`)
             .then(response => response.json())
             .then(data => {
-                setLoans(data);
+                if(Array.isArray(data))setLoans(data);
+                else setLoans([data]);
                 setLoanLoad(false);
         })
         .catch(error => {
@@ -40,14 +41,14 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
         return formatted;
     }
 
-    function displayLoan(loan) {
-        if(loan.ci_id !== id && (location.pathname !== '/ci/loanapplications' || location.pathname !== '/ci' || location.pathname !== '/ci/evaluation')) {
+    function displayLoan(loan) {        
+        if(location.pathname !== '/ci/loanapplications' && location.pathname !== '/ci' && location.pathname !== '/ci/evaluation') {
             return (
                 <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
                     loan.apply_status === 'pending' ? (<CustomBadge text="Pending" color="blue" />) : (loan.apply_status === 'approved' ? (<CustomBadge text="Approved" color="green" />) : (<CustomBadge text="Evaluated" color="yellow" />))
                 } path={path} bttnText={bttnText} state={loan.id} />
             );
-        } else {
+        } else if(loan.ci_id === id) {
             if(bttnText === "Evaluate") {
                 if(loan.apply_status === 'approved') {
                         return (
@@ -62,7 +63,7 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
             );
         }
     }
-
+    
     return (
         <section className="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
             <div className="mx-auto max-w-screen-x 2xl:px-0">

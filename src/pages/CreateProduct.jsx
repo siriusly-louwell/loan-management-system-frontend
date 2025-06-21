@@ -8,6 +8,7 @@ import Cloud from '../assets/icons/Cloud';
 import Spinner from "../components/loading components/Spinner";
 import SelectColor from "../components/checkboxes/SelectColor";
 import Alert from "../components/Alert";
+import QuantityInput from "../components/buttons/QuantityInput";
 
 export default function CreateProduct() {
     const [files, setFiles] = useState([]);
@@ -96,6 +97,17 @@ export default function CreateProduct() {
             [event.target.name]: event.target.value
         });
     }
+
+    function handleQuantity(i, num, key) {
+        const form = {
+            ...formData,
+            [key]: num
+        };
+
+        setFormData(form);
+    }
+
+    console.log(formData);
     
     return (
         <div id="createProduct" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
@@ -108,14 +120,20 @@ export default function CreateProduct() {
                     <form onSubmit={handleSubmit} className="lg:flex">
                         <section className="lg:w-1/2 lg:pr-3">
                             <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">Motorcycle Details</h3>
+                            <div className="grid sm:grid-cols-3 gap-4 mb-3">
+                                <div className="grid gap-4 sm:col-span-2">
+                                    <FormInput label="Motorcycle Name" type="text" value={formData.name || ''} onchange={handleChange} name="name" id="name" placeholder="Type motorcycle name" />
+                                </div>
+                                <QuantityInput max={200} label="Quantity" change={handleQuantity} />
+                            </div>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <FormInput label="Motorcycle Name" type="text" value={formData.name || ''} onchange={handleChange} name="name" id="name" placeholder="Type motorcycle name" />
-                                <FormInput label="Brand Name" type="text" name="brand" id="brand" value={formData.brand || ''} onchange={handleChange} placeholder="Type brand name" />
+                                
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
+                                    <FormInput label="Brand Name" type="text" name="brand" id="brand" value={formData.brand || ''} onchange={handleChange} placeholder="Type brand name" />
                                     <FormInput label="Price" type="number" id="price" name="price" value={formData.price || ''} onchange={handleChange} placeholder="₱150,000" />
                                     <FormInput label="Minimum Downpayment" type="number" id="down" name="downpayment" value={formData.downpayment || ''} onchange={handleChange} placeholder="₱25,000" />
                                     <FormInput label="Rebate" type="number" id="rebate" name="rebate" value={formData.rebate || ''} onchange={handleChange} placeholder="₱15,000" />
-                                    <FormInput label="Quantity" type="number" id="quantity" name="quantity" value={formData.quantity || ''} onchange={handleChange} placeholder="25 units" />
+                                    {/* <FormInput label="Quantity" type="number" id="quantity" name="quantity" value={formData.quantity || ''} onchange={handleChange} placeholder="25 units" /> */}
                                     <FormInput label="Interest Rate (%)" type="number" id="interest" name="interest" value={formData.interest || ''} onchange={handleChange} placeholder="10%" />
                                     <FormInput label="Loan Tenure" type="number" id="tenure" name="tenure" value={formData.tenure || ''} onchange={handleChange} placeholder="5 years" />
                                 </div>

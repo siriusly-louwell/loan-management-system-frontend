@@ -52,7 +52,7 @@ export default function ApplicantsTable() {
 
         switch (status) {
             case 'approved':
-                type = ['Approved', 'blue'];
+                type = ['Approved', 'green'];
                 break;
             case 'declined':
                 type = ['Declined', 'red'];
@@ -61,7 +61,7 @@ export default function ApplicantsTable() {
                 type = ['Evaluated', 'yellow'];
                 break;
             default:
-                type = ['Pending', 'pending'];
+                type = ['Pending', 'blue'];
         }
         return (<CustomBadge text={type[0]} color={type[1]} />);
     }

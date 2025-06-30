@@ -52,15 +52,14 @@ export default function Cashier() {
 
                                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Products:</h2>
                                 <div class="divide-y grid sm:col-span-2 sm:grid-cols-2 divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600">
-                                    <LoanList id="BJ8364850" price="₱103,499" units="1" name="Kawasaki 45RF0" />
-                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="Wave 100" />
-                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="XRM" />
-                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="Click" />
-                                    <LoanList id="BJ8364850" price="₱103,500" units="3" name="Kawasaki" />
+                                    <LoanList id="BJ8364850" price="103499" units="1" name="Kawasaki 45RF0" color="rose" />
+                                    <LoanList id="BJ8364850" price="103500" units="3" name="Wave 100" color="rose" />
+                                    <LoanList id="BJ8364850" price="103500" units="3" name="XRM" color="rose" />
+                                    <LoanList id="BJ8364850" price="103500" units="3" name="Click" color="rose" />
+                                    <LoanList id="BJ8364850" price="103500" units="3" name="Kawasaki" color="rose" />
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="mt-6 w-full sticky top-10 space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">

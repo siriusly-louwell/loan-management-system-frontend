@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 export default function DeclineApplicant({id, record, name}) {
     const navigate = useNavigate();
     const [alert, setAlert] = useState({});
-    const [decline, setDecline] = useState({apply_status: 'declined'});
+    const [decline, setDecline] = useState({apply_status: 'denied'});
 
 
     function handleChange(event) {
@@ -39,7 +39,7 @@ export default function DeclineApplicant({id, record, name}) {
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
             setAlert({
-                text: "Applicant has been declined!",
+                text: "Applicant has been denied!",
                 icon: "done"
             });
             document.getElementById('dec-app').style.display = 'block';

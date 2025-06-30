@@ -13,7 +13,7 @@ export default function AssignCI({id, record, name}) {
     const today = new Date().toISOString().split('T')[0];
     const [appCI, setAppCI] = useState([]);
     const [alert, setAlert] = useState({});
-    const [applicant, setApplicant] = useState({apply_status: 'approved'});
+    const [applicant, setApplicant] = useState({apply_status: 'accepted'});
     const [ciLoad, setCiLoad] = useState(true);
 
     useEffect(() => {
@@ -53,7 +53,7 @@ export default function AssignCI({id, record, name}) {
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
             setAlert({
-                text: "Applicant approved!",
+                text: "Applicant has been accepted!",
                 icon: "done"
             });
             document.getElementById('appli-loan').style.display = 'block';

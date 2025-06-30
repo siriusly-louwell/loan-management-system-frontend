@@ -51,14 +51,20 @@ export default function ApplicantsTable() {
         let type = [];
 
         switch (status) {
-            case 'approved':
-                type = ['Approved', 'green'];
+            case 'accepted':
+                type = ['Accepted', 'green'];
                 break;
-            case 'declined':
-                type = ['Declined', 'red'];
+            case 'denied':
+                type = ['Denied', 'orange'];
                 break;
             case 'evaluated':
                 type = ['Evaluated', 'yellow'];
+                break;
+            case 'approved':
+                type = ['Approved', 'purple'];
+                break;
+            case 'declined':
+                type = ['Declined', 'red'];
                 break;
             default:
                 type = ['Pending', 'blue'];

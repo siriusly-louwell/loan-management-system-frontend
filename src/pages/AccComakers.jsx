@@ -75,7 +75,6 @@ export default function AccComakers() {
                     ))}
                 </tbody>
             </Table>
-            {console.log(customer)}
             {customLoad ? (
                 <div class="w-full h-40 py-20 bg-gray-100 flex justify-center items-center">
                     <SmallSpin size={50}  />

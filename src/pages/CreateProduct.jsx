@@ -106,8 +106,6 @@ export default function CreateProduct() {
 
         setFormData(form);
     }
-
-    console.log(formData);
     
     return (
         <div id="createProduct" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

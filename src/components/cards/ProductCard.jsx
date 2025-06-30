@@ -8,11 +8,11 @@ import Check from "../../assets/icons/Check";
 
 export default function ProductCard({unit, url, id, selected, selectUnits}) {
     const location = useLocation();
-    const including = location.pathname === '/product' ? selected.includes(`${id}`) : false;
+    const including = location.pathname === '/unit' ? selected.includes(`${id}`) : false;
 
     return (
         <>
-            {location.pathname === '/product' ? (
+            {location.pathname === '/unit' ? (
                 <input type="checkbox" id={`unit_${id}`} className="hidden" value={id} onChange={(e) => selectUnits(e.target.value)} />
             ) : ""}
             <label htmlFor={`unit_${id}`} type="button" 
@@ -24,7 +24,7 @@ export default function ProductCard({unit, url, id, selected, selectUnits}) {
                     <div className="mb-4 flex items-center justify-between gap-4">
                         <span className="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-rose-500 dark:text-rose-100">{unit.interest}% Interest rate</span>
 
-                        {location.pathname !== "/product" ? (
+                        {location.pathname !== "/unit" ? (
                             <div className="flex items-center justify-end gap-1">
                                 <button type="button" className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                     <span className="sr-only"> Quick look </span>
@@ -79,7 +79,7 @@ export default function ProductCard({unit, url, id, selected, selectUnits}) {
 
                     <div className="mt-4 flex items-center justify-between gap-4">
                         <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">₱{parseFloat(unit.price).toLocaleString()}</p>
-                        {location.pathname !== "/product" ? (
+                        {location.pathname !== "/unit" ? (
                             <AddtoCartBttn state={{id: unit.id}} url={url} text="Inquire" />
                         ) : (
                             <div className={`rounded-full h-6 w-6 border border-2 flex p-1 justify-center items-center ${including ? 'border-rose-500 bg-rose-500' : 'border-gray-400 dark:border-gray-500'}`}>

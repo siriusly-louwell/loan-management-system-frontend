@@ -183,7 +183,6 @@ export default function LoanInfo({children}) {
                             <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
                                 <TrackList label="Loan Submission" sublabel="Loan application was successful" isDone="done" />
                                 <TrackList label="Accepted" sublabel="The application is viable for applying a loan" isDone={trackCond('accept')} />
-                                {/* <TrackList label="Accepted" sublabel="The application is viable for applying a loan" isDone={loan.apply_status === 'accepted' || loan.apply_status === 'evaluated' ? "done" : (loan.apply_status === 'denied' ? 'deny' : 'current')} /> */}
                                 <TrackList label="Credit Investigation" sublabel="Applicant has been interviewed by the assigned Credit Investigator" isDone={trackCond('investigation')} />
                                 <TrackList label="Approved" sublabel="The application has passed the investigation" isDone={trackCond('approve')} />
                                 <TrackList label="Initial Payment" sublabel="The loan application has been successful" isDone="pend" />

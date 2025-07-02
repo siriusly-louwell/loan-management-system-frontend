@@ -41,25 +41,47 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
         return formatted;
     }
 
+    function statusBadge(status) {
+        let type = [];
+        
+        switch (status) {
+            case 'accepted':
+                type = ['Accepted', 'green'];
+                break;
+            case 'denied':
+                type = ['Denied', 'orange'];
+                break;
+            case 'evaluated':
+                type = ['Evaluated', 'yellow'];
+                break;
+            case 'approved':
+                type = ['Approved', 'purple'];
+                break;
+            case 'declined':
+                type = ['Declined', 'red'];
+                break;
+            default:
+                type = ['Pending', 'blue'];
+        }
+    
+        return (<CustomBadge text={type[0]} color={type[1]} />);
+    }
+
     function displayLoan(loan) {        
         if(location.pathname !== '/ci/loanapplications' && location.pathname !== '/ci' && location.pathname !== '/ci/evaluation') {
             return (
-                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
-                    loan.apply_status === 'pending' ? (<CustomBadge text="Pending" color="blue" />) : (loan.apply_status === 'approved' ? (<CustomBadge text="Approved" color="green" />) : (<CustomBadge text="Evaluated" color="yellow" />))
-                } path={path} bttnText={bttnText} state={loan.id} />
+                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
             );
         } else if(loan.ci_id === id) {
             if(bttnText === "Evaluate") {
-                if(loan.apply_status === 'approved') {
+                if(loan.apply_status === 'accepted') {
                         return (
                         <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
-                        badge={<CustomBadge text="Approved" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
+                        badge={<CustomBadge text="Accepted" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
                     );
                 }
             } else return (
-                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={
-                    loan.apply_status === 'pending' ? (<CustomBadge text="Pending" color="blue" />) : (loan.apply_status === 'approved' ? (<CustomBadge text="Approved" color="green" />) : (<CustomBadge text="Evaluated" color="yellow" />))
-                } path={path} bttnText={bttnText} state={loan.id} />
+                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
             );
         }
     }

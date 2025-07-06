@@ -6,7 +6,7 @@ import EditProduct from './EditProduct';
 
 export default function Inventory() {
     const [motorcycles, setMotor] = useState([]);
-    const [row, setRow] = useState([]);
+    const [row, setRow] = useState({});
     const [loading, setLoad] = useState(true);
     
     useEffect(() => {
@@ -33,11 +33,11 @@ export default function Inventory() {
         setRow(data);
         document.getElementById('editProduct').style.display = 'block';
     }
-
+    
     return (
         <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Unit">
             <InventoryTable motorcycles={motorcycles} loading={loading} editMotor={editMotor} />
-            <EditProduct motor={row} />
+            <EditProduct motor={Object.keys(row).length > 0 ? row : {}} />
         </CRUDformat>
     );
 }

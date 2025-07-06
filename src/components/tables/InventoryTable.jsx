@@ -13,6 +13,7 @@ import Ex from '../../assets/icons/Ex';
 import CustomBadge from '../badges/CustomBadge';
 import EmptyFolder from '../empty states/EmptyFolder';
 import SmallSpin from '../loading components/SmallSpin';
+import Plus from '../../assets/icons/Plus';
 
 export default function InventoryTable({motorcycles, loading, editMotor}) {
     if(!loading)motorcycles.sort((a, b) => b.id - a.id);
@@ -54,19 +55,18 @@ export default function InventoryTable({motorcycles, loading, editMotor}) {
                                 motor.interest + "%",
                                 motor.tenure + " years",
                                 // <div class="flex items-center"><Cart />1.6M</div>,
-                                // "$3.2M",
                                 <div class="flex items-center space-x-4">
                                     <CustomBttn text="Edit" onclick={() => editMotor(motor.id)} classname="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-rose-600 rounded-lg hover:bg-rose-600 focus:ring-4 focus:outline-none focus:ring-rose-600 dark:bg-rose-600 dark:hover:bg-rose-600 dark:focus:ring-rose-600">
                                         <Edit />
                                     </CustomBttn>
                                     {/* <Link to="/admin/product">
-                                        <CustomBttn text="Preview" className="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                        <CustomBttn text="Preview" classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                             <Eye />
                                         </CustomBttn>
                                     </Link> */}
-                                    <CustomBttn text="Move to Archive" classname="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                        onclick={() => document.getElementById('delete_product').style.display = "block"}>
-                                        <Ex className="mr-1 -ml-1 w-5 h-5" />
+                                    <CustomBttn text="Manage Stock" classname="flex items-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900"
+                                        onclick={() => document.getElementById('stock_adjust').style.display = "block"}>
+                                        <Plus />
                                     </CustomBttn>
                                 </div>
                             ]} />

@@ -200,22 +200,26 @@ export default function LoanInfo({children}) {
                                                     name: `${loan.first_name} ${loan.last_name}`
                                                 }
                                             })} />
-                                        <CustomBttn text="Approve Application" onclick={() => {
-                                            document.getElementById('approveApp').style.display = 'block';
-                                            setAlert({
-                                                text: 'Do you want to approve this applicant?',
-                                                type: 'approved'
-                                            });
-                                        }} classname="flex items-center w-full justify-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-green-600 dark:border-green-500 dark:text-green-200 dark:hover:text-white dark:hover:bg-green-800 dark:focus:ring-green-900" />
-                                        <CustomBttn text="Decline Application" onclick={() => {
-                                            document.getElementById('approveApp').style.display = 'block';
-                                            setAlert({
-                                                text: 'Do you want to decline this applicant?',
-                                                type: 'declined'
-                                            });
-                                        }} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+                                        {location.pathname === '/admin/loan' ? (
+                                            <>
+                                                <CustomBttn text="Approve Application" onclick={() => {
+                                                    document.getElementById('approveApp').style.display = 'block';
+                                                    setAlert({
+                                                        text: 'Do you want to approve this applicant?',
+                                                        type: 'approved'
+                                                    });
+                                                }} classname="flex items-center w-full justify-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-green-600 dark:border-green-500 dark:text-green-200 dark:hover:text-white dark:hover:bg-green-800 dark:focus:ring-green-900" />
+                                                <CustomBttn text="Decline Application" onclick={() => {
+                                                    document.getElementById('approveApp').style.display = 'block';
+                                                    setAlert({
+                                                        text: 'Do you want to decline this applicant?',
+                                                        type: 'declined'
+                                                    });
+                                                }} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+                                            </>
+                                        ) : ''}
                                     </>
-                                ) : location.pathname !== '/application' && location.pathname !== '/ci/ciloan' ? (
+                                ) : location.pathname === '/staff/loan' ? (
                                         <>
                                             <CustomBttn text="Accept Application" onclick={() => document.getElementById('addCI').style.display = 'flex'} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
                                             <CustomBttn text="Deny Application" onclick={() => document.getElementById('declineApp').style.display = 'flex'} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />

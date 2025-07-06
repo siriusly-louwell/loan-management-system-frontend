@@ -1,5 +1,6 @@
 import React from 'react';
 import {useEffect, useRef, useState} from 'react';
+import { useLocation } from 'react-router-dom';
 import CustomBttn from '../components/buttons/CustomBttn';
 import BasicBttn from '../components/buttons/BasicBttn';
 import Plus from '../assets/icons/Plus';
@@ -11,10 +12,11 @@ import DropdownMenu from '../components/DropdownMenu';
 import MenuLink from '../components/links/MenuLink';
 import PageNav from '../components/PageNav';
 import Alert from '../components/Alert';
-import { useLocation } from 'react-router-dom';
+import StockModal from './modals/StockModal';
 
 export default function CRUDformat({children, addModal, label, modalId}) {
     const location = useLocation();
+    const [stock, setStock] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -81,10 +83,12 @@ export default function CRUDformat({children, addModal, label, modalId}) {
                 </div>
             </section>
             {addModal}
-            <Alert id="delete_product" text="Are you sure you want to move this unit to archives?" icon="warn">
-                <CustomBttn text="Yes, I'm sure" classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
-                <BasicBttn text="No, cancel" onclick={() => document.getElementById('delete_product').style.display = "none"} />
-            </Alert>
+            {stock !== '' ? (<StockModal bool={stock} />) : (
+                <Alert id="stock_adjust" text="Stock Adjustment Type:" icon="warn">
+                    <CustomBttn text="Restock" onclick={() => setStock('restock')} classname="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
+                    <CustomBttn text="Destock" onclick={() => setStock('destock')} classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
+                </Alert>
+            )}
         </>
     );
 }

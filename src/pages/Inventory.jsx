@@ -48,7 +48,9 @@ export default function Inventory() {
             ...stock,
             modal: false,
             quantity: data.quantity,
-            type: type
+            type: type,
+            img: data.file_path,
+            name: data.name
         });
     }
     
@@ -56,7 +58,7 @@ export default function Inventory() {
         <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Unit" adjustStock={adjustStock} modal={stock.modal}>
             <InventoryTable motorcycles={motorcycles} loading={loading} editMotor={editMotor} stock={stock} setStock={setStock} />
             <EditProduct motor={Object.keys(row).length > 0 ? row : {}} />
-            {stock.type !== '' ? (<StockModal bool={stock.stock} id={stock.id} setStock={setStock} stock={stock.quantity} />) : ''}
+            {stock.type !== '' ? (<StockModal setStock={setStock} stock={stock} />) : ''}
         </CRUDformat>
     );
 }

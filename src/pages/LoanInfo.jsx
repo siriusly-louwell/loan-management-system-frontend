@@ -12,6 +12,8 @@ import AssignCI from "../components/AssignCI";
 import DeclineApplicant from "../components/DeclineApplicant";
 import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
+import ProductCard from "../components/cards/ProductCard";
+import CardSkeleton from "../components/loading components/CardSkeleton";
 
 export default function LoanInfo({children}) {
     const navigate = useNavigate();
@@ -22,6 +24,8 @@ export default function LoanInfo({children}) {
     const [loanLoad, setLoanLoad] = useState(true);
     const [totals, setTotal] = useState({});
     const [alert, setAlert] = useState({});
+    const [recommend, setRecommend] = useState({});
+    const [recoLoad, setRecoLoad] = useState(true);
     const dti = (loan.rental_exp/loan.salary) * 100;
     const ltv = (100000 / 98000) * 100;
 
@@ -36,6 +40,18 @@ export default function LoanInfo({children}) {
             console.error('Error fetching data: ', error);
         })
     }, [id]);
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/api/motorcycle/1')
+        .then(response => response.json())
+        .then(data => {
+                setRecommend(data);
+                setRecoLoad(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data: ', error);
+            })
+    }, []);
 
     useEffect(() => {
         if(!loanLoad) {
@@ -99,6 +115,8 @@ export default function LoanInfo({children}) {
             default:
         }
     }
+    
+    console.log(recommend);
 
     return (
         <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
@@ -230,6 +248,14 @@ export default function LoanInfo({children}) {
                     </div>
                 </div>
             </div>
+            {loan.apply_status === 'declined' ? (
+                <>
+                    <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Recommendations</h2>
+                    <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+                        {recoLoad ? (<CardSkeleton />) : (<ProductCard key={recommend.id} unit={recommend} url="/unit" />)}
+                    </section>
+                </>
+            ) : ''}
             <DeclineApplicant id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <AssignCI id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <Alert id="approveApp" text={alert.text} icon="warn">

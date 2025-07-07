@@ -14,9 +14,8 @@ import PageNav from '../components/PageNav';
 import Alert from '../components/Alert';
 import StockModal from './modals/StockModal';
 
-export default function CRUDformat({children, addModal, label, modalId}) {
+export default function CRUDformat({children, addModal, label, modalId, modal, adjustStock}) {
     const location = useLocation();
-    const [stock, setStock] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -83,12 +82,12 @@ export default function CRUDformat({children, addModal, label, modalId}) {
                 </div>
             </section>
             {addModal}
-            {stock !== '' ? (<StockModal bool={stock} />) : (
+            {modal ? (
                 <Alert id="stock_adjust" text="Stock Adjustment Type:" icon="warn">
-                    <CustomBttn text="Restock" onclick={() => setStock('restock')} classname="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
-                    <CustomBttn text="Destock" onclick={() => setStock('destock')} classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
+                    <CustomBttn text="Restock" onclick={() => adjustStock('restock')} classname="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
+                    <CustomBttn text="Destock" onclick={() => adjustStock('destock')} classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2" />
                 </Alert>
-            )}
+            ) : ''}
         </>
     );
 }

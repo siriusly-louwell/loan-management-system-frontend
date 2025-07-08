@@ -42,7 +42,6 @@ export default function Login({setUser}) {
                 })
                 document.getElementById('login_spin').style.display = 'none';
                 document.getElementById('login_alert').style.display = 'block';
-                // alert(data.message);
             } else {
                 localStorage.setItem('token', data.token);
                 setUser(data.user);

@@ -14,26 +14,26 @@ import axios from "axios";
 export default function EditProduct({motor}) {
     const [files, setFiles] = useState([]);
     const [formEdit, setFormEdit] = useState({});
-    const [colors, setColors] = useState([]);
+    const [editColor, setEditColor] = useState([]);
     const [alert, setAlert] = useState({});
 
     useEffect(() => {
         if(Object.keys(motor).length > 0) {
             const colorArr = motor.colors.map(i => i.color);
-            delete motor.colors;
+            // delete motor.colors;
             delete motor.images;
 
-            setColors(colorArr);
+            setEditColor(colorArr);
             setFormEdit(motor);
         }
-    }, [motor]);
+    }, []);
 
-    function changeColor(newColor) {
-        const updatedColors = colors.includes(newColor)
-            ? colors.filter(color => color !== newColor)
-            : [...colors, newColor];
+    function changeEditColor(newColor) {
+        const updatedColors = editColor.includes(newColor)
+            ? editColor.filter(color => color !== newColor)
+            : [...editColor, newColor];
 
-        setColors(updatedColors);
+        setEditColor(updatedColors);
     };
 
     async function handleSubmit(event) {
@@ -49,7 +49,7 @@ export default function EditProduct({motor}) {
         }
 
         editData.append('_method', 'PATCH');
-        colors.forEach(color => editData.append(`colors[]`, color));
+        editColor.forEach(color => editData.append(`colors[]`, color));
         document.getElementById('edit_unit').style.display = "flex";
 
         try {
@@ -75,7 +75,7 @@ export default function EditProduct({motor}) {
 
     function resetInput() {
         setFormEdit({});
-        setColors([]);
+        setEditColor([]);
         setFiles([]);
         document.getElementById('editUnit').style.display = "block";
     }
@@ -92,7 +92,7 @@ export default function EditProduct({motor}) {
     }
     
     return (
-        <div id="editProduct" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+        <div id="editProduct" className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
                 <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
                     <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -112,7 +112,7 @@ export default function EditProduct({motor}) {
                                     <FormInput label="Interest Rate (%)" type="number" id="interest" name="interest" value={formEdit.interest || ''} onchange={handleChange} />
                                     <FormInput label="Loan Tenure" type="number" id="tenure" name="tenure" value={formEdit.tenure || ''} onchange={handleChange} />
                                 </div>
-                                <SelectColor text="Select Colors:" size={6} colors={colors} changeColor={changeColor} />
+                                <SelectColor text="Select Colors:" size={6} colors={editColor} changeColor={changeEditColor} />
                                 <FormTextarea name="description" id="description" label="Description" value={formEdit.description || ''} onchange={handleChange} />
                             </div>
                             <div className="mb-4">

@@ -61,7 +61,7 @@ export default function PersonalInfoForm() {
                     <FormInput type="text" placeholder="Present Address" value={address.personal_pres} />
                 ) : (
                     <>
-                        <FormSelect name="country" label="Country" id="country" value={address.country} onchange={addressChange} require={true}>
+                        {/* <FormSelect name="country" label="Country" id="country" value={address.country} onchange={addressChange} require={true}>
                             <option>Nigeria</option>
                             <option>Greece</option>
                             <option>USA</option>
@@ -76,7 +76,7 @@ export default function PersonalInfoForm() {
                             <option>Botswana</option>
                             <option>France</option>
                             <option>Great Britain</option>
-                        </FormSelect>
+                        </FormSelect> */}
                         <FormSelect name="region" label="Region" id="region" value={address.region} onchange={addressChange} require={true}>
                             <option>Region I</option>
                             <option>Region II</option>
@@ -161,6 +161,19 @@ export default function PersonalInfoForm() {
                             <option>Upper Licanan</option>
                             <option>Waterfall</option>
                         </FormSelect>
+                        <FormSelect name="purok" label="Purok" id="purok" value={address.purok} onchange={addressChange} require={true}>
+                            <option>Purok #1</option>
+                            <option>Purok #2</option>
+                            <option>Purok #3</option>
+                            <option>Purok #4</option>
+                            <option>Purok #5</option>
+                            <option>Purok #6</option>
+                            <option>Purok #7</option>
+                            <option>Purok #8</option>
+                            <option>Purok #9</option>
+                            <option>Purok #10</option>
+                        </FormSelect>
+                        <FormInput label="Lot/House Number" type="text" name="lot_num" id="lot_num" value={address.lot_num} onchange={addressChange} placeholder="Type House number here" require={true} />
                     </>
                 )}
             </div>
@@ -172,11 +185,13 @@ export default function PersonalInfoForm() {
                     <FormInput type="text" placeholder="Present Address" value={address.personal_pres} />
                 ) : (
                     <>
-                        <FormInput label="Country" type="text" name="prev_country" id="country" value={address.prev_country} onchange={addressChange} placeholder="Type country here" require={true} />
+                        {/* <FormInput label="Country" type="text" name="prev_country" id="country" value={address.prev_country} onchange={addressChange} placeholder="Type country here" require={true} /> */}
                         <FormInput label="Region" type="text" name="prev_region" id="region" value={address.prev_region} onchange={addressChange} placeholder="Type region here" require={true} />
                         <FormInput label="Province" type="text" name="prev_province" id="province" value={address.prev_province} onchange={addressChange} placeholder="Type province here" require={true} />
                         <FormInput label="City/Municipality" type="text" name="prev_city" id="city" value={address.prev_city} onchange={addressChange} placeholder="Type city here" require={true} />
                         <FormInput label="Barangay" type="text" name="prev_brgy" id="brgy" value={address.prev_brgy} onchange={addressChange} placeholder="Type barangay here" require={true} />
+                        <FormInput label="Purok" type="text" name="prev_purok" id="purok" value={address.prev_purok} onchange={addressChange} placeholder="Type House number here" require={true} />
+                        <FormInput label="Lot/House Number" type="text" name="prev_lot_num" id="lot_num" value={address.prev_lot_num} onchange={addressChange} placeholder="Type House number here" require={true} />
                     </>
                 )}
             </div>

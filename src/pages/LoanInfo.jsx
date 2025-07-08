@@ -116,8 +116,6 @@ export default function LoanInfo({children}) {
         }
     }
     
-    console.log(recommend);
-
     return (
         <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">

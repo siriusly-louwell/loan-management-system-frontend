@@ -64,12 +64,12 @@ export default function ApplicationForm() {
             return;
         }
 
-        applicant.personal_pres = address.brgy+", "+ address.city+" "+address.province+", "+ address.region+" "+address.country;
-        applicant.personal_prev = address.prev_brgy+", "+ address.prev_city+" "+address.prev_province+", "+ address.prev_region+" "+address.prev_country;
-        applicant.parent_pres = address.p_brgy+", "+ address.p_city+" "+address.p_province+", "+ address.p_region+" "+address.p_country;
-        applicant.parent_prev = address.p_prev_brgy+", "+ address.p_prev_city+" "+address.p_prev_province+", "+ address.p_prev_region+" "+address.p_prev_country;
-        applicant.spouse_pres = address.sp_brgy+", "+ address.sp_city+" "+address.sp_province+", "+ address.sp_region+" "+address.sp_country;
-        applicant.spouse_prev = address.sp_prev_brgy+", "+ address.sp_prev_city+" "+address.sp_prev_province+", "+address.sp_prev_region+" "+address.sp_prev_country;
+        applicant.personal_pres = `${address.lot_num}, ${address.purok} ${address.brgy},  ${address.city} ${address.province}, ${address.region}`;
+        applicant.personal_prev = `${address.prev_lot_num}, ${address.prev_purok} ${address.prev_brgy},  ${address.prev_city} ${address.prev_province}, ${address.prev_region}`;
+        applicant.parent_pres = `${address.p_lot_num}, ${address.p_purok} ${address.p_brgy},  ${address.p_city} ${address.p_province}, ${address.p_region}`;
+        applicant.parent_prev = `${address.p_prev_lot_num}, ${address.p_prev_purok} ${address.p_prev_brgy},  ${address.p_prev_city} ${address.p_prev_province}, ${address.p_prev_region}`;
+        applicant.spouse_pres = `${address.sp_lot_num}, ${address.sp_purok} ${address.sp_brgy},  ${address.sp_city} ${address.sp_province}, ${address.sp_region}`;
+        applicant.spouse_prev = `${address.sp_prev_lot_num}, ${address.sp_prev_purok} ${address.sp_prev_brgy},  ${address.sp_prev_city} ${address.sp_prev_province}, ${address.sp_prev_region}`;
 
         for(let key in applicant) {
             submitData.append(`${key}`, applicant[key]);
@@ -135,31 +135,37 @@ export default function ApplicationForm() {
             case "personal":
                 setAddress({
                     ...address,
-                    prev_country: address.country,
+                    // prev_country: address.country,
                     prev_region: address.region,
                     prev_province: address.province,
                     prev_city: address.city,
-                    prev_brgy: address.brgy
+                    prev_brgy: address.brgy,
+                    prev_purok: address.purok,
+                    prev_lot_num: address.lot_num
                 });
                 break;
             case "parent":
                 setAddress({
                     ...address,
-                    p_prev_country: address.p_country,
+                    // p_prev_country: address.p_country,
                     p_prev_region: address.p_region,
                     p_prev_province: address.p_province,
                     p_prev_city: address.p_city,
-                    p_prev_brgy: address.p_brgy
+                    p_prev_brgy: address.p_brgy,
+                    p_prev_purok: address.p_purok,
+                    p_prev_lot_num: address.p_lot_num
                 });
                 break;
             case "spouse":
                 setAddress({
                     ...address,
-                    sp_prev_country: address.sp_country,
+                    // sp_prev_country: address.sp_country,
                     sp_prev_region: address.sp_region,
                     sp_prev_province: address.sp_province,
                     sp_prev_city: address.sp_city,
-                    sp_prev_brgy: address.sp_brgy
+                    sp_prev_brgy: address.sp_brgy,
+                    sp_prev_purok: address.sp_purok,
+                    sp_prev_lot_num: address.sp_lot_num
                 });
                 break;
         }

@@ -32,8 +32,8 @@ export default function Inventory() {
         }
 
         const data = await response.json();
-        setRow(data);
-        document.getElementById('editProduct').style.display = 'block';
+        setRow({motor: data, bool: true});
+        // document.getElementById('editProduct').style.display = 'block';
     }
 
     async function adjustStock(type) {
@@ -57,7 +57,9 @@ export default function Inventory() {
     return (
         <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Unit" adjustStock={adjustStock} modal={stock.modal}>
             <InventoryTable motorcycles={motorcycles} loading={loading} editMotor={editMotor} stock={stock} setStock={setStock} />
-            <EditProduct motor={Object.keys(row).length > 0 ? row : {}} />
+            {row.bool ? (
+                <EditProduct motor={Object.keys(row.motor).length > 0 ? row.motor : {}} />
+            ) : ''}
             {stock.type !== '' ? (<StockModal setStock={setStock} stock={stock} />) : ''}
         </CRUDformat>
     );

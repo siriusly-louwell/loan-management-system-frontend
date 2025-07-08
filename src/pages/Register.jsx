@@ -61,13 +61,17 @@ export default function Register({setUser}) {
             console.log('Success: ', result);
             if(!response.ok) throw new Error('Update failed');
             else {
-                setUser(result.user);
                 document.getElementById('register_alert').style.display = 'block';
                 document.getElementById('register_spin').style.display = 'none';
 
-                setTimeout(() => {
-                    navigate('/customer');
-                }, 2000);
+                if(result.type =='valid') {
+                    setUser(result.user);
+                    console.log(result.user);
+
+                    setTimeout(() => {
+                        navigate('/customer');
+                    }, 2000);
+                }
             }
         } catch(error) {
             console.error('Error: ', error);

@@ -87,7 +87,7 @@ export default function DeclineApplicant({id, record, name}) {
                     <Spinner id="decline_app" />
                     <Alert id="dec-app" text={alert.text} icon={alert.icon}>
                         {alert.icon === "done" ? (
-                            <Button text="Ok" type="button" onclick={() => navigate('/admin/accounts')} />
+                            <Button text="Ok" type="button" onclick={() => navigate('/staff/loans')} />
                         ) : (
                             <Button text="Ok" type="button" onclick={() => document.getElementById('dec-app').style.display = "none"} />
                         )}

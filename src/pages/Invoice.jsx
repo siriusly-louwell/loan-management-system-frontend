@@ -221,7 +221,7 @@ export default function Invoice() {
                     </div>
                 </div>
             </div>
-            <h2 class="text-2xl font-semibold mt-5 text-gray-800 dark:text-gray-200">Recommendations</h2>
+            {/* <h2 class="text-2xl font-semibold mt-5 text-gray-800 dark:text-gray-200">Recommendations</h2>
             <ProductGrid>
                 {motorLoad ? (<div>Loading...</div>) : (
                     <>
@@ -230,7 +230,7 @@ export default function Invoice() {
                         <ProductCard key={motors[2].id} unit={motors[2]} url="/customer/product" />
                     </>
                 )}
-            </ProductGrid>
+            </ProductGrid> */}
         </div>
     );
 }

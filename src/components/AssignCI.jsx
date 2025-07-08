@@ -99,7 +99,7 @@ export default function AssignCI({id, record, name}) {
                     <Spinner id="add_ci" />
                     <Alert id="appli-loan" text={alert.text} icon={alert.icon}>
                         {alert.icon === "done" ? (
-                            <Button text="Ok" type="button" onclick={() => navigate('/admin/accounts')} />
+                            <Button text="Ok" type="button" onclick={() => navigate('/staff/loans')} />
                         ) : (
                             <Button text="Ok" type="button" onclick={() => document.getElementById('appli-loan').style.display = "none"} />
                         )}

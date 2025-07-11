@@ -13,7 +13,7 @@ export default function AppliedForm({url}) {
     const [applicant, setApplicant] = useState({view: true});
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/application/2?by=id`)
+        fetch(`http://127.0.0.1:8000/api/application/${id}?by=id`)
         .then(response => response.json())
         .then(data => {
             setApplicant({...applicant, ...data});
@@ -40,8 +40,7 @@ export default function AppliedForm({url}) {
     }
 
     const address = applicant.address;
-    // const outletContext = {applicant, address};
-    console.log(applicant);
+    const disable = true;
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex justify-center fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
@@ -51,8 +50,7 @@ export default function AppliedForm({url}) {
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">APPLICATION FORM</h3>
                     </div>
                     <form>
-                        {/* <Outlet context={{applicant, address}} /> */}
-                        {address ? (<Outlet context={{applicant, address}} />) : ''}
+                        {address ? (<Outlet context={{applicant, address, disable}} />) : ''}
 
                         <div className="space-y-4 sm:flex sm:w-1/3 sm:space-y-0 sm:space-x-4">
                         {currentIndex > 0 && (

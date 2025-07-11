@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default function FormSelect({children, name, label, id, value, onchange, require = false}) {
+export default function FormSelect({children, name, label, id, value, onchange, require = false, disable = false}) {
     return (
         <div>
             <label for={id} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label} {require ? (<strong className='text-rose-500'>*</strong>) : ''}</label>
-            <select id={id} name={name} defaultValue={value} onChange={onchange} className="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <select id={id} name={name} defaultValue={value} onChange={onchange} disabled={disable} className="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                 <option selected="">Select {label}</option>
                 {children}
             </select>

@@ -26,6 +26,12 @@ export default function ApplicationForm() {
         '/customer/apply/requirements',
         '/customer/apply/comakerform'
     ], []);
+    const applicantArray = [[],
+        ['first_name', 'middle_name', 'last_name', 'gender', 'contact_num', 'email', 'status', 'educ_attain', 'residence', 'amortization', 'rent', 'sss', 'tin'],
+        ['income', 'superior', 'employment_status', 'yrs_in_service', 'rate', 'employer', 'employer_address', 'salary', 'business', 'living_exp', 'rental_exp',
+            'education_exp', 'transportation', 'insurance', 'bills'],
+        ['spouse_name', 'b_date', 'spouse_work', 'children_num', 'children_dep', 'school']
+    ];
 
     useEffect(() => {
         const index = routerPaths.indexOf(location.pathname);
@@ -38,6 +44,10 @@ export default function ApplicationForm() {
         // const len = state?.selected.map(id => ({motorcycle_id: id}));
         setTransactForm(len);
     }, []);
+
+    // function checkEmpty(array) {
+    //     array.forEach(val => {});
+    // }
 
     function handleNext () {
         const nextIndex = currentIndex + 1;
@@ -135,7 +145,6 @@ export default function ApplicationForm() {
             case "personal":
                 setAddress({
                     ...address,
-                    // prev_country: address.country,
                     prev_region: address.region,
                     prev_province: address.province,
                     prev_city: address.city,
@@ -147,7 +156,6 @@ export default function ApplicationForm() {
             case "parent":
                 setAddress({
                     ...address,
-                    // p_prev_country: address.p_country,
                     p_prev_region: address.p_region,
                     p_prev_province: address.p_province,
                     p_prev_city: address.p_city,
@@ -159,7 +167,6 @@ export default function ApplicationForm() {
             case "spouse":
                 setAddress({
                     ...address,
-                    // sp_prev_country: address.sp_country,
                     sp_prev_region: address.sp_region,
                     sp_prev_province: address.sp_province,
                     sp_prev_city: address.sp_city,
@@ -204,7 +211,8 @@ export default function ApplicationForm() {
     }
 
     const ids = state?.selected;
-    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange, ids};
+    const disable = false;
+    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange, ids, disable};
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

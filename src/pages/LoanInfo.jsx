@@ -34,7 +34,6 @@ export default function LoanInfo({children}) {
         .then(data => {
             setLoan(data);
             setLoanLoad(false);
-            // console.log(data);
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -206,7 +205,7 @@ export default function LoanInfo({children}) {
 
                             <div class="gap-4 grid grid-cols-1">
                                 {children}
-                                <Button text="View Form" bttnType="button" onclick={() => navigate('/admin/apply')} state={{id: loan.id}} />
+                                <Button text="View Form" bttnType="button" onclick={() => navigate('/admin/apply', {state: {id: loan.id}})} />
                                 {loan.apply_status === 'evaluated' || loan.apply_status === 'approved' || loan.apply_status === 'declined' ? (
                                     <>
                                         <Button text="View Report" bttnType="button" onclick={() => navigate('/ci/review', {
@@ -253,7 +252,7 @@ export default function LoanInfo({children}) {
                     </section>
                 </>
             ) : ''}
-            <Eligibity rate={loan.rate} amortization={loan.amortization} rent={loan.rent} income={loan.income} yrs={loan.yrs_in_service} salary={loan.salary} transactions={loan.transactions} />
+            <Eligibity loan={loan} />
             <DeclineApplicant id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <AssignCI id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <Alert id="approveApp" text={alert.text} icon="warn">

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import FormSelect from "../components/inputs/FormSelect";
 import StepCard from '../components/cards/StepCard';
@@ -8,7 +7,6 @@ import FormInput from '../components/inputs/FormInput';
 import SmallSpin from '../components/loading components/SmallSpin';
 
 export default function EMICalculator({name, brand, motorPrice, years, interest, down, staff, load}) {
-    const navigate = useNavigate();
     const [downPayment, setDownPayment] = useState();
     const [tenure, setTenure] = useState(12);
 

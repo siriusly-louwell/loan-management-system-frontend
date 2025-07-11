@@ -14,6 +14,7 @@ import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
 import ProductCard from "../components/cards/ProductCard";
 import CardSkeleton from "../components/loading components/CardSkeleton";
+import Eligibity from "../components/modals/Eligibility";
 
 export default function LoanInfo({children}) {
     const navigate = useNavigate();
@@ -26,8 +27,6 @@ export default function LoanInfo({children}) {
     const [alert, setAlert] = useState({});
     const [recommend, setRecommend] = useState({});
     const [recoLoad, setRecoLoad] = useState(true);
-    const dti = (loan.rental_exp/loan.salary) * 100;
-    const ltv = (100000 / 98000) * 100;
 
     useEffect(() => {
         fetch(`http://localhost:8000/api/application/${id}?by=id`)
@@ -35,6 +34,7 @@ export default function LoanInfo({children}) {
         .then(data => {
             setLoan(data);
             setLoanLoad(false);
+            // console.log(data);
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -119,10 +119,6 @@ export default function LoanInfo({children}) {
     return (
         <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <div class="grid grid-cols-2 gap-6 py-4 lg:grid-cols-4 xl:gap-16">
-                    <ProfileCard label="Debt-to-Income(DTI) Ratio" amount={dti.toFixed(2)} text=" ???" arrow={<SmallUpArrow />} percent="10.3%" />
-                    <ProfileCard label="Loan-to-Value(LTV) Ratio" amount={ltv.toFixed(2)} text=" ???" arrow={<SmallUpArrow />} percent="10.3%" />
-                </div>
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan {loan.record_id}</h2>
 
                 <div class="mt-6 sm:mt-8 lg:flex lg:gap-8">
@@ -194,7 +190,10 @@ export default function LoanInfo({children}) {
 
                     <div class="mt-6 grow sm:mt-8 lg:mt-0">
                         <div class="space-y-6 rounded-lg border border-gray-200 bg-white p-6 sm:sticky top-0 shadow-sm dark:border-gray-700 dark:bg-gray-700">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Loan history</h3>
+                            <div className="flex justify-between space-x-5">
+                                <h3 class="text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Loan history</h3>
+                                <CustomBttn text="Eligibity Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" />
+                            </div>
 
                             <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
                                 <TrackList label="Loan Submission" sublabel="Loan application was successful" isDone="done" />
@@ -254,6 +253,7 @@ export default function LoanInfo({children}) {
                     </section>
                 </>
             ) : ''}
+            <Eligibity rate={loan.rate} amortization={loan.amortization} rent={loan.rent} income={loan.income} yrs={loan.yrs_in_service} salary={loan.salary} transactions={loan.transactions} />
             <DeclineApplicant id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <AssignCI id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <Alert id="approveApp" text={alert.text} icon="warn">

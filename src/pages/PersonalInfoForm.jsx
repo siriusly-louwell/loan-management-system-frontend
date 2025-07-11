@@ -19,7 +19,7 @@ export default function PersonalInfoForm() {
                     <option value="female">Female</option>
                     <option value="other">Prefer not to say</option>
                 </FormSelect>
-                <FormInput label="Contact Number" type="number" name="contact_num" id="contact_num" value={applicant.contact_num} onchange={handleChange} placeholder="+63 912 3456 789" require={true} />
+                <FormInput label="Contact Number" type="number" name="contact_num" min={99999999999} id="contact_num" value={applicant.contact_num} onchange={handleChange} placeholder="+63 912 3456 789" require={true} />
                 <FormInput label="Email Address" type="email" name="email" id="email" value={applicant.email} onchange={handleChange} placeholder="doe@gmail.com" />
                 <FormSelect name="status" label="Marital Status" id="status" value={applicant.status} onchange={handleChange} require={true}>
                     <option value="single">Single</option>

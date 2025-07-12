@@ -2,6 +2,7 @@ import React from 'react';
 
 export default function FormInput({label, id, type, name, min, value, onchange, placeholder, require = false, styling, disable = false}) {
     const color = value === '__EMPTY__' ? 'red' : 'gray';
+    
     return (
         <div>
             <label htmlFor={id} className={`block mb-2 text-sm font-medium text-${color}-900 dark:text-white ${styling}`}>{label} {require ? (<strong className='text-rose-500'>*</strong>) : ''}</label>

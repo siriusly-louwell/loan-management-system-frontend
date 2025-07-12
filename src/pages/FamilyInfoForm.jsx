@@ -9,6 +9,7 @@ import FormTHead from '../components/tables/FormTHead';
 import FormTH from '../components/tables/FormTH';
 import FormTBody from '../components/tables/FormTBody';
 import FormTD from '../components/tables/FormTD';
+import copy_icon from '../assets/images/copy_icon.png';
 
 export default function FamilyInfoForm() {
     const {handleChange, addressChange, applicant, address, copyAddress, disable} = useOutletContext();
@@ -148,7 +149,7 @@ export default function FamilyInfoForm() {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Parent's Previous Address:</h3>
             {!disable ? (
-                <FormCheck label="Copy Present Address" type="checkbox" id="parent_address" style="mb-4" change={() => copyAddress('parent')} disable={disable} />
+                <FormCheck label="Copy Present Address" type="checkbox" id="parent_address" style="mb-4" change={() => copyAddress('parent')} disable={disable} icon={copy_icon} />
             ) : ''}
             <div className={"grid gap-4 mb-4 pb-2 " + (applicant.view ? 'flex w-full' : 'sm:grid-cols-3')}>
                 {applicant.view ? (
@@ -262,7 +263,7 @@ export default function FamilyInfoForm() {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Spouse's Previous Address:</h3>
             {!disable ? (
-                <FormCheck label="Copy Present Address" type="checkbox" id="spouse_address" style="mb-4" change={() => copyAddress('spouse')} disable={disable} />
+                <FormCheck label="Copy Present Address" type="checkbox" id="spouse_address" style="mb-4" change={() => copyAddress('spouse')} disable={disable} icon={copy_icon} />
             ) : ''}
             <div className={"grid gap-4 mb-4 pb-2 " + (applicant.view ? 'flex w-full' : 'sm:grid-cols-3')}>
                 {applicant.view ? (

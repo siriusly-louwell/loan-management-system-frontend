@@ -3,6 +3,7 @@ import {useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
+import copy_icon from '../assets/images/copy_icon.png';
 
 export default function PersonalInfoForm() {
     const {handleChange, addressChange, applicant, address, copyAddress, disable} = useOutletContext();
@@ -49,8 +50,8 @@ export default function PersonalInfoForm() {
                     </FormSelect>
                     <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Other reason" disable={disable} />
                 </div>
-                <FormInput label="Amortization Monthly" type="number" name="amortization" id="amortization" value={applicant.amortization} onchange={handleChange} placeholder="₱5,000" disable={disable} />
-                <FormInput label="Rent Monthly" type="number" name="rent" id="rent" value={applicant.rent} onchange={handleChange} placeholder="₱500" disable={disable} />
+                <FormInput label="Amortization Monthly" type="number" name="amortization" id="amortization" value={applicant.amortization} onchange={handleChange} placeholder="₱5,000" require={true} disable={disable} />
+                <FormInput label="Rent Monthly" type="number" name="rent" id="rent" value={applicant.rent} onchange={handleChange} placeholder="₱500" require={true} disable={disable} />
                 <FormInput label="SSS/GSIS #" type="text" name="sss" id="sss" value={applicant.sss} onchange={handleChange} placeholder="Type SSS/GSIS number" disable={disable} />
                 <FormInput label="TIN #" type="text" name="tin" id="tin" value={applicant.tin} onchange={handleChange} placeholder="Type TIN number" disable={disable} />
             </div>
@@ -153,7 +154,7 @@ export default function PersonalInfoForm() {
             
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Previous Address:</h3>
             {!disable ? (
-                <FormCheck label="Copy Present Address" type="checkbox" id="copy_address" style="mb-4" change={() => copyAddress('personal')} />
+                <FormCheck label="Copy Present Address" type="checkbox" id="copy_address" style="mb-4" change={() => copyAddress('personal')} icon={copy_icon} />
             ) : ''}
             <div className={"grid gap-4 mb-4 pb-2 " + (applicant.view ? 'flex w-full' : 'sm:grid-cols-3')}>
                 {applicant.view ? (
@@ -165,7 +166,7 @@ export default function PersonalInfoForm() {
                         <FormInput label="City/Municipality" type="text" name="prev_city" id="city" value={address.prev_city} onchange={addressChange} placeholder="Type city here" require={true} disable={disable} />
                         <FormInput label="Barangay" type="text" name="prev_brgy" id="brgy" value={address.prev_brgy} onchange={addressChange} placeholder="Type barangay here" require={true} disable={disable} />
                         <FormInput label="Purok" type="text" name="prev_purok" id="purok" value={address.prev_purok} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
-                        <FormInput label="Lot/House Number" type="text" name="prev_lot_num" id="lot_num" value={address.prev_lot_num} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
+                        <FormInput label="Lot/House Number" type="text" name="prev_lot_num" id="prev_lot_num" value={address.prev_lot_num} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
                     </>
                 )}
             </div>

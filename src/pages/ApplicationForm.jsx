@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { useState, useEffect, useMemo } from 'react';
 import {Outlet, useNavigate, useLocation} from 'react-router-dom';
 import Button from "../components/buttons/Button";
@@ -6,6 +7,9 @@ import Stepper from '../components/Stepper';
 import Step from '../components/Step';
 import Alert from '../components/Alert';
 import Spinner from '../components/loading components/Spinner';
+
+const API_KEY = 'YOUR_API_KEY';
+const BASE_URL = 'https://api.countrystatecity.in/v1';
 
 export default function ApplicationForm() {
     const navigate = useNavigate();
@@ -17,6 +21,7 @@ export default function ApplicationForm() {
     const [transactForm, setTransactForm] = useState([]);
     const [files, setFiles] = useState({});
     const [alert, setAlert] = useState({});
+    const [apiAddress, setApiAddress] = useState({});
     const submitData = new FormData();
     const routerPaths = useMemo(() => [
         '/customer/apply',
@@ -26,12 +31,41 @@ export default function ApplicationForm() {
         '/customer/apply/requirements',
         '/customer/apply/comakerform'
     ], []);
-    const applicantArray = [[],
-        ['first_name', 'middle_name', 'last_name', 'gender', 'contact_num', 'email', 'status', 'educ_attain', 'residence', 'amortization', 'rent', 'sss', 'tin'],
-        ['income', 'superior', 'employment_status', 'yrs_in_service', 'rate', 'employer', 'employer_address', 'salary', 'business', 'living_exp', 'rental_exp',
-            'education_exp', 'transportation', 'insurance', 'bills'],
-        ['spouse_name', 'b_date', 'spouse_work', 'children_num', 'children_dep', 'school']
+    const applicantArray = [[[], []],
+        [
+            ['first_name', 'middle_name', 'last_name', 'gender', 'contact_num', 'status', 'educ_attain', 'residence', 'amortization', 'rent'],
+            ['region', 'province', 'city', 'brgy', 'purok', 'lot_num', 'prev_region', 'prev_province', 'prev_city', 'prev_brgy', 'prev_purok', 'prev_lot_num']
+        ],
+        [
+            ['income', 'rate', 'salary', 'business', 'living_exp', 'rental_exp', 'education_exp', 'transportation', 'insurance', 'bills'],
+        []],
+        [
+            ['spouse_name', 'b_date', 'spouse_work', 'children_num', 'children_dep', 'school'],
+            ['p_region', 'p_province', 'p_city', 'p_brgy', 'p_purok', 'p_lot_num', 'p_prev_region', 'p_prev_province', 'p_prev_city', 'p_prev_brgy', 'p_prev_purok',
+            'p_prev_lot_num', 'sp_region', 'sp_province', 'sp_city', 'sp_brgy', 'sp_purok', 'sp_lot_num', 'sp_prev_region', 'sp_prev_province', 'sp_prev_city',
+            'sp_prev_brgy', 'sp_prev_purok', 'sp_prev_lot_num']
+        ]
     ];
+
+    //  useEffect(() => {
+    //     // Fetch regions/states on mount
+    //     axios.get(`${BASE_URL}/countries/PH/states`, {
+    //     headers: { 'X-CSCAPI-KEY': API_KEY }
+    //     })
+    //     .then(res => setStates(res.data))
+    //     .catch(err => console.error(err));
+    // }, []);
+
+    // useEffect(() => {
+    //     if (apiselectedState) {
+    //     // Fetch cities when state is selected
+    //     axios.get(`${BASE_URL}/countries/PH/states/${apiselectedState}/cities`, {
+    //         headers: { 'X-CSCAPI-KEY': API_KEY }
+    //     })
+    //     .then(res => setCities(res.data))
+    //     .catch(err => console.error(err));
+    //     }
+    // }, [apiselectedState]);
 
     useEffect(() => {
         const index = routerPaths.indexOf(location.pathname);
@@ -45,13 +79,36 @@ export default function ApplicationForm() {
         setTransactForm(len);
     }, []);
 
-    // function checkEmpty(array) {
-    //     array.forEach(val => {});
-    // }
+    function checkEmpty(array) {
+        let bool = true;
 
-    function handleNext () {
-        const nextIndex = currentIndex + 1;
-        if(nextIndex < routerPaths.length)navigate(routerPaths[nextIndex], {state: {selected: state?.selected}});
+        array[0].forEach(val => {
+            if(!applicant.hasOwnProperty(val) || applicant[val] === '__EMPTY__') {
+                setApplicant({...applicant, [val]: '__EMPTY__'});
+                bool = false;
+            }
+        });
+
+        array[1].forEach(val => {
+            if(!address.hasOwnProperty(val) || address[val] === '__EMPTY__') {
+                setAddress({...address, [val]: '__EMPTY__'});
+                bool = false;
+            }
+        });
+
+        if(!bool) {
+            setAlert({text: 'Some fields are required!'});
+            document.getElementById('emptyInput').style.display = 'block';
+        }
+
+        return  bool;
+    }
+
+    function handleNext () {        
+        if(checkEmpty(applicantArray[currentIndex])) {
+            const nextIndex = currentIndex + 1;
+            if(nextIndex < routerPaths.length)navigate(routerPaths[nextIndex], {state: {selected: state?.selected}});
+        }
     }
 
     function handlePrev() {
@@ -114,7 +171,6 @@ export default function ApplicationForm() {
             });
             document.getElementById('saving_application').style.display = "none"
             document.getElementById('application_submit').style.display = "block";
-            // setApplicant({});
         } catch(error) {
             console.error('Error: ', error);
             setAlert({
@@ -246,6 +302,9 @@ export default function ApplicationForm() {
                         </div>
                     </form>
                     <Spinner id="saving_application" text="Submitting application. Please wait..." />
+                    <Alert id="emptyInput" text={alert.text} icon="warn">
+                        <Button text="Understood" onclick={() => document.getElementById('emptyInput').style.display = 'none'} />
+                    </Alert>
                     <Alert id="application_submit" text={alert.text} icon={alert.icon}>
                         {alert.icon === "warn" ? (
                             <Button text="Ok" type="button" onclick={() => document.getElementById('application_submit').style.display = "none"} />

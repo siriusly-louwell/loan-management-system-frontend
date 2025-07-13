@@ -6,7 +6,7 @@ import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from '../assets/images/copy_icon.png';
 
 export default function PersonalInfoForm() {
-    const {handleChange, addressChange, applicant, address, copyAddress, disable} = useOutletContext();
+    const {handleChange, addressChange, applicant, address, copyAddress, disable, locations} = useOutletContext();
 
     return (
         <>
@@ -77,35 +77,21 @@ export default function PersonalInfoForm() {
                             <option>Region XII</option>
                             <option>Region XIII</option>
                             <option>Region XIV</option>
+                            <option>Region XV</option>
                         </FormSelect>
-                        <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange} require={true} disable={disable}>
-                            <option>Zamboanga del norte</option>
-                            <option>Zamboanga del sur</option>
-                            <option>Zamboanga sibugay</option>
-                            <option>Davao del norte</option>
-                            <option>Davao del sur</option>
-                            <option>Davao de oro(Compostela Valley)</option>
-                            <option>Davao oriental</option>
-                            <option>Davao Occidental</option>
-                            <option>Cotabato</option>
-                            <option>Sarangani</option>
-                            <option>South Cotabato</option>
+                        <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange} require={true} disable={address.region === undefined ? true : disable}>
+                            {address.region !== undefined
+                                ? locations[address.region.substring(7, address.region.length)].province.map(val => (
+                                    <option>{val}</option>
+                                )) : ''}
                         </FormSelect>
-                        <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange} require={true} disable={disable}>
-                            <option>Davao City</option>
-                            <option>Panabo City</option>
-                            <option>Tagum City</option>
-                            <option>Samal Island</option>
-                            <option>Digos City</option>
-                            <option>Mati City</option>
-                            <option>Talaingod</option>
-                            <option>San Isidro</option>
-                            <option>Carmen</option>
-                            <option>Kapalong</option>
-                            <option>New Corilla</option>
-                            <option>Sto. Tomas</option>
+                        <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange} require={true} disable={address.region === undefined ? true : disable}>
+                            {address.region !== undefined
+                                ? locations[address.region.substring(7, address.region.length)].city.map(val => (
+                                    <option>{val}</option>
+                                )) : ''}
                         </FormSelect>
-                        <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange} require={true} disable={disable}>
+                        <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange} require={true} disable={address.region === undefined ? true : disable}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>

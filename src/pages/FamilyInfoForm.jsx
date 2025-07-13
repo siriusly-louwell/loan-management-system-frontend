@@ -12,7 +12,7 @@ import FormTD from '../components/tables/FormTD';
 import copy_icon from '../assets/images/copy_icon.png';
 
 export default function FamilyInfoForm() {
-    const {handleChange, addressChange, applicant, address, copyAddress, disable} = useOutletContext();
+    const {handleChange, addressChange, applicant, address, copyAddress, disable, locations} = useOutletContext();
     const [relatives, setRelative] = useState(['']);
 
     return (
@@ -74,34 +74,19 @@ export default function FamilyInfoForm() {
                             <option>Region XIII</option>
                             <option>Region XIV</option>
                         </FormSelect>
-                        <FormSelect name="p_province" label="Province" id="province" value={address.p_province} onchange={addressChange} require={true} disable={disable}>
-                            <option>Zamboanga del norte</option>
-                            <option>Zamboanga del sur</option>
-                            <option>Zamboanga sibugay</option>
-                            <option>Davao del norte</option>
-                            <option>Davao del sur</option>
-                            <option>Davao de oro(Compostela Valley)</option>
-                            <option>Davao oriental</option>
-                            <option>Davao Occidental</option>
-                            <option>Cotabato</option>
-                            <option>Sarangani</option>
-                            <option>South Cotabato</option>
+                        <FormSelect name="p_province" label="Province" id="province" value={address.p_province} onchange={addressChange} require={true} disable={address.p_region === undefined ? true : disable}>
+                            {address.p_region !== undefined
+                                ? locations[address.p_region.substring(7, address.p_region.length)].province.map(val => (
+                                    <option>{val}</option>
+                                )) : ''}
                         </FormSelect>
-                        <FormSelect name="p_city" label="Municipality/City" id="city" value={address.p_city} onchange={addressChange} require={true} disable={disable}>
-                            <option>Davao City</option>
-                            <option>Panabo City</option>
-                            <option>Tagum City</option>
-                            <option>Samal Island</option>
-                            <option>Digos City</option>
-                            <option>Mati City</option>
-                            <option>Talaingod</option>
-                            <option>San Isidro</option>
-                            <option>Carmen</option>
-                            <option>Kapalong</option>
-                            <option>New Corilla</option>
-                            <option>Sto. Tomas</option>
+                        <FormSelect name="p_city" label="Municipality/City" id="city" value={address.p_city} onchange={addressChange} require={true} disable={address.p_region === undefined ? true : disable}>
+                            {address.p_region !== undefined
+                                ? locations[address.p_region.substring(7, address.p_region.length)].city.map(val => (
+                                    <option>{val}</option>
+                                )) : ''}
                         </FormSelect>
-                        <FormSelect name="p_brgy" label="Barangay" id="brgy" value={address.p_brgy} onchange={addressChange} require={true} disable={disable}>
+                        <FormSelect name="p_brgy" label="Barangay" id="brgy" value={address.p_brgy} onchange={addressChange} require={true} disable={address.p_region === undefined ? true : disable}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>
@@ -188,34 +173,19 @@ export default function FamilyInfoForm() {
                             <option>Region XIII</option>
                             <option>Region XIV</option>
                         </FormSelect>
-                        <FormSelect name="sp_province" label="Province" id="province" value={address.sp_province} onchange={addressChange} disable={disable}>
-                            <option>Zamboanga del norte</option>
-                            <option>Zamboanga del sur</option>
-                            <option>Zamboanga sibugay</option>
-                            <option>Davao del norte</option>
-                            <option>Davao del sur</option>
-                            <option>Davao de oro(Compostela Valley)</option>
-                            <option>Davao oriental</option>
-                            <option>Davao Occidental</option>
-                            <option>Cotabato</option>
-                            <option>Sarangani</option>
-                            <option>South Cotabato</option>
+                        <FormSelect name="sp_province" label="Province" id="province" value={address.sp_province} onchange={addressChange} disable={address.sp_region === undefined ? true : disable}>
+                            {address.sp_region !== undefined
+                                ? locations[address.sp_region.substring(7, address.sp_region.length)].province.map(val => (
+                                    <option>{val}</option>
+                                )) : ''}
                         </FormSelect>
-                        <FormSelect name="sp_city" label="Municipality/City" id="city" value={address.sp_city} onchange={addressChange} disable={disable}>
-                            <option>Davao City</option>
-                            <option>Panabo City</option>
-                            <option>Tagum City</option>
-                            <option>Samal Island</option>
-                            <option>Digos City</option>
-                            <option>Mati City</option>
-                            <option>Talaingod</option>
-                            <option>San Isidro</option>
-                            <option>Carmen</option>
-                            <option>Kapalong</option>
-                            <option>New Corilla</option>
-                            <option>Sto. Tomas</option>
+                        <FormSelect name="sp_city" label="Municipality/City" id="city" value={address.sp_city} onchange={addressChange} disable={address.sp_region === undefined ? true : disable}>
+                            {address.sp_region !== undefined
+                                ? locations[address.sp_region.substring(7, address.sp_region.length)].city.map(val => (
+                                    <option>{val}</option>
+                                )) : ''}
                         </FormSelect>
-                        <FormSelect name="sp_brgy" label="Barangay" id="brgy" value={address.sp_brgy} onchange={addressChange} disable={disable}>
+                        <FormSelect name="sp_brgy" label="Barangay" id="brgy" value={address.sp_brgy} onchange={addressChange} disable={address.sp_region === undefined ? true : disable}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>

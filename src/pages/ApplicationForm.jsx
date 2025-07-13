@@ -8,9 +8,6 @@ import Step from '../components/Step';
 import Alert from '../components/Alert';
 import Spinner from '../components/loading components/Spinner';
 
-const API_KEY = 'YOUR_API_KEY';
-const BASE_URL = 'https://api.countrystatecity.in/v1';
-
 export default function ApplicationForm() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,7 +18,6 @@ export default function ApplicationForm() {
     const [transactForm, setTransactForm] = useState([]);
     const [files, setFiles] = useState({});
     const [alert, setAlert] = useState({});
-    const [apiAddress, setApiAddress] = useState({});
     const submitData = new FormData();
     const routerPaths = useMemo(() => [
         '/customer/apply',
@@ -44,28 +40,40 @@ export default function ApplicationForm() {
             ['p_region', 'p_province', 'p_city', 'p_brgy', 'p_purok', 'p_lot_num', 'p_prev_region', 'p_prev_province', 'p_prev_city', 'p_prev_brgy', 'p_prev_purok',
             'p_prev_lot_num', 'sp_region', 'sp_province', 'sp_city', 'sp_brgy', 'sp_purok', 'sp_lot_num', 'sp_prev_region', 'sp_prev_province', 'sp_prev_city',
             'sp_prev_brgy', 'sp_prev_purok', 'sp_prev_lot_num']
-        ]
+        ], [[], []]
     ];
-
-    //  useEffect(() => {
-    //     // Fetch regions/states on mount
-    //     axios.get(`${BASE_URL}/countries/PH/states`, {
-    //     headers: { 'X-CSCAPI-KEY': API_KEY }
-    //     })
-    //     .then(res => setStates(res.data))
-    //     .catch(err => console.error(err));
-    // }, []);
-
-    // useEffect(() => {
-    //     if (apiselectedState) {
-    //     // Fetch cities when state is selected
-    //     axios.get(`${BASE_URL}/countries/PH/states/${apiselectedState}/cities`, {
-    //         headers: { 'X-CSCAPI-KEY': API_KEY }
-    //     })
-    //     .then(res => setCities(res.data))
-    //     .catch(err => console.error(err));
-    //     }
-    // }, [apiselectedState]);
+    const locations = {
+        I: {province: ['Ilocos Norte', 'Ilocos Sur', 'La Union', 'Pangasinan'],
+            city: ['Alaminos', 'Batac', 'Candon', 'Laoag', 'San Carlos', 'San Fernando', 'Urdaneta', 'Vigan', 'Dagupan']},
+        II: {province: ['Batanes', 'Cagayan', 'Isabela', 'Nueva Viscaya', 'Quirino'],
+            city: ['Cauayan', 'Iligan', 'Santiago', 'Tuguegarao']},
+        III: {province: ['Aurora', 'Bataan', 'Bulacan', 'Nueva Ecija', 'Pampanga', 'Tarlac', 'Zambales'],
+            city: ['Angeles', 'Balanga', 'Cabanatuan', 'Gapan', 'Malolos', 'Meycauayan', 'Munoz', 'Olongapo', 'Palayan', 'San Fernando', 'San Jose', 'Tarlac']},
+        IV: {province: ['Batangas', 'Cavite', 'Laguna', 'Quezon', 'Rizal', 'Marinduque', 'Occidental Mindoro', 'Oriental Mindoro', 'Palawan', 'Romblon'],
+            city: ['Antipolo', 'Bacoor', 'Batangas City', 'Binan', 'Cabuyao', 'Calamba', 'Calauan', 'Dasmarinas', 'General Trias', 'Imus', 'Lipa', 'Lucena', 'San Pablo']},
+        V: {province: ['Albay', 'Camarines Norte', 'Camarines Sur', 'Catanduanes', 'Masbate', 'Sorsogon'],
+            city: ['Iraga', 'Legazpi', 'Ligao', 'Masbate', 'Naga', 'Sorsogon City', 'Tabaco']},
+        VI: {province: ['Aklan', 'Antique', 'Capiz', 'Guimaras', 'Iloilo', 'Negros Occidental'],
+            city: ['Bacolod', 'Bago', 'Cadiz', 'Escalante', 'Himamaylan', 'Kabankalan', 'Kalibo', 'La Carlota', 'Passi', 'Roxas', 'Sagay', 'San Carlos', 'Silay', 'Talisay']},
+        VII: {province: ['Bohol', 'Cebu', 'Negros Oriental', 'Siquijor'],
+            city: ['Bogo', 'Carcar', 'Cebu', 'Danao', 'Dumaguete', 'Lapu-Lapu', 'Mandaue', 'Naga', 'Tagbilaran', 'Talisay', 'Toledo']},
+        VIII: {province: ['Biliran', 'Eastern Samar', 'Leyte', 'Northern Samar', 'Samar', 'Southern Leyte'],
+            city: ['Baybay', 'Borongan', 'Calibayag', 'Catbalogan', 'Ormoc', 'Tacloban']},
+        IX: {province: ['Zamboanga del Norte', 'Zamboanga del Sur', 'Zambuanga Sibugay'],
+            city: ['Dapitan', 'Dipolog', 'Pagadian', 'Zamboanga City']},
+        X: {province: ['Bukidnon', 'Camiguin', 'Lanao del Norte', 'Misamis Occidental', 'Misamis Oriental'],
+            city: ['Cagayan de Oro', 'El Salvador', 'Gingoog', 'Iligan', 'Malaybalay', 'Oroquieta', 'Ozamiz', 'Tangub', 'Valencia']},
+        XI: {province: ['Davao de Oro', 'Davao del Norte', 'Davao del Sur', 'Davao Occidental', 'Davao Oriental'],
+            city: ['Davao City', 'Digos', 'Mati', 'Panabo', 'Samal', 'Tagum']},
+        XII: {province: ['Cotabato', 'Sarangani', 'South Cotabato', 'Sultan Kudarat'],
+            city: ['General Santos', 'Kidapawan', 'Koronadal', 'Tacurong']},
+        XIII: {province: ['Agusan del Norte', 'Agusan del Sur', 'Dinagat Islands', 'Surigao del Norte', 'Maguindanao del Sur'],
+            city: ['Bayugan', 'Bislig', 'Butuan', 'Cabadbaran', 'Surigao', 'Tandag']},
+        XIV: {province: ['Basilan', 'Lanao del Sur', 'Maguindanao del Norte', 'Maguindanao del Sur', 'Sulu', 'Tawi-Tawi'],
+            city: ['Cotabato City', 'Lamitan', 'Marawi']},
+        XV: {province: ['Abra', 'Apayao', 'Benguet', 'Ifugao', 'Kalinga', 'Mountain Province'],
+            city: ['Baguio', 'Tabuk']}
+    };
 
     useEffect(() => {
         const index = routerPaths.indexOf(location.pathname);
@@ -268,7 +276,7 @@ export default function ApplicationForm() {
 
     const ids = state?.selected;
     const disable = false;
-    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange, ids, disable};
+    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange, ids, disable, locations};
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

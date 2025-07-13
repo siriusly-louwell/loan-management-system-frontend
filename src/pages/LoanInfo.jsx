@@ -244,7 +244,7 @@ export default function LoanInfo({children}) {
                     </div>
                 </div>
             </div>
-            {loan.apply_status === 'declined' ? (
+            {loan.apply_status === 'declined' || loan.apply_status === 'denied' ? (
                 <>
                     <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Recommendations</h2>
                     <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">

@@ -68,7 +68,7 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
     }
 
     function displayLoan(loan) {        
-        if(location.pathname !== '/ci/loanapplications' && location.pathname !== '/ci' && location.pathname !== '/ci/evaluation') {
+        if(location.pathname === '/staff/loans' || (location.pathname === '/admin/loans' && loan.apply_status !== 'denied')) {
             return (
                 <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
             );
@@ -80,9 +80,11 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
                         badge={<CustomBadge text="Accepted" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
                     );
                 }
-            } else return (
-                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
-            );
+            } else if(loan.apply_status !== 'denied') {
+                    return (
+                    <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
+                );
+            }
         }
     }
     

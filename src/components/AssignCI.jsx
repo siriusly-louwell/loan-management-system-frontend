@@ -85,11 +85,11 @@ export default function AssignCI({id, record, name}) {
                                     if(acc.role === 'ci')return (<option value={acc.id}>{acc.first_name} {acc.last_name}</option>);
                                 })}
                             </FormSelect>
-                            <p className="text-md font-medium text-gray-900 dark:text-white">Set meeting schedule</p>
+                            {/* <p className="text-md font-medium text-gray-900 dark:text-white">Set meeting schedule</p>
                             <div className="grid grid-cols-2 gap-2">
                                 <FormInput label="From" type="date" value={applicant.from_sched} onchange={handleChange} name="from_sched" id="from_sched" min={today} />
                                 <FormInput label="To" type="date" value={applicant.to_sched} onchange={handleChange} name="to_sched" id="to_sched" min={applicant.from_sched} />
-                            </div>
+                            </div> */}
                             <FormTextarea label="Add a message to the applicant (optional):" placeholder="Write your message here..." />
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">

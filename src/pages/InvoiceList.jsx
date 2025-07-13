@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LogList from "../components/LogList";
 import LogRow from "../components/tables/LogRow";
 import Preorder from '../components/badges/Preorder';
@@ -13,14 +13,19 @@ import Filter from "../assets/icons/Filter";
 import CustomBadge from "../components/badges/CustomBadge";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useLocation } from "react-router-dom";
+import DropdownMenu from "../components/DropdownMenu";
+import MenuLink from "../components/links/MenuLink";
 
 export default function InvoiceList({headText, record = '', path, bttnText = "View Details", id}) {
     const [loans, setLoans] = useState([]);
+    const [isFiltOn, setIsFiltOn] = useState(false);
+    const filtMenu = useRef(null);
     const [loanLoad, setLoanLoad] = useState(true);
+    const [filt, setFilt] = useState('');
     const location = useLocation();
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/application${record}`)
+        fetch(`http://127.0.0.1:8000/api/application${record}${filt}`)
             .then(response => response.json())
             .then(data => {
                 if(Array.isArray(data))setLoans(data);
@@ -32,7 +37,20 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
             setLoanLoad(true);
             setLoans({});
         })
-    }, [record]);
+    }, [record, filt]);
+
+    useEffect(() => {
+        const menuClicked = (event) => {
+            if (filtMenu.current && !filtMenu.current.contains(event.target)) {
+                setIsFiltOn(false);
+            }
+        };
+
+        document.addEventListener("mousedown", menuClicked);
+        return () => document.removeEventListener("mousedown", menuClicked);
+    }, []);
+
+    const toggleMenu = () => setIsFiltOn((prev) => !prev);
 
     function dateConvert(date) {
         const newDate = new Date(date);
@@ -100,12 +118,21 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
                                 <SearchInput id="invoice_search" name="log_search" placeholder="Search ID, name...">
                                     <Search />
                                 </SearchInput>
-                                <DropdownBttn text="Filters">
+                                <DropdownBttn toggleMenu={toggleMenu} text="Filters">
                                     <Filter />
                                 </DropdownBttn>
                             </div>
                         )}
                     </div>
+                    <DropdownMenu ref={filtMenu} pad={72} className={isFiltOn ? "block" : "hidden"}>
+                        <MenuLink pathName="All" click={() => setFilt('')} />
+                        <MenuLink pathName="Pending" click={() => setFilt('/pending?by=apply_status')} />
+                        <MenuLink pathName="Accepted" click={() => setFilt('/accepted?by=apply_status')} />
+                        <MenuLink pathName="Denied" click={() => setFilt('/denied?by=apply_status')} />
+                        <MenuLink pathName="Evaluated" click={() => setFilt('/evaluated?by=apply_status')} />
+                        <MenuLink pathName="Approved" click={() => setFilt('/approved?by=apply_status')} />
+                        <MenuLink pathName="Declined" click={() => setFilt('/declined?by=apply_status')} />
+                    </DropdownMenu>
 
                     {Object.keys(loans).length === 0 ? (
                         <EmptySearch label="No results" context="It seems no such data exists" />

@@ -139,6 +139,7 @@ function App() {
             <Route path="loan" element={<LoanInfo />} />
             <Route path="product" element={<ProductInfo staff={true} />} />
             <Route path="history" element={<AppNotifications />} />
+            <Route path="loan_his" element={<AppNotifications />} />
             <Route path="profile" element={<Profile />} />
           </Route>
 
@@ -149,6 +150,7 @@ function App() {
             <Route path="invoice" element={<Invoice />} />
             <Route path="loan" element={<LoanInfo />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="history" element={<AppNotifications />} />
             <Route path="apply" element={<AppliedForm url="/admin" />}>
               <Route index element={<PersonalInfoForm />} />
               <Route path="personalinfo" element={<PersonalInfoForm />} />

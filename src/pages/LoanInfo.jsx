@@ -118,7 +118,10 @@ export default function LoanInfo({children}) {
     return (
         <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan {loan.record_id}</h2>
+                <div className="flex justify-between w-full">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan {loan.record_id}</h2>
+                    <CustomBttn text="Payment History" onclick={() => navigate(location.pathname === '/admin/loan' ? '/admin/history' : '/staff/loan_his', {state: {id: loan.id}})} classname="flex items-center justify-center bg-blue-200 text-blue-600 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900" />
+                </div>
 
                 <div class="mt-6 sm:mt-8 lg:flex lg:gap-8">
                     {loanLoad ? (

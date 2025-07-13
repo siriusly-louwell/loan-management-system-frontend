@@ -149,7 +149,12 @@ export default function ProductInfo({staff = false}) {
                                         <div className='grid grid-cols-10 gap-y-2'>
                                             {unitLoad ? "":
                                                 unit.colors.map((color, i) => (
-                                                    <ColorLabel key={i} style={color.color} />
+                                                    <>
+                                                        <label htmlFor={`${i}_${color.color}`}>
+                                                            <ColorLabel key={i} style={color.color} />
+                                                        </label>
+                                                        <input type="button" id={`${i}_${color.color}`} className="hidden" onClick={() => setCurrent(i)} />
+                                                    </>
                                                 ))
                                             }
                                         </div>

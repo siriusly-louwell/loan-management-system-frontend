@@ -1,47 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NotifGroup from "../cards/NotifGroup";
 import NotifSpan from "../texts/NotifSpan";
 import Notification from "../links/Notification";
 import LogList from "../LogList";
 import LogRow from "../tables/LogRow";
 import CustomBadge from "../badges/CustomBadge";
+import SmallSpin from "../loading components/SmallSpin";
+import { useLocation } from "react-router-dom";
 
 export default function AppNotifications() {
+    const {state} = useLocation();
+    const id = state?.id;
+    const [payment, setPayment] = useState([]);
+    const [appLoad, setAppLoad] = useState(true);
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/payment${id ? `/${id}` : ''}`)
+            .then(response => response.json())
+            .then(data => {
+                if(Array.isArray(data))setPayment(data);
+                else setPayment([data]);
+                setAppLoad(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+            setAppLoad(true);
+        })
+    }, [id]);
+
     return (
         <div class="w-full md:px-20 p-4 bg-gray-200 dark:bg-gray-800">
             <div class="w-full md:px-20">
                 <NotifGroup date="January 13th, 2025">
                     <LogList>
-                        <LogRow id="2025-JG64GJ" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
+                        {appLoad ? (
+                            <div class="w-full h-40 py-20 dark:bg-gray-800 flex justify-center items-center">
+                                <SmallSpin size={50}  />
+                            </div>
+                        ) : payment.map(pay => (
+                            <LogRow id={pay.cert_num} date="2025.07.23" name="John Doe" amount={pay.amount_paid} bttnText="View" path='/customer/invoice' badge={<CustomBadge text="On Time" color="green" />} />
+                        ))}
                     </LogList>
                 </NotifGroup>
-                <NotifGroup date="January 12th, 2025">
-                    <LogList>
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                    </LogList>
-                </NotifGroup>
-                <NotifGroup date="January 9th, 2025">
-                    <LogList>
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                    </LogList>
-                    {/* <Notification content="You have paid for this month's payment.." to="/customer/invoice">
+                {/* <NotifGroup date="January 9th, 2025">
+                    <Notification content="You have paid for this month's payment.." to="/customer/invoice">
                         <NotifSpan text="This month's payment successful!" />
                     </Notification>
                     <Notification content="You have paid for this month's payment.." to="/customer/invoice">
                         <NotifSpan text="This month's payment successful!" />
-                    </Notification> */}
-                </NotifGroup>
-                <NotifGroup date="January 5th, 2025">
-                    <LogList>
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                        <LogRow id="2025WO83B" date="2025.07.23" name="John Doe" bttnText="View" path='/customer/invoice' badge={<CustomBadge text="Paid" color="blue" />} />
-                    </LogList>
-                </NotifGroup>
+                    </Notification>
+                </NotifGroup> */}
             </div>
         </div>
     );

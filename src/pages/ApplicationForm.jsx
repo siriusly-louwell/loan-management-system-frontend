@@ -27,7 +27,7 @@ export default function ApplicationForm() {
         '/customer/apply/requirements',
         '/customer/apply/comakerform'
     ], []);
-    const applicantArray = [[[], []],
+    const applicantArray = [[['tenure'], []],
         [
             ['first_name', 'middle_name', 'last_name', 'gender', 'contact_num', 'status', 'educ_attain', 'residence', 'amortization', 'rent'],
             ['region', 'province', 'city', 'brgy', 'purok', 'lot_num', 'prev_region', 'prev_province', 'prev_city', 'prev_brgy', 'prev_purok', 'prev_lot_num']
@@ -90,19 +90,36 @@ export default function ApplicationForm() {
     function checkEmpty(array) {
         let bool = true;
 
-        array[0].forEach(val => {
-            if(!applicant.hasOwnProperty(val) || applicant[val] === '__EMPTY__') {
-                setApplicant({...applicant, [val]: '__EMPTY__'});
-                bool = false;
-            }
-        });
+        if(currentIndex > 0) {
+            array[0].forEach(val => {
+                if(!applicant.hasOwnProperty(val) || applicant[val] === '__EMPTY__') {
+                    setApplicant({...applicant, [val]: '__EMPTY__'});
+                    bool = false;
+                }
+            });
 
-        array[1].forEach(val => {
-            if(!address.hasOwnProperty(val) || address[val] === '__EMPTY__') {
-                setAddress({...address, [val]: '__EMPTY__'});
-                bool = false;
-            }
-        });
+            array[1].forEach(val => {
+                if(!address.hasOwnProperty(val) || address[val] === '__EMPTY__') {
+                    setAddress({...address, [val]: '__EMPTY__'});
+                    bool = false;
+                }
+            });
+        } else {
+            array[0].forEach(val => {
+                transactForm.map((_, i) => {                    
+                    if(!transactForm[i].hasOwnProperty(val) || transactForm[i][val] === '__EMPTY__') {
+                        const form = [...transactForm];
+                        form[i] = {
+                            ...transactForm[i],
+                            [val]: '__EMPTY__'
+                        };
+
+                        setTransactForm(form);
+                        bool = false;
+                    }
+                });
+            });
+        }
 
         if(!bool) {
             setAlert({text: 'Some fields are required!'});

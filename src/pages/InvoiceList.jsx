@@ -86,21 +86,54 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
     }
 
     function displayLoan(loan) {        
-        if(location.pathname === '/staff/loans' || (location.pathname === '/admin/loans' && loan.apply_status !== 'denied')) {
+        // if(location.pathname === '/staff/loans' || location.pathname === '/find' || (location.pathname === '/admin/loans' && loan.apply_status !== 'denied')) {
+        //     return (
+        //         <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
+        //     );
+        // } else if(loan.ci_id === id) {
+        //     if(bttnText === "Evaluate") {
+        //         if(loan.apply_status === 'accepted') {
+        //                 return (
+        //                 <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
+        //                 badge={<CustomBadge text="Accepted" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
+        //             );
+        //         }
+        //     } else if(loan.apply_status !== 'denied') {
+        //             return (
+        //             <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
+        //         );
+        //     }
+        // }
+
+        const { pathname } = location;
+        const {record_id, first_name, last_name, created_at, apply_status, id: loanId, ci_id} = loan;
+
+        const showStaffOrAdminLoan = pathname === '/staff/loans' || pathname === '/find' || (pathname === '/admin/loans' && apply_status !== 'denied');
+
+        const isEvaluator = bttnText === 'Evaluate';
+        const isAccepted = apply_status === 'accepted';
+        const isNotDenied = apply_status !== 'denied';
+        const isCurrentUser = loan.ci_id === id;
+
+        if (showStaffOrAdminLoan) {
             return (
-                <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
+                <LogRow id={record_id} name={`${first_name} ${last_name}`} date={dateConvert(created_at)} badge={statusBadge(apply_status)} path={path}
+                bttnText={bttnText} state={loanId} />
             );
-        } else if(loan.ci_id === id) {
-            if(bttnText === "Evaluate") {
-                if(loan.apply_status === 'accepted') {
-                        return (
-                        <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)}
-                        badge={<CustomBadge text="Accepted" color="green" />} path={path} bttnText={bttnText} state={loan.id} />
-                    );
-                }
-            } else if(loan.apply_status !== 'denied') {
-                    return (
-                    <LogRow id={loan.record_id} name={loan.first_name+" "+loan.last_name} date={dateConvert(loan.created_at)} badge={statusBadge(loan.apply_status)} path={path} bttnText={bttnText} state={loan.id} />
+        }
+
+        if (isCurrentUser) {
+            if (isEvaluator && isAccepted) {
+                return (
+                <LogRow id={record_id} name={`${first_name} ${last_name}`} date={dateConvert(created_at)} badge={<CustomBadge text="Accepted" color="green" />} path={path}
+                    bttnText={bttnText} state={loanId} />
+                );
+            }
+
+            if (!isEvaluator && isNotDenied) {
+                return (
+                <LogRow id={record_id} name={`${first_name} ${last_name}`} date={dateConvert(created_at)} badge={statusBadge(apply_status)} path={path}
+                    bttnText={bttnText} state={loanId} />
                 );
             }
         }

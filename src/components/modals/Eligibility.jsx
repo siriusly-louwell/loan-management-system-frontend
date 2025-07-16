@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CloseBttn from "../buttons/CloseBttn";
 import Button from "../buttons/Button";
 import ColorLabel from "../ColorLabel";
@@ -6,6 +6,7 @@ import CustomBttn from "../buttons/CustomBttn";
 import LargeBadge from "../badges/LargeBadge";
 
 export default function Eligibity({loan}) {
+    const [alet, setAlert] = useState({});
     const loans = Object.keys(loan).length > 0 ? loan.transactions.reduce((sum, item) => {
         const tenure = item.tenure * 12;
         const loanAmount = parseFloat(item.motorcycle?.price || 0) - parseFloat(item.downpayment || 0);
@@ -76,6 +77,39 @@ export default function Eligibity({loan}) {
             case 'net':
                 return ndiBool === 'green' ? 'Has excess money (Able to afford a loan)'
                     : (ndiBool === 'yellow' ? 'Not enough money (Might not able to afford loan)' : 'Little to no money (Unable to afford a loan)');
+        }
+    }
+
+    async function handleSubmit() {
+        document.getElementById('decline_app').style.display = "flex";
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/application/'+loan.id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(decline)
+            });
+
+            const result = await response.json();
+            console.log('Success: ', result);
+            if(!response.ok) throw new Error('Update failed');
+            setAlert({
+                text: "Applicant has been denied!",
+                icon: "done"
+            });
+            document.getElementById('dec-app').style.display = 'block';
+            document.getElementById('decline_app').style.display = "none";
+        } catch(error) {
+            console.error('Error: ', error);
+            setAlert({
+                text: "Unexpected Error!",
+                icon: "warn"
+            });
+            document.getElementById('dec-app').style.display = 'block';
+            document.getElementById('decline_app').style.display = "none";
         }
     }
 

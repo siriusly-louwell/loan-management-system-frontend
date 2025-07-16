@@ -133,12 +133,12 @@ export default function Cashier() {
 
                                 <dl className="flex items-center justify-between gap-4 py-3">
                                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Previous Balance</dt>
-                                    <dd className="text-base font-medium text-red-500">{Object.keys(applicant).length === 0 ? '- - -' : '$199'}</dd>
+                                    <dd className="text-base font-medium text-red-500">{Object.keys(applicant).length === 0 ? '- - -' : '₱199'}</dd>
                                 </dl>
 
                                 <dl className="flex items-center justify-between gap-4 py-3">
                                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Amount Paid</dt>
-                                    <dd className="text-base font-medium text-green-500">{Object.keys(applicant).length === 0 ? '- - -' : '$15,000'}</dd>
+                                    <dd className="text-base font-medium text-green-500">{Object.keys(applicant).length === 0 ? '- - -' : '₱15,000'}</dd>
                                 </dl>
 
                                 <dl className="flex items-center justify-between gap-4 py-3">
@@ -148,7 +148,7 @@ export default function Cashier() {
 
                                 <dl className="flex items-center justify-between gap-4 py-3">
                                     <dt className="text-base font-bold text-gray-900 dark:text-white">Current Balance</dt>
-                                    <dd className="text-base font-bold text-gray-900 dark:text-white">{Object.keys(applicant).length === 0 ? '- - -' : '$8,392.00'}</dd>
+                                    <dd className="text-base font-bold text-gray-900 dark:text-white">{Object.keys(applicant).length === 0 ? '- - -' : '₱8,392.00'}</dd>
                                 </dl>
 
                                 <dl className="mt-5">

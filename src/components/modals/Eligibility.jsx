@@ -2,6 +2,7 @@ import React from "react";
 import CloseBttn from "../buttons/CloseBttn";
 import Button from "../buttons/Button";
 import ColorLabel from "../ColorLabel";
+import CustomBttn from "../buttons/CustomBttn";
 import LargeBadge from "../badges/LargeBadge";
 
 export default function Eligibity({loan}) {
@@ -58,9 +59,29 @@ export default function Eligibity({loan}) {
         else return "review";
     }
 
+    function cateResult(category) {
+        const empBool = empStability();
+        const debtBool = debtStability();
+        const ndiBool = ndiStability();
+
+        switch(category) {
+            case 'emp':
+                return empBool === 'green' ? 'Income is stable and capable to take a loan'
+                    : (empBool === 'yellow' ? 'Income is unstable/Not suitable for loan application' : 'Income did not meet the minimum requirement');
+                break;
+            case 'deb':
+                return debtBool === 'green' ? 'Low Risk (Qualified to take loan)'
+                    : (debtBool === 'yellow' ? 'Medium Risk (Might not qualify to loan)' : 'High Risk (Not Qualified to loan)');
+                break;
+            case 'net':
+                return ndiBool === 'green' ? 'Has excess money (Able to afford a loan)'
+                    : (ndiBool === 'yellow' ? 'Not enough money (Might not able to afford loan)' : 'Little to no money (Unable to afford a loan)');
+        }
+    }
+
     return (
         <div id="eligibleModal" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
+            <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
                 <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
                     <div className="flex justify-between items-center pb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Eligibility Results</h3>
@@ -72,6 +93,7 @@ export default function Eligibity({loan}) {
                                 <th className="py-2">Category</th>
                                 <th className="py-2">Data</th>
                                 <th className="py-2">Threshold</th>
+                                <th className="py-2">Results</th>
                             </thead>
                             <tbody>
                                 <tr className="border-b border-gray-400">
@@ -90,10 +112,13 @@ export default function Eligibity({loan}) {
                                         </div>
                                     </td>
                                     <td className="py-4 flex justify-center">
-                                        <div className="flex flex-col space-y-3">
+                                        <div className="flex flex-col space-y-3 mr-4">
                                             <span className="font-semibold text-rose-700 whitespace-nowrap">Income &ge; ₱15,000.00</span>
                                             <span className="font-semibold text-rose-700 whitespace-nowrap">&ge;1 year in job/business</span>
                                         </div>
+                                    </td>
+                                    <td className="">
+                                        <span className={`font-bold text-${empStability()}-600`}>{cateResult('emp')}</span>
                                     </td>
                                 </tr>
                                 <tr className="border-b border-gray-400">
@@ -116,6 +141,9 @@ export default function Eligibity({loan}) {
                                     <td className="py-4 flex justify-center">
                                         <span className="font-semibold text-rose-700 whitespace-nowrap">DTI &le; 35%</span>
                                     </td>
+                                    <td className="">
+                                        <span className={`font-bold text-${debtStability()}-600`}>{cateResult('deb')}</span>
+                                    </td>
                                 </tr>
                                  <tr className="border-b border-gray-400">
                                     <td className="py-4 flex space-x-3 items-center mr-3">
@@ -130,8 +158,11 @@ export default function Eligibity({loan}) {
                                             <span className="text-rose-700 font-bold mt-2">₱{ndi.toLocaleString()}</span>
                                         </div>
                                     </td>
-                                    <td className="py-4 flex justify-center">
+                                    <td className="py-4 justify-items-center flex justify-center">
                                         <span className="font-semibold text-rose-700 whitespace-nowrap">Total EMI &le; 30% of NDI</span>
+                                    </td>
+                                    <td className="">
+                                        <span className={`font-bold text-${ndiStability()}-600`}>{cateResult('net')}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -151,8 +182,9 @@ export default function Eligibity({loan}) {
                             </span>
                         </div>
                         <LargeBadge type={assessDecision()} />
-                        <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                            <Button text="Close" onclick={() => document.getElementById('eligibleModal').style.display = 'none'} />
+                        <div className="grid grid-cols-2 gap-3">
+                            <CustomBttn text="Accept Decision" classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                            <CustomBttn text="Review" classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900" />
                         </div>
                     </section>
                 </div>

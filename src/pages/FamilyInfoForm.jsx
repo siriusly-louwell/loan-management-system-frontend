@@ -13,6 +13,8 @@ import copy_icon from '../assets/images/copy_icon.png';
 
 export default function FamilyInfoForm() {
     const {handleChange, addressChange, applicant, address, copyAddress, disable, locations} = useOutletContext();
+    const pDisBool = address.p_region === undefined || address.p_region === '__EMPTY__' ? true : disable;
+    const spDisBool = address.sp_region === undefined || address.sp_region === '__EMPTY__' ? true : disable;
     const [relatives, setRelative] = useState(['']);
 
     return (
@@ -74,19 +76,19 @@ export default function FamilyInfoForm() {
                             <option>Region XIII</option>
                             <option>Region XIV</option>
                         </FormSelect>
-                        <FormSelect name="p_province" label="Province" id="province" value={address.p_province} onchange={addressChange} require={true} disable={address.p_region === undefined ? true : disable}>
-                            {address.p_region !== undefined
+                        <FormSelect name="p_province" label="Province" id="province" value={address.p_province} onchange={addressChange} require={true} disable={pDisBool}>
+                            {address.p_region !== undefined && address.p_region !== '__EMPTY__'
                                 ? locations[address.p_region.substring(7, address.p_region.length)].province.map(val => (
                                     <option>{val}</option>
                                 )) : ''}
                         </FormSelect>
-                        <FormSelect name="p_city" label="Municipality/City" id="city" value={address.p_city} onchange={addressChange} require={true} disable={address.p_region === undefined ? true : disable}>
-                            {address.p_region !== undefined
+                        <FormSelect name="p_city" label="Municipality/City" id="city" value={address.p_city} onchange={addressChange} require={true} disable={pDisBool}>
+                            {address.p_region !== undefined && address.p_region !== '__EMPTY__'
                                 ? locations[address.p_region.substring(7, address.p_region.length)].city.map(val => (
                                     <option>{val}</option>
                                 )) : ''}
                         </FormSelect>
-                        <FormSelect name="p_brgy" label="Barangay" id="brgy" value={address.p_brgy} onchange={addressChange} require={true} disable={address.p_region === undefined ? true : disable}>
+                        <FormSelect name="p_brgy" label="Barangay" id="brgy" value={address.p_brgy} onchange={addressChange} require={true} disable={pDisBool}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>
@@ -173,19 +175,19 @@ export default function FamilyInfoForm() {
                             <option>Region XIII</option>
                             <option>Region XIV</option>
                         </FormSelect>
-                        <FormSelect name="sp_province" label="Province" id="province" value={address.sp_province} onchange={addressChange} disable={address.sp_region === undefined ? true : disable}>
-                            {address.sp_region !== undefined
+                        <FormSelect name="sp_province" label="Province" id="province" value={address.sp_province} onchange={addressChange} disable={spDisBool}>
+                            {address.sp_region !== undefined && address.sp_region !== '__EMPTY__'
                                 ? locations[address.sp_region.substring(7, address.sp_region.length)].province.map(val => (
                                     <option>{val}</option>
                                 )) : ''}
                         </FormSelect>
-                        <FormSelect name="sp_city" label="Municipality/City" id="city" value={address.sp_city} onchange={addressChange} disable={address.sp_region === undefined ? true : disable}>
-                            {address.sp_region !== undefined
+                        <FormSelect name="sp_city" label="Municipality/City" id="city" value={address.sp_city} onchange={addressChange} disable={spDisBool}>
+                            {address.sp_region !== undefined && address.sp_region !== '__EMPTY__'
                                 ? locations[address.sp_region.substring(7, address.sp_region.length)].city.map(val => (
                                     <option>{val}</option>
                                 )) : ''}
                         </FormSelect>
-                        <FormSelect name="sp_brgy" label="Barangay" id="brgy" value={address.sp_brgy} onchange={addressChange} disable={address.sp_region === undefined ? true : disable}>
+                        <FormSelect name="sp_brgy" label="Barangay" id="brgy" value={address.sp_brgy} onchange={addressChange} disable={spDisBool}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>

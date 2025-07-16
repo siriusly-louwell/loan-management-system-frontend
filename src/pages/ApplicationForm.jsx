@@ -29,17 +29,16 @@ export default function ApplicationForm() {
     ], []);
     const applicantArray = [[['tenure'], []],
         [
-            ['first_name', 'middle_name', 'last_name', 'gender', 'contact_num', 'status', 'educ_attain', 'residence', 'amortization', 'rent'],
-            ['region', 'province', 'city', 'brgy', 'purok', 'lot_num', 'prev_region', 'prev_province', 'prev_city', 'prev_brgy', 'prev_purok', 'prev_lot_num']
+            ['rent', 'amortization', 'residence', 'educ_attain', 'status', 'contact_num', 'gender', 'last_name', 'middle_name', 'first_name'],
+            ['prev_lot_num', 'prev_purok', 'prev_brgy', 'prev_city', 'prev_province', 'prev_region', 'lot_num', 'purok', 'brgy', 'city', 'province', 'region']
         ],
         [
-            ['income', 'rate', 'salary', 'business', 'living_exp', 'rental_exp', 'education_exp', 'transportation', 'insurance', 'bills'],
+            ['bills', 'insurance', 'transportation', 'education_exp', 'rental_exp', 'living_exp', 'business', 'salary', 'rate', 'income'],
         []],
-        [
-            ['spouse_name', 'b_date', 'spouse_work', 'children_num', 'children_dep', 'school'],
-            ['p_region', 'p_province', 'p_city', 'p_brgy', 'p_purok', 'p_lot_num', 'p_prev_region', 'p_prev_province', 'p_prev_city', 'p_prev_brgy', 'p_prev_purok',
-            'p_prev_lot_num', 'sp_region', 'sp_province', 'sp_city', 'sp_brgy', 'sp_purok', 'sp_lot_num', 'sp_prev_region', 'sp_prev_province', 'sp_prev_city',
-            'sp_prev_brgy', 'sp_prev_purok', 'sp_prev_lot_num']
+        [[],
+            ['sp_prev_lot_num', 'sp_prev_purok', 'sp_prev_brgy', 'sp_prev_city', 'sp_prev_province', 'sp_prev_region', 'sp_lot_num', 'sp_purok', 'sp_brgy', 'sp_city', 'sp_province',
+            'sp_region', 'p_prev_lot_num', 'p_prev_purok', 'p_prev_brgy', 'p_prev_city', 'p_prev_province', 'p_prev_region', 'p_lot_num', 'p_purok', 'p_brgy',
+            'p_city', 'p_province', 'p_region']
         ], [[], []]
     ];
     const locations = {
@@ -298,12 +297,12 @@ export default function ApplicationForm() {
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <Stepper>
-                <Step label="1. Loan Setup" status={stepCheck(0)} />
-                <Step label="2. Personal Information" status={stepCheck(1)} />
-                <Step label="4. Employment, Properties, & Income/Expenses" status={stepCheck(2)} />
-                <Step label="3. Family/Relative Information" status={stepCheck(3)} />
-                <Step label="5. Upload Requirements" status={stepCheck(4)} />
-                <Step label="6. Comaker Form" status={stepCheck(5)} />
+                <Step label="1. Loan Setup" status={stepCheck(0)} click={() => navigate(routerPaths[0], {state: {selected: state?.selected}})} />
+                <Step label="2. Personal Information" status={stepCheck(1)} click={() => navigate(routerPaths[1], {state: {selected: state?.selected}})} />
+                <Step label="4. Employment, Properties, & Income/Expenses" status={stepCheck(2)} click={() => navigate(routerPaths[2], {state: {selected: state?.selected}})} />
+                <Step label="3. Family/Relative Information" status={stepCheck(3)} click={() => navigate(routerPaths[3], {state: {selected: state?.selected}})} />
+                <Step label="5. Upload Requirements" status={stepCheck(4)} click={() => navigate(routerPaths[4], {state: {selected: state?.selected}})} />
+                <Step label="6. Comaker Form" status={stepCheck(5)} click={() => navigate(routerPaths[5], {state: {selected: state?.selected}})} />
             </Stepper>
             <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">
                 <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">

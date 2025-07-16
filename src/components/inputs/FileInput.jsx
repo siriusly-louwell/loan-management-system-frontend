@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function FileInput({label, type, change, name, require = false}) {
-    const fileType = type === 'img' ? 'SVG, PNG or JPG (MAX. 800x400px)' : 'PDF or DOCX (MAX. 2MB)'
+    const fileType = type === 'img' ? 'SVG, PNG, JPG, PDF or DOCX (MAX. 2MB 800x400px)' : 'PDF or DOCX (MAX. 2MB)'
     return (
         <div className="mb-4">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor={label}>{label} {require ? (<strong className='text-rose-500'>*</strong>) : ''}</label>

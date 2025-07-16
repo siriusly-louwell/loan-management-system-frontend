@@ -102,7 +102,7 @@ export default function AddPayment({id}) {
                     
                         <dl className="flex items-center justify-between gap-4 py-3">
                             <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Previous Balance</dt>
-                            <dd className="text-base font-medium text-red-500">$199</dd>
+                            <dd className="text-base font-medium text-red-500">₱199</dd>
                         </dl>
 
                         <dl className="gap-4 py-3">

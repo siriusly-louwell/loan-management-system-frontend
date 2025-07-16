@@ -45,21 +45,21 @@ export default function ReportReview() {
                         <form>
                             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                                 <PfpLabel caption="Applicant Name" label={state.name} />
-                                <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={report.birth_day} />
-                                <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={report.birth_place} placeholder="Birth place address" />
+                                <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={report.birth_day} disable={true} />
+                                <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={report.birth_place} placeholder="Birth place address" disable={true} />
                             </div>
                                     
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Father:</h3>
                             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2">
-                                <FormInput label="First name" type="text" name="father_first" id="ff-name" value={report.father_first} placeholder="Type first name here" />
-                                <FormInput label="Middle name" type="text" name="father_middle" id="fm-name" value={report.father_middle} placeholder="Type middle name here" />
-                                <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={report.father_last} placeholder="Type last name here" />
+                                <FormInput label="First name" type="text" name="father_first" id="ff-name" value={report.father_first} placeholder="Type first name here" disable={true} />
+                                <FormInput label="Middle name" type="text" name="father_middle" id="fm-name" value={report.father_middle} placeholder="Type middle name here" disable={true} />
+                                <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={report.father_last} placeholder="Type last name here" disable={true} />
                             </div>
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Mother:</h3>
                             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                                <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={report.mother_first} placeholder="Type first name here" />
-                                <FormInput label="Middle name" type="text" name="mother_middle" id="mm-name" value={report.mother_middle} placeholder="Type middle name here" />
-                                <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={report.mother_last} placeholder="Type last name here" />
+                                <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={report.mother_first} placeholder="Type first name here" disable={true} />
+                                <FormInput label="Middle name" type="text" name="mother_middle" id="mm-name" value={report.mother_middle} placeholder="Type middle name here" disable={true} />
+                                <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={report.mother_last} placeholder="Type last name here" disable={true} />
                             </div>
                                                 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Dependants:</h3>
@@ -109,8 +109,8 @@ export default function ReportReview() {
                             </div>
 
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-                                <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={report.comm_standing} placeholder="Write commuity standing here" />
-                                <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={report.home_description} placeholder="Write residence description here" />
+                                <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={report.comm_standing} placeholder="Write commuity standing here" disable={true} />
+                                <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={report.home_description} placeholder="Write residence description here" disable={true} />
                             </div>
 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit Applied:</h3>
@@ -139,25 +139,25 @@ export default function ReportReview() {
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject is recommended for</label>
                                     <div className="space-y-4 sm:flex sm:space-y-0">
-                                        <FormCheck name="recommendation" type="radio" id="recomm-1" label="Approval" value="approval" check={report.recommendation === 'approval'} />
-                                        <FormCheck name="recommendation" type="radio" id="recomm-2" label="Disapproval" value="disapproval" check={report.recommendation === 'disapproval'} />
+                                        <FormCheck name="recommendation" type="radio" id="recomm-1" label="Approval" value="approval" check={report.recommendation === 'approval'} disable={true} />
+                                        <FormCheck name="recommendation" type="radio" id="recomm-2" label="Disapproval" value="disapproval" check={report.recommendation === 'disapproval'} disable={true} />
                                     </div>
                                 </div>
-                                <FormTextarea name="remarks" id="remarks" label="Other remarks" placeholder="Write remarks here" />
+                                <FormTextarea name="remarks" id="remarks" label="Other remarks" placeholder="Write remarks here" disable={true} />
                             </div>
 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit verification:</h3>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-                                <FormInput label="First Unit applied" type="text" name="first_unit" id="name" value={report.first_unit} placeholder="Type unit name here" />
+                                <FormInput label="First Unit applied" type="text" name="first_unit" id="name" value={report.first_unit} placeholder="Type unit name here" disable={true} />
                                 <FileInput label="Sketch Image" name="sketch" type="img" />
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivered?</label>
                                     <div className="space-y-4 sm:flex sm:space-y-0">
-                                        <FormCheck name="delivered" type="radio" id="deliver-1" label="Yes" value="yes" check={report.delivered === 'yes'} />
-                                        <FormCheck name="delivered" type="radio" id="deliver-2" label="No" value="no" check={report.delivered === 'no'} />
+                                        <FormCheck name="delivered" type="radio" id="deliver-1" label="Yes" value="yes" check={report.delivered === 'yes'} disable={true} />
+                                        <FormCheck name="delivered" type="radio" id="deliver-2" label="No" value="no" check={report.delivered === 'no'} disable={true} />
                                     </div>
                                 </div>
-                                <FormInput label="Outlet" type="text" name="outlet" id="outlet" value={report.outlet} placeholder="Type outlet here" />
+                                <FormInput label="Outlet" type="text" name="outlet" id="outlet" value={report.outlet} placeholder="Type outlet here" disable={true} />
                             </div>
                         </form>
                     )}

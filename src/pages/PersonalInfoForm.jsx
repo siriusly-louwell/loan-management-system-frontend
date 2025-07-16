@@ -1,16 +1,21 @@
 import React from "react";
-import {useOutletContext} from 'react-router-dom';
+import {useLocation, useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from '../assets/images/copy_icon.png';
 
 export default function PersonalInfoForm() {
+    const location = useLocation();
     const {handleChange, addressChange, applicant, address, copyAddress, disable, locations} = useOutletContext();
+    const disBool = address.region === undefined || address.region === '__EMPTY__' ? true : disable;
 
     return (
         <>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Buyer's Personal Infomation:</h3>
+            {location.pathname === '/admin/apply' ? (
+                <img src={`http://127.0.0.1:8000/storage/${applicant.id_pic}`} className="rounded rounded-lg w-20" />
+            ) : ''}
             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                 <FormInput label="First Name" type="text" name="first_name" id="first_name" value={applicant.first_name} onchange={handleChange} placeholder="Type first name" require={true} disable={disable} />
                 <FormInput label="Middle Name" type="text" name="middle_name" id="mid_name" value={applicant.middle_name} onchange={handleChange} placeholder="Type middle name" require={true} disable={disable} />
@@ -79,19 +84,19 @@ export default function PersonalInfoForm() {
                             <option>Region XIV</option>
                             <option>Region XV</option>
                         </FormSelect>
-                        <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange} require={true} disable={address.region === undefined ? true : disable}>
-                            {address.region !== undefined
+                        <FormSelect name="province" label="Province" id="province" value={address.province} onchange={addressChange} require={true} disable={disBool}>
+                            {address.region !== undefined && address.region !== '__EMPTY__'
                                 ? locations[address.region.substring(7, address.region.length)].province.map(val => (
                                     <option>{val}</option>
                                 )) : ''}
                         </FormSelect>
-                        <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange} require={true} disable={address.region === undefined ? true : disable}>
-                            {address.region !== undefined
+                        <FormSelect name="city" label="Municipality/City" id="city" value={address.city} onchange={addressChange} require={true} disable={disBool}>
+                            {address.region !== undefined && address.region !== '__EMPTY__'
                                 ? locations[address.region.substring(7, address.region.length)].city.map(val => (
                                     <option>{val}</option>
                                 )) : ''}
                         </FormSelect>
-                        <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange} require={true} disable={address.region === undefined ? true : disable}>
+                        <FormSelect name="brgy" label="Barangay" id="brgy" value={address.brgy} onchange={addressChange} require={true} disable={disBool}>
                             <option>A. O. Floriendo</option>
                             <option>Buenavista</option>
                             <option>Cacao</option>

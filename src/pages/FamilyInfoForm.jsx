@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useOutletContext} from 'react-router-dom';
+import {useLocation, useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
@@ -16,6 +16,7 @@ export default function FamilyInfoForm() {
     const pDisBool = address.p_region === undefined || address.p_region === '__EMPTY__' ? true : disable;
     const spDisBool = address.sp_region === undefined || address.sp_region === '__EMPTY__' ? true : disable;
     const [relatives, setRelative] = useState(['']);
+    const location = useLocation();
 
     return (
         <>
@@ -47,11 +48,13 @@ export default function FamilyInfoForm() {
                     <FormInput label="Enrolled at" type="text" name="prod_name" id="name" placeholder="Type school here" disable={disable} />
                     <FormInput label="Address" type="text" name="prod_name" id="name" placeholder="Full address here" disable={disable} />
                 </div>
-                <div className="grid pt-4 sm:cols-span-3">
-                    <BttnwithIcon text="Add row">
-                        <Plus />
-                    </BttnwithIcon>
-                </div>
+                {location.pathname !== '/admin/apply/familyinfo' ? (
+                    <div class="grid pt-4 sm:cols-span-3">
+                        <BttnwithIcon text="Add row">
+                            <Plus />
+                        </BttnwithIcon>
+                    </div>
+                ) : ''}
             </div>
 
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Parent's Present Address:</h3>
@@ -271,11 +274,14 @@ export default function FamilyInfoForm() {
                         ))}
                     </FormTBody>
                 </table>
-                <div className="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon text="Add row" type="button" click={() => setRelative([...relatives, ''])}>
-                        <Plus />
-                    </BttnwithIcon>
-                </div>
+                {location.pathname !== '/admin/apply/familyinfo' ? (
+                    <div className="grid pt-4 sm:cols-span-1">
+                        <BttnwithIcon text="Add row" type="button" click={() => setRelative([...relatives, ''])}>
+                            <Plus />
+                        </BttnwithIcon>
+                    </div>
+                ) : ''}
+                
             </div>
         </>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useOutletContext} from 'react-router-dom';
+import {useLocation, useOutletContext} from 'react-router-dom';
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import BttnwithIcon from '../components/buttons/BttnwithIcon';
@@ -11,6 +11,7 @@ import FormTD from '../components/tables/FormTD';
 
 export default function EmploymentInfoForm() {
     const {handleChange, applicant, address, disable} = useOutletContext();
+    const location = useLocation();
     const [properties, setProperty] = useState(['']);
     const [references, setReference] = useState(['']);
 
@@ -78,11 +79,13 @@ export default function EmploymentInfoForm() {
                         ))}
                     </FormTBody>
                 </table>
-                <div class="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon type="button" click={() => setProperty([...properties, ''])} text="Add row">
-                        <Plus />
-                    </BttnwithIcon>
-                </div>
+                {location.pathname !== '/admin/apply/employinfo' ? (
+                    <div class="grid pt-4 sm:cols-span-1">
+                        <BttnwithIcon type="button" click={() => setProperty([...properties, ''])} text="Add row">
+                            <Plus />
+                        </BttnwithIcon>
+                    </div>
+                ) : ''}
             </div>
             
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Credit References:</h3>
@@ -110,11 +113,13 @@ export default function EmploymentInfoForm() {
                         ))}
                     </FormTBody>
                 </table>
-                <div class="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon text="Add row" type="button" click={() => setReference([...references, ''])}>
-                        <Plus />
-                    </BttnwithIcon>
-                </div>
+                {location.pathname !== '/admin/apply/employinfo' ? (
+                    <div class="grid pt-4 sm:cols-span-1">
+                        <BttnwithIcon text="Add row" type="button" click={() => setReference([...references, ''])}>
+                            <Plus />
+                        </BttnwithIcon>
+                    </div>
+                ) : ''}
             </div>
         </>
     );

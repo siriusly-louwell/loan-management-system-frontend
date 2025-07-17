@@ -26,6 +26,7 @@ export default function ProductInfo({staff = false}) {
     const [addLoad, setUnitsLoad] = useState(true);
     const [selected, setSelected] = useState([id]);
     const [current, setCurrent] = useState(0);
+    const [selectColor, setSelectColor] = useState([]);
     const images = [];
 
     const nextSlide = () => {
@@ -50,6 +51,7 @@ export default function ProductInfo({staff = false}) {
         .then(data => {
             setUnit(data);
             setUnitLoad(false);
+            setSelectColor([selected.length -1, data.colors[0].color]);
         })
         .catch(error => {
             console.error('Error fetching data: ', error);
@@ -70,6 +72,14 @@ export default function ProductInfo({staff = false}) {
         })
     }, []);
 
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         console.log(unit.colors);
+    //         setSelectColor([selected.length -1, unit.colors[0].color]);
+    //     }, 5000);
+    // }, [unit]);
+
+
     if(!unitLoad)unit.images.map(file => {
         images.push("http://127.0.0.1:8000/storage/" + file.path);
     });
@@ -79,7 +89,7 @@ export default function ProductInfo({staff = false}) {
     return (
         <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">
             <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
-                <BasicTabs ids={selected} state={id} setId={setId} load={unitLoad} />
+                {/* <BasicTabs ids={selected} state={id} setId={setId} load={unitLoad} /> */}
                 <div className="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
                     {(
                         <>
@@ -102,7 +112,7 @@ export default function ProductInfo({staff = false}) {
                                 ) : (
                                     <div className="flex h-full transition-transform duration-500 ease-out" style={{ transform: `translateX(-${current * 100}%)` }}>
                                         {images.map((src, index) => (
-                                        <img key={index} src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"/>
+                                            <img key={index} src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"/>
                                         ))}
                                     </div>
                                 )}
@@ -153,7 +163,10 @@ export default function ProductInfo({staff = false}) {
                                                         <label htmlFor={`${i}_${color.color}`}>
                                                             <ColorLabel key={i} style={color.color} />
                                                         </label>
-                                                        <input type="button" id={`${i}_${color.color}`} className="hidden" onClick={() => setCurrent(i)} />
+                                                        <input type="button" id={`${i}_${color.color}`} className="hidden" onClick={() => {
+                                                            setCurrent(i);
+                                                            setSelectColor([selected.length -1, color.color]);
+                                                        }} />
                                                     </>
                                                 ))
                                             }
@@ -175,7 +188,7 @@ export default function ProductInfo({staff = false}) {
                                         </svg>
                                     </BttnwithIcon>
                                     {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
-                                    <AddtoCartBttn text="Apply Loan" state={{selected: selected}} url="/customer/apply"/>
+                                    <AddtoCartBttn text="Apply Loan" state={{selected: selected, selectColor: selectColor}} url="/customer/apply"/>
                                     <AddtoCartBttn text="Pay in Cash" />
                                 </div>
                                 <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />

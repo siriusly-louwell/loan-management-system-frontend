@@ -194,7 +194,7 @@ export default function LoanInfo({children}) {
                         <div class="space-y-6 rounded-lg border border-gray-200 bg-white p-6 sm:sticky top-0 shadow-sm dark:border-gray-700 dark:bg-gray-700">
                             <div className="flex justify-between space-x-5">
                                 <h3 class="text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Loan history</h3>
-                                <CustomBttn text="Eligibity Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" />
+                                {/* <CustomBttn text="Eligibity Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" /> */}
                             </div>
 
                             <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
@@ -208,7 +208,7 @@ export default function LoanInfo({children}) {
 
                             <div class="gap-4 grid grid-cols-1">
                                 {children}
-                                <Button text="View Form" bttnType="button" onclick={() => navigate('/admin/apply', {state: {id: loan.id}})} />
+                                <Button text="View Results" bttnType="button" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} />
                                 {loan.apply_status === 'evaluated' || loan.apply_status === 'approved' || loan.apply_status === 'declined' ? (
                                     <>
                                         <Button text="View Report" bttnType="button" onclick={() => navigate('/ci/review', {

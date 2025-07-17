@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import CloseBttn from "../buttons/CloseBttn";
-import Button from "../buttons/Button";
 import ColorLabel from "../ColorLabel";
 import CustomBttn from "../buttons/CustomBttn";
 import LargeBadge from "../badges/LargeBadge";
+import CustomBadge from "../badges/CustomBadge";
 
 export default function Eligibity({loan}) {
-    const [alet, setAlert] = useState({});
+    const navigate = useNavigate();
+    const location = useLocation();
     const loans = Object.keys(loan).length > 0 ? loan.transactions.reduce((sum, item) => {
         const tenure = item.tenure * 12;
         const loanAmount = parseFloat(item.motorcycle?.price || 0) - parseFloat(item.downpayment || 0);
@@ -41,10 +43,14 @@ export default function Eligibity({loan}) {
         else return 'red';
     }
 
+    const empBool = empStability();
+    const debtBool = debtStability();
+    const ndiBool = ndiStability();
+
     function assessDecision() {
         const counts = { green: 0, red: 0, yellow: 0 };
 
-        for (let val of [empStability(), debtStability(), ndiStability()]) {
+        for (let val of [empBool, debtBool, ndiBool]) {
             counts[val]++;
         }
 
@@ -61,56 +67,55 @@ export default function Eligibity({loan}) {
     }
 
     function cateResult(category) {
-        const empBool = empStability();
-        const debtBool = debtStability();
-        const ndiBool = ndiStability();
 
         switch(category) {
             case 'emp':
                 return empBool === 'green' ? 'Income is stable and capable to take a loan'
                     : (empBool === 'yellow' ? 'Income is unstable/Not suitable for loan application' : 'Income did not meet the minimum requirement');
-                break;
             case 'deb':
                 return debtBool === 'green' ? 'Low Risk (Qualified to take loan)'
                     : (debtBool === 'yellow' ? 'Medium Risk (Might not qualify to loan)' : 'High Risk (Not Qualified to loan)');
-                break;
             case 'net':
                 return ndiBool === 'green' ? 'Has excess money (Able to afford a loan)'
                     : (ndiBool === 'yellow' ? 'Not enough money (Might not able to afford loan)' : 'Little to no money (Unable to afford a loan)');
         }
     }
 
-    async function handleSubmit() {
-        document.getElementById('decline_app').style.display = "flex";
+    function decideAction() {
+        const results = assessDecision();
+        const decision = results === 'eligible' || results === 'passed' ? 'accepted'
+            : (results === 'not_eligible' || results === 'reject' ? 'denied' : 'pending');
 
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/application/'+loan.id, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(decline)
-            });
+        document.getElementById('eligibleModal').style.display = 'none';
 
-            const result = await response.json();
-            console.log('Success: ', result);
-            if(!response.ok) throw new Error('Update failed');
-            setAlert({
-                text: "Applicant has been denied!",
-                icon: "done"
-            });
-            document.getElementById('dec-app').style.display = 'block';
-            document.getElementById('decline_app').style.display = "none";
-        } catch(error) {
-            console.error('Error: ', error);
-            setAlert({
-                text: "Unexpected Error!",
-                icon: "warn"
-            });
-            document.getElementById('dec-app').style.display = 'block';
-            document.getElementById('decline_app').style.display = "none";
-        }
+        if(decision === 'accepted') document.getElementById('addCI').style.display = 'flex';
+        else document.getElementById('declineApp').style.display = 'flex';
+    }
+
+    function statusBadge(status) {
+        let type = status === 'denied' ? ['Denied', 'orange']
+            :(status === 'pending' ? ['Pending', 'blue'] : ['Accepted', 'green']);
+
+        // switch (status) {
+        //     case 'accepted':
+        //         type = ['Accepted', 'green'];
+        //         break;
+        //     case 'denied':
+        //         type = ['Denied', 'orange'];
+        //         break;
+        //     case 'evaluated':
+        //         type = ['Evaluated', 'yellow'];
+        //         break;
+        //     case 'approved':
+        //         type = ['Approved', 'purple'];
+        //         break;
+        //     case 'declined':
+        //         type = ['Declined', 'red'];
+        //         break;
+        //     default:
+        //         type = ['Pending', 'blue'];
+        // }
+        return (<CustomBadge text={type[0]} color={type[1]} />);
     }
 
     return (
@@ -132,7 +137,7 @@ export default function Eligibity({loan}) {
                             <tbody>
                                 <tr className="border-b border-gray-400">
                                     <td className="py-4 flex space-x-3 items-center mr-3">
-                                        <ColorLabel style={empStability()} />
+                                        <ColorLabel style={empBool} />
                                         <h3 className="text-md font-semibold text-gray-900 dark:text-white">Employment Stability</h3>
                                     </td>
                                     <td className="py-4">
@@ -152,12 +157,12 @@ export default function Eligibity({loan}) {
                                         </div>
                                     </td>
                                     <td className="">
-                                        <span className={`font-bold text-${empStability()}-600`}>{cateResult('emp')}</span>
+                                        <span className={`font-bold text-${empBool}-600`}>{cateResult('emp')}</span>
                                     </td>
                                 </tr>
                                 <tr className="border-b border-gray-400">
                                     <td className="py-4 flex space-x-3 items-center mr-3">
-                                        <ColorLabel style={debtStability()} />
+                                        <ColorLabel style={debtBool} />
                                         <h3 className="text-md font-semibold text-gray-900 dark:text-white">Existing Debts and Loans</h3>
                                     </td>
                                     <td className="py-4">
@@ -176,12 +181,12 @@ export default function Eligibity({loan}) {
                                         <span className="font-semibold text-rose-700 whitespace-nowrap">DTI &le; 35%</span>
                                     </td>
                                     <td className="">
-                                        <span className={`font-bold text-${debtStability()}-600`}>{cateResult('deb')}</span>
+                                        <span className={`font-bold text-${debtBool}-600`}>{cateResult('deb')}</span>
                                     </td>
                                 </tr>
                                  <tr className="border-b border-gray-400">
                                     <td className="py-4 flex space-x-3 items-center mr-3">
-                                        <ColorLabel style={ndiStability()} />
+                                        <ColorLabel style={ndiBool} />
                                         <h3 className="text-md font-semibold text-gray-900 dark:text-white">Net Disposable Income</h3>
                                     </td>
                                     <td className="py-4">
@@ -196,7 +201,7 @@ export default function Eligibity({loan}) {
                                         <span className="font-semibold text-rose-700 whitespace-nowrap">Total EMI &le; 30% of NDI</span>
                                     </td>
                                     <td className="">
-                                        <span className={`font-bold text-${ndiStability()}-600`}>{cateResult('net')}</span>
+                                        <span className={`font-bold text-${ndiBool}-600`}>{cateResult('net')}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -217,8 +222,15 @@ export default function Eligibity({loan}) {
                         </div>
                         <LargeBadge type={assessDecision()} />
                         <div className="grid grid-cols-2 gap-3">
-                            <CustomBttn text="Accept Decision" classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
-                            <CustomBttn text="Review" classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900" />
+                            {location.pathname === '/staff/loan' ? (
+                                <CustomBttn text="Accept Result" onclick={decideAction} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                            ) : (
+                                <div className="flex space-x-5 items-center">
+                                    <h3 className="text-md font-semibold text-gray-900 dark:text-white">Staff Verdict:</h3>
+                                    {statusBadge(loan.apply_status)}
+                                </div>
+                            )}
+                            <CustomBttn text="Review" onclick={() => navigate('/admin/apply', {state: {id: loan.id}})} classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900" />
                         </div>
                     </section>
                 </div>

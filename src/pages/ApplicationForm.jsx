@@ -36,8 +36,10 @@ export default function ApplicationForm() {
             ['bills', 'insurance', 'transportation', 'education_exp', 'rental_exp', 'living_exp', 'business', 'salary', 'rate', 'income'],
         []],
         [[],
-            ['sp_prev_lot_num', 'sp_prev_purok', 'sp_prev_brgy', 'sp_prev_city', 'sp_prev_province', 'sp_prev_region', 'sp_lot_num', 'sp_purok', 'sp_brgy', 'sp_city', 'sp_province',
-            'sp_region', 'p_prev_lot_num', 'p_prev_purok', 'p_prev_brgy', 'p_prev_city', 'p_prev_province', 'p_prev_region', 'p_lot_num', 'p_purok', 'p_brgy',
+            // ['sp_prev_lot_num', 'sp_prev_purok', 'sp_prev_brgy', 'sp_prev_city', 'sp_prev_province', 'sp_prev_region', 'sp_lot_num', 'sp_purok', 'sp_brgy', 'sp_city', 'sp_province',
+            // 'sp_region', 'p_prev_lot_num', 'p_prev_purok', 'p_prev_brgy', 'p_prev_city', 'p_prev_province', 'p_prev_region', 'p_lot_num', 'p_purok', 'p_brgy',
+            // 'p_city', 'p_province', 'p_region'],
+            ['p_prev_lot_num', 'p_prev_purok', 'p_prev_brgy', 'p_prev_city', 'p_prev_province', 'p_prev_region', 'p_lot_num', 'p_purok', 'p_brgy',
             'p_city', 'p_province', 'p_region']
         ], [[], []]
     ];
@@ -291,8 +293,10 @@ export default function ApplicationForm() {
     }
 
     const ids = state?.selected;
+    const selectColor = state?.selectColor;
     const disable = false;
-    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange, ids, disable, locations};
+    const outletContext = {handleChange, handleTransaction, transactForm, handleTransForm, setTransactForm, addressChange, applicant, address, copyAddress, fileChange,
+        ids, disable, locations, selectColor};
 
     return (
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

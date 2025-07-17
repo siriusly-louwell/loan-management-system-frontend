@@ -138,7 +138,8 @@ export default function InvoiceList({headText, record = '', path, bttnText = "Vi
             }
         }
     }
-    
+
+    if(!loanLoad)loans.sort((a, b) => b.id - a.id);
     return (
         <section className="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
             <div className="mx-auto max-w-screen-x 2xl:px-0">

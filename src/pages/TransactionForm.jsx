@@ -9,7 +9,7 @@ import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 
 export default function TransactionForm() {
-    const {ids, handleTransaction, transactForm, handleTransForm, setTransactForm} = useOutletContext();
+    const {ids, handleTransaction, transactForm, handleTransForm, setTransactForm, selectColor} = useOutletContext();
     const [transact, setTransact] = useState([]);
     const [transLoad, setTransLoad] = useState(true);
     const [colors, setColors] = useState('');
@@ -32,6 +32,11 @@ export default function TransactionForm() {
         .then(response => {
             setTransact(response.data);
             setTransLoad(false);
+            setColors(prev => {
+                const updated = [...prev];
+                updated[selectColor[0]] = selectColor[1];
+                return updated;
+            });
         })
         .catch(error => {
             console.error('Error fetching products:', error);
@@ -39,6 +44,7 @@ export default function TransactionForm() {
         });
     }, [ids]);
 
+    
     useEffect(() => {
         const payments = transact.map(trans => trans.downpayment);
         setDownPayment(payments);
@@ -50,20 +56,26 @@ export default function TransactionForm() {
             updated[i] = downpayment;
             return updated;
         });
-
+        
         handleTransForm(i, downpayment, 'downpayment');
     }
-
+    
     useEffect(() => {
         const initializedForm = transact.map((t, i) => ({
             motorcycle_id: t.id,
             downpayment: t.downpayment,
             quantity: 1
         }));
-
+        
         setTransactForm(initializedForm);
     }, [transact]);
-
+    
+    useEffect(() => {
+        setTimeout(() => {
+            handleTransForm(selectColor[0], selectColor[1], 'color');
+        }, 2000);
+    }, [colors]);
+    
     return (
         <>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Loan Customization:</h3>

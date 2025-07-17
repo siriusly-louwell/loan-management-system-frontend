@@ -228,8 +228,8 @@ export default function FamilyInfoForm() {
                             <option>Upper Licanan</option>
                             <option>Waterfall</option>
                         </FormSelect>
-                        <FormInput label="Purok" type="text" name="sp_purok" id="sp_purok" value={address.sp_purok} onchange={addressChange} placeholder="Type purok number here" require={true} disable={disable} />
-                        <FormInput label="Lot/House Number" type="text" name="sp_lot_num" id="sp_lot_num" value={address.sp_lot_num} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
+                        <FormInput label="Purok" type="text" name="sp_purok" id="sp_purok" value={address.sp_purok} onchange={addressChange} placeholder="Type purok number here" disable={disable} />
+                        <FormInput label="Lot/House Number" type="text" name="sp_lot_num" id="sp_lot_num" value={address.sp_lot_num} onchange={addressChange} placeholder="Type House number here" disable={disable} />
                     </>
                 )}
             </div>
@@ -246,8 +246,8 @@ export default function FamilyInfoForm() {
                         <FormInput label="Province" type="text" name="sp_prev_province" id="province" value={address.sp_prev_province} onchange={addressChange} placeholder="Type province here" disable={disable} />
                         <FormInput label="City/Municipality" type="text" name="sp_prev_city" id="city" value={address.sp_prev_city} onchange={addressChange} placeholder="Type city here" disable={disable} />
                         <FormInput label="Barangay" type="text" name="sp_prev_brgy" id="brgy" value={address.sp_prev_brgy} onchange={addressChange} placeholder="Type barangay here" disable={disable} />
-                        <FormInput label="Purok" type="text" name="sp_prev_purok" id="purok" value={address.sp_prev_purok} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
-                        <FormInput label="Lot/House Number" type="text" name="sp_prev_lot_num" id="lot_num" value={address.sp_prev_lot_num} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
+                        <FormInput label="Purok" type="text" name="sp_prev_purok" id="purok" value={address.sp_prev_purok} onchange={addressChange} placeholder="Type House number here" disable={disable} />
+                        <FormInput label="Lot/House Number" type="text" name="sp_prev_lot_num" id="lot_num" value={address.sp_prev_lot_num} onchange={addressChange} placeholder="Type House number here" disable={disable} />
                     </>
                 )}
             </div>

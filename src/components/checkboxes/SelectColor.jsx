@@ -30,7 +30,6 @@ export default function SelectColor({text, size, colors, changeColor, index, arr
                             <ColorLabel style={newColor} size={size} selected={including ? "border-blue-500 border-2" : ""} />
                         </label>
                         <input type="checkbox" value={newColor} id={`${newColor}_${index}`} className="hidden" check={including} onChange={(e) => {
-                            // console.log(colors);
                             if(index > 0 || index === 0)changeColor(index, e.target.value);
                             else changeColor(e.target.value);
                         }} />

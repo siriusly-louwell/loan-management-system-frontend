@@ -8,22 +8,39 @@ import Cloud from '../assets/icons/Cloud';
 import Spinner from "../components/loading components/Spinner";
 import SelectColor from "../components/checkboxes/SelectColor";
 import Alert from "../components/Alert";
+import CustomBttn from "../components/buttons/CustomBttn";
 import QuantityInput from "../components/buttons/QuantityInput";
+import ColorModal from "../components/modals/ColorModal";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
+import Plus from "../assets/icons/Plus";
+import ColorLabel from "../components/ColorLabel";
 
 export default function CreateProduct() {
     const [files, setFiles] = useState([]);
     const [formData, setFormData] = useState({});
     const [colors, setColors] = useState([]);
     const [alert, setAlert] = useState({});
+    const [rows, setRows] = useState(['']);
+    const [colorIndex, setColorIndex] = useState();
     const submitData = new FormData();
 
+    // function changeColor(newColor) {
+    //     const updatedColors = colors.includes(newColor)
+    //         ? colors.filter(color => color !== newColor)
+    //         : [...colors, newColor];
+
+    //     setColors(updatedColors);
+    // };
+
     function changeColor(newColor) {
-        const updatedColors = colors.includes(newColor)
-            ? colors.filter(color => color !== newColor)
-            : [...colors, newColor];
+        const updatedColors = [...colors];
+
+        if(updatedColors[colorIndex] === newColor) updatedColors[colorIndex] = null;
+        else updatedColors[colorIndex] = newColor;
 
         setColors(updatedColors);
-    };
+    }
+
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -42,7 +59,10 @@ export default function CreateProduct() {
         }
 
         colors.forEach(color => submitData.append('colors[]', color));
-        files.forEach(file => submitData.append('files[]', file));
+        files.map(arr => {
+            arr.forEach(file => submitData.append('files[]', file));
+        });
+        // files.forEach(file => submitData.append('files[]', file));
 
         document.getElementById('save_unit').style.display = "flex";
 
@@ -86,8 +106,12 @@ export default function CreateProduct() {
         document.getElementById('createUnit').style.display = "block";
     }
     
-    function fileChange(event) {
-        setFiles([...event.target.files]);
+    function fileChange(event, i) {
+        const updatedFiles = [...files];
+        updatedFiles[i] = [...event.target.files];
+
+        setFiles(updatedFiles);
+        // setFiles([...event.target.files]);
         // setFiles(event.target.files[0]);
     }
 
@@ -106,7 +130,7 @@ export default function CreateProduct() {
 
         setFormData(form);
     }
-    
+
     return (
         <div id="createProduct" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
@@ -135,28 +159,46 @@ export default function CreateProduct() {
                                     <FormInput label="Interest Rate (%)" type="number" id="interest" name="interest" value={formData.interest || ''} onchange={handleChange} placeholder="10%" />
                                     <FormInput label="Loan Tenure" type="number" id="tenure" name="tenure" value={formData.tenure || ''} onchange={handleChange} placeholder="5 years" />
                                 </div>
-                                <SelectColor text="Select Colors:" size={6} colors={colors} changeColor={changeColor} />
+                                {/* <SelectColor text="Select Colors:" size={6} colors={colors} changeColor={changeColor} /> */}
                                 <FormTextarea name="description" id="description" label="Description" value={formData.description || ''} onchange={handleChange} placeholder="Write motorcycle description here" />
                             </div>
-                            <div className="mb-4">
-                                <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Images</span>
-                                <div className="flex justify-center items-center w-full">
-                                    <label htmlFor="dropzone" className="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                        <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                            <Cloud />
-                                            {files.length > 0 ? (
-                                                // <span className="font-semibold dark:text-white">{files.name}</span>
-                                                files.map(file => <span className="font-semibold dark:text-white">{file.name}</span>)
-                                            ) : (
-                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                <span className="font-semibold">Click to upload </span>or drag and drop</p>
-                                            )}
-                                            
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG or JPG (MAX. 800x400px)</p>
+                            <div className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
+                                <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Images & Colors</span>
+                                {rows.map((_, i) => (
+                                    <>
+                                        <div className="flex justify-center items-center w-full">
+                                            <label htmlFor={`dropzone_${i}`} className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                                                    {files.length > 0 && files[i] ? (
+                                                        // <span className="font-semibold dark:text-white">{files.name}</span>
+                                                        files[i].map(file => <span className="font-semibold dark:text-white">{file.name}</span>)
+                                                    ) : (
+                                                        <>
+                                                            <Cloud />
+                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                            <span className="font-semibold">Click to upload </span>or drag and drop</p>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG or JPG (MAX. 800x400px)</p>
+                                                        </>
+                                                    )}
+                                                </div>
+                                                <input id={`dropzone_${i}`} name={`file_${i}`} type="file" class="hidden" onChange={(e) => fileChange(e, i)} multiple />
+                                            </label>
                                         </div>
-                                        <input id="dropzone" name="file" type="file" class="hidden" onChange={fileChange} multiple />
-                                    </label>
-                                </div>
+                                        <div className="sm:flex space-x-2 items-center mb-3">
+                                            <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">Color:</p>
+                                            {colors.length > 0 && colors[i] ? (<ColorLabel style={colors[i]} />) : ''}
+                                            <CustomBttn text="Select Color" onclick={() => {
+                                                setColorIndex(i);
+                                                document.getElementById('colorModal').style.display = 'flex';
+                                            }} classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900" />
+                                        </div>
+                                    </>
+                                    
+                                ))}
+                                <BttnwithIcon type="button" text="Add Color" click={() => setRows([...rows, ''])}>
+                                    <Plus />
+                                </BttnwithIcon>
+
                                 {/* <FormFile id="dropzone-file" name="file" onChange={(e) => { console.log("Child called"); fileChange(e); }} file={file} /> */}
                             </div>
                         </section>
@@ -229,6 +271,7 @@ export default function CreateProduct() {
                     <Alert id="createUnit" text={alert.text} icon={alert.icon}>
                         <Button text="Ok" onclick={() => document.getElementById('createUnit').style.display = 'none'} />
                     </Alert>
+                    <ColorModal colors={colors} changeColor={changeColor} />
                 </div>
             </div>
         </div>

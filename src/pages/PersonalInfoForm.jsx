@@ -18,7 +18,7 @@ export default function PersonalInfoForm() {
             ) : ''}
             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                 <FormInput label="First Name" type="text" name="first_name" id="first_name" value={applicant.first_name} onchange={handleChange} placeholder="Type first name" require={true} disable={disable} />
-                <FormInput label="Middle Name" type="text" name="middle_name" id="mid_name" value={applicant.middle_name} onchange={handleChange} placeholder="Type middle name" require={true} disable={disable} />
+                <FormInput label="Middle Name" type="text" name="middle_name" id="mid_name" value={applicant.middle_name} onchange={handleChange} placeholder="Type middle name" disable={disable} />
                 <FormInput label="Last Name" type="text" name="last_name" id="last_name" value={applicant.last_name} onchange={handleChange} placeholder="Type last name" require={true} disable={disable} />
                 <FormSelect name="gender" label="Sex" id="gender" value={applicant.gender} onchange={handleChange} require={true} disable={disable}>
                     <option value="male">Male</option>
@@ -57,8 +57,8 @@ export default function PersonalInfoForm() {
                 </div>
                 <FormInput label="Amortization Monthly" type="number" name="amortization" id="amortization" value={applicant.amortization} onchange={handleChange} placeholder="₱5,000" require={true} disable={disable} />
                 <FormInput label="Rent Monthly" type="number" name="rent" id="rent" value={applicant.rent} onchange={handleChange} placeholder="₱500" require={true} disable={disable} />
-                <FormInput label="SSS/GSIS #" type="text" name="sss" id="sss" value={applicant.sss} onchange={handleChange} placeholder="Type SSS/GSIS number" disable={disable} />
-                <FormInput label="TIN #" type="text" name="tin" id="tin" value={applicant.tin} onchange={handleChange} placeholder="Type TIN number" disable={disable} />
+                <FormInput label="SSS/GSIS #" type="number" name="sss" id="sss" value={applicant.sss} onchange={handleChange} placeholder="Type SSS/GSIS number" disable={disable} />
+                <FormInput label="TIN #" type="number" name="tin" id="tin" value={applicant.tin} onchange={handleChange} placeholder="Type TIN number" disable={disable} />
             </div>
 
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Present Address:</h3>

@@ -93,28 +93,9 @@ export default function Eligibity({loan}) {
     }
 
     function statusBadge(status) {
-        let type = status === 'denied' ? ['Denied', 'orange']
-            :(status === 'pending' ? ['Pending', 'blue'] : ['Accepted', 'green']);
+        let type = status === 'denied' ? ['Failed', 'red']
+            :(status === 'pending' ? ['Pending', 'blue'] : ['Passed', 'green']);
 
-        // switch (status) {
-        //     case 'accepted':
-        //         type = ['Accepted', 'green'];
-        //         break;
-        //     case 'denied':
-        //         type = ['Denied', 'orange'];
-        //         break;
-        //     case 'evaluated':
-        //         type = ['Evaluated', 'yellow'];
-        //         break;
-        //     case 'approved':
-        //         type = ['Approved', 'purple'];
-        //         break;
-        //     case 'declined':
-        //         type = ['Declined', 'red'];
-        //         break;
-        //     default:
-        //         type = ['Pending', 'blue'];
-        // }
         return (<CustomBadge text={type[0]} color={type[1]} />);
     }
 

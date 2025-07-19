@@ -94,7 +94,7 @@ export default function Invoice() {
                                 Currency:
                             </dt>
                             <dd class="font-medium text-gray-800 dark:text-gray-200">
-                                USD - US Dollar
+                                PHP - Philippine Peso
                             </dd>
                         </dl>
 

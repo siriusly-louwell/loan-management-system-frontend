@@ -29,7 +29,7 @@ export default function ApplicationForm() {
     ], []);
     const applicantArray = [[['tenure'], []],
         [
-            ['rent', 'amortization', 'residence', 'educ_attain', 'status', 'contact_num', 'gender', 'last_name', 'middle_name', 'first_name'],
+            ['rent', 'amortization', 'residence', 'educ_attain', 'status', 'contact_num', 'gender', 'last_name', 'first_name'],
             ['prev_lot_num', 'prev_purok', 'prev_brgy', 'prev_city', 'prev_province', 'prev_region', 'lot_num', 'purok', 'brgy', 'city', 'province', 'region']
         ],
         [

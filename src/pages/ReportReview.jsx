@@ -12,10 +12,9 @@ import FormTextarea from '../components/inputs/FormTextarea';
 import FormCheck from '../components/checkboxes/FormCheck';
 import FileInput from '../components/inputs/FileInput';
 import PfpLabel from '../components/PfpLabel';
-import Spinner from '../components/loading components/Spinner';
-import Alert from '../components/Alert';
 
 export default function ReportReview() {
+    const location = useLocation();
     const {state} = useLocation();
     const [report, setReport] = useState({});
     const [reportLoad, setReportLoad] = useState(true);
@@ -78,11 +77,13 @@ export default function ReportReview() {
                                         <FormTD placeholder="School name" />
                                     </FormTBody>
                                 </table>
-                                <div className="grid pt-4 sm:cols-span-1">
-                                    <BttnwithIcon text="Add row">
-                                        <Plus />
-                                    </BttnwithIcon>
-                                </div>
+                                {location.pathname !== '/ci/review' ? (
+                                    <div className="grid pt-4 sm:cols-span-1">
+                                        <BttnwithIcon text="Add row">
+                                            <Plus />
+                                        </BttnwithIcon>
+                                    </div>
+                                ) : ''}
                             </div>
 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Nearest Relatives:</h3>
@@ -101,11 +102,13 @@ export default function ReportReview() {
                                         <FormTD placeholder="School name" />
                                     </FormTBody>
                                 </table>
-                                <div className="grid pt-4 sm:cols-span-1">
-                                    <BttnwithIcon text="Add row">
-                                        <Plus />
-                                    </BttnwithIcon>
-                                </div>
+                                {location.pathname !== '/ci/review' ? (
+                                    <div className="grid pt-4 sm:cols-span-1">
+                                        <BttnwithIcon text="Add row">
+                                            <Plus />
+                                        </BttnwithIcon>
+                                    </div>
+                                ) : ''}
                             </div>
 
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
@@ -127,11 +130,13 @@ export default function ReportReview() {
                                         <FormTD placeholder="Terms & Conditions" />
                                     </FormTBody>
                                 </table>
-                                <div className="grid pt-4 sm:cols-span-1">
-                                    <BttnwithIcon text="Add row">
-                                        <Plus />
-                                    </BttnwithIcon>
-                                </div>
+                                {location.pathname !== '/ci/review' ? (
+                                    <div className="grid pt-4 sm:cols-span-1">
+                                        <BttnwithIcon text="Add row">
+                                            <Plus />
+                                        </BttnwithIcon>
+                                    </div>
+                                ) : ''}
                             </div>
                                     
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">RECOMMENDATION:</h3>
@@ -149,7 +154,11 @@ export default function ReportReview() {
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit verification:</h3>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
                                 <FormInput label="First Unit applied" type="text" name="first_unit" id="name" value={report.first_unit} placeholder="Type unit name here" disable={true} />
-                                <FileInput label="Sketch Image" name="sketch" type="img" />
+                                {location.pathname !== '/ci/review' ? (
+                                    <FileInput label="Sketch Image" name="sketch" type="img" />
+                                ) : (
+                                    <img src={`http://127.0.0.1:8000/storage/${report.sketch}`} className="rounded rounded-lg w-20" />
+                                )}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivered?</label>
                                     <div className="space-y-4 sm:flex sm:space-y-0">

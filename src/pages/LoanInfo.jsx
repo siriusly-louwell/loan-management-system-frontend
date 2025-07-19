@@ -114,13 +114,27 @@ export default function LoanInfo({children}) {
             default:
         }
     }
+
+    function statusLabel(type, num) {
+        let turn = [];
+
+        if(type === 'deny') {
+            turn = loan.apply_status === 'denied' ? ['Denied', 'The application is not viable to apply for a loan']
+                : ['Accepted', 'The application is viable to apply for a loan'];
+        } else {
+            turn = loan.apply_status === 'declined' ? ['Declined', 'The application did not passed the investigation']
+                : ['Approved', 'The application has passed the investigation'];
+        }
+
+        return turn[num];
+    }
     
     return (
         <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
             <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
                 <div className="flex justify-between w-full">
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan {loan.record_id}</h2>
-                    <CustomBttn text="Payment History" onclick={() => navigate(location.pathname === '/admin/loan' ? '/admin/history' : '/staff/loan_his', {state: {id: loan.id}})} classname="flex items-center justify-center bg-blue-200 text-blue-600 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900" />
+                    {/* <CustomBttn text="Payment History" onclick={() => navigate(location.pathname === '/admin/loan' ? '/admin/history' : '/staff/loan_his', {state: {id: loan.id}})} classname="flex items-center justify-center bg-blue-200 text-blue-600 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900" /> */}
                 </div>
 
                 <div class="mt-6 sm:mt-8 lg:flex lg:gap-8">
@@ -199,9 +213,9 @@ export default function LoanInfo({children}) {
 
                             <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
                                 <TrackList label="Loan Submission" sublabel="Loan application was successful" isDone="done" />
-                                <TrackList label="Accepted" sublabel="The application is viable for applying a loan" isDone={trackCond('accept')} />
+                                <TrackList label={statusLabel('deny', 0)} sublabel={statusLabel('deny', 1)} isDone={trackCond('accept')} />
                                 <TrackList label="Credit Investigation" sublabel="Applicant has been interviewed by the assigned Credit Investigator" isDone={trackCond('investigation')} />
-                                <TrackList label="Approved" sublabel="The application has passed the investigation" isDone={trackCond('approve')} />
+                                <TrackList label={statusLabel('decline', 0)} sublabel={statusLabel('decline', 1)}isDone={trackCond('approve')} />
                                 <TrackList label="Initial Payment" sublabel="The loan application has been successful" isDone="pend" />
                                 <TrackList label="Paid!" sublabel="The loan has been fully paid" isDone="pend" />
                             </ol>

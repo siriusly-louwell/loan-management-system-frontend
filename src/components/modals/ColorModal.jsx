@@ -14,11 +14,17 @@ export default function ColorModal({colors, changeColor}) {
                     <form>
                         <section className="border-b border-gray-300">
                             <h4 className="text-md text-gray-900 dark:text-white">Brand Colors: </h4>
-                            <SelectColor size={6} colors={colors} changeColor={changeColor} colorType="ofc" />
+                            <SelectColor size={6} colors={colors} changeColor={(e) => {
+                                document.getElementById('colorModal').style.display = 'none';
+                                changeColor(e);
+                            }} colorType="ofc" />
                         </section>
                         <section className="mt-3">
                             <h4 className="text-md text-gray-900 dark:text-white">Non-brand Colors: </h4>
-                            <SelectColor size={6} colors={colors} changeColor={changeColor} />
+                            <SelectColor size={6} colors={colors} changeColor={(e) => {
+                                document.getElementById('colorModal').style.display = 'none';
+                                changeColor(e);
+                            }} />
                         </section>
                     </form>
                 </div>

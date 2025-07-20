@@ -47,7 +47,7 @@ export default function EmploymentInfoForm() {
                 <FormInput label="Rental" type="number" name="rental_exp" id="rental" value={applicant.rental_exp} onchange={handleChange} placeholder="₱500 per month" require={true} disable={disable} />
                 <FormInput label="Education" type="number" name="education_exp" id="education" value={applicant.education_exp} onchange={handleChange} placeholder="Education expenses/month" require={true} disable={disable} />
                 <FormInput label="Transportation" type="number" name="transportation" id="transport" value={applicant.transportation} onchange={handleChange} placeholder="Transport expenses/month" require={true} disable={disable} />
-                <FormInput label="Insurance" type="text" name="insurance" id="insurance" value={applicant.insurance} onchange={handleChange} placeholder="Insurance" require={true} disable={disable} />
+                <FormInput label="Insurance" type="number" name="insurance" id="insurance" value={applicant.insurance} onchange={handleChange} placeholder="Insurance expenses/month" require={true} disable={disable} />
                 <FormInput label="Electricity/Water Bill" type="number" name="bills" id="bills" value={applicant.bills} onchange={handleChange} placeholder="Billing expenses/month" require={true} disable={disable} />
             </div>
             

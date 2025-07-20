@@ -92,6 +92,31 @@ export default function Register({setUser}) {
         });
     }
 
+    function statusBadge(status) {
+        let type = [];
+
+        switch (status) {
+            case 'accepted':
+                type = ['Accepted', 'green'];
+                break;
+            case 'denied':
+                type = ['Denied', 'orange'];
+                break;
+            case 'evaluated':
+                type = ['Evaluated', 'yellow'];
+                break;
+            case 'approved':
+                type = ['Approved', 'purple'];
+                break;
+            case 'declined':
+                type = ['Declined', 'red'];
+                break;
+            default:
+                type = ['Pending', 'blue'];
+        }
+        return (<CustomBadge text={type[0]} color={type[1]} />);
+    }
+
     return (
         <>
             <section className="bg-gray-200 dark:bg-gray-900 p-10">
@@ -123,9 +148,10 @@ export default function Register({setUser}) {
                                             <div>
                                                 <p className="text-gray-500 dark:text-gray-400">{`${applicant.first_name} ${applicant.last_name}`}</p>
                                                 <p className="text-rose-400 text-sm font-medium mb-1">{applicant.email}</p>
-                                                <CustomBadge text={`*${applicant.apply_status}`} color={
+                                                {statusBadge(applicant.apply_status)}
+                                                {/* <CustomBadge text={`*${applicant.apply_status}`} color={
                                                     applicant.apply_status === 'approved'? 'green' : (applicant.apply_status === 'declined' ? 'red' : 'blue')
-                                                } />
+                                                } /> */}
                                             </div>
                                         </>
                                     ))}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Button from "../components/buttons/Button";
 import FormInput from "../components/inputs/FormInput";
 import BttnwithIcon from '../components/buttons/BttnwithIcon';
@@ -17,6 +17,7 @@ import Alert from '../components/Alert';
 
 export default function CIReport() {
     const {state} = useLocation();
+    const navigate = useNavigate();
     const [report, setReport] = useState({});
     const [appReport, setAppReport] = useState({});
     const [sketch, setSketch] = useState({});
@@ -224,7 +225,7 @@ export default function CIReport() {
                     </form>
                 </div>
                 <Alert id="ciReport" text={alert.text} icon={alert.icon}>
-                    <Button text="Ok" onclick={() => document.getElementById('ciReport').style.display = 'none'} />
+                    <Button text="Ok" onclick={() => navigate('/ci/evaluation')} />
                 </Alert>
             </div>
             <Spinner id="report_spin" text="Submitting report..." />

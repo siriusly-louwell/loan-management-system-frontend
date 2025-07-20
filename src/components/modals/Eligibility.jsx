@@ -5,8 +5,9 @@ import ColorLabel from "../ColorLabel";
 import CustomBttn from "../buttons/CustomBttn";
 import LargeBadge from "../badges/LargeBadge";
 import CustomBadge from "../badges/CustomBadge";
+import Alert from "../Alert";
 
-export default function Eligibity({loan}) {
+export default function Eligibity({loan, setAlert}) {
     const navigate = useNavigate();
     const location = useLocation();
     const loans = Object.keys(loan).length > 0 ? loan.transactions.reduce((sum, item) => {
@@ -36,11 +37,14 @@ export default function Eligibity({loan}) {
     }
 
     function ndiStability() {
-        const bool = loans / ndi;
+        if(ndi < 0) return 'red';
+        else {
+            const bool = loans / ndi;
 
-        if(bool <= 0.3)return 'green';
-        else if(bool > 0.3 && bool < 0.41)return 'yellow';
-        else return 'red';
+            if(bool <= 0.3)return 'green';
+            else if(bool > 0.3 && bool < 0.41)return 'yellow';
+            else return 'red';
+        }
     }
 
     const empBool = empStability();
@@ -90,6 +94,12 @@ export default function Eligibity({loan}) {
 
         if(decision === 'accepted') document.getElementById('addCI').style.display = 'flex';
         else document.getElementById('declineApp').style.display = 'flex';
+    }
+
+    function staffAction(string) {
+        document.getElementById('eligibleModal').style.display = 'none';
+        document.getElementById('decideAppModal').style.display = 'none';
+        document.getElementById(string).style.display = 'flex';
     }
 
     function statusBadge(status) {
@@ -202,9 +212,12 @@ export default function Eligibity({loan}) {
                             </span>
                         </div>
                         <LargeBadge type={assessDecision()} />
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className={`grid grid-cols-${location.pathname === '/staff/loan' ? '3' : '2'} gap-3`}>
                             {location.pathname === '/staff/loan' ? (
-                                <CustomBttn text="Accept Result" onclick={decideAction} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                                <>
+                                    <CustomBttn text="Accept System Verdict" onclick={decideAction} classname="flex items-center w-full justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                                    <CustomBttn text="Decide Verdict" onclick={() => {document.getElementById('decideAppModal').style.display = 'block'}} classname="flex items-center w-full justify-center text-yellow-600 hover:text-white border border-yellow-600 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-800 dark:focus:ring-yellow-900" />
+                                </>
                             ) : (
                                 <div className="flex space-x-5 items-center">
                                     <h3 className="text-md font-semibold text-gray-900 dark:text-white">Staff Verdict:</h3>
@@ -216,6 +229,10 @@ export default function Eligibity({loan}) {
                     </section>
                 </div>
             </div>
+            <Alert id="decideAppModal" text="Choose Decision" icon="none">
+                <CustomBttn text="Accept Application" onclick={() => staffAction('addCI')} classname="flex items-center w-full mb-4 justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900" />
+                <CustomBttn text="Deny Application" onclick={() => staffAction('declineApp')} classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900" />
+            </Alert>
         </div>
     );
 }

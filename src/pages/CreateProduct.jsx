@@ -14,6 +14,7 @@ import ColorModal from "../components/modals/ColorModal";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
 import ColorLabel from "../components/ColorLabel";
+import FormSelect from "../components/inputs/FormSelect";
 
 export default function CreateProduct() {
     const [files, setFiles] = useState([]);
@@ -54,10 +55,14 @@ export default function CreateProduct() {
             return;
         }
 
+        const totalQuantity = formData.quantity.reduce((sum, num) => sum + num, 0);
+        // console.log(totalQuantity);
+        
         for(let key in formData) {
             submitData.append(`${key}`, formData[key]);
         }
-
+        
+        submitData.append(`quantity`, totalQuantity);
         colors.forEach(color => submitData.append('colors[]', color));
         files.map(arr => {
             arr.forEach(file => submitData.append('files[]', file));
@@ -123,13 +128,17 @@ export default function CreateProduct() {
     }
 
     function handleQuantity(i, num, key) {
-        const form = {
-            ...formData,
-            [key]: num
-        };
+        const quantArr = formData.quantity ? formData.quantity : [];
+        quantArr[i] = num;
 
-        setFormData(form);
+        setFormData({...formData, quantity: quantArr});
+
+        // const form = {
+        //     ...formData,
+        //     [key]: num
+        // };
     }
+
 
     return (
         <div id="createProduct" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
@@ -146,12 +155,28 @@ export default function CreateProduct() {
                                 <div className="grid gap-4 sm:col-span-2">
                                     <FormInput label="Motorcycle Name" type="text" value={formData.name || ''} onchange={handleChange} name="name" id="name" placeholder="Type motorcycle name" />
                                 </div>
-                                <QuantityInput max={200} label="Quantity" change={handleQuantity} />
+                                {/* <QuantityInput max={200} label="Quantity" change={handleQuantity} /> */}
                             </div>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 
                                 <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                                    <FormInput label="Brand Name" type="text" name="brand" id="brand" value={formData.brand || ''} onchange={handleChange} placeholder="Type brand name" />
+                                    {/* <FormInput label="Brand Name" type="text" name="brand" id="brand" value={formData.brand || ''} onchange={handleChange} placeholder="Type brand name" /> */}
+                                    <FormSelect label="Brand Name" name="brand" id="brand" value={formData.brand || ''} onchange={handleChange}>
+                                        <option>Honda</option>
+                                        <option>Yamaha</option>
+                                        <option>Suzuki</option>
+                                        <option>Kawasaki</option>
+                                        <option>KTM</option>
+                                        <option>Kymco</option>
+                                        <option>SYM</option>
+                                        <option>Skygo</option>
+                                        <option>Bennelli</option>
+                                        <option>Bristol</option>
+                                        <option>Rusi</option>
+                                        <option>Motorstar</option>
+                                        <option>QJMotor</option>
+                                        <option>FKM</option>
+                                    </FormSelect>
                                     <FormInput label="Price" type="number" id="price" name="price" value={formData.price || ''} onchange={handleChange} placeholder="₱150,000" />
                                     <FormInput label="Minimum Downpayment" type="number" id="down" name="downpayment" value={formData.downpayment || ''} onchange={handleChange} placeholder="₱25,000" />
                                     <FormInput label="Rebate" type="number" id="rebate" name="rebate" value={formData.rebate || ''} onchange={handleChange} placeholder="₱15,000" />
@@ -184,13 +209,16 @@ export default function CreateProduct() {
                                                 <input id={`dropzone_${i}`} name={`file_${i}`} type="file" class="hidden" onChange={(e) => fileChange(e, i)} multiple />
                                             </label>
                                         </div>
-                                        <div className="sm:flex space-x-2 items-center mb-3">
-                                            <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">Color:</p>
-                                            {colors.length > 0 && colors[i] ? (<ColorLabel style={colors[i]} />) : ''}
-                                            <CustomBttn text="Select Color" onclick={() => {
-                                                setColorIndex(i);
-                                                document.getElementById('colorModal').style.display = 'flex';
-                                            }} classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900" />
+                                        <div className="sm:flex justify-between items-center mb-3">
+                                            <div className="flex items-center space-x-2">
+                                                <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">Color:</p>
+                                                {colors.length > 0 && colors[i] ? (<ColorLabel style={colors[i]} />) : ''}
+                                                <CustomBttn text="Select Color" onclick={() => {
+                                                    setColorIndex(i);
+                                                    document.getElementById('colorModal').style.display = 'flex';
+                                                }} classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900" />
+                                            </div>
+                                            <QuantityInput max={200} label="Quantity" index={i} change={handleQuantity} />
                                         </div>
                                     </>
                                     

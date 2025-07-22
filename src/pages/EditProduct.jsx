@@ -93,9 +93,14 @@ export default function EditProduct({motor}) {
         setFiles([]);
         document.getElementById('editUnit').style.display = "block";
     }
-    
-    function fileChange(event) {
-        setFiles([...event.target.files]);
+
+    function fileChange(event, i) {
+        const updatedFiles = [...files];
+        updatedFiles[i] = [...event.target.files];
+
+        setFiles(updatedFiles);
+        // setFiles([...event.target.files]);
+        // setFiles(event.target.files[0]);
     }
 
     function handleChange(event) {
@@ -104,7 +109,7 @@ export default function EditProduct({motor}) {
             [event.target.name]: event.target.value
         });
     }
-    
+        
     return (
         <div id="editProduct" className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">

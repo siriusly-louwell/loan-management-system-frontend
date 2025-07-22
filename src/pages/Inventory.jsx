@@ -36,8 +36,8 @@ export default function Inventory() {
         // document.getElementById('editProduct').style.display = 'block';
     }
 
-    async function adjustStock(type) {
-        const response = await fetch(`http://localhost:8000/api/motorcycle/${stock.id}`);
+    async function adjustStock(type, id) {
+        const response = await fetch(`http://localhost:8000/api/motorcycle/${id}`);
 
         if(!response.ok) {
             throw new Error('Motorcycle not found');
@@ -48,6 +48,7 @@ export default function Inventory() {
             ...stock,
             modal: false,
             quantity: data.quantity,
+            colors: data.colors,
             type: type,
             img: data.file_path,
             name: data.name
@@ -56,7 +57,7 @@ export default function Inventory() {
     
     return (
         <CRUDformat addModal={<CreateProduct />} modalId='createProduct' label="Unit" adjustStock={adjustStock} modal={stock.modal}>
-            <InventoryTable motorcycles={motorcycles} loading={loading} editMotor={editMotor} stock={stock} setStock={setStock} />
+            <InventoryTable motorcycles={motorcycles} loading={loading} adjustStock={adjustStock} editMotor={editMotor} stock={stock} setStock={setStock} />
             {row.bool ? (
                 <EditProduct motor={Object.keys(row.motor).length > 0 ? row.motor : {}} />
             ) : ''}

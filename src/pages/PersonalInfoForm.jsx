@@ -5,6 +5,12 @@ import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from '../assets/images/copy_icon.png';
 import FormTextarea from "../components/inputs/FormTextarea";
+import FormTHead from "../components/tables/FormTHead";
+import FormTH from "../components/tables/FormTH";
+import FormTBody from "../components/tables/FormTBody";
+import FormTD from "../components/tables/FormTD";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
+import Plus from "../assets/icons/Plus";
 
 export default function PersonalInfoForm() {
     const location = useLocation();
@@ -167,6 +173,27 @@ export default function PersonalInfoForm() {
 
             <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-1">
                 <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={applicant.home_description} onchange={handleChange} placeholder="Write residence description here" require={true} disable={disable} />
+            </div>
+
+            <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit Applied:</h3>
+            <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
+                <table className="w-full">
+                    <FormTHead>
+                        <FormTH label="Model" />
+                        <FormTH label="Downpayment" />
+                        <FormTH label="Terms Conditions" />
+                    </FormTHead>
+                    <FormTBody>
+                        <FormTD placeholder="Model name" />
+                        <FormTD placeholder="Downpayment here" />
+                        <FormTD placeholder="Terms & Conditions" />
+                    </FormTBody>
+                </table>
+                <div className="grid pt-4 sm:cols-span-1">
+                    <BttnwithIcon text="Add row">
+                        <Plus />
+                    </BttnwithIcon>
+                </div>
             </div>
         </>
     );

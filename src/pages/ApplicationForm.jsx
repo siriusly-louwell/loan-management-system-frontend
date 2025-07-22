@@ -291,6 +291,8 @@ export default function ApplicationForm() {
             : (currentIndex > index ? "done" : "pend");
     }
 
+    // console.log(transactForm);
+
     const ids = state?.selected;
     const selectColor = state?.selectColor;
     const disable = false;

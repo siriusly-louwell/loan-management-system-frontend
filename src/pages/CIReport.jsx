@@ -145,11 +145,11 @@ export default function CIReport() {
                                     <FormTD placeholder="School name" />
                                 </FormTBody>
                             </table>
-                            <div className="grid pt-4 sm:cols-span-1">
+                            {/* <div className="grid pt-4 sm:cols-span-1">
                                 <BttnwithIcon text="Add row">
                                     <Plus />
                                 </BttnwithIcon>
-                            </div>
+                            </div> */}
                         </div>
 
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Nearest Relatives:</h3>
@@ -168,11 +168,11 @@ export default function CIReport() {
                                     <FormTD placeholder="School name" />
                                 </FormTBody>
                             </table>
-                            <div className="grid pt-4 sm:cols-span-1">
+                            {/* <div className="grid pt-4 sm:cols-span-1">
                                 <BttnwithIcon text="Add row">
                                     <Plus />
                                 </BttnwithIcon>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">

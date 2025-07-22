@@ -15,7 +15,7 @@ import EmptyFolder from '../empty states/EmptyFolder';
 import SmallSpin from '../loading components/SmallSpin';
 import Plus from '../../assets/icons/Plus';
 
-export default function InventoryTable({motorcycles, loading, editMotor, setStock, stock}) {
+export default function InventoryTable({motorcycles, loading, editMotor, setStock, stock, adjustStock}) {
     if(!loading)motorcycles.sort((a, b) => b.id - a.id);
 
     function isThisWeek(created_at) {
@@ -66,11 +66,12 @@ export default function InventoryTable({motorcycles, loading, editMotor, setStoc
                                     </Link> */}
                                     <CustomBttn text="Manage Stock" classname="flex items-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900"
                                         onclick={() => {
-                                            setStock({
-                                                ...stock,
-                                                modal: true,
-                                                id: motor.id
-                                            });
+                                            adjustStock('stock', motor.id);
+                                            // setStock({
+                                            //     ...stock,
+                                            //     modal: true,
+                                            //     id: motor.id
+                                            // });
                                             // document.getElementById('stock_adjust').style.display = "block";
                                         }}>
                                         <Plus />

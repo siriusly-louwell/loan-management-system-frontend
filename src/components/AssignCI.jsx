@@ -37,6 +37,12 @@ export default function AssignCI({id, record, name}) {
 
     async function handleSubmit(event) {
         event.preventDefault();
+
+        if(applicant.ci_id === undefined) {
+            setApplicant({...applicant, ci_id: '__EMPTY__'});
+            return;
+        }
+
         document.getElementById('add_ci').style.display = "flex";
 
         try {
@@ -80,7 +86,7 @@ export default function AssignCI({id, record, name}) {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-5 space-y-3">
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">{record} - {name}</h3>
-                            <FormSelect name="ci_id" id="ci" label="Credit Investigator" value={applicant.ci_id} onchange={handleChange} >
+                            <FormSelect name="ci_id" id="ci" label="Credit Investigator" value={applicant.ci_id} onchange={handleChange} require={true} >
                                 {ciLoad ? "" : appCI.map(acc => {
                                     if(acc.role === 'ci')return (<option value={acc.id}>{acc.first_name} {acc.last_name}</option>);
                                 })}

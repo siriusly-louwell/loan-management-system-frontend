@@ -8,7 +8,7 @@ export default function LargeBadge({type}) {
             color = 'blue';
             break;
         case 'passed':
-            color = 'passed';
+            color = 'green';
             break;
         case 'review':
             color = 'yellow';

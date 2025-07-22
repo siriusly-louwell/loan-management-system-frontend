@@ -4,6 +4,7 @@ import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from '../assets/images/copy_icon.png';
+import FormTextarea from "../components/inputs/FormTextarea";
 
 export default function PersonalInfoForm() {
     const location = useLocation();
@@ -34,6 +35,11 @@ export default function PersonalInfoForm() {
                     <option value="widowed">Widowed</option>
                     <option value="separated">Separated</option>
                 </FormSelect>
+                <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={applicant.birth_day} onchange={handleChange} require={true} disable={disable} />
+                <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={applicant.birth_place} onchange={handleChange} placeholder="Birth place address" require={true} disable={disable} />
+            </div>
+
+            <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                 <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
                     <FormSelect name="educ_attain" label="Educ. Attainment" id="educ_attain" value={applicant.educ_attain} onchange={handleChange} require={true} disable={disable}>
                         <option value="highschool">High School</option>
@@ -43,9 +49,6 @@ export default function PersonalInfoForm() {
                     </FormSelect>
                     <FormInput label="Others" type="text" name="prod_name" id="name" placeholder="Others" disable={disable} />
                 </div>
-            </div>
-
-            <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                 <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
                     <FormSelect name="residence" label="Residential Status" id="residence" value={applicant.residence} onchange={handleChange} require={true} disable={disable}>
                         <option value="owned">Owned</option>
@@ -59,8 +62,8 @@ export default function PersonalInfoForm() {
                 <FormInput label="Rent Monthly" type="number" name="rent" id="rent" value={applicant.rent} onchange={handleChange} placeholder="₱500" require={true} disable={disable} />
                 <FormInput label="SSS/GSIS #" type="number" name="sss" id="sss" value={applicant.sss} onchange={handleChange} placeholder="Type SSS/GSIS number" disable={disable} />
                 <FormInput label="TIN #" type="number" name="tin" id="tin" value={applicant.tin} onchange={handleChange} placeholder="Type TIN number" disable={disable} />
+                <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={applicant.comm_standing} onchange={handleChange} placeholder="Write commuity standing here" require={true} disable={disable} />
             </div>
-
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Present Address:</h3>
             <div className={"grid gap-4 mb-4 pb-2 " + (applicant.view ? 'flex w-full' : 'sm:grid-cols-3')}>
                 {applicant.view ? (
@@ -160,6 +163,10 @@ export default function PersonalInfoForm() {
                         <FormInput label="Lot/House Number" type="text" name="prev_lot_num" id="prev_lot_num" value={address.prev_lot_num} onchange={addressChange} placeholder="Type House number here" require={true} disable={disable} />
                     </>
                 )}
+            </div>
+
+            <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-1">
+                <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={applicant.home_description} onchange={handleChange} placeholder="Write residence description here" require={true} disable={disable} />
             </div>
         </>
     );

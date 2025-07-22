@@ -104,21 +104,29 @@ export default function CIReport() {
                     <form onSubmit={handleSubmit}>
                         <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                             <PfpLabel caption="Applicant Name" label={`${appReport.first_name} ${appReport.last_name}`} />
-                            <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={report.birth_day} onchange={handleChange} require={true} />
-                            <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={report.birth_place} onchange={handleChange} placeholder="Birth place address" require={true} />
+                            <PfpLabel caption="Date of Birth" label={`${appReport.birth_day}`} />
+                            <PfpLabel caption="Place of Birth" label={`${appReport.birth_place}`} />
+                            {/* <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={report.birth_day} onchange={handleChange} require={true} />
+                            <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={report.birth_place} onchange={handleChange} placeholder="Birth place address" require={true} /> */}
                         </div>
                                 
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Father:</h3>
                         <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2">
-                            <FormInput label="First name" type="text" name="father_first" id="ff-name" value={report.father_first} onchange={handleChange} placeholder="Type first name here" require={true} />
+                            <PfpLabel caption="First Name" label={`${appReport.father_first}`} />
+                            <PfpLabel caption="Middle Name" label={`${appReport.father_middle}`} />
+                            <PfpLabel caption="Last Name" label={`${appReport.father_last}`} />
+                            {/* <FormInput label="First name" type="text" name="father_first" id="ff-name" value={report.father_first} onchange={handleChange} placeholder="Type first name here" require={true} />
                             <FormInput label="Middle name" type="text" name="father_middle" id="fm-name" value={report.father_middle} onchange={handleChange} placeholder="Type middle name here" require={true} />
-                            <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={report.father_last} onchange={handleChange} placeholder="Type last name here" require={true} />
+                            <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={report.father_last} onchange={handleChange} placeholder="Type last name here" require={true} /> */}
                         </div>
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Mother:</h3>
                         <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                            <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={report.mother_first} onchange={handleChange} placeholder="Type first name here" require={true} />
+                            <PfpLabel caption="First Name" label={`${appReport.mother_first}`} />
+                            <PfpLabel caption="Middle Name" label={`${appReport.mother_middle}`} />
+                            <PfpLabel caption="Last Name" label={`${appReport.mother_last}`} />
+                            {/* <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={report.mother_first} onchange={handleChange} placeholder="Type first name here" require={true} />
                             <FormInput label="Middle name" type="text" name="mother_middle" id="mm-name" value={report.mother_middle} onchange={handleChange} placeholder="Type middle name here" require={true} />
-                            <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={report.mother_last} onchange={handleChange} placeholder="Type last name here" require={true} />
+                            <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={report.mother_last} onchange={handleChange} placeholder="Type last name here" require={true} /> */}
                         </div>
                                             
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Dependants:</h3>
@@ -168,8 +176,10 @@ export default function CIReport() {
                         </div>
 
                         <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-                            <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={report.comm_standing} onchange={handleChange} placeholder="Write commuity standing here" require={true} />
-                            <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={report.home_description} onchange={handleChange} placeholder="Write residence description here" require={true} />
+                            <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={appReport.comm_standing} onchange={handleChange} placeholder="Write commuity standing here" require={true} disable={true} />
+                            <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={appReport.home_description} onchange={handleChange} placeholder="Write residence description here" require={true} disable={true} />
+                            {/* <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={report.comm_standing} onchange={handleChange} placeholder="Write commuity standing here" require={true} />
+                            <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={report.home_description} onchange={handleChange} placeholder="Write residence description here" require={true} /> */}
                         </div>
 
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit Applied:</h3>

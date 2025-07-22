@@ -35,6 +35,7 @@ export default function FormRequirements() {
                         <FileInput label="2x2 Picture" name="id_pic" type="img" change={fileChange} require={true} />
                         <FileInput label="Proof of Residence" name="residence_proof" type="img" change={fileChange} require={true} />
                         <FileInput label="Proof of Income" name="income_proof" type="img" change={fileChange} require={true} />
+                        <FileInput label="Sketch Image" name="sketch" type="img" change={fileChange} require={true} />
                     </>
                 )}
             </div>

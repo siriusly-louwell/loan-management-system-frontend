@@ -66,6 +66,7 @@ export default function TransactionForm() {
             downpayment: t.downpayment,
             quantity: 1
         }));
+
         
         setTransactForm(initializedForm);
     }, [transact]);

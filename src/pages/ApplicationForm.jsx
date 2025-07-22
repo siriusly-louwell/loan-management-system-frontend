@@ -29,16 +29,14 @@ export default function ApplicationForm() {
     ], []);
     const applicantArray = [[['tenure'], []],
         [
-            ['rent', 'amortization', 'residence', 'educ_attain', 'status', 'contact_num', 'gender', 'last_name', 'first_name'],
+            ['home_description', 'comm_standing', 'rent', 'amortization', 'residence', 'educ_attain', 'birth_place', 'birth_day', 'status', 'contact_num', 'gender', 'last_name', 'first_name'],
             ['prev_lot_num', 'prev_purok', 'prev_brgy', 'prev_city', 'prev_province', 'prev_region', 'lot_num', 'purok', 'brgy', 'city', 'province', 'region']
         ],
         [
             ['bills', 'insurance', 'transportation', 'education_exp', 'rental_exp', 'living_exp', 'business', 'salary', 'rate', 'income'],
         []],
-        [[],
-            // ['sp_prev_lot_num', 'sp_prev_purok', 'sp_prev_brgy', 'sp_prev_city', 'sp_prev_province', 'sp_prev_region', 'sp_lot_num', 'sp_purok', 'sp_brgy', 'sp_city', 'sp_province',
-            // 'sp_region', 'p_prev_lot_num', 'p_prev_purok', 'p_prev_brgy', 'p_prev_city', 'p_prev_province', 'p_prev_region', 'p_lot_num', 'p_purok', 'p_brgy',
-            // 'p_city', 'p_province', 'p_region'],
+        [
+            ['mother_last', 'mother_middle', 'mother_first', 'father_last', 'father_middle', 'father_first'],
             ['p_prev_lot_num', 'p_prev_purok', 'p_prev_brgy', 'p_prev_city', 'p_prev_province', 'p_prev_region', 'p_lot_num', 'p_purok', 'p_brgy',
             'p_city', 'p_province', 'p_region']
         ], [[], []]
@@ -117,6 +115,7 @@ export default function ApplicationForm() {
 
                         setTransactForm(form);
                         bool = false;
+                        console.log(val);
                     }
                 });
             });

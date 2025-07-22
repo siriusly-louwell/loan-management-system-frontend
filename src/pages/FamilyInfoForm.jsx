@@ -57,6 +57,20 @@ export default function FamilyInfoForm() {
                 ) : ''}
             </div>
 
+            <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Father's Name:</h3>
+            <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+                <FormInput label="First name" type="text" name="father_first" id="ff-name" value={applicant.father_first} onchange={handleChange} placeholder="Type first name here" require={true} />
+                <FormInput label="Middle name" type="text" name="father_middle" id="fm-name" value={applicant.father_middle} onchange={handleChange} placeholder="Type middle name here" require={true} />
+                <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={applicant.father_last} onchange={handleChange} placeholder="Type last name here" require={true} />
+            </div>
+
+            <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Mother's Name:</h3>
+            <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+                <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={applicant.mother_first} onchange={handleChange} placeholder="Type first name here" require={true} />
+                <FormInput label="Middle name" type="text" name="mother_middle" id="mm-name" value={applicant.mother_middle} onchange={handleChange} placeholder="Type middle name here" require={true} />
+                <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={applicant.mother_last} onchange={handleChange} placeholder="Type last name here" require={true} />
+            </div>
+
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Parent's Present Address:</h3>
             <div className={"grid gap-4 mb-4 pb-2 " + (applicant.view ? 'flex w-full' : 'sm:grid-cols-3')}>
                 {applicant.view ? (

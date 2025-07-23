@@ -312,11 +312,13 @@ export default function FamilyInfoForm() {
                             <FormTD placeholder="School name" />
                         </FormTBody>
                     </table>
-                    <div className="grid pt-4 sm:cols-span-1">
-                        <BttnwithIcon text="Add row">
-                            <Plus />
-                        </BttnwithIcon>
-                    </div>
+                    {location.pathname !== '/admin/apply/familyinfo' ? (
+                        <div className="grid pt-4 sm:cols-span-1">
+                            <BttnwithIcon text="Add row">
+                                <Plus />
+                            </BttnwithIcon>
+                        </div>
+                    ) : ''}
                 </div>
 
                 <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Nearest Relatives:</h3>
@@ -335,11 +337,13 @@ export default function FamilyInfoForm() {
                             <FormTD placeholder="School name" />
                         </FormTBody>
                     </table>
-                    <div className="grid pt-4 sm:cols-span-1">
-                        <BttnwithIcon text="Add row">
-                            <Plus />
-                        </BttnwithIcon>
-                    </div>
+                    {location.pathname !== '/admin/apply/familyinfo' ? (
+                        <div className="grid pt-4 sm:cols-span-1">
+                            <BttnwithIcon text="Add row">
+                                <Plus />
+                            </BttnwithIcon>
+                        </div>
+                    ) : ''}
                 </div>
             </div>
         </>

@@ -46,6 +46,7 @@ export default function Inventory() {
         const data = await response.json();
         setStock({
             ...stock,
+            id: data.id,
             modal: false,
             quantity: data.quantity,
             colors: data.colors,

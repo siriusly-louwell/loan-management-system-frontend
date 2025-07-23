@@ -102,6 +102,7 @@ export default function CIReport() {
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">CREDIT INVESTIGATION REPORT</h3>
                     </div>
                     <form onSubmit={handleSubmit}>
+                        <img src={`http://127.0.0.1:8000/storage/${appReport.id_pic}`} className="rounded rounded-lg w-28" />
                         <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                             <PfpLabel caption="Applicant Name" label={`${appReport.first_name} ${appReport.last_name}`} />
                             <PfpLabel caption="Date of Birth" label={`${appReport.birth_day}`} />
@@ -196,11 +197,11 @@ export default function CIReport() {
                                     <FormTD placeholder="Terms & Conditions" />
                                 </FormTBody>
                             </table>
-                            <div className="grid pt-4 sm:cols-span-1">
+                            {/* <div className="grid pt-4 sm:cols-span-1">
                                 <BttnwithIcon text="Add row">
                                     <Plus />
                                 </BttnwithIcon>
-                            </div>
+                            </div> */}
                         </div>
                                 
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">RECOMMENDATION:</h3>
@@ -218,7 +219,8 @@ export default function CIReport() {
                         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit verification:</h3>
                         <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
                             <FormInput label="First Unit applied" type="text" name="first_unit" id="name" value={report.first_unit} onchange={handleChange} placeholder="Type unit name here" />
-                            <FileInput label="Sketch Image" name="sketch" type="img" change={(e) => setSketch(e.target.files[0])} require={true} />
+                            <img src={`http://127.0.0.1:8000/storage/${appReport.sketch}`} className="rounded rounded-lg w-20" />
+                            {/* <FileInput label="Sketch Image" name="sketch" type="img" change={(e) => setSketch(e.target.files[0])} require={true} /> */}
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivered?</label>
                                 <div className="space-y-4 sm:flex sm:space-y-0">

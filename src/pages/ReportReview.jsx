@@ -31,8 +31,6 @@ export default function ReportReview() {
         })
     }, [state.id]);
 
-    console.log(report);
-
     return (
         <div className="overflow-y-auto overflow-x-hidden justify-items-center items-center fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">
@@ -42,23 +40,24 @@ export default function ReportReview() {
                     </div>
                     {reportLoad ? '' : (
                         <form>
+                            <img src={`http://127.0.0.1:8000/storage/${state.id_pic}`} className="rounded rounded-lg w-28" />
                             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                                <PfpLabel caption="Applicant Name" label={state.name} />
-                                <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={report.birth_day} disable={true} />
-                                <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={report.birth_place} placeholder="Birth place address" disable={true} />
+                                <PfpLabel caption="Applicant Name" label={`${state.first_name} ${state.last_name}`} />
+                                <FormInput label="Date of Birth" type="date" name="birth_day" id="bday" value={state.birth_day} disable={true} />
+                                <FormInput label="Place of Birth" type="text" name="birth_place" id="bplace" value={state.birth_place} placeholder="Birth place address" disable={true} />
                             </div>
                                     
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Father:</h3>
                             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2">
-                                <FormInput label="First name" type="text" name="father_first" id="ff-name" value={report.father_first} placeholder="Type first name here" disable={true} />
-                                <FormInput label="Middle name" type="text" name="father_middle" id="fm-name" value={report.father_middle} placeholder="Type middle name here" disable={true} />
-                                <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={report.father_last} placeholder="Type last name here" disable={true} />
+                                <FormInput label="First name" type="text" name="father_first" id="ff-name" value={state.father_first} placeholder="Type first name here" disable={true} />
+                                <FormInput label="Middle name" type="text" name="father_middle" id="fm-name" value={state.father_middle} placeholder="Type middle name here" disable={true} />
+                                <FormInput label="Last name" type="text" name="father_last" id="fl-name" value={state.father_last} placeholder="Type last name here" disable={true} />
                             </div>
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Mother:</h3>
                             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-                                <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={report.mother_first} placeholder="Type first name here" disable={true} />
-                                <FormInput label="Middle name" type="text" name="mother_middle" id="mm-name" value={report.mother_middle} placeholder="Type middle name here" disable={true} />
-                                <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={report.mother_last} placeholder="Type last name here" disable={true} />
+                                <FormInput label="First name" type="text" name="mother_first" id="mf-name" value={state.mother_first} placeholder="Type first name here" disable={true} />
+                                <FormInput label="Middle name" type="text" name="mother_middle" id="mm-name" value={state.mother_middle} placeholder="Type middle name here" disable={true} />
+                                <FormInput label="Last name" type="text" name="mother_last" id="ml-name" value={state.mother_last} placeholder="Type last name here" disable={true} />
                             </div>
                                                 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Dependants:</h3>
@@ -112,8 +111,8 @@ export default function ReportReview() {
                             </div>
 
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-                                <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={report.comm_standing} placeholder="Write commuity standing here" disable={true} />
-                                <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={report.home_description} placeholder="Write residence description here" disable={true} />
+                                <FormTextarea name="comm_standing" id="comm_standing" label="Community Standing" value={state.comm_standing} placeholder="Write commuity standing here" disable={true} />
+                                <FormTextarea name="home_description" id="home_description" label="Brief description of place of residence and home" value={state.home_description} placeholder="Write residence description here" disable={true} />
                             </div>
 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit Applied:</h3>
@@ -157,7 +156,7 @@ export default function ReportReview() {
                                 {location.pathname !== '/ci/review' ? (
                                     <FileInput label="Sketch Image" name="sketch" type="img" />
                                 ) : (
-                                    <img src={`http://127.0.0.1:8000/storage/${report.sketch}`} className="rounded rounded-lg w-20" />
+                                    <img src={`http://127.0.0.1:8000/storage/${state.sketch}`} className="rounded rounded-lg w-20" />
                                 )}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivered?</label>

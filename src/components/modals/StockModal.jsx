@@ -41,7 +41,7 @@ export default function StockModal({stock, setStock}) {
         }
     }
 
-    // console.log(quantity);
+    console.log(quantity);
 
     return (
         <>

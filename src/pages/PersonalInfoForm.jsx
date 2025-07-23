@@ -189,11 +189,13 @@ export default function PersonalInfoForm() {
                         <FormTD placeholder="Terms & Conditions" />
                     </FormTBody>
                 </table>
-                <div className="grid pt-4 sm:cols-span-1">
-                    <BttnwithIcon text="Add row">
-                        <Plus />
-                    </BttnwithIcon>
-                </div>
+                {location.pathname !== '/admin/apply' ? (
+                    <div className="grid pt-4 sm:cols-span-1">
+                        <BttnwithIcon text="Add row">
+                            <Plus />
+                        </BttnwithIcon>
+                    </div>
+                ) : ''}
             </div>
         </>
     );

@@ -226,10 +226,7 @@ export default function LoanInfo({children}) {
                                 {loan.apply_status === 'evaluated' || loan.apply_status === 'approved' || loan.apply_status === 'declined' ? (
                                     <>
                                         <Button text="View Report" bttnType="button" onclick={() => navigate('/ci/review', {
-                                                state: {
-                                                    id: loan.id,
-                                                    name: `${loan.first_name} ${loan.last_name}`
-                                                }
+                                                state: {...loan}
                                             })} />
                                         {location.pathname === '/admin/loan' ? (
                                             <>

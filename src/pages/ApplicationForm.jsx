@@ -90,7 +90,7 @@ export default function ApplicationForm() {
     function checkEmpty(array, i, type = 'none') {
         let bool = true;
 
-        if(currentIndex > 0) {
+        if((currentIndex > 0 && type === 'none') || (i > 0 && type === 'step')) {
             array[0].forEach(val => {
                 if(!applicant.hasOwnProperty(val) || applicant[val] === '__EMPTY__') {
                     setApplicant({...applicant, [val]: '__EMPTY__'});
@@ -128,8 +128,7 @@ export default function ApplicationForm() {
 
         if(type === 'step' && !bool) setIncomplete([...incomplete, i]);
         else if(incomplete.includes(i) && bool) {
-            const inc = incomplete;
-            inc.filter(num => num !== i);
+            const inc = incomplete.filter(num => num !== i);
 
             setIncomplete(inc);
         } else return bool;
@@ -316,7 +315,7 @@ export default function ApplicationForm() {
                 <Step label="2. Personal Information" status={stepCheck(1)} click={() => stepNavCheck(1)} />
                 <Step label="4. Employment, Properties, & Income/Expenses" status={stepCheck(2)} click={ () => stepNavCheck(2)} />
                 <Step label="3. Family/Relative Information" status={stepCheck(3)} click={() => stepNavCheck(3)} />
-                <Step label="5. Upload Requirements" status={stepCheck(4)} click={() => navigate(routerPaths[4], {state: {selected: state?.selected}})} />
+                <Step label="5. Upload Requirements" status={stepCheck(4)} click={() => stepNavCheck(4)} />
                 <Step label="6. Comaker Form" status={stepCheck(5)} click={() => navigate(routerPaths[5], {state: {selected: state?.selected}})} />
             </Stepper>
             <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">

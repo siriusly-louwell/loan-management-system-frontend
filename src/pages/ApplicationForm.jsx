@@ -18,6 +18,7 @@ export default function ApplicationForm() {
     const [transactForm, setTransactForm] = useState([]);
     const [files, setFiles] = useState({});
     const [alert, setAlert] = useState({});
+    const [incomplete, setIncomplete] = useState([]);
     const submitData = new FormData();
     const routerPaths = useMemo(() => [
         '/customer/apply',
@@ -86,7 +87,7 @@ export default function ApplicationForm() {
         setTransactForm(len);
     }, []);
 
-    function checkEmpty(array) {
+    function checkEmpty(array, i, type = 'none') {
         let bool = true;
 
         if(currentIndex > 0) {
@@ -115,7 +116,6 @@ export default function ApplicationForm() {
 
                         setTransactForm(form);
                         bool = false;
-                        console.log(val);
                     }
                 });
             });
@@ -126,7 +126,13 @@ export default function ApplicationForm() {
             document.getElementById('emptyInput').style.display = 'block';
         }
 
-        return  bool;
+        if(type === 'step' && !bool) setIncomplete([...incomplete, i]);
+        else if(incomplete.includes(i) && bool) {
+            const inc = incomplete;
+            inc.filter(num => num !== i);
+
+            setIncomplete(inc);
+        } else return bool;
     }
 
     function handleNext () {        
@@ -287,11 +293,15 @@ export default function ApplicationForm() {
     }
 
     function stepCheck(index) {
-        return currentIndex === index ? "current"
+        if(incomplete.includes(index)) return "incomplete";
+        else return currentIndex === index ? "current"
             : (currentIndex > index ? "done" : "pend");
     }
 
-    // console.log(transactForm);
+    function stepNavCheck(index) {
+        checkEmpty(applicantArray[index - 1], index - 1, 'step');
+        navigate(routerPaths[index], {state: {selected: state?.selected}});
+    }
 
     const ids = state?.selected;
     const selectColor = state?.selectColor;
@@ -303,9 +313,9 @@ export default function ApplicationForm() {
         <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
             <Stepper>
                 <Step label="1. Loan Setup" status={stepCheck(0)} click={() => navigate(routerPaths[0], {state: {selected: state?.selected}})} />
-                <Step label="2. Personal Information" status={stepCheck(1)} click={() => navigate(routerPaths[1], {state: {selected: state?.selected}})} />
-                <Step label="4. Employment, Properties, & Income/Expenses" status={stepCheck(2)} click={() => navigate(routerPaths[2], {state: {selected: state?.selected}})} />
-                <Step label="3. Family/Relative Information" status={stepCheck(3)} click={() => navigate(routerPaths[3], {state: {selected: state?.selected}})} />
+                <Step label="2. Personal Information" status={stepCheck(1)} click={() => stepNavCheck(1)} />
+                <Step label="4. Employment, Properties, & Income/Expenses" status={stepCheck(2)} click={ () => stepNavCheck(2)} />
+                <Step label="3. Family/Relative Information" status={stepCheck(3)} click={() => stepNavCheck(3)} />
                 <Step label="5. Upload Requirements" status={stepCheck(4)} click={() => navigate(routerPaths[4], {state: {selected: state?.selected}})} />
                 <Step label="6. Comaker Form" status={stepCheck(5)} click={() => navigate(routerPaths[5], {state: {selected: state?.selected}})} />
             </Stepper>

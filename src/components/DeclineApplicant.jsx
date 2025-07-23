@@ -67,17 +67,19 @@ export default function DeclineApplicant({id, record, name}) {
                         <div className="mb-5 space-y-3">
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">{record} - {name}</h3>
                             <FormSelect name="type" id="ci" label="Reason for Declination" value={decline.type} onchange={handleChange}>
-                                <option>Icorrect inputted values</option>
+                                <option>Incorrect inputted values</option>
                                 <option>Wrong requirements uploaded</option>
                                 <option>Unmet standards</option>
                             </FormSelect>
-                            <div>
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Allow Resubmit?</label>
-                                <div className="space-y-4 sm:flex sm:space-y-0">
-                                    <FormCheck type="radio" id="inline-check" label="Yes" value="yes" name="resubmit" change={handleChange} />
-                                    <FormCheck type="radio" id="inline-2-check" label="No" value="no" name="resubmit" change={handleChange} />
+                            {decline.type !== 'Unmet standards' && decline.type ? (
+                                <div>
+                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Allow Resubmit?</label>
+                                    <div className="space-y-4 sm:flex sm:space-y-0">
+                                        <FormCheck type="radio" id="inline-check" label="Yes" value="yes" name="resubmit" change={handleChange} />
+                                        <FormCheck type="radio" id="inline-2-check" label="No" value="no" name="resubmit" change={handleChange} />
+                                    </div>
                                 </div>
-                            </div>
+                            ) : ''}
                             <FormTextarea label="Add a message to the applicant (optional):" placeholder="Write your message here..." />
                         </div>
                         <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">

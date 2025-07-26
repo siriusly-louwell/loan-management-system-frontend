@@ -111,8 +111,8 @@ export default function Eligibity({loan, setAlert}) {
 
     return (
         <div id="eligibleModal" className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
-            <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
-                <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
+            <div className="relative w-full max-w-6xl h-full md:h-auto">
+                <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-5 sm:py-8 border border-gray-500">
                     <div className="flex justify-between items-center pb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Eligibility Results</h3>
                         <CloseBttn id="eligibleModal" />

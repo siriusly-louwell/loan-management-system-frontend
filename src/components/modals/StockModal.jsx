@@ -21,7 +21,7 @@ export default function StockModal({stock, setStock}) {
         const totalQuantity = quantity.reduce((sum, num) => sum + num, 0);
 
         try {
-            const response = await axios.patch(`http://127.0.0.1:8000/api/motorcycle/${stock.id}`, {quantity: totalQuantity});
+            const response = await axios.patch(`http://127.0.0.1:8000/api/motorcycle/${stock.id}`, {quantity: totalQuantity + stock.quantity});
 
             console.log('Success: ', response.data.message);
             setAlert({

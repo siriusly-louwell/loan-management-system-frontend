@@ -10,7 +10,7 @@ import FormTBody from '../components/tables/FormTBody';
 import FormTD from '../components/tables/FormTD';
 import FormTextarea from '../components/inputs/FormTextarea';
 import FormCheck from '../components/checkboxes/FormCheck';
-import FileInput from '../components/inputs/FileInput';
+import Ex from '../assets/icons/Ex';
 import PfpLabel from '../components/PfpLabel';
 
 export default function ReportReview() {
@@ -151,13 +151,18 @@ export default function ReportReview() {
                             </div>
 
                             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Unit verification:</h3>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sketch:</label>
+                            <div className="w-full justify-items-center">
+                                <img src={`http://127.0.0.1:8000/storage/${state.sketch}`} onClick={() => document.getElementById('imageModal').style.display = 'block'}
+                                className="rounded rounded-lg w-1/2 p-3 my-2 rounded-lg hover:bg-gray-100 hover:opacity-80 active:opacity-100 active:bg-gray-200" />
+                            </div>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
                                 <FormInput label="First Unit applied" type="text" name="first_unit" id="name" value={report.first_unit} placeholder="Type unit name here" disable={true} />
-                                {location.pathname !== '/ci/review' ? (
+                                {/* {location.pathname !== '/ci/review' ? (
                                     <FileInput label="Sketch Image" name="sketch" type="img" />
                                 ) : (
                                     <img src={`http://127.0.0.1:8000/storage/${state.sketch}`} className="rounded rounded-lg w-20" />
-                                )}
+                                )} */}
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Delivered?</label>
                                     <div className="space-y-4 sm:flex sm:space-y-0">
@@ -169,6 +174,20 @@ export default function ReportReview() {
                             </div>
                         </form>
                     )}
+                </div>
+            </div>
+            <div id="imageModal" className="fixed hidden top-0 left-0 right-0 z-50 p-20 bg-gray-500 bg-opacity-30 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div className="relative w-full h-auto max-w-3xl max-h-full">
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 border dark:border-gray-500">
+                        <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="delete-modal"
+                            onClick={() => document.getElementById('imageModal').style.display = "none"}>
+                            <Ex className="w-5 h-5" />
+                            <span className="sr-only">Close modal</span>
+                        </button>
+                        <div className="p-6 text-center">
+                            <img src={`http://127.0.0.1:8000/storage/${state.sketch}`} className="w-full" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

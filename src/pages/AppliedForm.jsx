@@ -58,7 +58,9 @@ export default function AppliedForm({url}) {
                         )}
                         {currentIndex < routerPaths.length - 1 ? (
                             <Button text="Next" bttnType="button" onclick={handleNext} />
-                        ) : ''}
+                        ) : (
+                            <Button text="Done" bttnType="button" onclick={() => navigate(`${url}/loan`, {state: {id: applicant.id}})} />
+                        )}
                         </div>
                     </form>
                 </div>

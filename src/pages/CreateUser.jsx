@@ -46,7 +46,9 @@ export default function CreateUser() {
             if(!response.ok) throw new Error('Update failed');
             setAlert({
                 text: "User added succcessfully!",
-                icon: "done"
+                icon: "done",
+                email: user.email,
+                name: user.first_name
             });
             resetInput();
             document.getElementById('alertUser').style.display = "block";
@@ -112,6 +114,14 @@ export default function CreateUser() {
                     </form>
                     <Spinner id="saving_data" text="Saving data..." />
                     <Alert id="alertUser" text={alert.text} icon={alert.icon}>
+                        {alert.icon !== 'warn' ? (
+                            <>
+                                <h2 className="text-gray-600 dark:text-white">{alert.name} has been notified through email.</h2>
+                                <p className="text-gray-600 dark:text-white mb-5">
+                                    The user's credentials along with the temporary password will be sent through <strong className="text-rose-500">{alert.email}</strong>.
+                                </p>
+                            </>
+                        ) : ''}
                         <Button text="Ok" onclick={() => document.getElementById('alertUser').style.display = 'none'} />
                     </Alert>
                 </div>

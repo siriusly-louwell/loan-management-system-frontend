@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 export default function QuantityInput({label, max, require, index, change}) {
     const [number, setNumber] = useState(1);
 
+    useEffect(() => {change(index, 1, "quantity")}, []);
+
     function handleNumber(type) {
         if(type === 'increment' && number < max) {
             setNumber(number + 1);

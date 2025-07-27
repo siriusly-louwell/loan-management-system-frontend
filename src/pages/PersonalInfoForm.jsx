@@ -16,13 +16,14 @@ export default function PersonalInfoForm() {
     const location = useLocation();
     const {handleChange, addressChange, applicant, address, copyAddress, disable, locations} = useOutletContext();
     const disBool = address.region === undefined || address.region === '__EMPTY__' ? true : disable;
+    const urlBool = location.pathname !== '/admin/apply' && location.pathname !== '/staff/apply' && location.pathname !== '/ci/apply'
 
     return (
         <>
             <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Buyer's Personal Infomation:</h3>
-            {location.pathname === '/admin/apply' ? (
+            {urlBool ? '' : (
                 <img src={`http://127.0.0.1:8000/storage/${applicant.id_pic}`} className="rounded rounded-lg w-20" />
-            ) : ''}
+            )}
             <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
                 <FormInput label="First Name" type="text" name="first_name" id="first_name" value={applicant.first_name} onchange={handleChange} placeholder="Type first name" require={true} disable={disable} />
                 <FormInput label="Middle Name" type="text" name="middle_name" id="mid_name" value={applicant.middle_name} onchange={handleChange} placeholder="Type middle name" disable={disable} />
@@ -189,7 +190,7 @@ export default function PersonalInfoForm() {
                         <FormTD placeholder="Terms & Conditions" />
                     </FormTBody>
                 </table>
-                {location.pathname !== '/admin/apply' ? (
+                {urlBool ? (
                     <div className="grid pt-4 sm:cols-span-1">
                         <BttnwithIcon text="Add row">
                             <Plus />

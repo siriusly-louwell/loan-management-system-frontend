@@ -10,7 +10,7 @@ export default function FormRequirements() {
         <>
             <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">Other Requirements:</h3>
             <div class="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-                {location.pathname === '/admin/apply/requirements' ? (
+                {location.pathname === '/admin/apply/requirements' || location.pathname === '/staff/apply/requirements' || location.pathname === '/ci/apply/requirements' ? (
                     <>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valid ID</label>

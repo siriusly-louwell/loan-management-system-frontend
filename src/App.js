@@ -121,14 +121,21 @@ function App() {
           
           <Route path="/ci" element={<PageLayout links={<CINav />} img={log.pfp} path="/ci" />}>
             <Route index element={<InvoiceList id={log.id} headText="Loan Applications" path="/ci/ciloan" />} />
-            <Route path="loanapplications" element={<InvoiceList id={log.id} headText="Loan Applications" path="/ci/ciloan" />} />
+            <Route path="loan" element={<InvoiceList id={log.id} headText="Loan Applications" path="/ci/ciloan" />} />
             <Route path="evaluation" element={<InvoiceList id={log.id} headText="Loans Evaluation" path="/ci/cireport" bttnText="Evaluate" />} />
             {/* <Route path="recommendation" element={<InvoiceList id={log.id} headText="Evaluated Loans" />} /> */}
-            <Route path="ciloan" element={<LoanInfo />} />
+            <Route path="ciloan" element={<LoanInfo url="/ci" />} />
             <Route path="cireport" element={<CIReport />} />
             <Route path="review" element={<ReportReview />} />
             {/* <Route path="ciappform" element={<CIAppForm />} /> */}
             <Route path="profile" element={<Profile />} />
+            <Route path="apply" element={<AppliedForm url="/ci" />}>
+              <Route index element={<PersonalInfoForm />} />
+              <Route path="personalinfo" element={<PersonalInfoForm />} />
+              <Route path="employinfo" element={<EmploymentInfoForm />} />
+              <Route path="familyinfo" element={<FamilyInfoForm />} />
+              <Route path="requirements" element={<FormRequirements />} />
+            </Route>
           </Route>
 
           <Route path="/staff" element={<PageLayout links={<StaffNav />} img={log.pfp} path="/staff" />}>
@@ -136,11 +143,18 @@ function App() {
             {/* <Route path="inventory" element={<Inventory />} /> */}
             <Route path="cashier" element={<Cashier />} />
             <Route path="loans" element={<InvoiceList id={log.id} headText="Loan Applications" path="/staff/loan" />} />
-            <Route path="loan" element={<LoanInfo />} />
+            <Route path="loan" element={<LoanInfo url="/staff" />} />
             <Route path="product" element={<ProductInfo staff={true} />} />
             <Route path="history" element={<AppNotifications />} />
             <Route path="loan_his" element={<AppNotifications />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="apply" element={<AppliedForm url="/staff" />}>
+              <Route index element={<PersonalInfoForm />} />
+              <Route path="personalinfo" element={<PersonalInfoForm />} />
+              <Route path="employinfo" element={<EmploymentInfoForm />} />
+              <Route path="familyinfo" element={<FamilyInfoForm />} />
+              <Route path="requirements" element={<FormRequirements />} />
+            </Route>
           </Route>
 
           <Route path="/admin" element={<PageLayout links={<AdminNav />} path="/admin" />}>
@@ -148,7 +162,7 @@ function App() {
             <Route path="inventory" element={<Inventory />} />
             <Route path="loans" element={<InvoiceList id={log.id} headText="Loan Applications" path="/admin/loan" />} />
             <Route path="invoice" element={<Invoice />} />
-            <Route path="loan" element={<LoanInfo />} />
+            <Route path="loan" element={<LoanInfo url="/admin" />} />
             <Route path="profile" element={<Profile />} />
             <Route path="history" element={<AppNotifications />} />
             <Route path="apply" element={<AppliedForm url="/admin" />}>

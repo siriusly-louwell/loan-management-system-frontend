@@ -17,6 +17,7 @@ export default function FamilyInfoForm() {
     const spDisBool = address.sp_region === undefined || address.sp_region === '__EMPTY__' ? true : disable;
     const [relatives, setRelative] = useState(['']);
     const location = useLocation();
+    const urlBool = location.pathname !== '/admin/apply/familyinfo' && location.pathname !== '/staff/apply/familyinfo' && location.pathname !== '/ci/apply/familyinfo'
 
     return (
         <>
@@ -48,7 +49,7 @@ export default function FamilyInfoForm() {
                     <FormInput label="Enrolled at" type="text" name="prod_name" id="name" placeholder="Type school here" disable={disable} />
                     <FormInput label="Address" type="text" name="prod_name" id="name" placeholder="Full address here" disable={disable} />
                 </div>
-                {location.pathname !== '/admin/apply/familyinfo' ? (
+                {urlBool ? (
                     <div class="grid pt-4 sm:cols-span-3">
                         <BttnwithIcon text="Add row">
                             <Plus />
@@ -288,7 +289,7 @@ export default function FamilyInfoForm() {
                         ))}
                     </FormTBody>
                 </table>
-                {location.pathname !== '/admin/apply/familyinfo' ? (
+                {urlBool ? (
                     <div className="grid pt-4 sm:cols-span-1">
                         <BttnwithIcon text="Add row" type="button" click={() => setRelative([...relatives, ''])}>
                             <Plus />
@@ -312,7 +313,7 @@ export default function FamilyInfoForm() {
                             <FormTD placeholder="School name" />
                         </FormTBody>
                     </table>
-                    {location.pathname !== '/admin/apply/familyinfo' ? (
+                    {urlBool ? (
                         <div className="grid pt-4 sm:cols-span-1">
                             <BttnwithIcon text="Add row">
                                 <Plus />
@@ -337,7 +338,7 @@ export default function FamilyInfoForm() {
                             <FormTD placeholder="School name" />
                         </FormTBody>
                     </table>
-                    {location.pathname !== '/admin/apply/familyinfo' ? (
+                    {urlBool ? (
                         <div className="grid pt-4 sm:cols-span-1">
                             <BttnwithIcon text="Add row">
                                 <Plus />

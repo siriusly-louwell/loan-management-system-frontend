@@ -15,8 +15,9 @@ import Spinner from "../components/loading components/Spinner";
 import ProductCard from "../components/cards/ProductCard";
 import CardSkeleton from "../components/loading components/CardSkeleton";
 import Eligibity from "../components/modals/Eligibility";
+import EmptySearch from "../components/empty states/EmptySearch";
 
-export default function LoanInfo({children}) {
+export default function LoanInfo({children, url}) {
     const navigate = useNavigate();
     const location = useLocation();
     const {state} = useLocation();
@@ -25,7 +26,7 @@ export default function LoanInfo({children}) {
     const [loanLoad, setLoanLoad] = useState(true);
     const [totals, setTotal] = useState({});
     const [alert, setAlert] = useState({});
-    const [recommend, setRecommend] = useState({});
+    const [recommend, setRecommend] = useState([]);
     const [recoLoad, setRecoLoad] = useState(true);
 
     useEffect(() => {
@@ -41,7 +42,7 @@ export default function LoanInfo({children}) {
     }, [id]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/motorcycle/1')
+        fetch('http://127.0.0.1:8000/api/motorcycle')
         .then(response => response.json())
         .then(data => {
                 setRecommend(data);
@@ -56,10 +57,12 @@ export default function LoanInfo({children}) {
         if(!loanLoad) {
             const down = loan.transactions.reduce((sum, obj) => sum + Number(obj.downpayment), 0);
             const price = loan.transactions.reduce((sum, obj) => sum + Number(obj.motorcycle.price), 0);
+            const ndi = parseFloat(loan.rate) - (parseFloat(loan.rent) + parseFloat(loan.amortization) + parseFloat(loan.bills) + parseFloat(loan.living_exp) + parseFloat(loan.education_exp) + parseFloat(loan.transportation));
+
             
-            setTotal({price: down, downpayment: price});
+            setTotal({price: down, downpayment: price, ndi: ndi});
         }
-    }, [loan, loanLoad]);
+    }, [loan, loanLoad, recommend]);
 
     async function approveApplicant() {
         document.getElementById('approve_app').style.display = "flex";
@@ -127,6 +130,44 @@ export default function LoanInfo({children}) {
         }
 
         return turn[num];
+    }
+
+    function affordableLoan(motor) {
+        const tenure = motor.tenure * 12;
+        const loanAmount = parseFloat(motor.price || 0) - parseFloat(motor.downpayment || 0);
+        const monthlyRate = motor.interest / 12 / 100;
+        const emi = monthlyRate === 0 ? loanAmount / tenure
+            : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) / (Math.pow(1 + monthlyRate, tenure) - 1);
+        const bool = (Math.round(emi * 100) / 100) / totals.ndi;
+
+        return bool <= 0.3 ? true : false;
+    }
+
+    function displayRecommend() {
+        if(recoLoad) return (<>
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+        </>);
+
+        if(totals.ndi > 0) {
+            return (
+                <div className="bg-gray-100 px-3 py-1 mx-5 mt-3 rounded-lg">
+                    <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Recommendations</h2>
+                    <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-4 xl:grid-cols-4">
+                        {recommend.map(motor => {
+                            if(affordableLoan(motor)) return (<ProductCard key={motor.id} unit={motor} url="/unit" />)
+                        })}
+                    </section>
+                </div>
+            )
+        } else return (
+            <section className="bg-gray-100 px-3 py-1 mx-5 mt-3 rounded-lg">
+                <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">No Recommendations</h2>
+                <EmptySearch label="No affordable units" context="Applicant is not elligible to take any loan" />
+            </section>
+        )
     }
     
     return (
@@ -253,15 +294,14 @@ export default function LoanInfo({children}) {
                     </div>
                 </div>
             </div>
-            {loan.apply_status === 'declined' || loan.apply_status === 'denied' ? (
-                <>
+            {loan.apply_status === 'declined' || loan.apply_status === 'denied' ? displayRecommend() : ''}
+                {/* <>
                     <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Recommendations</h2>
                     <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
                         {recoLoad ? (<CardSkeleton />) : (<ProductCard key={recommend.id} unit={recommend} url="/unit" />)}
                     </section>
-                </>
-            ) : ''}
-            <Eligibity loan={loan} setAlert={setAlert} />
+                </> */}
+            <Eligibity loan={loan} setAlert={setAlert} url={url} />
             <DeclineApplicant id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <AssignCI id={loan.id} record={loan.record_id} name={`${loan.first_name} ${loan.last_name}`} />
             <Alert id="approveApp" text={alert.text} icon="warn">

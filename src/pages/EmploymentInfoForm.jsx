@@ -14,6 +14,7 @@ export default function EmploymentInfoForm() {
     const location = useLocation();
     const [properties, setProperty] = useState(['']);
     const [references, setReference] = useState(['']);
+    const urlBool = location.pathname !== '/admin/apply/employinfo' && location.pathname !== '/staff/apply/employinfo' && location.pathname !== '/ci/apply/employinfo';
 
     return (
         <>
@@ -79,7 +80,7 @@ export default function EmploymentInfoForm() {
                         ))}
                     </FormTBody>
                 </table>
-                {location.pathname !== '/admin/apply/employinfo' ? (
+                {urlBool ? (
                     <div class="grid pt-4 sm:cols-span-1">
                         <BttnwithIcon type="button" click={() => setProperty([...properties, ''])} text="Add row">
                             <Plus />
@@ -113,7 +114,7 @@ export default function EmploymentInfoForm() {
                         ))}
                     </FormTBody>
                 </table>
-                {location.pathname !== '/admin/apply/employinfo' ? (
+                {urlBool ? (
                     <div class="grid pt-4 sm:cols-span-1">
                         <BttnwithIcon text="Add row" type="button" click={() => setReference([...references, ''])}>
                             <Plus />

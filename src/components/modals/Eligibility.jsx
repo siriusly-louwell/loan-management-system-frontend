@@ -7,7 +7,7 @@ import LargeBadge from "../badges/LargeBadge";
 import CustomBadge from "../badges/CustomBadge";
 import Alert from "../Alert";
 
-export default function Eligibity({loan, setAlert}) {
+export default function Eligibity({loan, url}) {
     const navigate = useNavigate();
     const location = useLocation();
     const loans = Object.keys(loan).length > 0 ? loan.transactions.reduce((sum, item) => {
@@ -224,7 +224,7 @@ export default function Eligibity({loan, setAlert}) {
                                     {statusBadge(loan.apply_status)}
                                 </div>
                             )}
-                            <CustomBttn text="Review" onclick={() => navigate('/admin/apply', {state: {id: loan.id}})} classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900" />
+                            <CustomBttn text="Review" onclick={() => navigate(`${url}/apply`, {state: {id: loan.id}})} classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900" />
                         </div>
                     </section>
                 </div>

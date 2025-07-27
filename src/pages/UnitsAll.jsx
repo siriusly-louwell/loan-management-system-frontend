@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ProductCard from "../components/cards/ProductCard";
 import ProductGrid from "../components/cards/ProductGrid";
 import BasicButton from "../components/buttons/BasicBttn";
@@ -12,7 +12,8 @@ import EmptySearch from "../components/empty states/EmptySearch";
 import { useOutletContext } from "react-router-dom";
 
 export default function UnitsAll() {
-    const {toggleMenu, filtMenu, isFiltOn, motorLoad, motors, url} = useOutletContext();
+    const {toggleSort, toggleFilt, sortRef, filtRef, isSort, isFilt, motorLoad, motors, url} = useOutletContext();
+    const [brandFilt, setBrandFilt] = useState('');
 
     return (
         <>
@@ -21,15 +22,32 @@ export default function UnitsAll() {
                     <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Available Units</h2>
                 </div>
                 <div className="flex items-center space-x-4">
-                    <DropdownBttn text="Filter">
+                    <DropdownBttn toggleMenu={toggleFilt} text="Filter by Brand">
                         <Filter />
                     </DropdownBttn>
-                    <DropdownBttn toggleMenu={toggleMenu} text="Sort">
+                    <DropdownBttn toggleMenu={toggleSort} text="Sort">
                         <Sort />
                     </DropdownBttn>
                 </div>
             </div>
-            <DropdownMenu ref={filtMenu} className={isFiltOn ? "block" : "hidden"}>
+            <DropdownMenu ref={filtRef} className={isFilt ? "block" : "hidden"} pad={72}>
+                <MenuLink pathName="All" click={() => setBrandFilt('')} />
+                <MenuLink pathName="Honda" click={() => setBrandFilt('Honda')} />
+                <MenuLink pathName="Yamaha" click={() => setBrandFilt('Yamaha')} />
+                <MenuLink pathName="Suzuki" click={() => setBrandFilt('Suzuki')} />
+                <MenuLink pathName="Kawasaki" click={() => setBrandFilt('Kawasaki')} />
+                <MenuLink pathName="KTM" click={() => setBrandFilt('KTM')} />
+                <MenuLink pathName="Kymco" click={() => setBrandFilt('Kymco')} />
+                <MenuLink pathName="SYM" click={() => setBrandFilt('SYM')} />
+                <MenuLink pathName="Skygo" click={() => setBrandFilt('Skygo')} />
+                <MenuLink pathName="Bennelli" click={() => setBrandFilt('Bennelli')} />
+                <MenuLink pathName="Bristol" click={() => setBrandFilt('Bristol')} />
+                <MenuLink pathName="Rusi" click={() => setBrandFilt('Rusi')} />
+                <MenuLink pathName="Motorstar" click={() => setBrandFilt('Motorstar')} />
+                <MenuLink pathName="QJMotor" click={() => setBrandFilt('QJMotor')} />
+                <MenuLink pathName="FKM" click={() => setBrandFilt('FKM')} />
+            </DropdownMenu>
+            <DropdownMenu ref={sortRef} className={isSort ? "block" : "hidden"} pad={20}>
                 <MenuLink pathName="The most popular" />
                 <MenuLink pathName="Newest" />
                 <MenuLink pathName="Increasing price" />
@@ -47,9 +65,10 @@ export default function UnitsAll() {
                         <CardSkeleton />
                     </>
                 ) : (
-                    motors.map(motor => (
-                        <ProductCard key={motor.id} unit={motor} url={url}/>
-                    ))
+                    motors.map(motor => {
+                        if(motor.brand === brandFilt && brandFilt !== '') return (<ProductCard key={motor.id} unit={motor} url={url}/>);
+                        else if(brandFilt === '') return (<ProductCard key={motor.id} unit={motor} url={url}/>);
+                    })
                 )}
             </ProductGrid>
             {motors.length === 0 && !motorLoad ? (

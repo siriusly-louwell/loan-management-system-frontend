@@ -19,24 +19,38 @@ import { Outlet, useLocation } from "react-router-dom";
 import UnderlineTabs from "../components/tabs/UnderlineTabs";
 
 export default function ProductList({url}) {
-    const [isFiltOn, setIsFiltOn] = useState(false);
+    const [isSort, setSort] = useState(false);
+    const [isFilt, setFilt] = useState(false);
     const [motors, setMotor] = useState([]);
     const [motorLoad, setMotorLoad] = useState(true);
-    const filtMenu = useRef(null);
+    const sortRef = useRef(null);
+    const filtRef = useRef(null);
     const [current, setCurrent] = useState(0);
     const location = useLocation();
 
-    const toggleMenu = () => setIsFiltOn((prev) => !prev);
+    const toggleSort = () => setSort((prev) => !prev);
+    const toggleFilt = () => setFilt((prev) => !prev);
 
     useEffect(() => {
         const menuClicked = (event) => {
-            if (filtMenu.current && !filtMenu.current.contains(event.target)) {
-                setIsFiltOn(false);
+            if (sortRef.current && !sortRef.current.contains(event.target)) {
+                setSort(false);
             }
         };
 
         document.addEventListener("mousedown", menuClicked);
         return () => document.removeEventListener("mousedown", menuClicked);
+    }, []);
+
+    useEffect(() => {
+        const filtClicked = (event) => {
+            if (filtRef.current && !filtRef.current.contains(event.target)) {
+                setFilt(false);
+            }
+        };
+
+        document.addEventListener("mousedown", filtClicked);
+        return () => document.removeEventListener("mousedown", filtClicked);
     }, []);
 
     useEffect(() => {
@@ -69,7 +83,7 @@ export default function ProductList({url}) {
         setCurrent((prev) => (prev - 1 + 3) % 3);
     };
 
-    const context = {toggleMenu, filtMenu, isFiltOn, motorLoad, motors, url};
+    const context = {toggleSort, toggleFilt, sortRef, filtRef, isSort, isFilt, motorLoad, motors, url};
 
     return (
         <section className="bg-gray-100 py-8 justify-items-center antialiased dark:bg-gray-800 md:py-12">
@@ -115,12 +129,12 @@ export default function ProductList({url}) {
                         <DropdownBttn text="Filter">
                             <Filter />
                         </DropdownBttn>
-                        <DropdownBttn toggleMenu={toggleMenu} text="Sort">
+                        <DropdownBttn toggleSort={toggleSort} text="Sort">
                             <Sort />
                         </DropdownBttn>
                     </div>
                 </div>
-                <DropdownMenu ref={filtMenu} className={isFiltOn ? "block" : "hidden"}>
+                <DropdownMenu ref={sortRef} className={isSort ? "block" : "hidden"}>
                     <MenuLink pathName="The most popular" />
                     <MenuLink pathName="Newest" />
                     <MenuLink pathName="Increasing price" />

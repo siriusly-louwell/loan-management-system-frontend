@@ -21,8 +21,9 @@ import EmploymentInfoForm from "../pages/EmploymentInfoForm";
 import FamilyInfoForm from "../pages/FamilyInfoForm";
 import FormRequirements from "../pages/FormRequirements";
 import ComakerInfo from "../pages/ComakerInfo";
+import ProtectedRoute from "../components/ProtectedRoute";
 
-export default function CustomerRoutes({log}) {
+export default function CustomerRoutes({ log }) {
   return (
     <Routes>
       <Route
@@ -31,58 +32,218 @@ export default function CustomerRoutes({log}) {
           <PageLayout links={<ApplicantNav />} img={log.pfp} path="/customer" />
         }>
         {/* <Route index element={<ProductList url="/customer/product" />} /> */}
-        <Route path="" element={<ProductList url="/customer/product" />}>
-          <Route index element={<UnitsAll />} />
-          <Route path="new" element={<UnitsNew />} />
-          <Route path="top" element={<UnitsNew />} />
-          <Route path="repo" element={<UnitsNew />} />
+        <Route
+          path=""
+          element={
+            <ProtectedRoute>
+              <ProductList url="/customer/product" />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <UnitsAll />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="new"
+            element={
+              <ProtectedRoute>
+                <UnitsNew />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="top"
+            element={
+              <ProtectedRoute>
+                <UnitsNew />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="repo"
+            element={
+              <ProtectedRoute>
+                <UnitsNew />
+              </ProtectedRoute>
+            }
+          />
         </Route>
         <Route
           path="prodlist"
-          element={<ProductList url="/customer/product" />}>
-          <Route index element={<UnitsAll />} />
-          <Route path="new" element={<UnitsNew />} />
-          <Route path="top" element={<UnitsNew />} />
-          <Route path="repo" element={<UnitsNew />} />
+          element={
+            <ProtectedRoute>
+              <ProductList url="/customer/product" />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <UnitsAll />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="new"
+            element={
+              <ProtectedRoute>
+                <UnitsNew />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="top"
+            element={
+              <ProtectedRoute>
+                <UnitsNew />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="repo"
+            element={
+              <ProtectedRoute>
+                <UnitsNew />
+              </ProtectedRoute>
+            }
+          />
         </Route>
         {/* <Route path="prodlist" element={<ProductList url="/customer/product" />} /> */}
-        <Route path="history" element={<AppNotifications />} />
+        <Route
+          path="history"
+          element={
+            <ProtectedRoute>
+              <AppNotifications />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="myloans"
           element={
-            <InvoiceList
-              id={log.id}
-              headText="Loan Applications"
-              path="/customer/loan"
-              record={`/${log.id}?by=user_id`}
-            />
+            <ProtectedRoute>
+              <InvoiceList
+                id={log.id}
+                headText="Loan Applications"
+                path="/customer/loan"
+                record={`/${log.id}?by=user_id`}
+              />
+            </ProtectedRoute>
           }
         />
         {/* <Route path="myloans" element={<InvoiceList id={log.id} headText="My Loans" />} /> */}
         <Route
           path="loan"
           element={
-            <LoanInfo>
-              <CustomBttn
-                text="Cancel Application"
-                className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
-              />
-            </LoanInfo>
+            <ProtectedRoute>
+              <LoanInfo>
+                <CustomBttn
+                  text="Cancel Application"
+                  className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
+                />
+              </LoanInfo>
+            </ProtectedRoute>
           }
         />
-        <Route path="invoice" element={<Invoice />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="calculate" element={<EMICalculator />} />
-        <Route path="product" element={<ProductInfo />} />
+        <Route
+          path="invoice"
+          element={
+            <ProtectedRoute>
+              <Invoice />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="calculate"
+          element={
+            <ProtectedRoute>
+              <EMICalculator />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="product"
+          element={
+            <ProtectedRoute>
+              <ProductInfo />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="apply" element={<ApplicationForm />}>
-          <Route index element={<TransactionForm />} />
-          <Route path="transaction" element={<TransactionFormat />} />
-          <Route path="personalinfo" element={<PersonalInfoForm />} />
-          <Route path="employinfo" element={<EmploymentInfoForm />} />
-          <Route path="familyinfo" element={<FamilyInfoForm />} />
-          <Route path="requirements" element={<FormRequirements />} />
-          <Route path="comakerform" element={<ComakerInfo />} />
+        <Route
+          path="apply"
+          element={
+            <ProtectedRoute>
+              <ApplicationForm />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <TransactionForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="transaction"
+            element={
+              <ProtectedRoute>
+                <TransactionFormat />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="personalinfo"
+            element={
+              <ProtectedRoute>
+                <PersonalInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="employinfo"
+            element={
+              <ProtectedRoute>
+                <EmploymentInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="familyinfo"
+            element={
+              <ProtectedRoute>
+                <FamilyInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="requirements"
+            element={
+              <ProtectedRoute>
+                <FormRequirements />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="comakerform"
+            element={
+              <ProtectedRoute>
+                <ComakerInfo />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Route>
     </Routes>

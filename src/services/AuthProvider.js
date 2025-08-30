@@ -11,8 +11,6 @@ export default function AuthProvider({ children }) {
     const token = localStorage.getItem("token");
     // On app load, check token and set user
     if (token) {
-      console.log("token", token);
-      setLoading(true);
 
       UserAPI.fetchUser(token)
         .then((userData) => setUser(userData))
@@ -23,7 +21,6 @@ export default function AuthProvider({ children }) {
     }
   }, []);
 
-  console.log(user, loading);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading }}>

@@ -20,59 +20,215 @@ import AccApplicants from "../pages/AccApplicants";
 import AccCI from "../pages/AccCI";
 import AccAdmins from "../pages/AccAdmins";
 import AccComakers from "../pages/AccComakers";
+import ProtectedRoute from "../components/ProtectedRoute";
 
-export default function AdminRoutes({log}) {
+export default function AdminRoutes({ log }) {
   return (
     <Routes>
       <Route
         path="/admin"
         element={<PageLayout links={<AdminNav />} path="/admin" />}>
-        <Route path="" element={<Inventory />} />
-        <Route path="inventory" element={<Inventory />} />
+        <Route
+          path=""
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="inventory"
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="loans"
           element={
-            <InvoiceList
-              id={log.id}
-              headText="Loan Applications"
-              path="/admin/loan"
-            />
-          }
-        />
-        <Route path="invoice" element={<Invoice />} />
-        <Route path="loan" element={<LoanInfo url="/admin" />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="history" element={<AppNotifications />} />
-        <Route path="apply" element={<AppliedForm url="/admin" />}>
-          <Route index element={<PersonalInfoForm />} />
-          <Route path="personalinfo" element={<PersonalInfoForm />} />
-          <Route path="employinfo" element={<EmploymentInfoForm />} />
-          <Route path="familyinfo" element={<FamilyInfoForm />} />
-          <Route path="requirements" element={<FormRequirements />} />
-        </Route>
-
-        <Route path="dashboard" element={<Dashboard />}>
-          <Route index element={<DashOverview />} />
-          <Route path="overview" element={<DashOverview />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route
-            path="invoices"
-            element={
+            <ProtectedRoute>
               <InvoiceList
                 id={log.id}
-                headText="Invoices"
-                path="/admin/invoice"
+                headText="Loan Applications"
+                path="/admin/loan"
               />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="invoice"
+          element={
+            <ProtectedRoute>
+              <Invoice />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="loan"
+          element={
+            <ProtectedRoute>
+              <LoanInfo url="/admin" />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="history"
+          element={
+            <ProtectedRoute>
+              <AppNotifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="apply"
+          element={
+            <ProtectedRoute>
+              <AppliedForm url="/admin" />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <PersonalInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="personalinfo"
+            element={
+              <ProtectedRoute>
+                <PersonalInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="employinfo"
+            element={
+              <ProtectedRoute>
+                <EmploymentInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="familyinfo"
+            element={
+              <ProtectedRoute>
+                <FamilyInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="requirements"
+            element={
+              <ProtectedRoute>
+                <FormRequirements />
+              </ProtectedRoute>
             }
           />
         </Route>
 
-        <Route path="accounts" element={<Accounts />}>
-          <Route index element={<AccApplicants />} />
-          <Route path="applicants" element={<AccApplicants />} />
-          <Route path="cis" element={<AccCI />} />
-          <Route path="staffs" element={<AccAdmins />} />
-          <Route path="customers" element={<AccComakers />} />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <DashOverview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="overview"
+            element={
+              <ProtectedRoute>
+                <DashOverview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="invoices"
+            element={
+              <ProtectedRoute>
+                <InvoiceList
+                  id={log.id}
+                  headText="Invoices"
+                  path="/admin/invoice"
+                />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        <Route
+          path="accounts"
+          element={
+            <ProtectedRoute>
+              <Accounts />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <AccApplicants />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="applicants"
+            element={
+              <ProtectedRoute>
+                <AccApplicants />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="cis"
+            element={
+              <ProtectedRoute>
+                <AccCI />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="staffs"
+            element={
+              <ProtectedRoute>
+                <AccAdmins />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="customers"
+            element={
+              <ProtectedRoute>
+                <AccComakers />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Route>
     </Routes>

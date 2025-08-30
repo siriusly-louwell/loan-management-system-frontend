@@ -41,7 +41,6 @@ export default function Login() {
         localStorage.setItem("token", response.token);
         const userData = await UserAPI.fetchUser(response.token);
         setUser(userData);
-        // setUser(response.user);
         document.getElementById("login_spin").style.display = "none";
         navigate("/" + response.user.role);
       }

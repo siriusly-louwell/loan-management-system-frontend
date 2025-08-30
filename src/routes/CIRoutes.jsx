@@ -46,26 +46,97 @@ export default function CIRoutes({ log }) {
         <Route
           path="evaluation"
           element={
-            <InvoiceList
-              id={log.id}
-              headText="Loans Evaluation"
-              path="/ci/cireport"
-              bttnText="Evaluate"
-            />
+            <ProtectedRoute>
+              <InvoiceList
+                id={log.id}
+                headText="Loans Evaluation"
+                path="/ci/cireport"
+                bttnText="Evaluate"
+              />
+            </ProtectedRoute>
           }
         />
         {/* <Route path="recommendation" element={<InvoiceList id={log.id} headText="Evaluated Loans" />} /> */}
-        <Route path="ciloan" element={<LoanInfo url="/ci" />} />
-        <Route path="cireport" element={<CIReport />} />
-        <Route path="review" element={<ReportReview />} />
+        <Route
+          path="ciloan"
+          element={
+            <ProtectedRoute>
+              <LoanInfo url="/ci" />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cireport"
+          element={
+            <ProtectedRoute>
+              <CIReport />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="review"
+          element={
+            <ProtectedRoute>
+              <ReportReview />
+            </ProtectedRoute>
+          }
+        />
         {/* <Route path="ciappform" element={<CIAppForm />} /> */}
-        <Route path="profile" element={<Profile />} />
-        <Route path="apply" element={<AppliedForm url="/ci" />}>
-          <Route index element={<PersonalInfoForm />} />
-          <Route path="personalinfo" element={<PersonalInfoForm />} />
-          <Route path="employinfo" element={<EmploymentInfoForm />} />
-          <Route path="familyinfo" element={<FamilyInfoForm />} />
-          <Route path="requirements" element={<FormRequirements />} />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="apply"
+          element={
+            <ProtectedRoute>
+              <AppliedForm url="/ci" />
+            </ProtectedRoute>
+          }>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <PersonalInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="personalinfo"
+            element={
+              <ProtectedRoute>
+                <PersonalInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="employinfo"
+            element={
+              <ProtectedRoute>
+                <EmploymentInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="familyinfo"
+            element={
+              <ProtectedRoute>
+                <FamilyInfoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="requirements"
+            element={
+              <ProtectedRoute>
+                <FormRequirements />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Route>
     </Routes>

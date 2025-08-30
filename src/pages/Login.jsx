@@ -7,11 +7,13 @@ import RMCI from "../assets/images/RMCI.png";
 import Spinner from "../components/loading components/Spinner";
 import Alert from "../components/Alert";
 import UserAPI from "../services/api/UserAPI";
+import { useAuth } from "../services/AuthProvider";
 
-export default function Login({ setUser }) {
+export default function Login() {
   const navigate = useNavigate();
   const [loginData, setLogin] = useState({});
   const [alert, setAlert] = useState({});
+  const {setUser} = useAuth();
 
   function handleChange(event) {
     setLogin({
@@ -26,7 +28,6 @@ export default function Login({ setUser }) {
 
     try {
       const response = await UserAPI.login(loginData);
-      console.log(response);
 
       if (!response) {
         console.error("Login failed:", response);
@@ -38,7 +39,9 @@ export default function Login({ setUser }) {
         document.getElementById("login_alert").style.display = "block";
       } else {
         localStorage.setItem("token", response.token);
-        setUser(response.user);
+        const userData = await UserAPI.fetchUser(response.token);
+        setUser(userData);
+        // setUser(response.user);
         document.getElementById("login_spin").style.display = "none";
         navigate("/" + response.user.role);
       }

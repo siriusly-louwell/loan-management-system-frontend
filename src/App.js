@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./services/AuthProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUserWithToken } from "./services/redux/authSlice";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PageNotFound from "./pages/PageNotFound";
@@ -48,7 +50,17 @@ import Accounts from "./pages/Accounts";
 
 function App() {
   const [log, setLog] = useState({});
-  const { user } = useAuth();
+  const { response } = useSelector((state) => state.auth);
+  const user = response.user;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(loginUserWithToken(token)); // A thunk that validates token and fetches user data
+    }
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
@@ -84,7 +96,7 @@ function App() {
           element={
             <PageLayout
               links={<ApplicantNav />}
-              img={user.pfp}
+              img={user?.pfp}
               path="/customer"
             />
           }>
@@ -183,10 +195,10 @@ function App() {
             element={
               <ProtectedRoute type="customer">
                 <InvoiceList
-                  id={user.id}
+                  id={user?.id}
                   headText="Loan Applications"
                   path="/customer/loan"
-                  record={`/${user.id}?by=user_id`}
+                  record={`/${user?.id}?by=user_id`}
                 />
               </ProtectedRoute>
             }
@@ -348,13 +360,13 @@ function App() {
         {/* CI Routes */}
         <Route
           path="/ci"
-          element={<PageLayout links={<CINav />} img={user.pfp} path="/ci" />}>
+          element={<PageLayout links={<CINav />} img={user?.pfp} path="/ci" />}>
           <Route
             index
             element={
               <ProtectedRoute type="ci">
                 <InvoiceList
-                  id={user.id}
+                  id={user?.id}
                   headText="Loan Applications"
                   path="/ci/ciloan"
                 />
@@ -366,7 +378,7 @@ function App() {
             element={
               <ProtectedRoute type="ci">
                 <InvoiceList
-                  id={user.id}
+                  id={user?.id}
                   headText="Loan Applications"
                   path="/ci/ciloan"
                 />
@@ -378,7 +390,7 @@ function App() {
             element={
               <ProtectedRoute type="ci">
                 <InvoiceList
-                  id={user.id}
+                  id={user?.id}
                   headText="Loans Evaluation"
                   path="/ci/cireport"
                   bttnText="Evaluate"
@@ -474,7 +486,7 @@ function App() {
         <Route
           path="/staff"
           element={
-            <PageLayout links={<StaffNav />} img={user.pfp} path="/staff" />
+            <PageLayout links={<StaffNav />} img={user?.pfp} path="/staff" />
           }>
           <Route
             index
@@ -498,7 +510,7 @@ function App() {
             element={
               <ProtectedRoute type="staff">
                 <InvoiceList
-                  id={user.id}
+                  id={user?.id}
                   headText="Loan Applications"
                   path="/staff/loan"
                 />
@@ -620,7 +632,7 @@ function App() {
             element={
               <ProtectedRoute type="admin">
                 <InvoiceList
-                  id={user.id}
+                  id={user?.id}
                   headText="Loan Applications"
                   path="/admin/loan"
                 />
@@ -744,7 +756,7 @@ function App() {
               element={
                 <ProtectedRoute type="admin">
                   <InvoiceList
-                    id={user.id}
+                    id={user?.id}
                     headText="Invoices"
                     path="/admin/invoice"
                   />

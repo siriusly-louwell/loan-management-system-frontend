@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/buttons/Button";
 import TextInput from "../components/inputs/TextInput";
 import Checkbox from "../components/checkboxes/Checkbox";
 import RMCI from "../assets/images/RMCI.png";
 import Spinner from "../components/loading components/Spinner";
-import Alert from "../components/Alert";
 import UserAPI from "../services/api/UserAPI";
 import { useAuth } from "../services/AuthProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../services/redux/authSlice";
 
 export default function Login() {
   const navigate = useNavigate();
   const [loginData, setLogin] = useState({});
-  // const [alert, setAlert] = useState({});
-  const {setUser, setAlert} = useAuth();
+  const { setUser, setAlert } = useAuth();
+  const { isAuthenticated, response, loading, error } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
 
   function handleChange(event) {
     setLogin({
@@ -27,30 +31,16 @@ export default function Login() {
     document.getElementById("login_spin").style.display = "flex";
 
     try {
-      const response = await UserAPI.login(loginData);
-
-      if (!response) {
-        console.error("Login failed:", response);
-        setAlert({
-          toggle: true,
-          message: response.message,
-          type: "error",
-        });
-        document.getElementById("login_spin").style.display = "none";
-      } else {
-        localStorage.setItem("token", response.token);
-        const userData = await UserAPI.fetchUser(response.token);
-        setUser(userData);
-        document.getElementById("login_spin").style.display = "none";
-        navigate("/" + response.user.role);
-        setAlert({
-          toggle: true,
-          message: "Login Successful",
-          type: "success",
-        });
-      }
+      const response = await dispatch(loginUser(loginData)).unwrap();
+      document.getElementById("login_spin").style.display = "none";
+      navigate("/" + response.user.role);
+      setAlert({
+        toggle: true,
+        message: "Login Successful",
+        type: "success",
+      });
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error.response);
       setAlert({
         toggle: true,
         message: "Unexpected Error!",

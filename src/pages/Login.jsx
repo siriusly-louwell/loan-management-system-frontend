@@ -5,19 +5,14 @@ import TextInput from "../components/inputs/TextInput";
 import Checkbox from "../components/checkboxes/Checkbox";
 import RMCI from "../assets/images/RMCI.png";
 import Spinner from "../components/loading components/Spinner";
-import UserAPI from "../services/api/UserAPI";
-import { useAuth } from "../services/AuthProvider";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../services/redux/authSlice";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../services/redux/slices/authSlice";
+import { setAlert } from "../services/redux/slices/uiSlice";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginData, setLogin] = useState({});
-  const { setUser, setAlert } = useAuth();
-  const { isAuthenticated, response, loading, error } = useSelector(
-    (state) => state.auth
-  );
-  const dispatch = useDispatch();
 
   function handleChange(event) {
     setLogin({
@@ -34,18 +29,22 @@ export default function Login() {
       const response = await dispatch(loginUser(loginData)).unwrap();
       document.getElementById("login_spin").style.display = "none";
       navigate("/" + response.user.role);
-      setAlert({
-        toggle: true,
-        message: "Login Successful",
-        type: "success",
-      });
+      dispatch(
+        setAlert({
+          toggle: true,
+          message: "Login Successful",
+          type: "success",
+        })
+      );
     } catch (error) {
       console.error(error.response);
-      setAlert({
-        toggle: true,
-        message: "Unexpected Error!",
-        type: "error",
-      });
+      dispatch(
+        setAlert({
+          toggle: true,
+          message: "Unexpected Error!",
+          type: "error",
+        })
+      );
       document.getElementById("login_spin").style.display = "none";
     }
   }

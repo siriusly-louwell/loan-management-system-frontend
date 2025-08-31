@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import UserAPI from "./api/UserAPI";
 import Alert from "../components/modals/Alert";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserWithToken } from "./redux/authSlice";
+import { loginUserWithToken } from "./redux/slices/authSlice";
 
 const AuthContext = createContext();
 

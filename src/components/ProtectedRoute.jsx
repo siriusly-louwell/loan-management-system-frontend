@@ -1,22 +1,27 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../services/AuthProvider";
 import SmallSpin from "./loading components/SmallSpin";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAlert } from "../services/redux/slices/uiSlice";
 
 export default function ProtectedRoute({ children, type }) {
-  const { setAlert } = useAuth();
   const { response, loading, isAuthenticated } = useSelector(
     (state) => state.auth
   );
+  const dispatch = useDispatch();
   const isUnauthorized = !response || response.role != type;
 
   useEffect(() => {
     if (isUnauthorized && !loading) {
-      setAlert({ toggle: true, type: "error", message: "Unauthorized access" });
-      setTimeout(() => setAlert({ toggle: false }), 2000);
+      dispatch(
+        setAlert({
+          toggle: true,
+          message: "Unauthorized access",
+          type: "error",
+        })
+      );
     }
-  }, [isAuthenticated, loading, setAlert]);
+  }, [isAuthenticated, loading, dispatch]);
 
   if (loading)
     return (
@@ -24,8 +29,7 @@ export default function ProtectedRoute({ children, type }) {
         <SmallSpin size={68} />
       </section>
     );
-  if (isUnauthorized)
-    return <Navigate to="/login" replace />;
+  if (isUnauthorized) return <Navigate to="/login" replace />;
 
   return children;
 }

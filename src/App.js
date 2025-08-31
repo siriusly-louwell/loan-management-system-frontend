@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "./services/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserWithToken } from "./services/redux/authSlice";
+import { loginUserWithToken } from "./services/redux/slices/authSlice";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PageNotFound from "./pages/PageNotFound";
@@ -47,6 +47,7 @@ import AccCI from "./pages/AccCI";
 import AccAdmins from "./pages/AccAdmins";
 import AccComakers from "./pages/AccComakers";
 import Accounts from "./pages/Accounts";
+import Alert from "./components/modals/Alert";
 
 function App() {
   const [log, setLog] = useState({});
@@ -58,12 +59,13 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      dispatch(loginUserWithToken(token)); // A thunk that validates token and fetches user data
+      dispatch(loginUserWithToken(token));
     }
   }, [dispatch]);
 
   return (
     <BrowserRouter>
+      <Alert />
       <Routes>
         {/* Outside Routes */}
         <Route path="/login" element={<Login setUser={setLog} />} />

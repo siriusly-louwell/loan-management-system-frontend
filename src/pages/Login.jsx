@@ -12,8 +12,8 @@ import { useAuth } from "../services/AuthProvider";
 export default function Login() {
   const navigate = useNavigate();
   const [loginData, setLogin] = useState({});
-  const [alert, setAlert] = useState({});
-  const {setUser} = useAuth();
+  // const [alert, setAlert] = useState({});
+  const {setUser, setAlert} = useAuth();
 
   function handleChange(event) {
     setLogin({
@@ -32,25 +32,30 @@ export default function Login() {
       if (!response) {
         console.error("Login failed:", response);
         setAlert({
-          text: response.message,
-          icon: "warn",
+          toggle: true,
+          message: response.message,
+          type: "error",
         });
         document.getElementById("login_spin").style.display = "none";
-        document.getElementById("login_alert").style.display = "block";
       } else {
         localStorage.setItem("token", response.token);
         const userData = await UserAPI.fetchUser(response.token);
         setUser(userData);
         document.getElementById("login_spin").style.display = "none";
         navigate("/" + response.user.role);
+        setAlert({
+          toggle: true,
+          message: "Login Successful",
+          type: "success",
+        });
       }
     } catch (error) {
       console.error(error.response.data);
       setAlert({
-        text: "Unexpected Error!",
-        icon: "warn",
+        toggle: true,
+        message: "Unexpected Error!",
+        type: "error",
       });
-      document.getElementById("login_alert").style.display = "block";
       document.getElementById("login_spin").style.display = "none";
     }
   }
@@ -112,15 +117,6 @@ export default function Login() {
               </form>
             </div>
           </div>
-          <Alert id="login_alert" text={alert.text} icon={alert.icon}>
-            <Button
-              text="Ok"
-              type="button"
-              onclick={() =>
-                (document.getElementById("login_alert").style.display = "none")
-              }
-            />
-          </Alert>
           <Spinner id="login_spin" />
         </div>
       </section>

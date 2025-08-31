@@ -9,6 +9,8 @@ import ProductInfo from "../pages/ProductInfo";
 import LoanInfo from "../pages/LoanInfo";
 import PageLayout from "../pages/PageLayout";
 import GuestNav from "../components/navigations/GuestNav";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 export default function GuestRoutes() {
   return (
@@ -31,6 +33,9 @@ export default function GuestRoutes() {
         <Route path="unit" element={<ProductInfo />} />
         <Route path="application" element={<LoanInfo />} />
       </Route>
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }

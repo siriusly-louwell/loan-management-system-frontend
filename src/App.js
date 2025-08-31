@@ -1,70 +1,65 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "./services/AuthProvider";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ProductInfo from "./pages/ProductInfo";
-import ProductList from "./pages/ProductList";
-import Inventory from "./pages/Inventory";
-import Cashier from "./pages/Cashier";
-import Dashboard from "./pages/Dashboard";
-import ApplicationForm from "./pages/ApplicationForm";
-import LoanInfo from "./pages/LoanInfo";
-import InvoiceList from "./pages/InvoiceList";
-import Profile from "./pages/Profile";
-import CIReport from "./pages/CIReport";
-import CoMakerForm from "./pages/CoMakerForm";
 import PageNotFound from "./pages/PageNotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 import PageLayout from "./pages/PageLayout";
+import GuestNav from "./components/navigations/GuestNav";
+import ProductList from "./pages/ProductList";
+import UnitsAll from "./pages/UnitsAll";
+import UnitsNew from "./pages/UnitsNew";
+import SearchPage from "./pages/SearchPage";
+import About from "./pages/About";
+import ProductInfo from "./pages/ProductInfo";
+import LoanInfo from "./pages/LoanInfo";
+import ApplicantNav from "./components/navigations/ApplicantNav";
+import AppNotifications from "./components/modals/AppNotifications";
+import InvoiceList from "./pages/InvoiceList";
+import CustomBttn from "./components/buttons/CustomBttn";
+import Invoice from "./pages/Invoice";
+import Profile from "./pages/Profile";
+import EMICalculator from "./pages/EMICalculator";
+import ApplicationForm from "./pages/ApplicationForm";
+import TransactionForm from "./pages/TransactionForm";
+import TransactionFormat from "./components/TransactionFormat";
+import PersonalInfoForm from "./pages/PersonalInfoForm";
+import EmploymentInfoForm from "./pages/EmploymentInfoForm";
+import FamilyInfoForm from "./pages/FamilyInfoForm";
+import FormRequirements from "./pages/FormRequirements";
+import ComakerInfo from "./pages/ComakerInfo";
+import CINav from "./components/navigations/CINav";
+import CIReport from "./pages/CIReport";
+import ReportReview from "./pages/ReportReview";
+import AppliedForm from "./pages/AppliedForm";
+import StaffNav from "./components/navigations/StaffNav";
+import Cashier from "./pages/Cashier";
+import AdminNav from "./components/navigations/AdminNav";
+import Inventory from "./pages/Inventory";
+import Dashboard from "./pages/Dashboard";
 import DashOverview from "./pages/DashOverview";
 import Notifications from "./components/modals/Notifications";
-import Accounts from "./pages/Accounts";
 import AccApplicants from "./pages/AccApplicants";
 import AccCI from "./pages/AccCI";
 import AccAdmins from "./pages/AccAdmins";
 import AccComakers from "./pages/AccComakers";
-import Invoice from "./pages/Invoice";
-import AppNotifications from "./components/modals/AppNotifications";
-import FormRequirements from "./pages/FormRequirements";
-import PersonalInfoForm from "./pages/PersonalInfoForm";
-import FamilyInfoForm from "./pages/FamilyInfoForm";
-import EmploymentInfoForm from "./pages/EmploymentInfoForm";
-import CILoanInfo from "./pages/CILoanInfo";
-import CIAppForm from "./pages/CIAppForm";
-import About from "./pages/About";
-import GuestNav from "./components/navigations/GuestNav";
-import AdminNav from "./components/navigations/AdminNav";
-import StaffNav from "./components/navigations/StaffNav";
-import ApplicantNav from "./components/navigations/ApplicantNav";
-import CINav from "./components/navigations/CINav";
-import CoMakerNav from "./components/navigations/CoMakerNav";
-import EMICalculator from "./pages/EMICalculator";
-import CustomBttn from "./components/buttons/CustomBttn";
-import AppliedForm from "./pages/AppliedForm";
-import ComakerInfo from "./pages/ComakerInfo";
-import TransactionForm from "./pages/TransactionForm";
-import SearchPage from "./pages/SearchPage";
-import { useState } from "react";
-import UnitsAll from "./pages/UnitsAll";
-import UnitsNew from "./pages/UnitsNew";
-import ReportReview from "./pages/ReportReview";
-import GuestRoutes from "./routes/GuestRoutes";
-import CustomerRoutes from "./routes/CustomerRoutes";
-import AdminRoutes from "./routes/AdminRoutes";
-import CIRoutes from "./routes/CIRoutes";
+import Accounts from "./pages/Accounts";
 
 function App() {
   const [log, setLog] = useState({});
+  const { user } = useAuth();
 
   return (
     <BrowserRouter>
-      <GuestRoutes />
-      <CustomerRoutes log={log} />
-      <CIRoutes log={log} />
-      <AdminRoutes log={log} />
       <Routes>
+        {/* Outside Routes */}
         <Route path="/login" element={<Login setUser={setLog} />} />
         <Route path="/register" element={<Register setUser={setLog} />} />
         <Route path="*" element={<PageNotFound />} />
-        {/* <Route path="/" element={<PageLayout links={<GuestNav />} />}>
+
+        {/* Guest Routes */}
+        <Route path="/" element={<PageLayout links={<GuestNav />} />}>
           <Route path="" element={<ProductList url="/unit" />}>
             <Route index element={<UnitsAll />} />
             <Route path="new" element={<UnitsNew />} />
@@ -81,69 +76,233 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="unit" element={<ProductInfo />} />
           <Route path="application" element={<LoanInfo />} />
-        </Route> */}
+        </Route>
 
-        {/* <Route
+        {/* Customer Routes */}
+        <Route
           path="/customer"
           element={
             <PageLayout
               links={<ApplicantNav />}
-              img={log.pfp}
+              img={user.pfp}
               path="/customer"
             />
           }>
-          <Route path="" element={<ProductList url="/customer/product" />}>
-            <Route index element={<UnitsAll />} />
-            <Route path="new" element={<UnitsNew />} />
-            <Route path="top" element={<UnitsNew />} />
-            <Route path="repo" element={<UnitsNew />} />
+          {/* <Route index element={<ProductList url="/customer/product" />} /> */}
+          <Route
+            path=""
+            element={
+              <ProtectedRoute type="customer">
+                <ProductList url="/customer/product" />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsAll />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="new"
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsNew />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="top"
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsNew />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="repo"
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsNew />
+                </ProtectedRoute>
+              }
+            />
           </Route>
           <Route
             path="prodlist"
-            element={<ProductList url="/customer/product" />}>
-            <Route index element={<UnitsAll />} />
-            <Route path="new" element={<UnitsNew />} />
-            <Route path="top" element={<UnitsNew />} />
-            <Route path="repo" element={<UnitsNew />} />
+            element={
+              <ProtectedRoute type="customer">
+                <ProductList url="/customer/product" />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsAll />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="new"
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsNew />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="top"
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsNew />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="repo"
+              element={
+                <ProtectedRoute type="customer">
+                  <UnitsNew />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-          <Route path="history" element={<AppNotifications />} />
+          {/* <Route path="prodlist" element={<ProductList url="/customer/product" />} /> */}
+          <Route
+            path="history"
+            element={
+              <ProtectedRoute type="customer">
+                <AppNotifications />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="myloans"
             element={
-              <InvoiceList
-                id={log.id}
-                headText="Loan Applications"
-                path="/customer/loan"
-                record={`/${log.id}?by=user_id`}
-              />
+              <ProtectedRoute type="customer">
+                <InvoiceList
+                  id={user.id}
+                  headText="Loan Applications"
+                  path="/customer/loan"
+                  record={`/${user.id}?by=user_id`}
+                />
+              </ProtectedRoute>
             }
           />
+          {/* <Route path="myloans" element={<InvoiceList id={user.id} headText="My Loans" />} /> */}
           <Route
             path="loan"
             element={
-              <LoanInfo>
-                <CustomBttn
-                  text="Cancel Application"
-                  className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
-                />
-              </LoanInfo>
+              <ProtectedRoute type="customer">
+                <LoanInfo>
+                  <CustomBttn
+                    text="Cancel Application"
+                    className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
+                  />
+                </LoanInfo>
+              </ProtectedRoute>
             }
           />
-          <Route path="invoice" element={<Invoice />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="calculate" element={<EMICalculator />} />
-          <Route path="product" element={<ProductInfo />} />
+          <Route
+            path="invoice"
+            element={
+              <ProtectedRoute type="customer">
+                <Invoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute type="customer">
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="calculate"
+            element={
+              <ProtectedRoute type="customer">
+                <EMICalculator />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="product"
+            element={
+              <ProtectedRoute type="customer">
+                <ProductInfo />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="apply" element={<ApplicationForm />}>
-            <Route index element={<TransactionForm />} />
-            <Route path="transaction" element={<TransactionForm />} />
-            <Route path="personalinfo" element={<PersonalInfoForm />} />
-            <Route path="employinfo" element={<EmploymentInfoForm />} />
-            <Route path="familyinfo" element={<FamilyInfoForm />} />
-            <Route path="requirements" element={<FormRequirements />} />
-            <Route path="comakerform" element={<ComakerInfo />} />
+          <Route
+            path="apply"
+            element={
+              <ProtectedRoute type="customer">
+                <ApplicationForm />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="customer">
+                  <TransactionForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="transaction"
+              element={
+                <ProtectedRoute type="customer">
+                  <TransactionFormat />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="personalinfo"
+              element={
+                <ProtectedRoute type="customer">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="employinfo"
+              element={
+                <ProtectedRoute type="customer">
+                  <EmploymentInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="familyinfo"
+              element={
+                <ProtectedRoute type="customer">
+                  <FamilyInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="requirements"
+              element={
+                <ProtectedRoute type="customer">
+                  <FormRequirements />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="comakerform"
+              element={
+                <ProtectedRoute type="customer">
+                  <ComakerInfo />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-        </Route> */}
+        </Route>
 
         {/* <Route
           path="/comaker"
@@ -152,7 +311,7 @@ function App() {
             index
             element={
               <InvoiceList
-                id={log.id}
+                id={user.id}
                 headText="Liable Applications"
                 path="/comaker/comakeform"
                 bttnText="Oblige Loan"
@@ -163,7 +322,7 @@ function App() {
             path="obligeloans"
             element={
               <InvoiceList
-                id={log.id}
+                id={user.id}
                 headText="Liable Applications"
                 path="/comaker/comakeform"
                 bttnText="Oblige Loan"
@@ -174,7 +333,7 @@ function App() {
             path="cosigned"
             element={
               <InvoiceList
-                id={log.id}
+                id={user.id}
                 headText="Co-Signed Loans"
                 path="/comaker/ciloan"
               />
@@ -186,135 +345,463 @@ function App() {
           <Route path="profile" element={<Profile />} />
         </Route> */}
 
-        {/* <Route
+        {/* CI Routes */}
+        <Route
           path="/ci"
-          element={<PageLayout links={<CINav />} img={log.pfp} path="/ci" />}>
+          element={<PageLayout links={<CINav />} img={user.pfp} path="/ci" />}>
           <Route
             index
             element={
-              <InvoiceList
-                id={log.id}
-                headText="Loan Applications"
-                path="/ci/ciloan"
-              />
+              <ProtectedRoute type="ci">
+                <InvoiceList
+                  id={user.id}
+                  headText="Loan Applications"
+                  path="/ci/ciloan"
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path="loan"
             element={
-              <InvoiceList
-                id={log.id}
-                headText="Loan Applications"
-                path="/ci/ciloan"
-              />
+              <ProtectedRoute type="ci">
+                <InvoiceList
+                  id={user.id}
+                  headText="Loan Applications"
+                  path="/ci/ciloan"
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path="evaluation"
             element={
-              <InvoiceList
-                id={log.id}
-                headText="Loans Evaluation"
-                path="/ci/cireport"
-                bttnText="Evaluate"
-              />
+              <ProtectedRoute type="ci">
+                <InvoiceList
+                  id={user.id}
+                  headText="Loans Evaluation"
+                  path="/ci/cireport"
+                  bttnText="Evaluate"
+                />
+              </ProtectedRoute>
             }
           />
-          <Route path="ciloan" element={<LoanInfo url="/ci" />} />
-          <Route path="cireport" element={<CIReport />} />
-          <Route path="review" element={<ReportReview />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="apply" element={<AppliedForm url="/ci" />}>
-            <Route index element={<PersonalInfoForm />} />
-            <Route path="personalinfo" element={<PersonalInfoForm />} />
-            <Route path="employinfo" element={<EmploymentInfoForm />} />
-            <Route path="familyinfo" element={<FamilyInfoForm />} />
-            <Route path="requirements" element={<FormRequirements />} />
+          {/* <Route path="recommendation" element={<InvoiceList id={user.id} headText="Evaluated Loans" />} /> */}
+          <Route
+            path="ciloan"
+            element={
+              <ProtectedRoute type="ci">
+                <LoanInfo url="/ci" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="cireport"
+            element={
+              <ProtectedRoute type="ci">
+                <CIReport />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="review"
+            element={
+              <ProtectedRoute type="ci">
+                <ReportReview />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="ciappform" element={<CIAppForm />} /> */}
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute type="ci">
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="apply"
+            element={
+              <ProtectedRoute type="ci">
+                <AppliedForm url="/ci" />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="ci">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="personalinfo"
+              element={
+                <ProtectedRoute type="ci">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="employinfo"
+              element={
+                <ProtectedRoute type="ci">
+                  <EmploymentInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="familyinfo"
+              element={
+                <ProtectedRoute type="ci">
+                  <FamilyInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="requirements"
+              element={
+                <ProtectedRoute type="ci">
+                  <FormRequirements />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-        </Route> */}
+        </Route>
 
-        {/* <Route
+        {/* Staff Routes */}
+        <Route
           path="/staff"
           element={
-            <PageLayout links={<StaffNav />} img={log.pfp} path="/staff" />
+            <PageLayout links={<StaffNav />} img={user.pfp} path="/staff" />
           }>
-          <Route index element={<Cashier />} />
-          <Route path="cashier" element={<Cashier />} />
+          <Route
+            index
+            element={
+              <ProtectedRoute type="staff">
+                <Cashier />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="inventory" element={<Inventory />} /> */}
+          <Route
+            path="cashier"
+            element={
+              <ProtectedRoute type="staff">
+                <Cashier />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="loans"
             element={
-              <InvoiceList
-                id={log.id}
-                headText="Loan Applications"
-                path="/staff/loan"
-              />
+              <ProtectedRoute type="staff">
+                <InvoiceList
+                  id={user.id}
+                  headText="Loan Applications"
+                  path="/staff/loan"
+                />
+              </ProtectedRoute>
             }
           />
-          <Route path="loan" element={<LoanInfo url="/staff" />} />
-          <Route path="product" element={<ProductInfo staff={true} />} />
-          <Route path="history" element={<AppNotifications />} />
-          <Route path="loan_his" element={<AppNotifications />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="apply" element={<AppliedForm url="/staff" />}>
-            <Route index element={<PersonalInfoForm />} />
-            <Route path="personalinfo" element={<PersonalInfoForm />} />
-            <Route path="employinfo" element={<EmploymentInfoForm />} />
-            <Route path="familyinfo" element={<FamilyInfoForm />} />
-            <Route path="requirements" element={<FormRequirements />} />
+          <Route
+            path="loan"
+            element={
+              <ProtectedRoute type="staff">
+                <LoanInfo url="/staff" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="product"
+            element={
+              <ProtectedRoute type="staff">
+                <ProductInfo staff={true} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="history"
+            element={
+              <ProtectedRoute type="staff">
+                <AppNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="loan_his"
+            element={
+              <ProtectedRoute type="staff">
+                <AppNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute type="staff">
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="apply"
+            element={
+              <ProtectedRoute type="staff">
+                <AppliedForm url="/staff" />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="staff">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="personalinfo"
+              element={
+                <ProtectedRoute type="staff">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="employinfo"
+              element={
+                <ProtectedRoute type="staff">
+                  <EmploymentInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="familyinfo"
+              element={
+                <ProtectedRoute type="staff">
+                  <FamilyInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="requirements"
+              element={
+                <ProtectedRoute type="staff">
+                  <FormRequirements />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-        </Route> */}
+        </Route>
 
-        {/* <Route
+        {/* Admin Routes */}
+        <Route
           path="/admin"
           element={<PageLayout links={<AdminNav />} path="/admin" />}>
-          <Route path="" element={<Inventory />} />
-          <Route path="inventory" element={<Inventory />} />
+          <Route
+            path=""
+            element={
+              <ProtectedRoute type="admin">
+                <Inventory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="inventory"
+            element={
+              <ProtectedRoute type="admin">
+                <Inventory />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="loans"
             element={
-              <InvoiceList
-                id={log.id}
-                headText="Loan Applications"
-                path="/admin/loan"
-              />
+              <ProtectedRoute type="admin">
+                <InvoiceList
+                  id={user.id}
+                  headText="Loan Applications"
+                  path="/admin/loan"
+                />
+              </ProtectedRoute>
             }
           />
-          <Route path="invoice" element={<Invoice />} />
-          <Route path="loan" element={<LoanInfo url="/admin" />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="history" element={<AppNotifications />} />
-          <Route path="apply" element={<AppliedForm url="/admin" />}>
-            <Route index element={<PersonalInfoForm />} />
-            <Route path="personalinfo" element={<PersonalInfoForm />} />
-            <Route path="employinfo" element={<EmploymentInfoForm />} />
-            <Route path="familyinfo" element={<FamilyInfoForm />} />
-            <Route path="requirements" element={<FormRequirements />} />
-          </Route>
-
-          <Route path="dashboard" element={<Dashboard />}>
-            <Route index element={<DashOverview />} />
-            <Route path="overview" element={<DashOverview />} />
-            <Route path="notifications" element={<Notifications />} />
+          <Route
+            path="invoice"
+            element={
+              <ProtectedRoute type="admin">
+                <Invoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="loan"
+            element={
+              <ProtectedRoute type="admin">
+                <LoanInfo url="/admin" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute type="admin">
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="history"
+            element={
+              <ProtectedRoute type="admin">
+                <AppNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="apply"
+            element={
+              <ProtectedRoute type="admin">
+                <AppliedForm url="/admin" />
+              </ProtectedRoute>
+            }>
             <Route
-              path="invoices"
+              index
               element={
-                <InvoiceList
-                  id={log.id}
-                  headText="Invoices"
-                  path="/admin/invoice"
-                />
+                <ProtectedRoute type="admin">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="personalinfo"
+              element={
+                <ProtectedRoute type="admin">
+                  <PersonalInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="employinfo"
+              element={
+                <ProtectedRoute type="admin">
+                  <EmploymentInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="familyinfo"
+              element={
+                <ProtectedRoute type="admin">
+                  <FamilyInfoForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="requirements"
+              element={
+                <ProtectedRoute type="admin">
+                  <FormRequirements />
+                </ProtectedRoute>
               }
             />
           </Route>
 
-          <Route path="accounts" element={<Accounts />}>
-            <Route index element={<AccApplicants />} />
-            <Route path="applicants" element={<AccApplicants />} />
-            <Route path="cis" element={<AccCI />} />
-            <Route path="staffs" element={<AccAdmins />} />
-            <Route path="customers" element={<AccComakers />} />
+          <Route
+            path="dashboard"
+            element={
+              <ProtectedRoute type="admin">
+                <Dashboard />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="admin">
+                  <DashOverview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="overview"
+              element={
+                <ProtectedRoute type="admin">
+                  <DashOverview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="notifications"
+              element={
+                <ProtectedRoute type="admin">
+                  <Notifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="invoices"
+              element={
+                <ProtectedRoute type="admin">
+                  <InvoiceList
+                    id={user.id}
+                    headText="Invoices"
+                    path="/admin/invoice"
+                  />
+                </ProtectedRoute>
+              }
+            />
           </Route>
-        </Route> */}
+
+          <Route
+            path="accounts"
+            element={
+              <ProtectedRoute type="admin">
+                <Accounts />
+              </ProtectedRoute>
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="admin">
+                  <AccApplicants />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="applicants"
+              element={
+                <ProtectedRoute type="admin">
+                  <AccApplicants />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="cis"
+              element={
+                <ProtectedRoute type="admin">
+                  <AccCI />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="staffs"
+              element={
+                <ProtectedRoute type="admin">
+                  <AccAdmins />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="customers"
+              element={
+                <ProtectedRoute type="admin">
+                  <AccComakers />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

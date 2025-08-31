@@ -12,6 +12,7 @@ import EmploymentInfoForm from "../pages/EmploymentInfoForm";
 import FamilyInfoForm from "../pages/FamilyInfoForm";
 import FormRequirements from "../pages/FormRequirements";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Login from "../pages/Login";
 
 export default function CIRoutes({ log }) {
   return (
@@ -139,6 +140,8 @@ export default function CIRoutes({ log }) {
           />
         </Route>
       </Route>
+
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }

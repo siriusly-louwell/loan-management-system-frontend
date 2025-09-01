@@ -1,18 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import UserAPI from "../../api/UserAPI";
+import { loginUseCase } from "../../usecases/loginUseCase";
+import { authRepository } from './../../repositories/authRepository';
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, thunkAPI) => {
     try {
-      const response = await UserAPI.login(credentials);
-
-      if (!response) {
-        throw new Error("Login failed");
-      }
-
-      localStorage.setItem("token", response.token);
-      return response;
+      return await loginUseCase(credentials);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -23,10 +17,7 @@ export const loginUserWithToken = createAsyncThunk(
   "auth/loginUserWithToken",
   async (token, thunkAPI) => {
     try {
-      const response = await UserAPI.fetchUser(token);
-      
-      if (!response) throw new Error("Token invalid");
-      return response;
+      return await authRepository.tokenLogin(token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -38,13 +29,16 @@ const authSlice = createSlice({
   initialState: {
     isAuthenticated: false,
     response: {},
+    loggedOut: false,
     loading: true,
     error: null,
   },
   reducers: {
     logout: (state) => {
+      authRepository.clearToken();
       state.isAuthenticated = false;
       state.response = null;
+      state.loggedOut = true;
     },
   },
   extraReducers: (builder) => {

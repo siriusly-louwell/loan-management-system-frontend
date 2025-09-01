@@ -48,16 +48,16 @@ import AccAdmins from "./pages/AccAdmins";
 import AccComakers from "./pages/AccComakers";
 import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
+import { authRepository } from './services/repositories/authRepository';
 
 function App() {
+  const dispatch = useDispatch();
   const [log, setLog] = useState({});
   const { response } = useSelector((state) => state.auth);
-  const user = response.user;
-
-  const dispatch = useDispatch();
+  const user = response?.user;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = authRepository.getToken();
     if (token) {
       dispatch(loginUserWithToken(token));
     }
@@ -68,7 +68,7 @@ function App() {
       <Alert />
       <Routes>
         {/* Outside Routes */}
-        <Route path="/login" element={<Login setUser={setLog} />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register setUser={setLog} />} />
         <Route path="*" element={<PageNotFound />} />
 

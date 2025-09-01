@@ -7,12 +7,16 @@ import AvatarBttn from "./buttons/AvatarBttn";
 import MenuLink from "./links/MenuLink";
 import Button from "./buttons/Button";
 import RMCI from "../assets/images/RMCI.png";
+import { useDispatch } from "react-redux";
+import { setAlert } from "../services/redux/slices/uiSlice";
+import { logout } from "../services/redux/slices/authSlice";
 
 export default function Navbar({ links, path, img }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
   const apply = [
     "/customer/apply",
     "/customer/apply/personalinfo",
@@ -24,6 +28,17 @@ export default function Navbar({ links, path, img }) {
 
   // Toggle dropdown visibility
   const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  function toggleLogout() {
+    dispatch(
+      setAlert({
+        message: "Logged out successfully",
+        type: "success",
+      })
+    );
+
+    dispatch(logout());
+  }
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -87,7 +102,7 @@ export default function Navbar({ links, path, img }) {
         </div>
         <MenuLink pathName="Profile" path={path + "/profile"} />
         <MenuLink pathName="Settings" path="" />
-        <MenuLink pathName="Log out" path="/login" />
+        <MenuLink pathName="Log out" click={toggleLogout} />
       </DropdownMenu>
     </>
   );

@@ -28,19 +28,17 @@ export default function Login() {
     try {
       const response = await dispatch(loginUser(loginData)).unwrap();
       document.getElementById("login_spin").style.display = "none";
-      navigate("/" + response.user.role);
+      if (response.type == "success") navigate("/" + response.user.role);
       dispatch(
         setAlert({
-          toggle: true,
-          message: "Login Successful",
-          type: "success",
+          message: response.message,
+          type: response.type,
         })
       );
     } catch (error) {
       console.error(error.response);
       dispatch(
         setAlert({
-          toggle: true,
           message: "Unexpected Error!",
           type: "error",
         })

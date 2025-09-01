@@ -9,7 +9,7 @@ const UserAPI = {
     });
     return response.data;
   },
-
+  
   async login(credentials) {
     const response = await axios.post(`${API_URL}/api/login`, credentials);
     return response.data;

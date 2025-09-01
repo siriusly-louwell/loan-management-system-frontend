@@ -1,10 +1,15 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-export default function MenuLink({pathName, path, click}) {
-    return (
-        <li>
-            <Link to={path} onClick={click} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{pathName}</Link>
-        </li>
-    );
+export default function MenuLink({ pathName, path, click }) {
+  return (
+    <li>
+      <Link
+        to={path}
+        onClick={click}
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+        {pathName}
+      </Link>
+    </li>
+  );
 }

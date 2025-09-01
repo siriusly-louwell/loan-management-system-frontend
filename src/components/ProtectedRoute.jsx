@@ -5,23 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "../services/redux/slices/uiSlice";
 
 export default function ProtectedRoute({ children, type }) {
-  const { response, loading, isAuthenticated } = useSelector(
+  const { response, loading, loggedOut } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
   const isUnauthorized = !response || response.role != type;
 
   useEffect(() => {
-    if (isUnauthorized && !loading) {
+    if (isUnauthorized && !loading && !loggedOut) {
       dispatch(
         setAlert({
-          toggle: true,
           message: "Unauthorized access",
           type: "error",
         })
       );
     }
-  }, [isAuthenticated, loading, dispatch]);
+  }, [loading, dispatch]);
 
   if (loading)
     return (

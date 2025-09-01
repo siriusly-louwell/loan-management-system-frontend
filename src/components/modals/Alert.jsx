@@ -37,20 +37,6 @@ export default function Alert() {
     default:
       bgColor = "bg-blue-500 border-blue-500 text-blue-50";
   }
-  // const icon =
-  //   alert.type == "success" ? (
-  //     <CheckCircle size={24} />
-  //   ) : alert.type == "warn" ? (
-  //     <AlertTriangle size={24} />
-  //   ) : (
-  //     <XCircle size={24} />
-  //   );
-  // const bgColor =
-  //   alert.type == "success"
-  //     ? "bg-green-500 border-green-500 text-green-50"
-  //     : alert.type == "warn"
-  //     ? "bg-yellow-500 border-yellow-500 text-yellow-50"
-  //     : "bg-red-500 border-red-500 text-red-50";
 
   useEffect(() => {
     if (alert.toggle) {

@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/buttons/Button";
 import TextInput from "../components/inputs/TextInput";
 import Checkbox from "../components/checkboxes/Checkbox";
 import RMCI from "../assets/images/RMCI.png";
-import Spinner from "../components/loading components/Spinner";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../services/redux/slices/authSlice";
-import { setAlert } from "../services/redux/slices/uiSlice";
+import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -23,27 +22,19 @@ export default function Login() {
 
   async function login(event) {
     event.preventDefault();
-    document.getElementById("login_spin").style.display = "flex";
+    dispatch(setLoading(true));
 
     try {
       const response = await dispatch(loginUser(loginData)).unwrap();
-      document.getElementById("login_spin").style.display = "none";
+
+      dispatch(setLoading(false));
       if (response.type == "success") navigate("/" + response.user.role);
-      dispatch(
-        setAlert({
-          message: response.message,
-          type: response.type,
-        })
-      );
+      dispatch(setAlert({ message: response.message, type: response.type }));
     } catch (error) {
       console.error(error.response);
-      dispatch(
-        setAlert({
-          message: "Unexpected Error!",
-          type: "error",
-        })
-      );
-      document.getElementById("login_spin").style.display = "none";
+
+      dispatch(setLoading(false));
+      dispatch(setAlert({ message: "Unexpected Error!", type: "error" }));
     }
   }
 
@@ -104,7 +95,6 @@ export default function Login() {
               </form>
             </div>
           </div>
-          <Spinner id="login_spin" />
         </div>
       </section>
     </>

@@ -49,6 +49,7 @@ import AccComakers from "./pages/AccComakers";
 import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
 import { authRepository } from './services/repositories/authRepository';
+import GlobalLoading from './components/loading components/GlobalLoading';
 
 function App() {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ function App() {
   return (
     <BrowserRouter>
       <Alert />
+      <GlobalLoading />
       <Routes>
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />

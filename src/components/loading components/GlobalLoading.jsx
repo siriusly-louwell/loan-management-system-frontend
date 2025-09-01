@@ -1,29 +1,11 @@
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
-import SmallSpin from "./loading components/SmallSpin";
-import { useDispatch, useSelector } from "react-redux";
-import { setAlert } from "../services/redux/slices/uiSlice";
+import { useSelector } from "react-redux";
 
-export default function ProtectedRoute({ children, type }) {
-  const { response, loading, loggedOut } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const isUnauthorized = !response || response.role != type;
+export default function GlobalLoading() {
+  const { loading } = useSelector((state) => state.ui);
 
-  useEffect(() => {
-    if (isUnauthorized && !loading && !loggedOut) {
-      dispatch(
-        setAlert({
-          message: "Unauthorized access",
-          type: "error",
-        })
-      );
-    }
-  }, [loading, dispatch]);
-
-  if (loading)
-    return (
-      <div
-        className="fixed flex left-0 right-0 md:inset-0 h-full w-full flex justify-center items-center bg-gray-100 bg-opacity-50 dark:bg-gray-700 dark:bg-opacity-50">
+  return (
+    loading && (
+      <div className="fixed flex left-0 right-0 md:inset-0 h-full w-full flex justify-center items-center bg-gray-100 bg-opacity-50 dark:bg-gray-700 dark:bg-opacity-50">
         <div className="grid gap-3">
           <div className="flex items-center justify-center">
             <svg
@@ -70,8 +52,6 @@ export default function ProtectedRoute({ children, type }) {
           </span>
         </div>
       </div>
-    );
-  if (isUnauthorized) return <Navigate to="/login" replace />;
-
-  return children;
+    )
+  );
 }

@@ -29,9 +29,7 @@ export const authRepository = {
   },
 
   getToken() {
-    const token = localStorage.getItem("token");
-
-    return token ? token : false;
+    return localStorage.getItem("token") || false;
   },
 
   clearToken() {

@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children, type }) {
         })
       );
     }
-  }, [loading, dispatch]);
+  }, [loading, dispatch, isUnauthorized, loggedOut]);
 
   if (loading)
     return (

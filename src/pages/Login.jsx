@@ -28,7 +28,8 @@ export default function Login() {
       const response = await dispatch(loginUser(loginData)).unwrap();
 
       dispatch(setLoading(false));
-      if (response.type == "success") navigate("/" + response.user.role);
+      console.log(response.user);
+      if (response.type === "success") navigate("/" + response.user.role);
       dispatch(setAlert({ message: response.message, type: response.type }));
     } catch (error) {
       console.error(error.response);

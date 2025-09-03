@@ -6,7 +6,7 @@ export const authRepository = {
 
     if (!response) throw new Error("Login failed");
 
-    if (response.type == "input") {
+    if (response.type === "input") {
       return {
         message: response.errors.password[0],
         type: "warn",

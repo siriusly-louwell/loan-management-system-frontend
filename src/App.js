@@ -48,14 +48,15 @@ import AccAdmins from "./pages/AccAdmins";
 import AccComakers from "./pages/AccComakers";
 import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
-import { authRepository } from './services/repositories/authRepository';
-import GlobalLoading from './components/loading components/GlobalLoading';
+import { authRepository } from "./services/repositories/authRepository";
+import GlobalLoading from "./components/loading components/GlobalLoading";
 
 function App() {
   const dispatch = useDispatch();
   const [log, setLog] = useState({});
-  const { response } = useSelector((state) => state.auth);
-  const user = response?.user;
+  // const { response } = useSelector((state) => state.auth);
+  // const user = response?.user;
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const token = authRepository.getToken();

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUseCase } from "../../usecases/loginUseCase";
-import { authRepository } from './../../repositories/authRepository';
+import { loginUseCase } from "../../usecases/auth/loginUseCase";
+import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
+import { authRepository } from "./../../repositories/authRepository";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -17,7 +18,8 @@ export const loginUserWithToken = createAsyncThunk(
   "auth/loginUserWithToken",
   async (token, thunkAPI) => {
     try {
-      return await authRepository.tokenLogin(token);
+      // return await authRepository.tokenLogin(token);
+      return await tokenLoginUseCase(token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -28,7 +30,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isAuthenticated: false,
-    response: {},
+    // response: {},
+    user: {},
     loggedOut: false,
     loading: true,
     error: null,
@@ -37,7 +40,8 @@ const authSlice = createSlice({
     logout: (state) => {
       authRepository.clearToken();
       state.isAuthenticated = false;
-      state.response = null;
+      //state.response = null;
+      state.user = null;
       state.loggedOut = true;
     },
   },
@@ -50,7 +54,8 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.response = action.payload;
+        //state.response = action.payload;
+        state.user = action.payload.user;
         state.initialized = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -67,7 +72,8 @@ const authSlice = createSlice({
       .addCase(loginUserWithToken.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.response = action.payload;
+        //state.response = action.payload;
+        state.user = action.payload.user;
         state.initialized = true;
       })
       .addCase(loginUserWithToken.rejected, (state, action) => {

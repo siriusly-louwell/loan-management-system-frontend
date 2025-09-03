@@ -1,13 +1,29 @@
 export class User {
-  constructor({ id, name, email, role, pfp }) {
+  constructor({
+    id,
+    first_name,
+    middle_name,
+    last_name,
+    email,
+    role,
+    contact,
+    gender,
+    status,
+    pfp,
+  }) {
     if (!email) {
       throw new Error("Email is required");
     }
 
     this.id = id;
-    this.name = name;
+    this.first_name = first_name;
+    this.middle_name = middle_name;
+    this.last_name = last_name;
     this.email = email;
     this.role = role;
+    this.contact = contact;
+    this.gender = gender;
+    this.status = status;
     this.pfp = pfp;
   }
 

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUseCase } from "../../usecases/auth/loginUseCase";
-import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
 import { authRepository } from "./../../repositories/authRepository";
 
 export const loginUser = createAsyncThunk(
@@ -18,8 +17,7 @@ export const loginUserWithToken = createAsyncThunk(
   "auth/loginUserWithToken",
   async (token, thunkAPI) => {
     try {
-      // return await authRepository.tokenLogin(token);
-      return await tokenLoginUseCase(token);
+      return await authRepository.tokenLogin(token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -73,7 +71,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         //state.response = action.payload;
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.initialized = true;
       })
       .addCase(loginUserWithToken.rejected, (state, action) => {

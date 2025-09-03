@@ -27,6 +27,10 @@ export class User {
     this.pfp = pfp;
   }
 
+  get fullName() {
+    return `${this.first_name} ${this.last_name}`;
+  }
+
   isAdmin() {
     return this.role === "admin";
   }

@@ -1,4 +1,3 @@
-import { User } from "../../entities/User";
 import { authRepository } from "../../repositories/authRepository";
 
 export async function loginUseCase(credentials) {
@@ -10,13 +9,8 @@ export async function loginUseCase(credentials) {
       type: "error",
     };
   }
-
-  const user = new User(response.user);
   authRepository.saveToken(response.token);
+  const { user, type, message } = response;
 
-  return {
-    user,
-    type: response.type,
-    message: response.message,
-  };
+  return { user: user, type: type, message: message };
 }

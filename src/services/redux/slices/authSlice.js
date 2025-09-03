@@ -28,7 +28,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isAuthenticated: false,
-    // response: {},
     user: {},
     loggedOut: false,
     loading: true,
@@ -38,7 +37,6 @@ const authSlice = createSlice({
     logout: (state) => {
       authRepository.clearToken();
       state.isAuthenticated = false;
-      //state.response = null;
       state.user = null;
       state.loggedOut = true;
     },
@@ -52,7 +50,6 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        //state.response = action.payload;
         state.user = action.payload.user;
         state.initialized = true;
       })
@@ -70,7 +67,6 @@ const authSlice = createSlice({
       .addCase(loginUserWithToken.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        //state.response = action.payload;
         state.user = action.payload;
         state.initialized = true;
       })

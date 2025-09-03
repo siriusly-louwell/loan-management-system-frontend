@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { setAlert } from "../services/redux/slices/uiSlice";
 import { logout } from "../services/redux/slices/authSlice";
 
-export default function Navbar({ links, path, img }) {
+export default function Navbar({ links, path }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +78,7 @@ export default function Navbar({ links, path, img }) {
             location.pathname == "/prodlist" ? (
               <Button text="Login" onclick={() => navigate("/login")} />
             ) : (
-              <AvatarBttn dropMenu={toggleDropdown} img={img} />
+              <AvatarBttn dropMenu={toggleDropdown} />
             )}
             <HamburgerMenu />
           </div>

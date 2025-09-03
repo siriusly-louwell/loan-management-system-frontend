@@ -11,9 +11,9 @@ export class User {
     status,
     pfp,
   }) {
-    if (!email) {
-      throw new Error("Email is required");
-    }
+    // if (!email) {
+    //   throw new Error("Email is required");
+    // }
 
     this.id = id;
     this.first_name = first_name;
@@ -39,3 +39,6 @@ export class User {
     return this.id === otherUser.id;
   }
 }
+
+// ? selector
+export const UserEntity = (state) => ( new User(state.auth.user) ?? null);

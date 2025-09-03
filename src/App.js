@@ -50,13 +50,12 @@ import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
 import { authRepository } from "./services/repositories/authRepository";
 import GlobalLoading from "./components/loading components/GlobalLoading";
+import { UserEntity } from "./services/entities/User";
 
 function App() {
   const dispatch = useDispatch();
-  const [log, setLog] = useState({});
-  // const { response } = useSelector((state) => state.auth);
-  // const user = response?.user;
   const { user } = useSelector((state) => state.auth);
+  // const { user } = useSelector(UserEntity);
 
   useEffect(() => {
     const token = authRepository.getToken();
@@ -72,7 +71,7 @@ function App() {
       <Routes>
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register setUser={setLog} />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<PageNotFound />} />
 
         {/* Guest Routes */}
@@ -101,7 +100,6 @@ function App() {
           element={
             <PageLayout
               links={<ApplicantNav />}
-              img={user?.pfp}
               path="/customer"
             />
           }>
@@ -365,7 +363,7 @@ function App() {
         {/* CI Routes */}
         <Route
           path="/ci"
-          element={<PageLayout links={<CINav />} img={user?.pfp} path="/ci" />}>
+          element={<PageLayout links={<CINav />} path="/ci" />}>
           <Route
             index
             element={
@@ -491,7 +489,7 @@ function App() {
         <Route
           path="/staff"
           element={
-            <PageLayout links={<StaffNav />} img={user?.pfp} path="/staff" />
+            <PageLayout links={<StaffNav />} path="/staff" />
           }>
           <Route
             index

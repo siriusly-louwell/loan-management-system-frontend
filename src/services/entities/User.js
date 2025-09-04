@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 export class User {
   constructor({
     id,
@@ -38,10 +40,22 @@ export class User {
   isSameUser(otherUser) {
     return this.id === otherUser.id;
   }
+
+  isAuthorized(requiredRole) {
+    if (!this.id) return false;
+    return this.role === requiredRole;
+  }
 }
 
 // ? selector
-export const UserEntity = (state) => {
-  const dto = state.auth.user;
-  return dto ? new User(dto) : {};
-};
+const selectUserDto = (state) => state.auth.user;
+
+export const UserEntity = createSelector([selectUserDto], (userDto) =>
+  userDto ? new User(userDto) : null
+);
+
+// ? permission check
+export function isAuthorized(user, requiredRole) {
+  if (!user) return false;
+  return user.role === requiredRole;
+}

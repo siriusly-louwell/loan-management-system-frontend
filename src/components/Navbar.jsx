@@ -9,7 +9,7 @@ import Button from "./buttons/Button";
 import RMCI from "../assets/images/RMCI.png";
 import { useDispatch } from "react-redux";
 import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
-import { logout } from "../services/redux/slices/authSlice";
+import { clearAuth, logout } from "../services/redux/slices/authSlice";
 
 export default function Navbar({ links, path }) {
   const navigate = useNavigate();
@@ -42,6 +42,10 @@ export default function Navbar({ links, path }) {
       );
       dispatch(setLoading({ isActive: false }));
     }, 2000);
+
+    setTimeout(() => {
+      dispatch(clearAuth());
+    }, 3000);
   }
 
   // Close dropdown if clicked outside

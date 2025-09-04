@@ -1,16 +1,18 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import SmallSpin from "./loading components/SmallSpin";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import { UserEntity } from "../services/entities/User";
 
 export default function ProtectedRoute({ children, type }) {
-  const { user, loading, loggedOut } = useSelector((state) => state.auth);
+  const { loading, loggedOut } = useSelector((state) => state.auth);
+  const user = useSelector(UserEntity);
   const dispatch = useDispatch();
-  const isUnauthorized = !user || user.role !== type;
+  const isUnauthorized = !loading && !loggedOut && !user.isAuthorized(type);
+
 
   useEffect(() => {
-    if (isUnauthorized && !loading && !loggedOut) {
+    if (isUnauthorized) {
       dispatch(
         setAlert({
           message: "Unauthorized access",
@@ -26,7 +28,7 @@ export default function ProtectedRoute({ children, type }) {
     return <div></div>;
   } else dispatch(setLoading({ isActive: false }));
 
-  if (isUnauthorized) return <Navigate to="/login" replace />;
+  if (isUnauthorized || loggedOut) return <Navigate to="/login" replace />;
 
   return children;
 }

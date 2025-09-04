@@ -29,7 +29,7 @@ export default function ColorModal({ colors }) {
                 colors={colors}
                 changeColor={(e) => {
                   document.getElementById("colorModal").style.display = "none";
-                  changeColor(e);
+                  dispatch(changeColor(e));
                 }}
                 colorType="ofc"
               />
@@ -44,7 +44,6 @@ export default function ColorModal({ colors }) {
                 changeColor={(e) => {
                   document.getElementById("colorModal").style.display = "none";
                   dispatch(changeColor(e));
-                //   changeColor(e);
                 }}
               />
             </section>

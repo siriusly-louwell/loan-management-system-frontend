@@ -3,10 +3,10 @@ import { useSelector } from "react-redux";
 import { UserEntity } from "../../services/entities/User";
 
 export default function AvatarBttn({ dropMenu }) {
-  const { pfp } = useSelector(UserEntity);
+  const user = useSelector(UserEntity);
   const API_URL = process.env.REACT_APP_API_URL;
-  const src = pfp
-    ? `${API_URL}/storage/${pfp}`
+  const src = user?.pfp
+    ? `${API_URL}/storage/${user?.pfp}`
     : "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png";
 
   return (

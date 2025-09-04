@@ -4,7 +4,6 @@ const formSlice = createSlice({
   name: "form",
   initialState: {
     formData: {},
-    files: [],
     colors: [],
     colorIndex: null,
     error: null,
@@ -27,15 +26,6 @@ const formSlice = createSlice({
     resetInput: (state) => {
       state.formData = {};
       state.colors = [];
-      state.files = [];
-    },
-
-    fileChange: (state, action) => {
-      const data = action.payload;
-      const updatedFiles = [...state.files];
-      updatedFiles[data.index] = [...data.files];
-
-      state.files = updatedFiles;
     },
 
     handleChange: (state, action) => {
@@ -58,7 +48,6 @@ const formSlice = createSlice({
 export const {
   changeColor,
   resetInput,
-  fileChange,
   handleChange,
   handleQuantity,
   setColorIndex,

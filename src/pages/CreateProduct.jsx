@@ -5,11 +5,9 @@ import { setLoading, setAlert } from "../services/redux/slices/uiSlice";
 import { addUnit } from "../services/redux/slices/unitSlice";
 import FormInput from "../components/inputs/FormInput";
 import FormTextarea from "../components/inputs/FormTextarea";
-import FormFile from "../components/inputs/FormFile";
 import Button from "../components/buttons/Button";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Cloud from "../assets/icons/Cloud";
-import SelectColor from "../components/checkboxes/SelectColor";
 import CustomBttn from "../components/buttons/CustomBttn";
 import QuantityInput from "../components/buttons/QuantityInput";
 import ColorModal from "../components/modals/ColorModal";
@@ -25,32 +23,9 @@ import {
 
 export default function CreateProduct() {
   const [files, setFiles] = useState([]);
-  // const [formData, setFormData] = useState({});
-  // const [colors, setColors] = useState([]);
   const { colors, formData } = useSelector((state) => state.form);
-  // const [alert, setAlert] = useState({});
   const [rows, setRows] = useState([""]);
-  // const [colorIndex, setColorIndex] = useState();
-  // const submitData = new FormData();
   const dispatch = useDispatch();
-
-  // function changeColor(newColor) {
-  //     const updatedColors = colors.includes(newColor)
-  //         ? colors.filter(color => color !== newColor)
-  //         : [...colors, newColor];
-
-  //     setColors(updatedColors);
-  // };
-
-  // function changeColor(newColor) {
-  //   const updatedColors = [...colors];
-
-  //   if (updatedColors[colorIndex] === newColor)
-  //     updatedColors[colorIndex] = null;
-  //   else updatedColors[colorIndex] = newColor;
-
-  //   setColors(updatedColors);
-  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -62,7 +37,6 @@ export default function CreateProduct() {
       ).unwrap();
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
-      // resetInput();
       dispatch(resetInput());
       setFiles([]);
     } catch (error) {
@@ -77,19 +51,11 @@ export default function CreateProduct() {
     }
   }
 
-  // function resetInput() {
-  //   setFormData({});
-  //   // setColors([]);
-  //   setFiles([]);
-  // }
-
   function fileChange(event, i) {
     const updatedFiles = [...files];
     updatedFiles[i] = [...event.target.files];
 
     setFiles(updatedFiles);
-    // setFiles([...event.target.files]);
-    // setFiles(event.target.files[0]);
   }
 
   function dispatchInput(event) {
@@ -100,25 +66,6 @@ export default function CreateProduct() {
       })
     );
   }
-
-  // function handleChange(event) {
-  //   setFormData({
-  //     ...formData,
-  //     [event.target.name]: event.target.value,
-  //   });
-  // }
-
-  // function handleQuantity(i, num, key) {
-  //   const quantArr = formData.quantity ? formData.quantity : [];
-  //   quantArr[i] = num;
-
-  //   // setFormData({ ...formData, quantity: quantArr });
-
-  //   // const form = {
-  //   //     ...formData,
-  //   //     [key]: num
-  //   // };
-  // }
 
   return (
     <div
@@ -157,11 +104,9 @@ export default function CreateProduct() {
                         placeholder="Type motorcycle name"
                       />
                     </div>
-                    {/* <QuantityInput max={200} label="Quantity" change={handleQuantity} /> */}
                   </div>
                   <div className="grid gap-4 mb-4 sm:grid-cols-2">
                     <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                      {/* <FormInput label="Brand Name" type="text" name="brand" id="brand" value={formData.brand || ''} onchange={handleChange} placeholder="Type brand name" /> */}
                       <FormSelect
                         label="Brand Name"
                         name="brand"
@@ -210,7 +155,6 @@ export default function CreateProduct() {
                         onchange={dispatchInput}
                         placeholder="₱15,000"
                       />
-                      {/* <FormInput label="Quantity" type="number" id="quantity" name="quantity" value={formData.quantity || ''} onchange={dispatchInput} placeholder="25 units" /> */}
                       <FormInput
                         label="Interest Rate (%)"
                         type="number"
@@ -230,7 +174,6 @@ export default function CreateProduct() {
                         placeholder="5 years"
                       />
                     </div>
-                    {/* <SelectColor text="Select Colors:" size={6} colors={colors} changeColor={changeColor} /> */}
                     <FormTextarea
                       name="description"
                       id="description"
@@ -252,7 +195,6 @@ export default function CreateProduct() {
                             className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <div className="flex flex-col justify-center items-center pt-5 pb-6">
                               {files.length > 0 && files[i] ? (
-                                // <span className="font-semibold dark:text-white">{files.name}</span>
                                 files[i].map((file) => (
                                   <span className="font-semibold dark:text-white">
                                     {file.name}
@@ -297,7 +239,6 @@ export default function CreateProduct() {
                               text="Select Color"
                               onclick={() => {
                                 dispatch(setColorIndex(i));
-                                // setColorIndex(i);
                                 document.getElementById(
                                   "colorModal"
                                 ).style.display = "flex";
@@ -309,7 +250,6 @@ export default function CreateProduct() {
                             max={200}
                             label="Quantity"
                             index={i}
-                            // change={handleQuantity}
                           />
                         </div>
                       </>
@@ -320,8 +260,6 @@ export default function CreateProduct() {
                       click={() => setRows([...rows, ""])}>
                       <Plus />
                     </BttnwithIcon>
-
-                    {/* <FormFile id="dropzone-file" name="file" onChange={(e) => { console.log("Child called"); fileChange(e); }} file={file} /> */}
                   </div>
                 </section>
 
@@ -621,13 +559,6 @@ export default function CreateProduct() {
                   </div>
                   <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                     <Button text="Add Unit" bttnType="submit" />
-                    {/* <CustomBttn text="Schedule" className="w-full sm:w-auto text-white justify-center inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                    <Calendar />
-                                </CustomBttn> */}
-                    {/* <CustomBttn text="Discard" className="inline-flex justify-center w-full sm:w-auto items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                    onclick={() => document.getElementById('createProduct').style.display = "none"}>
-                                    <Ex className="mr-1 -ml-1 w-5 h-5" />
-                                </CustomBttn> */}
                   </div>
                 </section>
               </form>

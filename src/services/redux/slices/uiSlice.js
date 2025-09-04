@@ -7,7 +7,7 @@ const initialState = {
     message: "",
     duration: 0.4,
   },
-  loading: { isActive: false, text: "" },
+  loading: { isActive: false, text: "Fetching data..." },
 };
 
 const uiSlice = createSlice({

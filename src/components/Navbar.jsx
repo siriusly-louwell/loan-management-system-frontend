@@ -8,7 +8,7 @@ import MenuLink from "./links/MenuLink";
 import Button from "./buttons/Button";
 import RMCI from "../assets/images/RMCI.png";
 import { useDispatch } from "react-redux";
-import { setAlert } from "../services/redux/slices/uiSlice";
+import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
 import { logout } from "../services/redux/slices/authSlice";
 
 export default function Navbar({ links, path }) {
@@ -30,14 +30,18 @@ export default function Navbar({ links, path }) {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   function toggleLogout() {
-    dispatch(
-      setAlert({
-        message: "Logged out successfully",
-        type: "success",
-      })
-    );
+    dispatch(setLoading({ isActive: true, text: "Logging out..." }));
 
-    dispatch(logout());
+    setTimeout(() => {
+      dispatch(logout());
+      dispatch(
+        setAlert({
+          message: "Logged out successfully",
+          type: "success",
+        })
+      );
+      dispatch(setLoading({ isActive: false }));
+    }, 2000);
   }
 
   // Close dropdown if clicked outside

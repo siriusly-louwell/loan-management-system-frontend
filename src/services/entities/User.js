@@ -41,4 +41,7 @@ export class User {
 }
 
 // ? selector
-export const UserEntity = (state) => ( new User(state.auth.user) ?? null);
+export const UserEntity = (state) => {
+  const dto = state.auth.user;
+  return dto ? new User(dto) : {};
+};

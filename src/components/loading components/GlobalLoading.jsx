@@ -47,8 +47,8 @@ export default function GlobalLoading() {
               </defs>
             </svg>
           </div>
-          <span className="text-rose-600 text-sm font-normal leading-snug dark:text-rose-500">
-            Loading...
+          <span className="text-rose-600 text-sm font-normal leading-snug dark:text-rose-400">
+            {loading.text}
           </span>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { UserEntity } from "../../services/entities/User";
 
 export default function AvatarBttn({ dropMenu }) {
-  const {pfp} = useSelector(UserEntity);
+  const { pfp } = useSelector(UserEntity);
   const API_URL = process.env.REACT_APP_API_URL;
   const src = pfp
     ? `${API_URL}/storage/${pfp}`

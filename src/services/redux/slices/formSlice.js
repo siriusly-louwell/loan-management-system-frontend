@@ -6,16 +6,20 @@ const formSlice = createSlice({
     formData: {},
     files: [],
     colors: [],
+    colorIndex: null,
     error: null,
   },
   reducers: {
+    setColorIndex: (state, action) => {
+      state.colorIndex = action.payload;
+    },
+
     changeColor: (state, action) => {
-      const data = action.payload;
       const updatedColors = [...state.colors];
 
-      if (updatedColors[data.colorIndex] === data.newColor)
-        updatedColors[data.colorIndex] = null;
-      else updatedColors[data.colorIndex] = data.newColor;
+      if (updatedColors[state.colorIndex] === action.payload)
+        updatedColors[state.colorIndex] = null;
+      else updatedColors[state.colorIndex] = action.payload;
 
       state.colors = updatedColors;
     },
@@ -29,28 +33,34 @@ const formSlice = createSlice({
     fileChange: (state, action) => {
       const data = action.payload;
       const updatedFiles = [...state.files];
-      updatedFiles[data.i] = [...data.files];
+      updatedFiles[data.index] = [...data.files];
 
       state.files = updatedFiles;
     },
 
     handleChange: (state, action) => {
-      state.formData({
+      state.formData = {
         ...state.formData,
-        [action.payload.name]: action.payload.quantity,
-      });
+        [action.payload.name]: action.payload.value,
+      };
     },
 
     handleQuantity: (state, action) => {
       const quantity = state.formData.quantity;
       const quantArr = quantity ? quantity : [];
-      quantArr[action.payload.i] = action.payload.num;
+      quantArr[action.payload.index] = action.payload.num;
 
       state.formData = { ...state.formData, quantity: quantArr };
     },
   },
 });
 
-export const { changeColor, resetInput, fileChange, handleChange } =
-  formSlice.actions;
+export const {
+  changeColor,
+  resetInput,
+  fileChange,
+  handleChange,
+  handleQuantity,
+  setColorIndex,
+} = formSlice.actions;
 export default formSlice.reducer;

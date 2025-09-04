@@ -27,4 +27,4 @@ export class Unit {
 }
 
 // ? selector
-export const UnitEntity = (state) => new Unit(state.auth.user) ?? null;
+export const UnitEntity = (state) => new Unit(state.unit.unit) ?? null;

@@ -2,7 +2,8 @@ import UnitAPI from "../api/UnitAPI";
 
 export const unitRepository = {
   async add(data) {
-    const response = await UnitAPI.add(data);
+    const form = unitRepository.appendData({ ...data });
+    const response = await UnitAPI.add(form);
 
     if (!response) {
       return {
@@ -14,7 +15,8 @@ export const unitRepository = {
     return await response;
   },
 
-  appendData(submitData, data) {
+  appendData(data) {
+    const submitData = new FormData();
     const form = data.formData;
 
     for (let key in form) {
@@ -23,10 +25,13 @@ export const unitRepository = {
 
     submitData.append(`quantity`, data.totalQuantity);
     data.colors.forEach((color) => submitData.append("colors[]", color));
-    data.files.map((arr) => {
+    // data.files.map((arr) => {
+    //   arr.forEach((file) => submitData.append("files[]", file));
+    // });
+    data.files.forEach((arr) => {
       arr.forEach((file) => submitData.append("files[]", file));
     });
 
     return submitData;
-  }
+  },
 };

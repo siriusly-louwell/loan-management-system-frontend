@@ -46,14 +46,14 @@ export default function Alert() {
   }, [alert, dispatch]);
 
   return (
-    <div className="fixed flex justify-center w-screen top-10">
+    <div className="fixed z-50 flex justify-center w-screen top-5">
       <AnimatePresence>
         {alert.toggle && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: alert.duration }}
             className={`flex items-center gap-3 p-3 rounded-2xl border ${bgColor} shadow-md max-w-md`}>
             {icon}
             <span className="font-medium">{alert.message}</span>

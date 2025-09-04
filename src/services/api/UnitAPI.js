@@ -8,10 +8,10 @@ const UserAPI = {
     return response.data;
   },
 
-  async register(data) {
-    const response = await axios.post(`${API_URL}/api/account`, data);
-    return response.data;
-  },
+  // async register(data) {
+  //   const response = await axios.post(`${API_URL}/api/account`, data);
+  //   return response.data;
+  // },
 };
 
 export default UserAPI;

@@ -15,15 +15,19 @@ import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
 import ColorLabel from "../components/ColorLabel";
 import FormSelect from "../components/inputs/FormSelect";
+import { useDispatch } from "react-redux";
+import { addUnit } from "../services/redux/slices/unitSlice";
+import { setLoading, setAlert } from "../services/redux/slices/uiSlice";
 
 export default function CreateProduct() {
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({});
   const [colors, setColors] = useState([]);
-  const [alert, setAlert] = useState({});
+  // const [alert, setAlert] = useState({});
   const [rows, setRows] = useState([""]);
   const [colorIndex, setColorIndex] = useState();
-  const submitData = new FormData();
+  // const submitData = new FormData();
+  const dispatch = useDispatch();
 
   // function changeColor(newColor) {
   //     const updatedColors = colors.includes(newColor)
@@ -45,61 +49,24 @@ export default function CreateProduct() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    if (files.length === 0) {
-      setAlert({
-        text: "Please select images for the unit.",
-        icon: "warn",
-      });
-      document.getElementById("createUnit").style.display = "block";
-      return;
-    }
-
-    const totalQuantity = formData.quantity.reduce((sum, num) => sum + num, 0);
-    // console.log(totalQuantity);
-
-    for (let key in formData) {
-      submitData.append(`${key}`, formData[key]);
-    }
-
-    submitData.append(`quantity`, totalQuantity);
-    colors.forEach((color) => submitData.append("colors[]", color));
-    files.map((arr) => {
-      arr.forEach((file) => submitData.append("files[]", file));
-    });
-    // files.forEach(file => submitData.append('files[]', file));
-
-    document.getElementById("save_unit").style.display = "flex";
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/motorcycle", {
-        method: "POST",
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     'Content-Type': 'multipart/form-data',
-        //     'Accept': 'application/json'
-        // },
-        body: submitData,
-        // body: JSON.stringify(formData)
-      });
-
-      const result = await response.json();
-      console.log("Success: ", result);
-      if (!response.ok) throw new Error("Failed to save data");
-      document.getElementById("save_unit").style.display = "none";
-      setAlert({
-        text: "Unit created succcessfully!",
-        icon: "done",
-      });
+      const response = await dispatch(
+        addUnit({ formData, files, colors })
+      ).unwrap();
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
       resetInput();
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Failed to save data",
-        icon: "warn",
-      });
-      document.getElementById("save_unit").style.display = "none";
-      document.getElementById("createUnit").style.display = "block";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
   }
 
@@ -107,7 +74,6 @@ export default function CreateProduct() {
     setFormData({});
     setColors([]);
     setFiles([]);
-    document.getElementById("createUnit").style.display = "block";
   }
 
   function fileChange(event, i) {
@@ -141,7 +107,7 @@ export default function CreateProduct() {
   return (
     <div
       id="createProduct"
-      className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+      className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
       <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
         <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">

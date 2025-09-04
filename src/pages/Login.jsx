@@ -22,7 +22,7 @@ export default function Login() {
 
   async function login(event) {
     event.preventDefault();
-    dispatch(setLoading(true));
+    dispatch(setLoading({ isActive: true }));
 
     try {
       const response = await dispatch(loginUser(loginData)).unwrap();
@@ -33,7 +33,7 @@ export default function Login() {
     } catch (error) {
       console.error(error.response);
 
-      dispatch(setLoading(false));
+      dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: "Unexpected Error!", type: "error" }));
     }
   }

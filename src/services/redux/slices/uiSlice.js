@@ -5,8 +5,9 @@ const initialState = {
     toggle: false,
     type: null,
     message: "",
+    duration: 0.4,
   },
-  loading: false,
+  loading: { isActive: false, text: "" },
 };
 
 const uiSlice = createSlice({
@@ -16,9 +17,8 @@ const uiSlice = createSlice({
     setAlert: (state, action) => {
       state.alert = {
         toggle: true,
-        ...action.payload, // { type, message }
+        ...action.payload,
       };
-
     },
     clearAlert: (state) => {
       state.alert = {
@@ -28,7 +28,7 @@ const uiSlice = createSlice({
       };
     },
     setLoading: (state, action) => {
-      state.loading = action.payload; // true or false
+      state.loading = { ...action.payload };
     },
   },
 });

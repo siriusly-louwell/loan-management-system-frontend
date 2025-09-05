@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUseCase } from "../../usecases/auth/loginUseCase";
 import { authRepository } from "./../../repositories/authRepository";
+import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -15,9 +16,10 @@ export const loginUser = createAsyncThunk(
 
 export const loginUserWithToken = createAsyncThunk(
   "auth/loginUserWithToken",
-  async (token, thunkAPI) => {
+  async (thunkAPI) => {
     try {
-      return await authRepository.tokenLogin(token);
+      return await tokenLoginUseCase();
+      // return await authRepository.tokenLogin(token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

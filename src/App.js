@@ -48,7 +48,6 @@ import AccAdmins from "./pages/AccAdmins";
 import AccComakers from "./pages/AccComakers";
 import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
-import { authRepository } from "./services/repositories/authRepository";
 import GlobalLoading from "./components/loading components/GlobalLoading";
 import { UserEntity } from "./services/entities/User";
 
@@ -58,10 +57,7 @@ function App() {
   // const { user } = useSelector(UserEntity);
 
   useEffect(() => {
-    const token = authRepository.getToken();
-    if (token) {
-      dispatch(loginUserWithToken(token));
-    }
+    dispatch(loginUserWithToken());
   }, [dispatch]);
 
   return (

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
@@ -10,17 +9,9 @@ export default function ProtectedRoute({ children, type }) {
   const dispatch = useDispatch();
   const isUnauthorized = !loading && !loggedOut && !user.isAuthorized(type);
 
-
-  useEffect(() => {
-    if (isUnauthorized) {
-      dispatch(
-        setAlert({
-          message: "Unauthorized access",
-          type: "error",
-        })
-      );
-    }
-  }, [loading, dispatch, isUnauthorized, loggedOut]);
+  if (isUnauthorized) {
+    dispatch(setAlert({ message: "Unauthorized access", type: "error" }));
+  }
 
   if (loading) {
     dispatch(setLoading({ isActive: true, text: "Loading..." }));

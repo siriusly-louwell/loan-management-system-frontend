@@ -1,14 +1,9 @@
 import { authRepository } from "../../repositories/authRepository";
 
-export async function tokenLoginUseCase(token) {
-  const response = await authRepository.tokenLogin(token);
+export async function tokenLoginUseCase() {
+  const token = authRepository.getToken();
+  
+  if (!token) return;
 
-  if (!response || response.type === "credentials") {
-    return {
-      message: "Invalid credentials",
-      type: "error",
-    };
-  }
-
-  return response;
+  return await authRepository.tokenLogin(token);
 }

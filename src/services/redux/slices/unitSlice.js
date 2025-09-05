@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { addUnitUseCase } from "../../usecases/unit/addUnitUseCase";
 import { unitRepository } from "../../repositories/unitRepository";
+import { mapUnitUseCase } from "../../usecases/unit/mapUnitUseCase";
 
 export const addUnit = createAsyncThunk(
   "unit/addUnit",
@@ -33,10 +34,8 @@ const UnitSlice = createSlice({
     error: null,
   },
   reducers: {
-    createEntity: (state, action) => {
-      const data = action.payload;
-
-      return data.brand === data.filter && data.filter !== "";
+    mapEntities: (state) => {
+      return  mapUnitUseCase(state.units);
     },
   },
   extraReducers: (builder) => {
@@ -70,5 +69,5 @@ const UnitSlice = createSlice({
   },
 });
 
-export const { brandFilter } = UnitSlice.actions;
+export const { mapEntities } = UnitSlice.actions;
 export default UnitSlice.reducer;

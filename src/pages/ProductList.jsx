@@ -8,12 +8,13 @@ import StickyBanner from "../components/cards/StickyBanner";
 import { Outlet, useLocation } from "react-router-dom";
 import UnderlineTabs from "../components/tabs/UnderlineTabs";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { fetchUnits, mapEntities } from "../services/redux/slices/unitSlice";
 import { setAlert } from "../services/redux/slices/uiSlice";
 import { Unit } from "../services/entities/Unit";
+import { mapUnitUseCase } from "../services/usecases/unit/mapUnitUseCase";
 
 export default function ProductList({ url }) {
-  const {units, loading} = useSelector((state) => state.unit);
+  const { units, loading } = useSelector((state) => state.unit);
   const dispatch = useDispatch();
   const [isSort, setSort] = useState(false);
   const [isFilt, setFilt] = useState(false);
@@ -73,10 +74,12 @@ export default function ProductList({ url }) {
   }, []);
 
   useEffect(() => {
-      const motorArr = units.map((unit) => new Unit(unit));
-  
+    if(units) {
+      const motorArr = mapUnitUseCase(units);
+      // const motorArr = units.map((unit) => new Unit(unit));  
       setMotor(motorArr);
-    }, [units]);
+    }
+  }, [loading, units]);
 
   useEffect(() => {
     const interval = setInterval(() => {

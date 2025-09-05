@@ -33,7 +33,7 @@ const UnitSlice = createSlice({
     error: null,
   },
   reducers: {
-    brandFilter: (state, action) => {
+    createEntity: (state, action) => {
       const data = action.payload;
 
       return data.brand === data.filter && data.filter !== "";

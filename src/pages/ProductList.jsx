@@ -7,11 +7,13 @@ import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";
 import StickyBanner from "../components/cards/StickyBanner";
 import { Outlet, useLocation } from "react-router-dom";
 import UnderlineTabs from "../components/tabs/UnderlineTabs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 import { setAlert } from "../services/redux/slices/uiSlice";
+import { Unit } from "../services/entities/Unit";
 
 export default function ProductList({ url }) {
+  const {units, loading} = useSelector((state) => state.unit);
   const dispatch = useDispatch();
   const [isSort, setSort] = useState(false);
   const [isFilt, setFilt] = useState(false);
@@ -48,16 +50,16 @@ export default function ProductList({ url }) {
   }, []);
 
   useEffect(() => {
-    try {
-      dispatch(fetchUnits());
-    } catch (error) {
-      dispatch(
-        setAlert({
-          message: "Failed to fetch all units",
-          type: "error",
-        })
-      );
-    }
+    dispatch(fetchUnits());
+    // try {
+    // } catch (error) {
+    //   dispatch(
+    //     setAlert({
+    //       message: "Failed to fetch all units",
+    //       type: "error",
+    //     })
+    //   );
+    // }
     // fetch("http://localhost:8000/api/motorcycle")
     //   .then((response) => response.json())
     //   .then((data) => {
@@ -69,6 +71,12 @@ export default function ProductList({ url }) {
     //     setMotorLoad(true);
     //   });
   }, []);
+
+  useEffect(() => {
+      const motorArr = units.map((unit) => new Unit(unit));
+  
+      setMotor(motorArr);
+    }, [units]);
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -16,7 +16,6 @@ import { Unit } from "../services/entities/Unit";
 export default function UnitsAll() {
   const { units, loading } = useSelector((state) => state.unit);
   const [brandFilt, setBrandFilt] = useState("");
-  const [motors, setMotors] = useState([]);
   const {
     toggleSort,
     toggleFilt,
@@ -25,15 +24,9 @@ export default function UnitsAll() {
     isSort,
     isFilt,
     // motorLoad,
-    // motors,
+    motors,
     url,
   } = useOutletContext();
-
-  useEffect(() => {
-    const motorArr = units.map((unit) => new Unit(unit));
-
-    setMotors(motorArr);
-  }, [units]);
 
   return (
     <>

@@ -11,6 +11,7 @@ export class Unit {
     rebate,
     tenure,
     downpayment,
+    colors
   }) {
     this.id = id;
     this.name = name;
@@ -23,6 +24,11 @@ export class Unit {
     this.rebate = rebate;
     this.tenure = tenure;
     this.downpayment = downpayment;
+    this.colors = colors;
+  }
+
+  isBrand(filter) {
+    return this.brand === filter && filter !== "";
   }
 }
 

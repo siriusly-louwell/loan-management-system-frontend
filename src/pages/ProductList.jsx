@@ -7,8 +7,12 @@ import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";
 import StickyBanner from "../components/cards/StickyBanner";
 import { Outlet, useLocation } from "react-router-dom";
 import UnderlineTabs from "../components/tabs/UnderlineTabs";
+import { useDispatch } from "react-redux";
+import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { setAlert } from "../services/redux/slices/uiSlice";
 
 export default function ProductList({ url }) {
+  const dispatch = useDispatch();
   const [isSort, setSort] = useState(false);
   const [isFilt, setFilt] = useState(false);
   const [motors, setMotor] = useState([]);
@@ -44,16 +48,26 @@ export default function ProductList({ url }) {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/motorcycle")
-      .then((response) => response.json())
-      .then((data) => {
-        setMotor(data);
-        setMotorLoad(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setMotorLoad(true);
-      });
+    try {
+      dispatch(fetchUnits());
+    } catch (error) {
+      dispatch(
+        setAlert({
+          message: "Failed to fetch all units",
+          type: "error",
+        })
+      );
+    }
+    // fetch("http://localhost:8000/api/motorcycle")
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setMotor(data);
+    //     setMotorLoad(false);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching data: ", error);
+    //     setMotorLoad(true);
+    //   });
   }, []);
 
   useEffect(() => {
@@ -166,50 +180,8 @@ export default function ProductList({ url }) {
         </div>
         <UnderlineTabs />
         <Outlet context={context} />
-        {/* <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
-                    <div>
-                        <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Available Units</h2>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <DropdownBttn text="Filter">
-                            <Filter />
-                        </DropdownBttn>
-                        <DropdownBttn toggleSort={toggleSort} text="Sort">
-                            <Sort />
-                        </DropdownBttn>
-                    </div>
-                </div>
-                <DropdownMenu ref={sortRef} className={isSort ? "block" : "hidden"}>
-                    <MenuLink pathName="The most popular" />
-                    <MenuLink pathName="Newest" />
-                    <MenuLink pathName="Increasing price" />
-                    <MenuLink pathName="Decreasing price" />
-                    <MenuLink pathName="No. reviews" />
-                    <MenuLink pathName="Discount %" />
-                </DropdownMenu>
-                
-                <ProductGrid>
-                    {motorLoad ? (
-                        <>
-                            <CardSkeleton />
-                            <CardSkeleton />
-                            <CardSkeleton />
-                            <CardSkeleton />
-                        </>
-                    ) : (
-                        motors.map(motor => (
-                            <ProductCard key={motor.id} unit={motor} url={url}/>
-                        ))
-                    )}
-                </ProductGrid>
-                {motors.length === 0 && !motorLoad ? (
-                    <EmptySearch label="No results found" context="Try changing the filter or go to a different category" />
-                ) : ""}
-                <div className="w-full text-center">
-                    <BasicButton text="Show more" />
-                </div> */}
       </div>
-      <FilterPanel />
+      {/* <FilterPanel /> */}
     </section>
   );
 }

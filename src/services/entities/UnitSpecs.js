@@ -1,6 +1,7 @@
 export class UnitSpecs {
   constructor({
     id,
+    images,
     engine,
     compression,
     displacement,
@@ -33,6 +34,7 @@ export class UnitSpecs {
     cruise,
   }) {
     this.id = id;
+    this.images = images;
     this.engine = engine;
     this.compression = compression;
     this.displacement = displacement;

@@ -72,13 +72,13 @@ function App() {
 
         {/* Guest Routes */}
         <Route path="/" element={<PageLayout links={<GuestNav />} />}>
-          <Route path="" element={<ProductList url="/unit" />}>
+          <Route path="" element={<ProductList />}>
             <Route index element={<UnitsAll />} />
             <Route path="new" element={<UnitsNew />} />
             <Route path="top" element={<UnitsNew />} />
             <Route path="repo" element={<UnitsNew />} />
           </Route>
-          <Route path="prodlist" element={<ProductList url="/unit" />}>
+          <Route path="prodlist" element={<ProductList />}>
             <Route index element={<UnitsAll />} />
             <Route path="new" element={<UnitsNew />} />
             <Route path="top" element={<UnitsNew />} />

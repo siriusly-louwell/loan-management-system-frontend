@@ -10,7 +10,7 @@ import UnderlineTabs from "../components/tabs/UnderlineTabs";
 import { useDispatch } from "react-redux";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 
-export default function ProductList({ url }) {
+export default function ProductList() {
   const dispatch = useDispatch();
   const [isSort, setSort] = useState(false);
   const [isFilt, setFilt] = useState(false);
@@ -21,6 +21,10 @@ export default function ProductList({ url }) {
 
   const toggleSort = () => setSort((prev) => !prev);
   const toggleFilt = () => setFilt((prev) => !prev);
+
+  useEffect(() => {
+    dispatch(fetchUnits());
+  }, []);
 
   useEffect(() => {
     const menuClicked = (event) => {
@@ -42,10 +46,6 @@ export default function ProductList({ url }) {
 
     document.addEventListener("mousedown", filtClicked);
     return () => document.removeEventListener("mousedown", filtClicked);
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchUnits());
   }, []);
 
   useEffect(() => {
@@ -72,7 +72,6 @@ export default function ProductList({ url }) {
     filtRef,
     isSort,
     isFilt,
-    url,
   };
 
   return (

@@ -24,9 +24,6 @@ export default function UnitsAll() {
     filtRef,
     isSort,
     isFilt,
-    // motorLoad,
-    // motors,
-    url,
   } = useOutletContext();
 
   return (
@@ -93,9 +90,9 @@ export default function UnitsAll() {
           motors.map((motor) => {
             if (motor.isBrand(brandFilt))
               // if (motor.brand === brandFilt && brandFilt !== "")
-              return <ProductCard key={motor.id} unit={motor} url={url} />;
+              return <ProductCard key={motor.id} unit={motor} />;
             else if (brandFilt === "")
-              return <ProductCard key={motor.id} unit={motor} url={url} />;
+              return <ProductCard key={motor.id} unit={motor} />;
             else return "";
           })
         )}

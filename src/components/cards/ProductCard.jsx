@@ -5,8 +5,12 @@ import AddtoCartBttn from "../buttons/AddtoCartBttn";
 import ProductLink from "../links/ProductLink";
 import ColorLabel from "../ColorLabel";
 import Check from "../../assets/icons/Check";
+import { useSelector } from "react-redux";
+import { UserEntity } from "../../services/entities/User";
 
-export default function ProductCard({ unit, url, id, selected, selectUnits }) {
+export default function ProductCard({ unit, id, selected, selectUnits }) {
+  const user = useSelector(UserEntity);
+  const url = user ? `/${user?.role}` : '';
   const location = useLocation();
   const including =
     location.pathname === "/unit" ? selected.includes(`${id}`) : false;
@@ -27,7 +31,7 @@ export default function ProductCard({ unit, url, id, selected, selectUnits }) {
       <label
         htmlFor={`unit_${id}`}
         type="button"
-        className={`rounded-lg border hover:bg-gray-200 p-6 shadow-sm ${
+        className={`rounded-lg border hover:bg-gray-200 dark:hover:bg-gray-600 p-6 shadow-sm ${
           including
             ? "border-rose-500 border-2 bg-rose-100 hover:bg-rose-200"
             : "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-700"
@@ -110,7 +114,8 @@ export default function ProductCard({ unit, url, id, selected, selectUnits }) {
           </div>
 
           <ProductLink
-            url={url}
+            url={`/${url}/unit`}
+            // url={url}
             prodName={unit.brand + ": " + unit.name}
             id={unit.id}
           />
@@ -150,7 +155,7 @@ export default function ProductCard({ unit, url, id, selected, selectUnits }) {
               ₱{parseFloat(unit.price).toLocaleString()}
             </p>
             {location.pathname !== "/unit" ? (
-              <AddtoCartBttn state={{ id: unit.id }} url={url} text="Inquire" />
+              <AddtoCartBttn state={{ id: unit.id }} url={`${url}/unit`} text="Inquire" />
             ) : (
               <div
                 className={`rounded-full h-6 w-6 border border-2 flex p-1 justify-center items-center ${

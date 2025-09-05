@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 export class Unit {
   constructor({
     id,
@@ -11,7 +13,7 @@ export class Unit {
     rebate,
     tenure,
     downpayment,
-    colors
+    colors,
   }) {
     this.id = id;
     this.name = name;
@@ -32,5 +34,13 @@ export class Unit {
   }
 }
 
-// ? selector
+// ? Selectors
 export const UnitEntity = (state) => new Unit(state.unit.unit) ?? null;
+
+// ? Map selector
+const selectUnitDtos = (state) => state.units;
+
+export const UnitEntities = createSelector(
+  (state) => state.unit.units || [],
+  (units) => units.map((u) => new Unit(u))
+);

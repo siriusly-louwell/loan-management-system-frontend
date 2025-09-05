@@ -7,19 +7,13 @@ import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";
 import StickyBanner from "../components/cards/StickyBanner";
 import { Outlet, useLocation } from "react-router-dom";
 import UnderlineTabs from "../components/tabs/UnderlineTabs";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUnits, mapEntities } from "../services/redux/slices/unitSlice";
-import { setAlert } from "../services/redux/slices/uiSlice";
-import { Unit } from "../services/entities/Unit";
-import { mapUnitUseCase } from "../services/usecases/unit/mapUnitUseCase";
+import { useDispatch } from "react-redux";
+import { fetchUnits } from "../services/redux/slices/unitSlice";
 
 export default function ProductList({ url }) {
-  const { units, loading } = useSelector((state) => state.unit);
   const dispatch = useDispatch();
   const [isSort, setSort] = useState(false);
   const [isFilt, setFilt] = useState(false);
-  const [motors, setMotor] = useState([]);
-  const [motorLoad, setMotorLoad] = useState(true);
   const sortRef = useRef(null);
   const filtRef = useRef(null);
   const [current, setCurrent] = useState(0);
@@ -52,34 +46,7 @@ export default function ProductList({ url }) {
 
   useEffect(() => {
     dispatch(fetchUnits());
-    // try {
-    // } catch (error) {
-    //   dispatch(
-    //     setAlert({
-    //       message: "Failed to fetch all units",
-    //       type: "error",
-    //     })
-    //   );
-    // }
-    // fetch("http://localhost:8000/api/motorcycle")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setMotor(data);
-    //     setMotorLoad(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching data: ", error);
-    //     setMotorLoad(true);
-    //   });
   }, []);
-
-  useEffect(() => {
-    if(units) {
-      const motorArr = mapUnitUseCase(units);
-      // const motorArr = units.map((unit) => new Unit(unit));  
-      setMotor(motorArr);
-    }
-  }, [loading, units]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,8 +72,6 @@ export default function ProductList({ url }) {
     filtRef,
     isSort,
     isFilt,
-    motorLoad,
-    motors,
     url,
   };
 

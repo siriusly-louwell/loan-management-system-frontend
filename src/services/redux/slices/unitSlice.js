@@ -34,8 +34,8 @@ const UnitSlice = createSlice({
     error: null,
   },
   reducers: {
-    mapEntities: (state) => {
-      return  mapUnitUseCase(state.units);
+    mapEntities: (state, action) => {
+      return  mapUnitUseCase(action.payload);
     },
   },
   extraReducers: (builder) => {

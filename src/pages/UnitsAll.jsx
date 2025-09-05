@@ -11,10 +11,11 @@ import CardSkeleton from "../components/loading components/CardSkeleton";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useOutletContext } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Unit } from "../services/entities/Unit";
+import { Unit, UnitEntities } from "../services/entities/Unit";
 
 export default function UnitsAll() {
   const { units, loading } = useSelector((state) => state.unit);
+  const motors = useSelector(UnitEntities);
   const [brandFilt, setBrandFilt] = useState("");
   const {
     toggleSort,
@@ -24,7 +25,7 @@ export default function UnitsAll() {
     isSort,
     isFilt,
     // motorLoad,
-    motors,
+    // motors,
     url,
   } = useOutletContext();
 

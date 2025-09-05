@@ -11,14 +11,13 @@ import CardSkeleton from "../components/loading components/CardSkeleton";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntities } from "../services/entities/Unit";
-import { toggleModal } from "../services/redux/slices/uiSlice";
+import { selectFilter, toggleModal } from "../services/redux/slices/uiSlice";
 
 export default function UnitsAll() {
   const dispatch = useDispatch();
   const motors = useSelector(UnitEntities);
   const { units, loading } = useSelector((state) => state.unit);
-  const { modals } = useSelector((state) => state.ui);
-  const [brandFilt, setBrandFilt] = useState("");
+  const { modals, filter } = useSelector((state) => state.ui);
 
   return (
     <>
@@ -46,24 +45,54 @@ export default function UnitsAll() {
         </div>
       </div>
       <DropdownMenu className={modals.filter ? "block" : "hidden"} pad={72}>
-        <MenuLink pathName="All" click={() => setBrandFilt("")} />
-        <MenuLink pathName="Honda" click={() => setBrandFilt("Honda")} />
-        <MenuLink pathName="Yamaha" click={() => setBrandFilt("Yamaha")} />
-        <MenuLink pathName="Suzuki" click={() => setBrandFilt("Suzuki")} />
-        <MenuLink pathName="Kawasaki" click={() => setBrandFilt("Kawasaki")} />
-        <MenuLink pathName="KTM" click={() => setBrandFilt("KTM")} />
-        <MenuLink pathName="Kymco" click={() => setBrandFilt("Kymco")} />
-        <MenuLink pathName="SYM" click={() => setBrandFilt("SYM")} />
-        <MenuLink pathName="Skygo" click={() => setBrandFilt("Skygo")} />
-        <MenuLink pathName="Bennelli" click={() => setBrandFilt("Bennelli")} />
-        <MenuLink pathName="Bristol" click={() => setBrandFilt("Bristol")} />
-        <MenuLink pathName="Rusi" click={() => setBrandFilt("Rusi")} />
+        <MenuLink pathName="All" click={() => dispatch(selectFilter(null))} />
+        <MenuLink
+          pathName="Honda"
+          click={() => dispatch(selectFilter("Honda"))}
+        />
+        <MenuLink
+          pathName="Yamaha"
+          click={() => dispatch(selectFilter("Yamaha"))}
+        />
+        <MenuLink
+          pathName="Suzuki"
+          click={() => dispatch(selectFilter("Suzuki"))}
+        />
+        <MenuLink
+          pathName="Kawasaki"
+          click={() => dispatch(selectFilter("Kawasaki"))}
+        />
+        <MenuLink pathName="KTM" click={() => dispatch(selectFilter("KTM"))} />
+        <MenuLink
+          pathName="Kymco"
+          click={() => dispatch(selectFilter("Kymco"))}
+        />
+        <MenuLink pathName="SYM" click={() => dispatch(selectFilter("SYM"))} />
+        <MenuLink
+          pathName="Skygo"
+          click={() => dispatch(selectFilter("Skygo"))}
+        />
+        <MenuLink
+          pathName="Bennelli"
+          click={() => dispatch(selectFilter("Bennelli"))}
+        />
+        <MenuLink
+          pathName="Bristol"
+          click={() => dispatch(selectFilter("Bristol"))}
+        />
+        <MenuLink
+          pathName="Rusi"
+          click={() => dispatch(selectFilter("Rusi"))}
+        />
         <MenuLink
           pathName="Motorstar"
-          click={() => setBrandFilt("Motorstar")}
+          click={() => dispatch(selectFilter("Motorstar"))}
         />
-        <MenuLink pathName="QJMotor" click={() => setBrandFilt("QJMotor")} />
-        <MenuLink pathName="FKM" click={() => setBrandFilt("FKM")} />
+        <MenuLink
+          pathName="QJMotor"
+          click={() => dispatch(selectFilter("QJMotor"))}
+        />
+        <MenuLink pathName="FKM" click={() => dispatch(selectFilter("FKM"))} />
       </DropdownMenu>
       <DropdownMenu className={modals.sort ? "block" : "hidden"} pad={20}>
         <MenuLink pathName="The most popular" />
@@ -84,10 +113,9 @@ export default function UnitsAll() {
           </>
         ) : (
           motors.map((motor) => {
-            if (motor.isBrand(brandFilt))
-              // if (motor.brand === brandFilt && brandFilt !== "")
+            if (motor.isBrand(filter))
               return <ProductCard key={motor.id} unit={motor} />;
-            else if (brandFilt === "")
+            else if (filter === null)
               return <ProductCard key={motor.id} unit={motor} />;
             else return "";
           })

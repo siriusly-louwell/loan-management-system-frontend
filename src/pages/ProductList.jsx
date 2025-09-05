@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect } from "react";
-import FilterPanel from "../components/FilterPanel";
 import CreditBanner from "../components/cards/CreditBanner";
 import BasicBanner from "../components/cards/BasicBanner";
 import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";

@@ -1,87 +1,41 @@
 import React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import FilterPanel from "../components/FilterPanel";
 import CreditBanner from "../components/cards/CreditBanner";
 import BasicBanner from "../components/cards/BasicBanner";
 import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";
 import StickyBanner from "../components/cards/StickyBanner";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import UnderlineTabs from "../components/tabs/UnderlineTabs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { toggleSlide } from "../services/redux/slices/uiSlice";
 
 export default function ProductList() {
   const dispatch = useDispatch();
-  const [isSort, setSort] = useState(false);
-  const [isFilt, setFilt] = useState(false);
-  const sortRef = useRef(null);
-  const filtRef = useRef(null);
-  const [current, setCurrent] = useState(0);
-  const location = useLocation();
-
-  const toggleSort = () => setSort((prev) => !prev);
-  const toggleFilt = () => setFilt((prev) => !prev);
+  const { user } = useSelector((state) => state.auth);
+  const { carouselSlide } = useSelector((state) => state.ui);
 
   useEffect(() => {
     dispatch(fetchUnits());
   }, []);
 
   useEffect(() => {
-    const menuClicked = (event) => {
-      if (sortRef.current && !sortRef.current.contains(event.target)) {
-        setSort(false);
-      }
-    };
-
-    document.addEventListener("mousedown", menuClicked);
-    return () => document.removeEventListener("mousedown", menuClicked);
-  }, []);
-
-  useEffect(() => {
-    const filtClicked = (event) => {
-      if (filtRef.current && !filtRef.current.contains(event.target)) {
-        setFilt(false);
-      }
-    };
-
-    document.addEventListener("mousedown", filtClicked);
-    return () => document.removeEventListener("mousedown", filtClicked);
-  }, []);
-
-  useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % 3);
-    }, 5000); // 5000ms = 5 seconds
+      dispatch(toggleSlide({ type: "auto" }));
+    }, 5000);
 
-    // Cleanup interval on unmount
     return () => clearInterval(interval);
   }, []);
 
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % 3);
-  };
-
-  const prevSlide = () => {
-    setCurrent((prev) => (prev - 1 + 3) % 3);
-  };
-
-  const context = {
-    toggleSort,
-    toggleFilt,
-    sortRef,
-    filtRef,
-    isSort,
-    isFilt,
-  };
-
   return (
     <section className="bg-gray-100 py-8 justify-items-center antialiased dark:bg-gray-800 md:py-12">
-      {location.pathname !== "/customer" ? <StickyBanner /> : ""}
+      {user?.role !== "customer" ? <StickyBanner /> : ""}
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <div className="relative w-full space-y-4 lg:max-w-6xl mb-3 mx-auto rounded-xl overflow-hidden">
           <div
             className="flex transition-transform duration-500 ease-out"
-            style={{ transform: `translateX(-${current * 100}%)` }}>
+            style={{ transform: `translateX(-${carouselSlide * 100}%)` }}>
             <BasicBanner
               caption="Rhean Motor Center"
               context="A trusted motorcycle loan provider that has been helping customers finance their dream motorcycles since year 2000."
@@ -94,7 +48,9 @@ export default function ProductList() {
           </div>
 
           <button
-            onClick={prevSlide}
+            onClick={() => {
+              dispatch(toggleSlide({ type: "prev" }));
+            }}
             className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full">
             <span className="text-2xl">
               <svg
@@ -113,7 +69,9 @@ export default function ProductList() {
             </span>
           </button>
           <button
-            onClick={nextSlide}
+            onClick={() => {
+              dispatch(toggleSlide({ type: "next" }));
+            }}
             className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full">
             <span className="text-2xl">
               <svg
@@ -135,26 +93,26 @@ export default function ProductList() {
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             <button
               className={`w-2 h-2 rounded-full ${
-                current === 0 ? "bg-rose-500" : "bg-gray-300"
+                carouselSlide === 0 ? "bg-rose-500" : "bg-gray-300"
               }`}
-              onClick={() => setCurrent(0)}
+              onClick={() => dispatch(toggleSlide({ value: 0 }))}
             />
             <button
               className={`w-2 h-2 rounded-full ${
-                current === 1 ? "bg-rose-500" : "bg-gray-300"
+                carouselSlide === 1 ? "bg-rose-500" : "bg-gray-300"
               }`}
-              onClick={() => setCurrent(1)}
+              onClick={() => dispatch(toggleSlide({ value: 1 }))}
             />
             <button
               className={`w-2 h-2 rounded-full ${
-                current === 2 ? "bg-rose-500" : "bg-gray-300"
+                carouselSlide === 2 ? "bg-rose-500" : "bg-gray-300"
               }`}
-              onClick={() => setCurrent(2)}
+              onClick={() => dispatch(toggleSlide({ value: 2 }))}
             />
           </div>
         </div>
         <UnderlineTabs />
-        <Outlet context={context} />
+        <Outlet />
       </div>
       {/* <FilterPanel /> */}
     </section>

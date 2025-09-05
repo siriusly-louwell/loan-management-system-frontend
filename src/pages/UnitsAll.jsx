@@ -9,22 +9,16 @@ import Filter from "../assets/icons/Filter";
 import Sort from "../assets/icons/Sort";
 import CardSkeleton from "../components/loading components/CardSkeleton";
 import EmptySearch from "../components/empty states/EmptySearch";
-import { useOutletContext } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Unit, UnitEntities } from "../services/entities/Unit";
+import { useDispatch, useSelector } from "react-redux";
+import { UnitEntities } from "../services/entities/Unit";
+import { toggleModal } from "../services/redux/slices/uiSlice";
 
 export default function UnitsAll() {
-  const { units, loading } = useSelector((state) => state.unit);
+  const dispatch = useDispatch();
   const motors = useSelector(UnitEntities);
+  const { units, loading } = useSelector((state) => state.unit);
+  const { modals } = useSelector((state) => state.ui);
   const [brandFilt, setBrandFilt] = useState("");
-  const {
-    toggleSort,
-    toggleFilt,
-    sortRef,
-    filtRef,
-    isSort,
-    isFilt,
-  } = useOutletContext();
 
   return (
     <>
@@ -35,18 +29,23 @@ export default function UnitsAll() {
           </h2>
         </div>
         <div className="flex items-center space-x-4">
-          <DropdownBttn toggleMenu={toggleFilt} text="Filter by Brand">
+          <DropdownBttn
+            toggleMenu={() =>
+              dispatch(toggleModal({ name: "filter", value: modals?.filter }))
+            }
+            text="Filter by Brand">
             <Filter />
           </DropdownBttn>
-          <DropdownBttn toggleMenu={toggleSort} text="Sort">
+          <DropdownBttn
+            toggleMenu={() =>
+              dispatch(toggleModal({ name: "sort", value: modals?.sort }))
+            }
+            text="Sort">
             <Sort />
           </DropdownBttn>
         </div>
       </div>
-      <DropdownMenu
-        ref={filtRef}
-        className={isFilt ? "block" : "hidden"}
-        pad={72}>
+      <DropdownMenu className={modals.filter ? "block" : "hidden"} pad={72}>
         <MenuLink pathName="All" click={() => setBrandFilt("")} />
         <MenuLink pathName="Honda" click={() => setBrandFilt("Honda")} />
         <MenuLink pathName="Yamaha" click={() => setBrandFilt("Yamaha")} />
@@ -66,10 +65,7 @@ export default function UnitsAll() {
         <MenuLink pathName="QJMotor" click={() => setBrandFilt("QJMotor")} />
         <MenuLink pathName="FKM" click={() => setBrandFilt("FKM")} />
       </DropdownMenu>
-      <DropdownMenu
-        ref={sortRef}
-        className={isSort ? "block" : "hidden"}
-        pad={20}>
+      <DropdownMenu className={modals.sort ? "block" : "hidden"} pad={20}>
         <MenuLink pathName="The most popular" />
         <MenuLink pathName="Newest" />
         <MenuLink pathName="Increasing price" />

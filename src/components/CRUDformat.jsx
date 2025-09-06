@@ -94,7 +94,7 @@ export default function CRUDformat({
             </div>
             <DropdownMenu
               ref={dropdownRef}
-              className={isOpen ? "block" : "hidden"}>
+              classStyle={isOpen ? "block" : "hidden"}>
               <MenuLink pathName="Mass Edit" />
               <MenuLink pathName="Delete All" />
             </DropdownMenu>

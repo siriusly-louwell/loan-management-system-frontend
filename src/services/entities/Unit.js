@@ -30,7 +30,7 @@ export class Unit {
   }
 
   isBrand(filter) {
-    return this.brand === filter && filter !== "";
+    return this.brand === filter && filter !== null;
   }
 }
 

@@ -86,7 +86,24 @@ export default function Navbar({ links, path }) {
             location.pathname == "/prodlist" ? (
               <Button text="Login" onclick={() => navigate("/login")} />
             ) : (
-              <AvatarBttn dropMenu={toggleDropdown} />
+              <div>
+                <AvatarBttn dropMenu={toggleDropdown} />
+                <DropdownMenu
+                  ref={dropdownRef}
+                  classStyle={isOpen ? "block" : "hidden"}>
+                  <div className="px-4 py-3">
+                    <span className="block text-sm text-gray-900 dark:text-white">
+                      Bonnie Green
+                    </span>
+                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                      name@flowbite.com
+                    </span>
+                  </div>
+                  <MenuLink pathName="Profile" path={path + "/profile"} />
+                  <MenuLink pathName="Settings" path="" />
+                  <MenuLink pathName="Log out" click={toggleLogout} />
+                </DropdownMenu>
+              </div>
             )}
             <HamburgerMenu />
           </div>
@@ -99,19 +116,6 @@ export default function Navbar({ links, path }) {
           </div>
         </div>
       </nav>
-      <DropdownMenu ref={dropdownRef} className={isOpen ? "block" : "hidden"}>
-        <div className="px-4 py-3">
-          <span className="block text-sm text-gray-900 dark:text-white">
-            Bonnie Green
-          </span>
-          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-            name@flowbite.com
-          </span>
-        </div>
-        <MenuLink pathName="Profile" path={path + "/profile"} />
-        <MenuLink pathName="Settings" path="" />
-        <MenuLink pathName="Log out" click={toggleLogout} />
-      </DropdownMenu>
     </>
   );
 }

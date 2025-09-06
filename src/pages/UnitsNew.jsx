@@ -35,7 +35,7 @@ export default function UnitsNew() {
           </DropdownBttn>
         </div>
       </div>
-      <DropdownMenu className={modals?.sort ? "block" : "hidden"}>
+      <DropdownMenu classStyle={modals?.sort ? "block" : "hidden"}>
         <MenuLink pathName="The most popular" />
         <MenuLink pathName="Newest" />
         <MenuLink pathName="Increasing price" />

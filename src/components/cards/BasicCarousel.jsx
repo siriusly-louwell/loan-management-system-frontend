@@ -7,19 +7,21 @@ export default function BasicCarousel({ children, length, loop = false }) {
   const { carouselSlide } = useSelector((state) => state.ui);
 
   useEffect(() => {
-    if(loop) {
-        const interval = setInterval(() => {
-          dispatch(toggleSlide({ type: "auto", limit: 3 }));
-        }, 5000);
-    
-        return () => clearInterval(interval);
+    if (loop) {
+      const interval = setInterval(() => {
+        dispatch(toggleSlide({ type: "auto", limit: 3 }));
+      }, 5000);
+
+      return () => clearInterval(interval);
     }
   }, []);
 
   return (
-    <div className="relative w-full space-y-4 lg:max-w-6xl mb-3 mx-auto rounded-xl overflow-hidden">
+    <>
       <div
-        className="flex transition-transform duration-500 ease-out"
+        className={`flex transition-transform duration-500 ease-out ${
+          !loop ? "h-full" : ""
+        }`}
         style={{ transform: `translateX(-${carouselSlide * 100}%)` }}>
         {children}
       </div>
@@ -78,6 +80,6 @@ export default function BasicCarousel({ children, length, loop = false }) {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 }

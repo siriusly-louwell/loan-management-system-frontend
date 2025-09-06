@@ -19,30 +19,19 @@ import { fetchUnit } from "../services/redux/slices/unitSlice";
 import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "../services/entities/UnitSpecs";
 import { toggleSlide } from "../services/redux/slices/uiSlice";
+import BasicCarousel from "../components/cards/BasicCarousel";
 
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
   const { unitLoading } = useSelector((state) => state.unit);
-  const { carouselSlide } = useSelector((state) => state.ui);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
-  const navigate = useNavigate();
   const { state } = useLocation();
   const [id, setId] = useState(staff ? 1 : state?.id);
   const [addUnit, setUnits] = useState([]);
-  const [addLoad, setUnitsLoad] = useState(true);
   const [selected, setSelected] = useState([id]);
-  const [current, setCurrent] = useState(0);
   const [selectColor, setSelectColor] = useState([]);
   const images = [];
-
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % totalSlides);
-  };
-
-  const prevSlide = () => {
-    setCurrent((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
 
   function selectUnits(unit) {
     const newSelected = selected.includes(unit)
@@ -102,40 +91,33 @@ export default function ProductInfo({ staff = false }) {
           {
             <>
               <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
-                {unitLoading ? (
-                  <>
-                    <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
+                <BasicCarousel length={totalSlides}>
+                  {unitLoading ? (
+                    //   <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
                     <div className="flex justify-center items-center w-full h-full">
                       <ImageSkeleton />
                     </div>
-                  </>
-                ) : (
-                  <>
-                    {staff ? (
-                      <FormSelect
-                        name="motor"
-                        id="motor"
-                        value={`${unit.brand}: ${unit.name} - ₱${parseFloat(
-                          unit.price
-                        ).toLocaleString()}`}
-                        label="Select Unit"
-                        onchange={(e) => setId(e.target.value)}>
-                        {addUnit.map((motor) => (
-                          <option value={motor.id}>
-                            {motor.brand}: {motor.name} - ₱
-                            {parseFloat(motor.price).toLocaleString()}
-                          </option>
-                        ))}
-                      </FormSelect>
-                    ) : (
-                      ""
-                    )}
-
-                    <div
-                      className="flex h-full transition-transform duration-500 ease-out"
-                      style={{
-                        transform: `translateX(-${carouselSlide * 100}%)`,
-                      }}>
+                  ) : (
+                    <>
+                      {staff ? (
+                        <FormSelect
+                          name="motor"
+                          id="motor"
+                          value={`${unit.brand}: ${unit.name} - ₱${parseFloat(
+                            unit.price
+                          ).toLocaleString()}`}
+                          label="Select Unit"
+                          onchange={(e) => setId(e.target.value)}>
+                          {addUnit.map((motor) => (
+                            <option value={motor.id}>
+                              {motor.brand}: {motor.name} - ₱
+                              {parseFloat(motor.price).toLocaleString()}
+                            </option>
+                          ))}
+                        </FormSelect>
+                      ) : (
+                        ""
+                      )}
                       {images.map((src, index) => (
                         <img
                           key={index}
@@ -144,75 +126,10 @@ export default function ProductInfo({ staff = false }) {
                           className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
                         />
                       ))}
-                    </div>
-                  </>
-                )}
-
-                {unitLoading ? (
-                  ""
-                ) : (
-                  <>
-                    <button
-                      onClick={() => {
-                        console.log(totalSlides);
-                        dispatch(
-                          toggleSlide({ type: "prev", limit: totalSlides })
-                        );
-                      }}
-                      className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full">
-                      <span className="text-2xl">
-                        <svg
-                          className="shrink-0 size-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round">
-                          <path d="m15 18-6-6 6-6"></path>
-                        </svg>
-                      </span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        dispatch(
-                          toggleSlide({ type: "next", limit: totalSlides })
-                        );
-                      }}
-                      className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full">
-                      <span className="text-2xl">
-                        <svg
-                          className="shrink-0 size-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round">
-                          <path d="m9 18 6-6-6-6"></path>
-                        </svg>
-                      </span>
-                    </button>
-                  </>
-                )}
-
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {images.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        index === carouselSlide ? "bg-rose-500" : "bg-gray-300"
-                      }`}
-                      onClick={() => dispatch(toggleSlide({ value: index }))}
-                    />
-                  ))}
-                </div>
+                      ={" "}
+                    </>
+                  )}
+                </BasicCarousel>
               </div>
 
               <div className="mt-6 sm:mt-8 lg:mt-0">
@@ -246,7 +163,7 @@ export default function ProductInfo({ staff = false }) {
                                 id={`${i}_${color.color}`}
                                 className="hidden"
                                 onClick={() => {
-                                  setCurrent(i);
+                                  dispatch(toggleSlide({ value: i }));
                                   setSelectColor([
                                     selected.length - 1,
                                     color.color,

@@ -49,11 +49,11 @@ const uiSlice = createSlice({
 
       switch (data.type) {
         case "prev":
-          state.carouselSlide = (slide - 1 + 3) % 3;
+          state.carouselSlide = (slide - 1 + data.limit) % data.limit;
           break;
         case "next":
         case "auto":
-          state.carouselSlide = (slide + 1) % 3;
+          state.carouselSlide = (slide + 1) % data.limit;
           break;
         default:
           state.carouselSlide = data.value;

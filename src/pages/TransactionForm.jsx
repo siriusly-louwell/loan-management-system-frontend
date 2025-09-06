@@ -96,7 +96,7 @@ export default function TransactionForm() {
                     <div className="flex py-5 border-b border-gray-400 dark:border-gray-600 items-center space-x-4 mb-5">
                         <div className="grid lg:grid-cols-2 gap-x-5 gap-y-4">
                             <SmallSpin size={30} />
-                            <QuantityInput label="Quantity" />
+                            {/* <QuantityInput label="Quantity" /> */}
                             <div>
                                 <div className="flex justify-between items-center mb-2">
                                     <h3 className="font-medium text-gray-700 dark:text-gray-200">Downpayment</h3>

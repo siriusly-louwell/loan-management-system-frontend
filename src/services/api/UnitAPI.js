@@ -2,9 +2,14 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const UserAPI = {
+const UnitAPI = {
   async fetchAll() {
     const response = await axios.get(`${API_URL}/api/motorcycle`);
+    return response.data;
+  },
+
+  async fetchUnit(id) {
+    const response = await axios.get(`${API_URL}/api/motorcycle/${id}`);
     return response.data;
   },
 
@@ -15,4 +20,4 @@ const UserAPI = {
 
 };
 
-export default UserAPI;
+export default UnitAPI;

@@ -43,6 +43,7 @@ const UnitSlice = createSlice({
     units: [],
     unitLoading: true,
     unitsLoading: true,
+    images: [],
     error: null,
   },
   extraReducers: (builder) => {
@@ -82,6 +83,10 @@ const UnitSlice = createSlice({
       .addCase(fetchUnit.fulfilled, (state, action) => {
         state.unitLoading = false;
         state.unit = action.payload;
+
+        state.unit.images.map((file, i) => {
+          state.images[i] = `http://127.0.0.1:8000/storage/${file.path}`;
+        });
       })
       .addCase(fetchUnit.rejected, (state, action) => {
         state.unitLoading = false;

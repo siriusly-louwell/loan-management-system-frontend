@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import EMICalculator from "./EMICalculator";
 import ColorLabel from "../components/ColorLabel";
 import SmallLabel from "../components/texts/SmallLabel";
 import FormSelect from "../components/inputs/FormSelect";
-import Button from "../components/buttons/Button";
-import ProductGrid from "../components/cards/ProductGrid";
-import ProductCard from "../components/cards/ProductCard";
-import CloseBttn from "../components/buttons/CloseBttn";
 import PfpLabel from "../components/PfpLabel";
 import SmallSpin from "../components/loading components/SmallSpin";
-import BasicTabs from "../components/tabs/BasicTabs";
 import ImageSkeleton from "../components/loading components/ImageSkeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnit } from "../services/redux/slices/unitSlice";
@@ -23,7 +18,7 @@ import BasicCarousel from "../components/cards/BasicCarousel";
 
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
-  const { unitLoading } = useSelector((state) => state.unit);
+  const { unitLoading, images } = useSelector((state) => state.unit);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
   const { state } = useLocation();
@@ -31,7 +26,6 @@ export default function ProductInfo({ staff = false }) {
   const [addUnit, setUnits] = useState([]);
   const [selected, setSelected] = useState([id]);
   const [selectColor, setSelectColor] = useState([]);
-  const images = [];
 
   function selectUnits(unit) {
     const newSelected = selected.includes(unit)
@@ -56,33 +50,6 @@ export default function ProductInfo({ staff = false }) {
     //   });
   }, [id]);
 
-  //   useEffect(() => {
-  //     fetch("http://127.0.0.1:8000/api/motorcycle")
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setUnits(data);
-  //         setUnitsLoad(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching data: ", error);
-  //         setUnitsLoad(true);
-  //       });
-  //   }, []);
-
-  // useEffect(() => {
-  //     setTimeout(() => {
-  //         console.log(unit.colors);
-  //         setSelectColor([selected.length -1, unit.colors[0].color]);
-  //     }, 5000);
-  // }, [unit]);
-
-  if (!unitLoading)
-    specs.images.map((file) => {
-      images.push("http://127.0.0.1:8000/storage/" + file.path);
-    });
-
-  const totalSlides = images.length;
-
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">
       <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
@@ -91,7 +58,7 @@ export default function ProductInfo({ staff = false }) {
           {
             <>
               <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
-                <BasicCarousel length={totalSlides}>
+                <BasicCarousel length={images.length}>
                   {unitLoading ? (
                     //   <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
                     <div className="flex justify-center items-center w-full h-full">

@@ -309,7 +309,7 @@ export default function ApplicationForm() {
         ids, disable, locations, selectColor};
 
     return (
-        <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+        <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:min-h-screen">
             <Stepper>
                 <Step label="1. Loan Setup" status={stepCheck(0)} click={() => navigate(routerPaths[0], {state: {selected: state?.selected}})} />
                 <Step label="2. Personal Information" status={stepCheck(1)} click={() => stepNavCheck(1)} />

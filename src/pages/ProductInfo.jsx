@@ -15,6 +15,7 @@ import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "../services/entities/UnitSpecs";
 import { toggleSlide } from "../services/redux/slices/uiSlice";
 import BasicCarousel from "../components/cards/BasicCarousel";
+import { handleChange, initialForm } from "../services/redux/slices/formSlice";
 
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function ProductInfo({ staff = false }) {
 
   useEffect(() => {
     dispatch(fetchUnit(id));
+
     // fetch("http://127.0.0.1:8000/api/motorcycle/" + id)
     //   .then((response) => response.json())
     //   .then((data) => {
@@ -49,6 +51,17 @@ export default function ProductInfo({ staff = false }) {
     //     setUnitLoad(true);
     //   });
   }, [id]);
+
+  useEffect(() => {
+    dispatch(
+      initialForm({
+        motorcycle_id: unit.id,
+        color: unit.colors !== undefined ? unit.colors[0].color : "",
+        downpayment: unit.downpayment,
+        quantity: 1,
+      })
+    );
+  }, [unitLoading]);
 
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">

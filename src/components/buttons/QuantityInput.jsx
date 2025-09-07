@@ -7,13 +7,13 @@ export default function QuantityInput({ label, max, require, index, change }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      handleQuantity({
-        index: index,
-        num: 1,
-      })
-    );
-    // change(index, 1, "quantity");
+    // dispatch(
+    //   handleQuantity({
+    //     index: index,
+    //     num: 1,
+    //   })
+    // );
+    change(index, 1, "quantity");
   }, []);
 
   function handleNumber(type) {

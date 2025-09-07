@@ -42,6 +42,14 @@ const formSlice = createSlice({
 
       state.formData = { ...state.formData, quantity: quantArr };
     },
+
+    initialForm: (state, action) => {
+      state.formData = action.payload;
+    },
+
+    setFormColor: (state, action) => {
+      state.formData.color = action.payload;
+    }
   },
 });
 
@@ -51,5 +59,7 @@ export const {
   handleChange,
   handleQuantity,
   setColorIndex,
+  initialForm,
+  setFormColor
 } = formSlice.actions;
 export default formSlice.reducer;

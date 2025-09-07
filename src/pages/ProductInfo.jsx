@@ -28,13 +28,13 @@ export default function ProductInfo({ staff = false }) {
   const [selected, setSelected] = useState([id]);
   const [selectColor, setSelectColor] = useState([]);
 
-  function selectUnits(unit) {
-    const newSelected = selected.includes(unit)
-      ? selected.filter((select) => select !== unit)
-      : [...selected, unit];
+  // function selectUnits(unit) {
+  //   const newSelected = selected.includes(unit)
+  //     ? selected.filter((select) => select !== unit)
+  //     : [...selected, unit];
 
-    setSelected(newSelected);
-  }
+  //   setSelected(newSelected);
+  // }
 
   useEffect(() => {
     dispatch(fetchUnit(id));
@@ -62,6 +62,8 @@ export default function ProductInfo({ staff = false }) {
       })
     );
   }, [unitLoading]);
+
+  console.log(useSelector((state) => state.form.formData));
 
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">
@@ -144,10 +146,10 @@ export default function ProductInfo({ staff = false }) {
                                 className="hidden"
                                 onClick={() => {
                                   dispatch(toggleSlide({ value: i }));
-                                  setSelectColor([
-                                    selected.length - 1,
-                                    color.color,
-                                  ]);
+                                  // setSelectColor([
+                                  //   selected.length - 1,
+                                  //   color.color,
+                                  // ]);
                                 }}
                               />
                             </div>

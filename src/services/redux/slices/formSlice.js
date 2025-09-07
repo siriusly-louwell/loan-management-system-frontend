@@ -37,10 +37,20 @@ const formSlice = createSlice({
 
     handleQuantity: (state, action) => {
       const quantity = state.formData.quantity;
-      const quantArr = quantity ? quantity : [];
-      quantArr[action.payload.index] = action.payload.num;
+      const data = action.payload;
+      let quantState;
 
-      state.formData = { ...state.formData, quantity: quantArr };
+      switch (data.type) {
+        case "application":
+          quantState = data.num
+          break;
+        default:
+          quantState = quantity ? quantity : [];
+          // quantState = quantity || [];
+          quantState[data.index] = data.num;
+      }
+
+      state.formData = { ...state.formData, quantity: quantState };
     },
 
     initialForm: (state, action) => {

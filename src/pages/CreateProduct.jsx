@@ -250,6 +250,7 @@ export default function CreateProduct() {
                             max={200}
                             label="Quantity"
                             index={i}
+                            type="create-unit"
                           />
                         </div>
                       </>

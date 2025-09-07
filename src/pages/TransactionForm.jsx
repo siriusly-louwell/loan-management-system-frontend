@@ -23,7 +23,7 @@ export default function TransactionForm() {
   } = useOutletContext();
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
-  const [unit, setUnit] = useState(useSelector(UnitEntity));
+  const unit = useSelector(UnitEntity);
   const [transact, setTransact] = useState([]);
   const [transLoad, setTransLoad] = useState(true);
   const [colors, setColors] = useState("");
@@ -36,39 +36,45 @@ export default function TransactionForm() {
   }
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/motorcycle/", {
-        params: { ids: ids },
-      })
-      .then((response) => {
-        setTransact(response.data);
-        setTransLoad(false);
-        setColors((prev) => {
-          const updated = [...prev];
-          updated[selectColor[0]] = selectColor[1];
-          return updated;
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-        setTransLoad(true);
-      });
-  }, [ids]);
+    setTimeout(() => {
+      setTransLoad(false);
+    }, 1000);
+  }, []);
 
-  useEffect(() => {
-    const payments = transact.map((trans) => trans.downpayment);
-    setDownPayment(payments);
-  }, [transact]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://127.0.0.1:8000/api/motorcycle/", {
+  //       params: { ids: ids },
+  //     })
+  //     .then((response) => {
+  //       setTransact(response.data);
+  //       setTransLoad(false);
+  //       setColors((prev) => {
+  //         const updated = [...prev];
+  //         updated[selectColor[0]] = selectColor[1];
+  //         return updated;
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching products:", error);
+  //       setTransLoad(true);
+  //     });
+  // }, [ids]);
 
-  function handleDown(i, downpayment) {
-    setDownPayment((prev) => {
-      const updated = [...prev];
-      updated[i] = downpayment;
-      return updated;
-    });
+  // useEffect(() => {
+  //   const payments = transact.map((trans) => trans.downpayment);
+  //   setDownPayment(payments);
+  // }, [transact]);
 
-    handleTransForm(i, downpayment, "downpayment");
-  }
+  // function handleDown(i, downpayment) {
+  //   setDownPayment((prev) => {
+  //     const updated = [...prev];
+  //     updated[i] = downpayment;
+  //     return updated;
+  //   });
+
+  //   handleTransForm(i, downpayment, "downpayment");
+  // }
 
   function dispatchInput(event) {
     dispatch(
@@ -76,23 +82,25 @@ export default function TransactionForm() {
     );
   }
 
-  console.log(formData);
+  function dispatchQuantity(value) {
+    dispatch(handleChange({ name: "quantity", value: value }));
+  }
 
-  useEffect(() => {
-    const initializedForm = transact.map((t, i) => ({
-      motorcycle_id: t.id,
-      downpayment: t.downpayment,
-      quantity: 1,
-    }));
+  // useEffect(() => {
+  //   const initializedForm = transact.map((t, i) => ({
+  //     motorcycle_id: t.id,
+  //     downpayment: t.downpayment,
+  //     quantity: 1,
+  //   }));
 
-    setTransactForm(initializedForm);
-  }, [transact]);
+  //   setTransactForm(initializedForm);
+  // }, [transact]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      handleTransForm(selectColor[0], selectColor[1], "color");
-    }, 2000);
-  }, [colors]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     handleTransForm(selectColor[0], selectColor[1], "color");
+  //   }, 2000);
+  // }, [colors]);
 
   return (
     <>
@@ -176,8 +184,9 @@ export default function TransactionForm() {
                 <QuantityInput
                   label="Quantity"
                   max={unit.quantity}
-                  index={5}
-                  change={handleTransForm}
+                  index={0}
+                  quantType="application"
+                  change={(val) => dispatchQuantity(val)}
                   require={true}
                 />
                 <div>

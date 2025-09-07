@@ -1,39 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleQuantity } from "../../services/redux/slices/formSlice";
 
-export default function QuantityInput({ label, max, require, index, change }) {
-  const [number, setNumber] = useState(1);
+export default function QuantityInput({
+  label,
+  max,
+  require,
+  index,
+  change,
+  quantType,
+}) {
+  const { formData } = useSelector((state) => state.form);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // dispatch(
-    //   handleQuantity({
-    //     index: index,
-    //     num: 1,
-    //   })
-    // );
-    change(index, 1, "quantity");
-  }, []);
+  // useEffect(() => {
+  //   dispatch(
+  //     handleQuantity({
+  //       index: index,
+  //       num: 1,
+  //       type: quantType,
+  //     })
+  //   );
+  //   // change(index, 1, "quantity");
+  // }, []);
 
   function handleNumber(type) {
-    if (type === "increment" && number < max) {
-      setNumber(number + 1);
+    if (type === "increment" && formData.quantity < max) {
       dispatch(
         handleQuantity({
           index: index,
-          num: number + 1,
+          num: formData.quantity + 1,
+          type: quantType,
         })
       );
-      //   change(index, number + 1, "quantity");
+      //   change(index, formData.quantity + 1, "quantity");
     }
 
-    if (type === "decrement" && number > 1) {
-      setNumber(number - 1);
+    if (type === "decrement" && formData.quantity > 1) {
       dispatch(
         handleQuantity({
           index: index,
-          num: number - 1,
+          num: formData.quantity - 1,
+          type: quantType,
         })
       );
       //   change(index, number - 1, "quantity");
@@ -43,11 +51,11 @@ export default function QuantityInput({ label, max, require, index, change }) {
   function manualQuanti(num) {
     const val = num === "" ? num : Number(num);
 
-    setNumber(val);
     dispatch(
       handleQuantity({
         index: index,
         num: val,
+        type: quantType,
       })
     );
     // change(index, val, "quantity");
@@ -84,7 +92,7 @@ export default function QuantityInput({ label, max, require, index, change }) {
           type="number"
           id="quantity-input"
           name="quantity"
-          value={number}
+          value={formData.quantity}
           onChange={(e) => manualQuanti(e.target.value)}
           placeholder={max}
           min="1"

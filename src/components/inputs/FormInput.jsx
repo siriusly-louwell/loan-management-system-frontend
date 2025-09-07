@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { inputCheck } from "../../services/redux/slices/uiSlice";
 
 export default function FormInput({
   label,
@@ -14,6 +16,10 @@ export default function FormInput({
   disable = false,
 }) {
   const color = value === "__EMPTY__" ? "red" : "gray";
+  const dispatch = useDispatch();
+  // const color = dispatch(inputCheck({ key: name, value: value }))
+  //   ? "red"
+  //   : "gray";
 
   return (
     <div>

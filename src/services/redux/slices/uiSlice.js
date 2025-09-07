@@ -63,6 +63,17 @@ const uiSlice = createSlice({
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
+
+    inputCheck: (state, action) => {
+      const data = action.payload;
+
+      switch (data.key) {
+        case "downpayment":
+          return state.formData.downpayment < data.value;
+        default:
+          return data.value === "__EMPTY__";
+      }
+    },
   },
 });
 
@@ -73,5 +84,6 @@ export const {
   toggleModal,
   toggleSlide,
   setFilter,
+  inputCheck,
 } = uiSlice.actions;
 export default uiSlice.reducer;

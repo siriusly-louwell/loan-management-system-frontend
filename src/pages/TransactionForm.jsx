@@ -10,7 +10,7 @@ import FormSelect from "../components/inputs/FormSelect";
 import SelectColor from "../components/checkboxes/SelectColor";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntity } from "../services/entities/Unit";
-import { setFormColor } from "../services/redux/slices/formSlice";
+import { handleChange } from "../services/redux/slices/formSlice";
 
 export default function TransactionForm() {
   const {
@@ -30,7 +30,7 @@ export default function TransactionForm() {
   const [downPayment, setDownPayment] = useState([]);
 
   function changeColor(newColor) {
-    dispatch(setFormColor(newColor));
+    dispatch(handleChange({ name: "color", value: newColor }));
 
     // handleTransForm(i, newColor, "color");
   }
@@ -69,6 +69,14 @@ export default function TransactionForm() {
 
     handleTransForm(i, downpayment, "downpayment");
   }
+
+  function dispatchInput(event) {
+    dispatch(
+      handleChange({ name: event.target.name, value: event.target.value })
+    );
+  }
+
+  console.log(formData);
 
   useEffect(() => {
     const initializedForm = transact.map((t, i) => ({
@@ -186,21 +194,26 @@ export default function TransactionForm() {
                   </div>
                   <FormInput
                     type="number"
-                    id={`downpayment_5`}
-                    value={downPayment}
-                    onchange={(e) => handleDown(5, Number(e.target.value))}
+                    value={formData.downpayment}
+                    name="downpayment"
+                    onchange={(e) => dispatchInput(e)}
+                    // value={downPayment}
+                    // onchange={(e) => handleDown(5, Number(e.target.value))}
                     placeholder="Input downpayment here"
                   />
-                  <p id={`down_warn_5`} className="text-red-500">
-                    * Downpayment must not go below the minimum payment
-                  </p>
+                  {formData.downpayment < Number(unit.downpayment) && (
+                    <p className="text-red-500">
+                      * Downpayment must not go below the minimum payment
+                    </p>
+                  )}
                 </div>
                 <FormSelect
                   name="tenure"
                   label="Loan Years"
                   id="tenure"
                   value={transactForm.tenure}
-                  onchange={(e) => handleTransaction(5, e)}
+                  onchange={(e) => dispatchInput(e)}
+                  // onchange={(e) => handleTransaction(5, e)}
                   require={true}>
                   {[...Array(unit.tenure)].map((_, i) => (
                     <option value={i + 1}>

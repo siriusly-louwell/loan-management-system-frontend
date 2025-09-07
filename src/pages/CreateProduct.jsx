@@ -1,7 +1,11 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setAlert } from "../services/redux/slices/uiSlice";
+import {
+  setLoading,
+  setAlert,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
 import { addUnit } from "../services/redux/slices/unitSlice";
 import FormInput from "../components/inputs/FormInput";
 import FormTextarea from "../components/inputs/FormTextarea";
@@ -19,11 +23,13 @@ import {
   setColorIndex,
   resetInput,
   handleChange,
+  initialForm,
 } from "../services/redux/slices/formSlice";
 
 export default function CreateProduct() {
   const [files, setFiles] = useState([]);
-  const { colors, formData } = useSelector((state) => state.form);
+  const { colors, formData, formType } = useSelector((state) => state.form);
+  const { modals } = useSelector((state) => state.ui);
   const [rows, setRows] = useState([""]);
   const dispatch = useDispatch();
 
@@ -32,9 +38,11 @@ export default function CreateProduct() {
     dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
+      const form = formData[formType];
       const response = await dispatch(
-        addUnit({ formData, files, colors })
+        addUnit({ form, files, colors })
       ).unwrap();
+
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(resetInput());
@@ -70,13 +78,13 @@ export default function CreateProduct() {
   return (
     <div
       id="createProduct"
-      className="overflow-y-auto hidden overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+      className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
       <AnimatePresence>
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: [0.8, 1.1, 1], opacity: 1 }}
+          initial={{ scale: 0.8, opacity: 1 }}
+          animate={{ scale: [0.8, 1, 1], opacity: 1 }}
           transition={{
-            duration: 1,
+            duration: 0.2,
             ease: "easeOut",
           }}>
           <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
@@ -85,7 +93,17 @@ export default function CreateProduct() {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Add Unit
                 </h3>
-                <CloseBttn id="createProduct" />
+                <CloseBttn
+                  id="createProduct"
+                  trigger={() =>
+                    dispatch(
+                      toggleModal({
+                        name: "createUnit",
+                        value: modals?.createUnit,
+                      })
+                    )
+                  }
+                />
               </div>
               <form onSubmit={handleSubmit} className="lg:flex">
                 <section className="lg:w-1/2 lg:pr-3">
@@ -97,7 +115,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Motorcycle Name"
                         type="text"
-                        value={formData.name || ""}
+                        value={formData[formType].name || ""}
                         onchange={dispatchInput}
                         name="name"
                         id="name"
@@ -111,7 +129,7 @@ export default function CreateProduct() {
                         label="Brand Name"
                         name="brand"
                         id="brand"
-                        value={formData.brand || ""}
+                        value={formData[formType].brand || ""}
                         onchange={dispatchInput}>
                         <option>Honda</option>
                         <option>Yamaha</option>
@@ -133,7 +151,7 @@ export default function CreateProduct() {
                         type="number"
                         id="price"
                         name="price"
-                        value={formData.price || ""}
+                        value={formData[formType].price || ""}
                         onchange={dispatchInput}
                         placeholder="₱150,000"
                       />
@@ -142,7 +160,7 @@ export default function CreateProduct() {
                         type="number"
                         id="down"
                         name="downpayment"
-                        value={formData.downpayment || ""}
+                        value={formData[formType].downpayment || ""}
                         onchange={dispatchInput}
                         placeholder="₱25,000"
                       />
@@ -151,7 +169,7 @@ export default function CreateProduct() {
                         type="number"
                         id="rebate"
                         name="rebate"
-                        value={formData.rebate || ""}
+                        value={formData[formType].rebate || ""}
                         onchange={dispatchInput}
                         placeholder="₱15,000"
                       />
@@ -160,7 +178,7 @@ export default function CreateProduct() {
                         type="number"
                         id="interest"
                         name="interest"
-                        value={formData.interest || ""}
+                        value={formData[formType].interest || ""}
                         onchange={dispatchInput}
                         placeholder="10%"
                       />
@@ -169,7 +187,7 @@ export default function CreateProduct() {
                         type="number"
                         id="tenure"
                         name="tenure"
-                        value={formData.tenure || ""}
+                        value={formData[formType].tenure || ""}
                         onchange={dispatchInput}
                         placeholder="5 years"
                       />
@@ -178,7 +196,7 @@ export default function CreateProduct() {
                       name="description"
                       id="description"
                       label="Description"
-                      value={formData.description || ""}
+                      value={formData[formType].description || ""}
                       onchange={dispatchInput}
                       placeholder="Write motorcycle description here"
                     />
@@ -250,6 +268,7 @@ export default function CreateProduct() {
                             max={200}
                             label="Quantity"
                             index={i}
+                            type="create-unit"
                           />
                         </div>
                       </>
@@ -271,7 +290,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Engine"
                       type="text"
-                      value={formData.engine || ""}
+                      value={formData[formType].engine || ""}
                       onchange={dispatchInput}
                       name="engine"
                       id="name"
@@ -280,7 +299,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Compression Ratio"
                       type="text"
-                      value={formData.compression || ""}
+                      value={formData[formType].compression || ""}
                       onchange={dispatchInput}
                       name="compression"
                       id="name"
@@ -290,7 +309,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Displacement (cc)"
                         type="text"
-                        value={formData.displacement || ""}
+                        value={formData[formType].displacement || ""}
                         onchange={dispatchInput}
                         name="displacement"
                         id="name"
@@ -299,7 +318,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Horsepower (hp)"
                         type="text"
-                        value={formData.horsepower || ""}
+                        value={formData[formType].horsepower || ""}
                         onchange={dispatchInput}
                         name="horsepower"
                         id="name"
@@ -308,7 +327,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Torque (Nm)"
                         type="text"
-                        value={formData.torque || ""}
+                        value={formData[formType].torque || ""}
                         onchange={dispatchInput}
                         name="torque"
                         id="name"
@@ -317,7 +336,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Fuel System"
                         type="text"
-                        value={formData.fuel || ""}
+                        value={formData[formType].fuel || ""}
                         onchange={dispatchInput}
                         name="fuel"
                         id="name"
@@ -326,7 +345,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Final Drive"
                         type="text"
-                        value={formData.drive || ""}
+                        value={formData[formType].drive || ""}
                         onchange={dispatchInput}
                         name="drive"
                         id="name"
@@ -335,7 +354,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Transmission"
                         type="text"
-                        value={formData.transmission || ""}
+                        value={formData[formType].transmission || ""}
                         onchange={dispatchInput}
                         name="transmission"
                         id="name"
@@ -345,7 +364,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Cooling System"
                       type="text"
-                      value={formData.cooling || ""}
+                      value={formData[formType].cooling || ""}
                       onchange={dispatchInput}
                       name="cooling"
                       id="name"
@@ -356,7 +375,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Front Suspension"
                       type="text"
-                      value={formData.front_suspension || ""}
+                      value={formData[formType].front_suspension || ""}
                       onchange={dispatchInput}
                       name="front_suspension"
                       id="name"
@@ -365,7 +384,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Rear Suspension"
                       type="text"
-                      value={formData.rear_suspension || ""}
+                      value={formData[formType].rear_suspension || ""}
                       onchange={dispatchInput}
                       name="rear_suspension"
                       id="name"
@@ -375,7 +394,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Frame Type"
                         type="text"
-                        value={formData.frame || ""}
+                        value={formData[formType].frame || ""}
                         onchange={dispatchInput}
                         name="frame"
                         id="name"
@@ -384,7 +403,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Front/Rear Travel (mm/in)"
                         type="text"
-                        value={formData.travel || ""}
+                        value={formData[formType].travel || ""}
                         onchange={dispatchInput}
                         name="travel"
                         id="name"
@@ -393,7 +412,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Swingarm Type"
                         type="text"
-                        value={formData.swingarm || ""}
+                        value={formData[formType].swingarm || ""}
                         onchange={dispatchInput}
                         name="swingarm"
                         id="name"
@@ -406,7 +425,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Dry Weight"
                         type="text"
-                        value={formData.dry_weight || ""}
+                        value={formData[formType].dry_weight || ""}
                         onchange={dispatchInput}
                         name="dry_weight"
                         id="name"
@@ -415,7 +434,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Wet weight"
                         type="text"
-                        value={formData.wet_weight || ""}
+                        value={formData[formType].wet_weight || ""}
                         onchange={dispatchInput}
                         name="wet_weight"
                         id="name"
@@ -424,7 +443,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Seat Height (mm/in)"
                         type="text"
-                        value={formData.seat || ""}
+                        value={formData[formType].seat || ""}
                         onchange={dispatchInput}
                         name="seat"
                         id="name"
@@ -433,7 +452,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Wheelbase"
                         type="text"
-                        value={formData.wheelbase || ""}
+                        value={formData[formType].wheelbase || ""}
                         onchange={dispatchInput}
                         name="wheelbase"
                         id="name"
@@ -442,7 +461,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Fuel Tank Capacity"
                         type="text"
-                        value={formData.fuel_tank || ""}
+                        value={formData[formType].fuel_tank || ""}
                         onchange={dispatchInput}
                         name="fuel_tank"
                         id="name"
@@ -451,7 +470,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Ground Clearance"
                         type="text"
-                        value={formData.clearance || ""}
+                        value={formData[formType].clearance || ""}
                         onchange={dispatchInput}
                         name="clearance"
                         id="name"
@@ -464,7 +483,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Tire Size"
                         type="text"
-                        value={formData.tires || ""}
+                        value={formData[formType].tires || ""}
                         onchange={dispatchInput}
                         name="tires"
                         id="name"
@@ -473,7 +492,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Wheel Type"
                         type="text"
-                        value={formData.wheel || ""}
+                        value={formData[formType].wheel || ""}
                         onchange={dispatchInput}
                         name="wheel"
                         id="name"
@@ -482,7 +501,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Brakes"
                         type="text"
-                        value={formData.brakes || ""}
+                        value={formData[formType].brakes || ""}
                         onchange={dispatchInput}
                         name="brakes"
                         id="name"
@@ -494,7 +513,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="ABS"
                       type="text"
-                      value={formData.abs || ""}
+                      value={formData[formType].abs || ""}
                       onchange={dispatchInput}
                       name="abs"
                       id="name"
@@ -503,7 +522,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Traction Control"
                       type="text"
-                      value={formData.traction || ""}
+                      value={formData[formType].traction || ""}
                       onchange={dispatchInput}
                       name="traction"
                       id="name"
@@ -512,7 +531,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="TFT Display"
                       type="text"
-                      value={formData.tft || ""}
+                      value={formData[formType].tft || ""}
                       onchange={dispatchInput}
                       name="tft"
                       id="name"
@@ -521,7 +540,7 @@ export default function CreateProduct() {
                     <FormInput
                       label="Lighting"
                       type="text"
-                      value={formData.lighting || ""}
+                      value={formData[formType].lighting || ""}
                       onchange={dispatchInput}
                       name="lighting"
                       id="name"
@@ -531,7 +550,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Riding Modes"
                         type="text"
-                        value={formData.ride_mode || ""}
+                        value={formData[formType].ride_mode || ""}
                         onchange={dispatchInput}
                         name="ride_mode"
                         id="name"
@@ -540,7 +559,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Quickshifter"
                         type="text"
-                        value={formData.quickshifter || ""}
+                        value={formData[formType].quickshifter || ""}
                         onchange={dispatchInput}
                         name="quickshifter"
                         id="name"
@@ -549,7 +568,7 @@ export default function CreateProduct() {
                       <FormInput
                         label="Cruise Control"
                         type="text"
-                        value={formData.cruise || ""}
+                        value={formData[formType].cruise || ""}
                         onchange={dispatchInput}
                         name="cruise"
                         id="name"

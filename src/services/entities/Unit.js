@@ -35,7 +35,7 @@ export class Unit {
 }
 
 // ? Selectors
-export const UnitEntity = (state) => new Unit(state.unit.unit) ?? null;
+export const UnitEntity = (state) => new Unit(state.unit.unit) ?? {};
 
 // ? Map selector
 const selectUnitDtos = (state) => state.units;

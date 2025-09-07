@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleQuantity } from "../../services/redux/slices/formSlice";
 
-export default function QuantityInput({ label, max, require, index, change }) {
-  const [number, setNumber] = useState(1);
+export default function QuantityInput({
+  label,
+  max,
+  require,
+  index,
+  change,
+  quantType,
+}) {
+  const { formData, formType } = useSelector((state) => state.form);
   const dispatch = useDispatch();
+  const [number, setNumber] = useState(1);
 
-  useEffect(() => {
-    dispatch(
-      handleQuantity({
-        index: index,
-        num: 1,
-      })
-    );
-    // change(index, 1, "quantity");
-  }, []);
+  // useEffect(() => {
+  //   dispatch(
+  //     handleQuantity({
+  //       index: index,
+  //       num: 1,
+  //       type: quantType,
+  //     })
+  //   );
+  //   // change(index, 1, "quantity");
+  // }, []);
 
   function handleNumber(type) {
     if (type === "increment" && number < max) {
       setNumber(number + 1);
       dispatch(
-        handleQuantity({
-          index: index,
-          num: number + 1,
-        })
+        handleQuantity({ index: index, num: number + 1, type: quantType })
       );
       //   change(index, number + 1, "quantity");
     }
@@ -31,10 +37,7 @@ export default function QuantityInput({ label, max, require, index, change }) {
     if (type === "decrement" && number > 1) {
       setNumber(number - 1);
       dispatch(
-        handleQuantity({
-          index: index,
-          num: number - 1,
-        })
+        handleQuantity({ index: index, num: number - 1, type: quantType })
       );
       //   change(index, number - 1, "quantity");
     }
@@ -44,12 +47,7 @@ export default function QuantityInput({ label, max, require, index, change }) {
     const val = num === "" ? num : Number(num);
 
     setNumber(val);
-    dispatch(
-      handleQuantity({
-        index: index,
-        num: val,
-      })
-    );
+    dispatch(handleQuantity({ index: index, num: val, type: quantType }));
     // change(index, val, "quantity");
   }
 
@@ -73,9 +71,9 @@ export default function QuantityInput({ label, max, require, index, change }) {
             viewBox="0 0 18 2">
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M1 1h16"
             />
           </svg>
@@ -104,9 +102,9 @@ export default function QuantityInput({ label, max, require, index, change }) {
             viewBox="0 0 18 18">
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M9 1v16M1 9h16"
             />
           </svg>

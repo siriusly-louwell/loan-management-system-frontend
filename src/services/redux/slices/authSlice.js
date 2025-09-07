@@ -19,7 +19,6 @@ export const loginUserWithToken = createAsyncThunk(
   async (thunkAPI) => {
     try {
       return await tokenLoginUseCase();
-      // return await authRepository.tokenLogin(token);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

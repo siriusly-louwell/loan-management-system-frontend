@@ -11,12 +11,12 @@ import CardSkeleton from "../components/loading components/CardSkeleton";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntities } from "../services/entities/Unit";
-import { selectFilter, toggleModal } from "../services/redux/slices/uiSlice";
+import { setFilter, toggleModal } from "../services/redux/slices/uiSlice";
 
 export default function UnitsAll() {
   const dispatch = useDispatch();
   const motors = useSelector(UnitEntities);
-  const { units, loading } = useSelector((state) => state.unit);
+  const { unitsLoading } = useSelector((state) => state.unit);
   const { modals, filter } = useSelector((state) => state.ui);
 
   return (
@@ -29,82 +29,97 @@ export default function UnitsAll() {
         </div>
         <div className="flex items-center space-x-4">
           <DropdownBttn
+            icon={<Filter />}
             toggleMenu={() =>
               dispatch(toggleModal({ name: "filter", value: modals?.filter }))
             }
             text="Filter by Brand">
-            <Filter />
+            <DropdownMenu classStyle={modals.filter ? "block" : "hidden"}>
+              <MenuLink
+                pathName="All"
+                click={() => dispatch(setFilter(null))}
+              />
+              <MenuLink
+                pathName="Honda"
+                click={() => dispatch(setFilter("Honda"))}
+              />
+              <MenuLink
+                pathName="Yamaha"
+                click={() => dispatch(setFilter("Yamaha"))}
+              />
+              <MenuLink
+                pathName="Suzuki"
+                click={() => dispatch(setFilter("Suzuki"))}
+              />
+              <MenuLink
+                pathName="Kawasaki"
+                click={() => dispatch(setFilter("Kawasaki"))}
+              />
+              <MenuLink
+                pathName="KTM"
+                click={() => dispatch(setFilter("KTM"))}
+              />
+              <MenuLink
+                pathName="Kymco"
+                click={() => dispatch(setFilter("Kymco"))}
+              />
+              <MenuLink
+                pathName="SYM"
+                click={() => dispatch(setFilter("SYM"))}
+              />
+              <MenuLink
+                pathName="Skygo"
+                click={() => dispatch(setFilter("Skygo"))}
+              />
+              <MenuLink
+                pathName="Bennelli"
+                click={() => dispatch(setFilter("Bennelli"))}
+              />
+              <MenuLink
+                pathName="Bristol"
+                click={() => dispatch(setFilter("Bristol"))}
+              />
+              <MenuLink
+                pathName="Rusi"
+                click={() => dispatch(setFilter("Rusi"))}
+              />
+              <MenuLink
+                pathName="Motorstar"
+                click={() => dispatch(setFilter("Motorstar"))}
+              />
+              <MenuLink
+                pathName="QJMotor"
+                click={() => dispatch(setFilter("QJMotor"))}
+              />
+              <MenuLink
+                pathName="FKM"
+                click={() => dispatch(setFilter("FKM"))}
+              />
+            </DropdownMenu>
           </DropdownBttn>
+
           <DropdownBttn
+            icon={<Sort />}
             toggleMenu={() =>
               dispatch(toggleModal({ name: "sort", value: modals?.sort }))
             }
             text="Sort">
-            <Sort />
+            <DropdownMenu
+              classStyle={modals.sort ? "block" : "hidden"}
+              pad={20}>
+              <MenuLink pathName="The most popular" />
+              <MenuLink pathName="Newest" />
+              <MenuLink pathName="Increasing price" />
+              <MenuLink pathName="Decreasing price" />
+              <MenuLink pathName="No. reviews" />
+              <MenuLink pathName="Discount %" />
+            </DropdownMenu>
           </DropdownBttn>
         </div>
       </div>
-      <DropdownMenu className={modals.filter ? "block" : "hidden"} pad={72}>
-        <MenuLink pathName="All" click={() => dispatch(selectFilter(null))} />
-        <MenuLink
-          pathName="Honda"
-          click={() => dispatch(selectFilter("Honda"))}
-        />
-        <MenuLink
-          pathName="Yamaha"
-          click={() => dispatch(selectFilter("Yamaha"))}
-        />
-        <MenuLink
-          pathName="Suzuki"
-          click={() => dispatch(selectFilter("Suzuki"))}
-        />
-        <MenuLink
-          pathName="Kawasaki"
-          click={() => dispatch(selectFilter("Kawasaki"))}
-        />
-        <MenuLink pathName="KTM" click={() => dispatch(selectFilter("KTM"))} />
-        <MenuLink
-          pathName="Kymco"
-          click={() => dispatch(selectFilter("Kymco"))}
-        />
-        <MenuLink pathName="SYM" click={() => dispatch(selectFilter("SYM"))} />
-        <MenuLink
-          pathName="Skygo"
-          click={() => dispatch(selectFilter("Skygo"))}
-        />
-        <MenuLink
-          pathName="Bennelli"
-          click={() => dispatch(selectFilter("Bennelli"))}
-        />
-        <MenuLink
-          pathName="Bristol"
-          click={() => dispatch(selectFilter("Bristol"))}
-        />
-        <MenuLink
-          pathName="Rusi"
-          click={() => dispatch(selectFilter("Rusi"))}
-        />
-        <MenuLink
-          pathName="Motorstar"
-          click={() => dispatch(selectFilter("Motorstar"))}
-        />
-        <MenuLink
-          pathName="QJMotor"
-          click={() => dispatch(selectFilter("QJMotor"))}
-        />
-        <MenuLink pathName="FKM" click={() => dispatch(selectFilter("FKM"))} />
-      </DropdownMenu>
-      <DropdownMenu className={modals.sort ? "block" : "hidden"} pad={20}>
-        <MenuLink pathName="The most popular" />
-        <MenuLink pathName="Newest" />
-        <MenuLink pathName="Increasing price" />
-        <MenuLink pathName="Decreasing price" />
-        <MenuLink pathName="No. reviews" />
-        <MenuLink pathName="Discount %" />
-      </DropdownMenu>
 
       <ProductGrid>
-        {loading ? (
+        {unitsLoading ? (
           <>
             <CardSkeleton />
             <CardSkeleton />
@@ -121,7 +136,7 @@ export default function UnitsAll() {
           })
         )}
       </ProductGrid>
-      {units.length === 0 && !loading ? (
+      {motors.length === 0 && !unitsLoading ? (
         <EmptySearch
           label="No results found"
           context="Try changing the filter or go to a different category"

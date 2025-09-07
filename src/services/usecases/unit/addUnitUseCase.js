@@ -7,7 +7,7 @@ export async function addUnitUseCase(data) {
       type: "warn",
     };
 
-  const totalQuantity = data.formData.quantity.reduce(
+  const totalQuantity = data.form.quantity.reduce(
     (sum, num) => sum + num,
     0
   );

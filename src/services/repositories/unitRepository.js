@@ -30,7 +30,7 @@ export const unitRepository = {
 
   appendData(data) {
     const submitData = new FormData();
-    const form = data.formData;
+    const form = data.form;
 
     for (let key in form) {
       submitData.append(`${key}`, form[key]);
@@ -43,5 +43,17 @@ export const unitRepository = {
     });
 
     return submitData;
+  },
+
+  saveId(id) {
+    localStorage.setItem("unit-id", id);
+  },
+
+  getId() {
+    return localStorage.getItem("unit-id") || false;
+  },
+
+  clearId() {
+    localStorage.removeItem("token");
   },
 };

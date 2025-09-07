@@ -13,6 +13,8 @@ import MenuLink from "../components/links/MenuLink";
 import PageNav from "../components/PageNav";
 import Alert from "../components/Alert";
 import StockModal from "./modals/StockModal";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleModal } from "../services/redux/slices/uiSlice";
 
 export default function CRUDformat({
   children,
@@ -22,6 +24,8 @@ export default function CRUDformat({
   modal,
   adjustStock,
 }) {
+  const { modals, filter } = useSelector((state) => state.ui);
+  const dispatch = useDispatch();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -76,9 +80,14 @@ export default function CRUDformat({
                   <CustomBttn
                     text={"Add " + label}
                     classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                    onclick={() =>
-                      (document.getElementById(modalId).style.display = "block")
-                    }>
+                    onclick={() => {
+                      dispatch(
+                        toggleModal({
+                          name: "createUnit",
+                          value: modals?.createUnit,
+                        })
+                      );
+                    }}>
                     <Plus />
                   </CustomBttn>
                 ) : (
@@ -94,7 +103,7 @@ export default function CRUDformat({
             </div>
             <DropdownMenu
               ref={dropdownRef}
-              className={isOpen ? "block" : "hidden"}>
+              classStyle={isOpen ? "block" : "hidden"}>
               <MenuLink pathName="Mass Edit" />
               <MenuLink pathName="Delete All" />
             </DropdownMenu>
@@ -103,7 +112,8 @@ export default function CRUDformat({
           </div>
         </div>
       </section>
-      {addModal}
+      {modals.createUnit ? addModal : ""}
+      {/* {addModal} */}
       {modal ? (
         <Alert id="stock_adjust" text="Stock Adjustment Type:" icon="warn">
           <CustomBttn

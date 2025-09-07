@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAuth } from "./services/AuthProvider";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserWithToken } from "./services/redux/slices/authSlice";
 import Login from "./pages/Login";
@@ -93,12 +92,7 @@ function App() {
         {/* Customer Routes */}
         <Route
           path="/customer"
-          element={
-            <PageLayout
-              links={<ApplicantNav />}
-              path="/customer"
-            />
-          }>
+          element={<PageLayout links={<ApplicantNav />} path="/customer" />}>
           {/* <Route index element={<ProductList url="/customer/product" />} /> */}
           <Route
             path=""
@@ -249,69 +243,14 @@ function App() {
             }
           />
 
-          <Route
-            path="apply"
-            element={
-              <ProtectedRoute type="customer">
-                <ApplicationForm />
-              </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="customer">
-                  <TransactionForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="transaction"
-              element={
-                <ProtectedRoute type="customer">
-                  <TransactionFormat />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="personalinfo"
-              element={
-                <ProtectedRoute type="customer">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="employinfo"
-              element={
-                <ProtectedRoute type="customer">
-                  <EmploymentInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="familyinfo"
-              element={
-                <ProtectedRoute type="customer">
-                  <FamilyInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="requirements"
-              element={
-                <ProtectedRoute type="customer">
-                  <FormRequirements />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="comakerform"
-              element={
-                <ProtectedRoute type="customer">
-                  <ComakerInfo />
-                </ProtectedRoute>
-              }
-            />
+          <Route path="apply" element={<ApplicationForm />}>
+            <Route index element={<TransactionForm />} />
+            <Route path="transaction" element={<TransactionFormat />} />
+            <Route path="personalinfo" element={<PersonalInfoForm />} />
+            <Route path="employinfo" element={<EmploymentInfoForm />} />
+            <Route path="familyinfo" element={<FamilyInfoForm />} />
+            <Route path="requirements" element={<FormRequirements />} />
+            <Route path="comakerform" element={<ComakerInfo />} />
           </Route>
         </Route>
 
@@ -357,9 +296,7 @@ function App() {
         </Route> */}
 
         {/* CI Routes */}
-        <Route
-          path="/ci"
-          element={<PageLayout links={<CINav />} path="/ci" />}>
+        <Route path="/ci" element={<PageLayout links={<CINav />} path="/ci" />}>
           <Route
             index
             element={
@@ -484,9 +421,7 @@ function App() {
         {/* Staff Routes */}
         <Route
           path="/staff"
-          element={
-            <PageLayout links={<StaffNav />} path="/staff" />
-          }>
+          element={<PageLayout links={<StaffNav />} path="/staff" />}>
           <Route
             index
             element={

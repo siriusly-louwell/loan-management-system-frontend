@@ -70,4 +70,4 @@ export class UnitSpecs {
 
 // ? selector
 export const UnitSpecsEntity = (state) =>
-  new UnitSpecs(state.unit.specs) ?? null;
+  new UnitSpecs(state.unit.unit) ?? {};

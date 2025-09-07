@@ -47,7 +47,8 @@ export default function TransactionFormat({transact, transactForm, handleTransac
                         <FormInput type="number" id={`downpayment_${index}`} value={downPayment} onchange={(e) => handleDown(index, Number(e.target.value))} placeholder="Input downpayment here" />
                         <p id={`down_warn_${index}` }className="text-red-500">* Downpayment must not go below the minimum payment</p>
                     </div>
-                    <FormSelect name="tenure" label="Loan Years" id="tenure" value={transactForm.tenure} onchange={(e) => handleTransaction(index, e)} require={true}>
+                    {/* transactForm.tenure */}
+                    <FormSelect name="tenure" label="Loan Years" id="tenure" value={transact.tenure[0]} onchange={(e) => handleTransaction(index, e)} require={true}>
                         {[...Array(transact.tenure)].map((_, i) => (
                             <option value={i+1}>{i+1} {i+1 > 1 ? 'years' : 'year'}</option>
                         ))}

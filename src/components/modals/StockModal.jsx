@@ -44,8 +44,6 @@ export default function StockModal({ stock, setStock }) {
     }
   }
 
-  console.log(quantity);
-
   return (
     <>
       <div

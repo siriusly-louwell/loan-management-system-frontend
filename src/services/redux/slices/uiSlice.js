@@ -49,19 +49,30 @@ const uiSlice = createSlice({
 
       switch (data.type) {
         case "prev":
-          state.carouselSlide = (slide - 1 + 3) % 3;
+          state.carouselSlide = (slide - 1 + data.limit) % data.limit;
           break;
         case "next":
         case "auto":
-          state.carouselSlide = (slide + 1) % 3;
+          state.carouselSlide = (slide + 1) % data.limit;
           break;
         default:
           state.carouselSlide = data.value;
       }
     },
 
-    selectFilter: (state, action) => {
+    setFilter: (state, action) => {
       state.filter = action.payload;
+    },
+
+    inputCheck: (state, action) => {
+      const data = action.payload;
+
+      switch (data.key) {
+        case "downpayment":
+          return state.formData.downpayment < data.value;
+        default:
+          return data.value === "__EMPTY__";
+      }
     },
   },
 });
@@ -72,6 +83,7 @@ export const {
   setLoading,
   toggleModal,
   toggleSlide,
-  selectFilter,
+  setFilter,
+  inputCheck,
 } = uiSlice.actions;
 export default uiSlice.reducer;

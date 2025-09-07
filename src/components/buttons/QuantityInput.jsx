@@ -10,8 +10,9 @@ export default function QuantityInput({
   change,
   quantType,
 }) {
-  const { formData } = useSelector((state) => state.form);
+  const { formData, formType } = useSelector((state) => state.form);
   const dispatch = useDispatch();
+  const [number, setNumber] = useState(1);
 
   // useEffect(() => {
   //   dispatch(
@@ -25,24 +26,18 @@ export default function QuantityInput({
   // }, []);
 
   function handleNumber(type) {
-    if (type === "increment" && formData.quantity < max) {
+    if (type === "increment" && number < max) {
+      setNumber(number + 1);
       dispatch(
-        handleQuantity({
-          index: index,
-          num: formData.quantity + 1,
-          type: quantType,
-        })
+        handleQuantity({ index: index, num: number + 1, type: quantType })
       );
-      //   change(index, formData.quantity + 1, "quantity");
+      //   change(index, number + 1, "quantity");
     }
 
-    if (type === "decrement" && formData.quantity > 1) {
+    if (type === "decrement" && number > 1) {
+      setNumber(number - 1);
       dispatch(
-        handleQuantity({
-          index: index,
-          num: formData.quantity - 1,
-          type: quantType,
-        })
+        handleQuantity({ index: index, num: number - 1, type: quantType })
       );
       //   change(index, number - 1, "quantity");
     }
@@ -51,13 +46,8 @@ export default function QuantityInput({
   function manualQuanti(num) {
     const val = num === "" ? num : Number(num);
 
-    dispatch(
-      handleQuantity({
-        index: index,
-        num: val,
-        type: quantType,
-      })
-    );
+    setNumber(val);
+    dispatch(handleQuantity({ index: index, num: val, type: quantType }));
     // change(index, val, "quantity");
   }
 
@@ -81,9 +71,9 @@ export default function QuantityInput({
             viewBox="0 0 18 2">
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M1 1h16"
             />
           </svg>
@@ -92,7 +82,7 @@ export default function QuantityInput({
           type="number"
           id="quantity-input"
           name="quantity"
-          value={formData.quantity}
+          value={number}
           onChange={(e) => manualQuanti(e.target.value)}
           placeholder={max}
           min="1"
@@ -112,9 +102,9 @@ export default function QuantityInput({
             viewBox="0 0 18 18">
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M9 1v16M1 9h16"
             />
           </svg>

@@ -4,6 +4,7 @@ const formSlice = createSlice({
   name: "form",
   initialState: {
     formData: {},
+    formType: "createUnit",
     colors: [],
     colorIndex: null,
     error: null,
@@ -23,44 +24,56 @@ const formSlice = createSlice({
       state.colors = updatedColors;
     },
 
+    setType: (state, action) => {
+      state.formType = action.payload;
+    },
+
     resetInput: (state) => {
-      state.formData = {};
+      state.formData[state.formType] = {};
       state.colors = [];
     },
 
     handleChange: (state, action) => {
-      state.formData = {
-        ...state.formData,
+      state.formData[state.formType] = {
+        ...state.formData[state.formType],
         [action.payload.name]: action.payload.value,
       };
+
+      // state.formData = {
+      //   ...state.formData,
+      //   [action.payload.name]: action.payload.value,
+      // };
     },
 
     handleQuantity: (state, action) => {
-      const quantity = state.formData.quantity;
+      const quantity = state.formData[state.formType].quantity;
       const data = action.payload;
       let quantState;
 
       switch (data.type) {
         case "application":
-          quantState = data.num
+          quantState = data.num;
           break;
         default:
-          quantState = quantity ? quantity : [];
-          // quantState = quantity || [];
-          quantState[data.index] = data.num;
+          quantState = quantity || [];
+          quantState[data.index] = Number(data.num);
       }
 
-      state.formData = { ...state.formData, quantity: quantState };
+      state.formData[state.formType] = {
+        ...state.formData[state.formType],
+        quantity: quantState,
+      };
     },
 
     initialForm: (state, action) => {
-      state.formData = action.payload;
+      state.formData[state.formType] = action.payload;
     },
   },
 });
 
 export const {
   changeColor,
+  setType,
   resetInput,
   handleChange,
   handleQuantity,

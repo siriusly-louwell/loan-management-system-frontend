@@ -30,7 +30,7 @@ export const unitRepository = {
 
   appendData(data) {
     const submitData = new FormData();
-    const form = data.formData;
+    const form = data.form;
 
     for (let key in form) {
       submitData.append(`${key}`, form[key]);

@@ -10,7 +10,7 @@ import FormSelect from "../components/inputs/FormSelect";
 import SelectColor from "../components/checkboxes/SelectColor";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntity } from "../services/entities/Unit";
-import { handleChange, initialForm } from "../services/redux/slices/formSlice";
+import { handleChange, initialForm, setType } from "../services/redux/slices/formSlice";
 import { fetchUnit } from "../services/redux/slices/unitSlice";
 
 export default function TransactionForm() {
@@ -23,12 +23,12 @@ export default function TransactionForm() {
     selectColor,
   } = useOutletContext();
   const dispatch = useDispatch();
-  const { formData } = useSelector((state) => state.form);
+  const { formData, formType } = useSelector((state) => state.form);
   const unit = useSelector(UnitEntity);
-  const [transact, setTransact] = useState([]);
   const [transLoad, setTransLoad] = useState(true);
-  const [colors, setColors] = useState("");
-  const [downPayment, setDownPayment] = useState([]);
+  // const [transact, setTransact] = useState([]);
+  // const [colors, setColors] = useState("");
+  // const [downPayment, setDownPayment] = useState([]);
 
   function changeColor(newColor) {
     dispatch(handleChange({ name: "color", value: newColor }));
@@ -38,6 +38,7 @@ export default function TransactionForm() {
 
   useEffect(() => {
     dispatch(fetchUnit());
+    dispatch(setType("unit"));
     dispatch(
       initialForm({
         motorcycle_id: unit.id,
@@ -140,6 +141,7 @@ export default function TransactionForm() {
             <div className="flex py-5 border-b border-gray-400 dark:border-gray-600 items-center space-x-4 mb-5">
               <div className="grid lg:grid-cols-2 gap-x-5 gap-y-4">
                 <SmallSpin size={30} />
+                <p className="h-8 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-40 mb-4"></p>
                 {/* <QuantityInput label="Quantity" /> */}
                 <div>
                   <div className="flex justify-between items-center mb-2">
@@ -189,7 +191,7 @@ export default function TransactionForm() {
                 <SelectColor
                   text="Select Color:"
                   size={6}
-                  colors={formData.color}
+                  colors={formData[formType].color}
                   changeColor={changeColor}
                   index={5}
                   arr={unit.colors}
@@ -216,14 +218,14 @@ export default function TransactionForm() {
                   </div>
                   <FormInput
                     type="number"
-                    value={formData.downpayment}
+                    value={formData[formType].downpayment}
                     name="downpayment"
                     onchange={(e) => dispatchInput(e)}
                     // value={downPayment}
                     // onchange={(e) => handleDown(5, Number(e.target.value))}
                     placeholder="Input downpayment here"
                   />
-                  {formData.downpayment < Number(unit.downpayment) && (
+                  {formData[formType].downpayment < Number(unit.downpayment) && (
                     <p className="text-red-500">
                       * Downpayment must not go below the minimum payment
                     </p>
@@ -233,12 +235,12 @@ export default function TransactionForm() {
                   name="tenure"
                   label="Loan Years"
                   id="tenure"
-                  value={transactForm.tenure}
+                  // value={transactForm.tenure}
                   onchange={(e) => dispatchInput(e)}
                   // onchange={(e) => handleTransaction(5, e)}
                   require={true}>
                   {[...Array(unit.tenure)].map((_, i) => (
-                    <option value={i + 1}>
+                    <option key={i} value={i + 1}>
                       {i + 1} {i + 1 > 1 ? "years" : "year"}
                     </option>
                   ))}

@@ -27,7 +27,7 @@ export default function SelectColor({
             : colors.includes(`${newColor}`);
 
           return (
-            <>
+            <div key={i}>
               <label htmlFor={`${newColor}_${index}`}>
                 <ColorLabel
                   style={newColor}
@@ -40,12 +40,12 @@ export default function SelectColor({
                 value={newColor}
                 id={`${newColor}_${index}`}
                 className="hidden"
-                check={including}
+                check={including ? "true" : ""}
                 onChange={(e) => {
                   changeColor(e.target.value);
                 }}
               />
-            </>
+            </div>
           );
         })}
       </div>

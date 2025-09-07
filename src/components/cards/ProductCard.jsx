@@ -5,10 +5,12 @@ import AddtoCartBttn from "../buttons/AddtoCartBttn";
 import ProductLink from "../links/ProductLink";
 import ColorLabel from "../ColorLabel";
 import Check from "../../assets/icons/Check";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserEntity } from "../../services/entities/User";
+import { storeID } from "../../services/redux/slices/unitSlice";
 
 export default function ProductCard({ unit }) {
+  const dispatch = useDispatch();
   const user = useSelector(UserEntity);
   const url = user ? `/${user?.role}` : "";
 
@@ -131,8 +133,8 @@ export default function ProductCard({ unit }) {
               ₱{parseFloat(unit.price).toLocaleString()}
             </p>
             <AddtoCartBttn
-              state={{ id: unit.id }}
               url={`${url}/unit`}
+              click={() => dispatch(storeID(unit.id))}
               text="Inquire"
             />
           </div>

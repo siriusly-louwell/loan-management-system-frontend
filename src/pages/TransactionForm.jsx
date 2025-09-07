@@ -10,7 +10,8 @@ import FormSelect from "../components/inputs/FormSelect";
 import SelectColor from "../components/checkboxes/SelectColor";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntity } from "../services/entities/Unit";
-import { handleChange } from "../services/redux/slices/formSlice";
+import { handleChange, initialForm } from "../services/redux/slices/formSlice";
+import { fetchUnit } from "../services/redux/slices/unitSlice";
 
 export default function TransactionForm() {
   const {
@@ -34,6 +35,18 @@ export default function TransactionForm() {
 
     // handleTransForm(i, newColor, "color");
   }
+
+  useEffect(() => {
+    dispatch(fetchUnit());
+    dispatch(
+      initialForm({
+        motorcycle_id: unit.id,
+        color: unit.colors !== undefined ? unit.colors[0].color : "",
+        downpayment: unit.downpayment,
+        quantity: 1,
+      })
+    );
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {

@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useAuth } from "./services/AuthProvider";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserWithToken } from "./services/redux/slices/authSlice";
 import Login from "./pages/Login";

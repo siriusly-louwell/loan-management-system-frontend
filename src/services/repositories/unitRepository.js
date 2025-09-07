@@ -44,4 +44,16 @@ export const unitRepository = {
 
     return submitData;
   },
+
+  saveId(id) {
+    localStorage.setItem("unit-id", id);
+  },
+
+  getId() {
+    return localStorage.getItem("unit-id") || false;
+  },
+
+  clearId() {
+    localStorage.removeItem("token");
+  },
 };

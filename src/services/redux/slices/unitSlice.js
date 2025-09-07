@@ -27,8 +27,9 @@ export const fetchUnits = createAsyncThunk(
 
 export const fetchUnit = createAsyncThunk(
   "unit/fetchUnit",
-  async (id, thunkAPI) => {
+  async (unit, thunkAPI) => {
     try {
+      const id = unitRepository.getId();
       return await UnitAPI.fetchUnit(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -45,6 +46,11 @@ const UnitSlice = createSlice({
     unitsLoading: true,
     images: [],
     error: null,
+  },
+  reducers: {
+    storeID: (state, action) => {
+      unitRepository.saveId(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -95,5 +101,5 @@ const UnitSlice = createSlice({
   },
 });
 
-// export const { mapEntities } = UnitSlice.actions;
+export const { storeID, getID } = UnitSlice.actions;
 export default UnitSlice.reducer;

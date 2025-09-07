@@ -15,18 +15,15 @@ import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "../services/entities/UnitSpecs";
 import { toggleSlide } from "../services/redux/slices/uiSlice";
 import BasicCarousel from "../components/cards/BasicCarousel";
-import { handleChange, initialForm } from "../services/redux/slices/formSlice";
 
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
-  const { unitLoading, images } = useSelector((state) => state.unit);
+  const { unitId, unitLoading, images } = useSelector((state) => state.unit);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
   const { state } = useLocation();
   const [id, setId] = useState(staff ? 1 : state?.id);
   const [addUnit, setUnits] = useState([]);
-  const [selected, setSelected] = useState([id]);
-  const [selectColor, setSelectColor] = useState([]);
 
   // function selectUnits(unit) {
   //   const newSelected = selected.includes(unit)
@@ -36,34 +33,13 @@ export default function ProductInfo({ staff = false }) {
   //   setSelected(newSelected);
   // }
 
-  useEffect(() => {
-    dispatch(fetchUnit(id));
-
-    // fetch("http://127.0.0.1:8000/api/motorcycle/" + id)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setUnit(data);
-    //     setUnitLoad(false);
-    //     setSelectColor([selected.length - 1, data.colors[0].color]);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching data: ", error);
-    //     setUnitLoad(true);
-    //   });
-  }, [id]);
+  // useEffect(() => {
+  //   dispatch(getID());
+  // }, []);
 
   useEffect(() => {
-    dispatch(
-      initialForm({
-        motorcycle_id: unit.id,
-        color: unit.colors !== undefined ? unit.colors[0].color : "",
-        downpayment: unit.downpayment,
-        quantity: 1,
-      })
-    );
-  }, [unitLoading]);
-
-  console.log(useSelector((state) => state.form.formData));
+    dispatch(fetchUnit());
+  }, [unitId]);
 
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">
@@ -146,10 +122,6 @@ export default function ProductInfo({ staff = false }) {
                                 className="hidden"
                                 onClick={() => {
                                   dispatch(toggleSlide({ value: i }));
-                                  // setSelectColor([
-                                  //   selected.length - 1,
-                                  //   color.color,
-                                  // ]);
                                 }}
                               />
                             </div>
@@ -219,10 +191,9 @@ export default function ProductInfo({ staff = false }) {
                       />
                     </svg>
                   </BttnwithIcon>
-                  {/* <Button text="Apply Loan" onclick={() => navigate('/customer/apply')} /> */}
                   <AddtoCartBttn
                     text="Apply Loan"
-                    state={{ selected: selected, selectColor: selectColor }}
+                    // state={{ selected: selected, selectColor: selectColor }}
                     url="/customer/apply"
                   />
                   <AddtoCartBttn text="Pay in Cash" />

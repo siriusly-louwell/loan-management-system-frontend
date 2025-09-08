@@ -342,13 +342,13 @@ export default function ApplicationForm() {
     window.scrollTo(0, 0);
   }, [location, routerPaths, currentIndex]);
 
-  useEffect(() => {
-    const len = Array(state?.selected.length)
-      .fill()
-      .map(() => ({}));
-    // const len = state?.selected.map(id => ({motorcycle_id: id}));
-    setTransactForm(len);
-  }, []);
+  // useEffect(() => {
+  //   const len = Array(state?.selected.length)
+  //     .fill()
+  //     .map(() => ({}));
+  //   // const len = state?.selected.map(id => ({motorcycle_id: id}));
+  //   setTransactForm(len);
+  // }, []);
 
   function checkEmpty(array, i, type = "none") {
     let bool = true;

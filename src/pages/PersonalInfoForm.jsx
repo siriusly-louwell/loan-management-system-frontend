@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
@@ -11,11 +11,13 @@ import FormTBody from "../components/tables/FormTBody";
 import FormTD from "../components/tables/FormTD";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { initialForm, setType } from "../services/redux/slices/formSlice";
 
 export default function PersonalInfoForm() {
   const location = useLocation();
-  const { formData } = useSelector((state) => state.form);
+  const { formData, formType } = useSelector((state) => state.form);
+  const dispatch = useDispatch();
   const {
     handleChange,
     dispatchInput,
@@ -34,6 +36,11 @@ export default function PersonalInfoForm() {
     location.pathname !== "/admin/apply" &&
     location.pathname !== "/staff/apply" &&
     location.pathname !== "/ci/apply";
+
+  useEffect(() => {
+    dispatch(setType("personalInfo"));
+    dispatch(initialForm({}));
+  }, []);
 
   return (
     <>
@@ -54,7 +61,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="first_name"
           id="first_name"
-          value={formData.first_name}
+          value={formData[formType].first_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type first name"
           require={true}
@@ -65,7 +72,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="middle_name"
           id="mid_name"
-          value={formData.middle_name}
+          value={formData[formType].middle_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type middle name"
           disable={disable}
@@ -75,7 +82,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="last_name"
           id="last_name"
-          value={formData.last_name}
+          value={formData[formType].last_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type last name"
           require={true}
@@ -85,7 +92,7 @@ export default function PersonalInfoForm() {
           name="gender"
           label="Sex"
           id="gender"
-          value={applicant.gender}
+          value={formData[formType].gender}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -99,7 +106,7 @@ export default function PersonalInfoForm() {
           name="contact_num"
           min={99999999999}
           id="contact_num"
-          value={applicant.contact_num}
+          value={formData[formType].contact_num}
           onchange={(e) => dispatchInput(e)}
           placeholder="+63 912 3456 789"
           require={true}
@@ -110,7 +117,7 @@ export default function PersonalInfoForm() {
           type="email"
           name="email"
           id="email"
-          value={applicant.email}
+          value={formData[formType].email}
           onchange={(e) => dispatchInput(e)}
           placeholder="doe@gmail.com"
           disable={disable}
@@ -119,7 +126,7 @@ export default function PersonalInfoForm() {
           name="status"
           label="Marital Status"
           id="status"
-          value={applicant.status}
+          value={formData[formType].status}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -134,7 +141,7 @@ export default function PersonalInfoForm() {
           type="date"
           name="birth_day"
           id="bday"
-          value={applicant.birth_day}
+          value={formData[formType].birth_day}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}
@@ -144,7 +151,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="birth_place"
           id="bplace"
-          value={applicant.birth_place}
+          value={formData[formType].birth_place}
           onchange={(e) => dispatchInput(e)}
           placeholder="Birth place address"
           require={true}
@@ -158,7 +165,7 @@ export default function PersonalInfoForm() {
             name="educ_attain"
             label="Educ. Attainment"
             id="educ_attain"
-            value={applicant.educ_attain}
+            value={formData[formType].educ_attain}
             onchange={(e) => dispatchInput(e)}
             require={true}
             disable={disable}>
@@ -181,7 +188,7 @@ export default function PersonalInfoForm() {
             name="residence"
             label="Residential Status"
             id="residence"
-            value={applicant.residence}
+            value={formData[formType].residence}
             onchange={(e) => dispatchInput(e)}
             require={true}
             disable={disable}>
@@ -204,7 +211,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="amortization"
           id="amortization"
-          value={applicant.amortization}
+          value={formData[formType].amortization}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱5,000"
           require={true}
@@ -215,7 +222,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="rent"
           id="rent"
-          value={applicant.rent}
+          value={formData[formType].rent}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500"
           require={true}
@@ -226,7 +233,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="sss"
           id="sss"
-          value={applicant.sss}
+          value={formData[formType].sss}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type SSS/GSIS number"
           disable={disable}
@@ -236,7 +243,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="tin"
           id="tin"
-          value={applicant.tin}
+          value={formData[formType].tin}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type TIN number"
           disable={disable}
@@ -245,7 +252,7 @@ export default function PersonalInfoForm() {
           name="comm_standing"
           id="comm_standing"
           label="Community Standing"
-          value={applicant.comm_standing}
+          value={formData[formType].comm_standing}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write commuity standing here"
           require={true}
@@ -499,8 +506,8 @@ export default function PersonalInfoForm() {
           name="home_description"
           id="home_description"
           label="Brief description of place of residence and home"
-          value={applicant.home_description}
-          onchange={handleChange}
+          value={formData[formType].home_description}
+          onchange={(e) => dispatchInput(e)}
           placeholder="Write residence description here"
           require={true}
           disable={disable}

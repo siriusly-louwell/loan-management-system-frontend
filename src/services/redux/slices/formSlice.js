@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { formRepository } from "../../repositories/formRepository";
 
 const formSlice = createSlice({
   name: "form",
   initialState: {
-    formData: {},
+    formData: {
+      createUnit: {},
+      unit: {},
+      personalInfo: {},
+      address: {},
+    },
     formType: "createUnit",
     colors: [],
     colorIndex: null,
@@ -43,6 +49,8 @@ const formSlice = createSlice({
       //   ...state.formData,
       //   [action.payload.name]: action.payload.value,
       // };
+
+      formRepository.saveForm(state.formData);
     },
 
     handleQuantity: (state, action) => {

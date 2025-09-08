@@ -12,7 +12,7 @@ import FormTD from "../components/tables/FormTD";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
 import { useDispatch, useSelector } from "react-redux";
-import { initialForm, setType } from "../services/redux/slices/formSlice";
+import { initialForm, setType, copyAddress } from "../services/redux/slices/formSlice";
 
 export default function PersonalInfoForm() {
   const location = useLocation();
@@ -24,12 +24,13 @@ export default function PersonalInfoForm() {
     addressChange,
     applicant,
     address,
-    copyAddress,
+    // copyAddress,
     disable,
     locations,
   } = useOutletContext();
   const disBool =
-    address.region === undefined || address.region === "__EMPTY__"
+    formData.address.region === undefined ||
+    formData.address.region === "__EMPTY__"
       ? true
       : disable;
   const urlBool =
@@ -38,9 +39,11 @@ export default function PersonalInfoForm() {
     location.pathname !== "/ci/apply";
 
   useEffect(() => {
-    dispatch(setType("personalInfo"));
+    dispatch(setType("applicant"));
     dispatch(initialForm({}));
   }, []);
+
+  console.log(formData);
 
   return (
     <>
@@ -61,7 +64,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="first_name"
           id="first_name"
-          value={formData[formType].first_name}
+          value={formData.applicant.first_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type first name"
           require={true}
@@ -72,7 +75,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="middle_name"
           id="mid_name"
-          value={formData[formType].middle_name}
+          value={formData.applicant.middle_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type middle name"
           disable={disable}
@@ -82,7 +85,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="last_name"
           id="last_name"
-          value={formData[formType].last_name}
+          value={formData.applicant.last_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type last name"
           require={true}
@@ -92,7 +95,7 @@ export default function PersonalInfoForm() {
           name="gender"
           label="Sex"
           id="gender"
-          value={formData[formType].gender}
+          value={formData.applicant.gender}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -106,7 +109,7 @@ export default function PersonalInfoForm() {
           name="contact_num"
           min={99999999999}
           id="contact_num"
-          value={formData[formType].contact_num}
+          value={formData.applicant.contact_num}
           onchange={(e) => dispatchInput(e)}
           placeholder="+63 912 3456 789"
           require={true}
@@ -117,7 +120,7 @@ export default function PersonalInfoForm() {
           type="email"
           name="email"
           id="email"
-          value={formData[formType].email}
+          value={formData.applicant.email}
           onchange={(e) => dispatchInput(e)}
           placeholder="doe@gmail.com"
           disable={disable}
@@ -126,7 +129,7 @@ export default function PersonalInfoForm() {
           name="status"
           label="Marital Status"
           id="status"
-          value={formData[formType].status}
+          value={formData.applicant.status}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -141,7 +144,7 @@ export default function PersonalInfoForm() {
           type="date"
           name="birth_day"
           id="bday"
-          value={formData[formType].birth_day}
+          value={formData.applicant.birth_day}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}
@@ -151,7 +154,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="birth_place"
           id="bplace"
-          value={formData[formType].birth_place}
+          value={formData.applicant.birth_place}
           onchange={(e) => dispatchInput(e)}
           placeholder="Birth place address"
           require={true}
@@ -165,7 +168,7 @@ export default function PersonalInfoForm() {
             name="educ_attain"
             label="Educ. Attainment"
             id="educ_attain"
-            value={formData[formType].educ_attain}
+            value={formData.applicant.educ_attain}
             onchange={(e) => dispatchInput(e)}
             require={true}
             disable={disable}>
@@ -188,7 +191,7 @@ export default function PersonalInfoForm() {
             name="residence"
             label="Residential Status"
             id="residence"
-            value={formData[formType].residence}
+            value={formData.applicant.residence}
             onchange={(e) => dispatchInput(e)}
             require={true}
             disable={disable}>
@@ -211,7 +214,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="amortization"
           id="amortization"
-          value={formData[formType].amortization}
+          value={formData.applicant.amortization}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱5,000"
           require={true}
@@ -222,7 +225,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="rent"
           id="rent"
-          value={formData[formType].rent}
+          value={formData.applicant.rent}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500"
           require={true}
@@ -233,7 +236,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="sss"
           id="sss"
-          value={formData[formType].sss}
+          value={formData.applicant.sss}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type SSS/GSIS number"
           disable={disable}
@@ -243,7 +246,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="tin"
           id="tin"
-          value={formData[formType].tin}
+          value={formData.applicant.tin}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type TIN number"
           disable={disable}
@@ -252,7 +255,7 @@ export default function PersonalInfoForm() {
           name="comm_standing"
           id="comm_standing"
           label="Community Standing"
-          value={formData[formType].comm_standing}
+          value={formData.applicant.comm_standing}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write commuity standing here"
           require={true}
@@ -280,8 +283,9 @@ export default function PersonalInfoForm() {
               name="region"
               label="Region"
               id="region"
-              value={address.region}
-              onchange={addressChange}
+              value={formData.address.region}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disable}>
               <option>Region I</option>
@@ -304,27 +308,37 @@ export default function PersonalInfoForm() {
               name="province"
               label="Province"
               id="province"
-              value={address.province}
-              onchange={addressChange}
+              value={formData.address.province}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disBool}>
-              {address.region !== undefined && address.region !== "__EMPTY__"
+              {formData.address.region !== undefined &&
+              formData.address.region !== "__EMPTY__"
                 ? locations[
-                    address.region.substring(7, address.region.length)
-                  ].province.map((val) => <option>{val}</option>)
+                    formData.address.region.substring(
+                      7,
+                      formData.address.region.length
+                    )
+                  ].province.map((val, i) => <option key={i}>{val}</option>)
                 : ""}
             </FormSelect>
             <FormSelect
               name="city"
               label="Municipality/City"
               id="city"
-              value={address.city}
-              onchange={addressChange}
+              value={formData.address.city}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disBool}>
-              {address.region !== undefined && address.region !== "__EMPTY__"
+              {formData.address.region !== undefined &&
+              formData.address.region !== "__EMPTY__"
                 ? locations[
-                    address.region.substring(7, address.region.length)
+                    formData.address.region.substring(
+                      7,
+                      formData.address.region.length
+                    )
                   ].city.map((val) => <option>{val}</option>)
                 : ""}
             </FormSelect>
@@ -332,8 +346,9 @@ export default function PersonalInfoForm() {
               name="brgy"
               label="Barangay"
               id="brgy"
-              value={address.brgy}
-              onchange={addressChange}
+              value={formData.address.brgy}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disBool}>
               <option>A. O. Floriendo</option>
@@ -381,8 +396,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="purok"
               id="purok"
-              value={address.purok}
-              onchange={addressChange}
+              value={formData.address.purok}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
               require={true}
               disable={disable}
@@ -392,8 +408,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="lot_num"
               id="lot_num"
-              value={address.lot_num}
-              onchange={addressChange}
+              value={formData.address.lot_num}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
               disable={disable}
@@ -411,7 +428,8 @@ export default function PersonalInfoForm() {
           type="checkbox"
           id="copy_address"
           style="mb-4"
-          change={() => copyAddress("personal")}
+          // change={() => copyAddress("personal")}
+          change={() => dispatch(copyAddress("personal"))}
           icon={copy_icon}
         />
       ) : (
@@ -436,8 +454,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_region"
               id="region"
-              value={address.prev_region}
-              onchange={addressChange}
+              value={formData.address.prev_region}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
               require={true}
               disable={disable}
@@ -447,8 +466,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_province"
               id="province"
-              value={address.prev_province}
-              onchange={addressChange}
+              value={formData.address.prev_province}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
               require={true}
               disable={disable}
@@ -458,8 +478,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_city"
               id="city"
-              value={address.prev_city}
-              onchange={addressChange}
+              value={formData.address.prev_city}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
               require={true}
               disable={disable}
@@ -469,8 +490,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_brgy"
               id="brgy"
-              value={address.prev_brgy}
-              onchange={addressChange}
+              value={formData.address.prev_brgy}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"
               require={true}
               disable={disable}
@@ -480,8 +502,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_purok"
               id="purok"
-              value={address.prev_purok}
-              onchange={addressChange}
+              value={formData.address.prev_purok}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
               disable={disable}
@@ -491,8 +514,9 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_lot_num"
               id="prev_lot_num"
-              value={address.prev_lot_num}
-              onchange={addressChange}
+              value={formData.address.prev_lot_num}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
               disable={disable}
@@ -506,7 +530,7 @@ export default function PersonalInfoForm() {
           name="home_description"
           id="home_description"
           label="Brief description of place of residence and home"
-          value={formData[formType].home_description}
+          value={formData.applicant.home_description}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write residence description here"
           require={true}

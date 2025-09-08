@@ -7,7 +7,7 @@ const formSlice = createSlice({
     formData: {
       createUnit: {},
       unit: {},
-      personalInfo: {},
+      applicant: {},
       address: {},
     },
     formType: "createUnit",
@@ -40,17 +40,17 @@ const formSlice = createSlice({
     },
 
     handleChange: (state, action) => {
-      state.formData[state.formType] = {
-        ...state.formData[state.formType],
-        [action.payload.name]: action.payload.value,
+      const data = action.payload;
+
+      state.formData[data.formType] = {
+        ...state.formData[data.formType],
+        [data.name]: data.value,
       };
 
-      // state.formData = {
-      //   ...state.formData,
-      //   [action.payload.name]: action.payload.value,
+      // state.formData[state.formType] = {
+      //   ...state.formData[state.formType],
+      //   [data.name]: data.value,
       // };
-
-      formRepository.saveForm(state.formData);
     },
 
     handleQuantity: (state, action) => {
@@ -76,6 +76,48 @@ const formSlice = createSlice({
     initialForm: (state, action) => {
       state.formData[state.formType] = action.payload;
     },
+
+    copyAddress: (state, action) => {
+      const address = state.formData.address;
+
+      console.log(address);
+
+      switch (action.payload) {
+        case "personal":
+          state.formData.address = {
+            ...address,
+            prev_region: address.region,
+            prev_province: address.province,
+            prev_city: address.city,
+            prev_brgy: address.brgy,
+            prev_purok: address.purok,
+            prev_lot_num: address.lot_num,
+          };
+          break;
+        case "parent":
+          state.formData.address = {
+            ...address,
+            p_prev_region: address.p_region,
+            p_prev_province: address.p_province,
+            p_prev_city: address.p_city,
+            p_prev_brgy: address.p_brgy,
+            p_prev_purok: address.p_purok,
+            p_prev_lot_num: address.p_lot_num,
+          };
+          break;
+        case "spouse":
+          state.formData.address = {
+            ...address,
+            sp_prev_region: address.sp_region,
+            sp_prev_province: address.sp_province,
+            sp_prev_city: address.sp_city,
+            sp_prev_brgy: address.sp_brgy,
+            sp_prev_purok: address.sp_purok,
+            sp_prev_lot_num: address.sp_lot_num,
+          };
+          break;
+      }
+    },
   },
 });
 
@@ -87,5 +129,6 @@ export const {
   handleQuantity,
   setColorIndex,
   initialForm,
+  copyAddress,
 } = formSlice.actions;
 export default formSlice.reducer;

@@ -7,7 +7,7 @@ import Stepper from "../components/Stepper";
 import Step from "../components/Step";
 import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleChange } from "../services/redux/slices/formSlice";
 
 export default function ApplicationForm() {
@@ -15,6 +15,7 @@ export default function ApplicationForm() {
   const location = useLocation();
   const { state } = useLocation();
   const dispatch = useDispatch();
+  const { formType } = useSelector((state) => state.form);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicant, setApplicant] = useState({});
   const [address, setAddress] = useState({});
@@ -542,11 +543,12 @@ export default function ApplicationForm() {
   //     });
   //   }
 
-  function dispatchInput(event) {
+  function dispatchInput(event, type = formType) {
     dispatch(
       handleChange({
         name: event.target.name,
         value: event.target.value,
+        formType: type,
       })
     );
   }

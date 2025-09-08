@@ -12,11 +12,18 @@ import FormTD from "../components/tables/FormTD";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
 import { useDispatch, useSelector } from "react-redux";
-import { initialForm, setType, copyAddress } from "../services/redux/slices/formSlice";
+import {
+  initialForm,
+  setType,
+  copyAddress,
+  disableAddress,
+} from "../services/redux/slices/formSlice";
 
 export default function PersonalInfoForm() {
   const location = useLocation();
-  const { formData, formType } = useSelector((state) => state.form);
+  const { formData, selectDisable, disabled } = useSelector(
+    (state) => state.form
+  );
   const dispatch = useDispatch();
   const {
     handleChange,
@@ -43,7 +50,9 @@ export default function PersonalInfoForm() {
     dispatch(initialForm({}));
   }, []);
 
-  console.log(formData);
+  useEffect(() => {
+    dispatch(disableAddress());
+  }, [formData]);
 
   return (
     <>
@@ -184,6 +193,7 @@ export default function PersonalInfoForm() {
             id="name"
             placeholder="Others"
             disable={disable}
+            onchange={() => {}}
           />
         </div>
         <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
@@ -205,6 +215,7 @@ export default function PersonalInfoForm() {
             type="text"
             name="prod_name"
             id="name"
+            onchange={() => {}}
             placeholder="Other reason"
             disable={disable}
           />
@@ -284,7 +295,6 @@ export default function PersonalInfoForm() {
               label="Region"
               id="region"
               value={formData.address.region}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disable}>
@@ -309,10 +319,9 @@ export default function PersonalInfoForm() {
               label="Province"
               id="province"
               value={formData.address.province}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={disBool}>
+              disable={selectDisable}>
               {formData.address.region !== undefined &&
               formData.address.region !== "__EMPTY__"
                 ? locations[
@@ -328,10 +337,9 @@ export default function PersonalInfoForm() {
               label="Municipality/City"
               id="city"
               value={formData.address.city}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={disBool}>
+              disable={selectDisable}>
               {formData.address.region !== undefined &&
               formData.address.region !== "__EMPTY__"
                 ? locations[
@@ -347,7 +355,6 @@ export default function PersonalInfoForm() {
               label="Barangay"
               id="brgy"
               value={formData.address.brgy}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disBool}>
@@ -397,7 +404,6 @@ export default function PersonalInfoForm() {
               name="purok"
               id="purok"
               value={formData.address.purok}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
               require={true}
@@ -409,7 +415,6 @@ export default function PersonalInfoForm() {
               name="lot_num"
               id="lot_num"
               value={formData.address.lot_num}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
@@ -455,7 +460,6 @@ export default function PersonalInfoForm() {
               name="prev_region"
               id="region"
               value={formData.address.prev_region}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
               require={true}
@@ -467,7 +471,6 @@ export default function PersonalInfoForm() {
               name="prev_province"
               id="province"
               value={formData.address.prev_province}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
               require={true}
@@ -479,7 +482,6 @@ export default function PersonalInfoForm() {
               name="prev_city"
               id="city"
               value={formData.address.prev_city}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
               require={true}
@@ -491,7 +493,6 @@ export default function PersonalInfoForm() {
               name="prev_brgy"
               id="brgy"
               value={formData.address.prev_brgy}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"
               require={true}
@@ -503,7 +504,6 @@ export default function PersonalInfoForm() {
               name="prev_purok"
               id="purok"
               value={formData.address.prev_purok}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
@@ -515,7 +515,6 @@ export default function PersonalInfoForm() {
               name="prev_lot_num"
               id="prev_lot_num"
               value={formData.address.prev_lot_num}
-              // onchange={addressChange}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
@@ -544,14 +543,18 @@ export default function PersonalInfoForm() {
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
         <table className="w-full">
           <FormTHead>
-            <FormTH label="Model" />
-            <FormTH label="Downpayment" />
-            <FormTH label="Terms Conditions" />
+            <tr>
+              <FormTH label="Model" />
+              <FormTH label="Downpayment" />
+              <FormTH label="Terms Conditions" />
+            </tr>
           </FormTHead>
           <FormTBody>
-            <FormTD placeholder="Model name" />
-            <FormTD placeholder="Downpayment here" />
-            <FormTD placeholder="Terms & Conditions" />
+            <tr>
+              <FormTD placeholder="Model name" />
+              <FormTD placeholder="Downpayment here" />
+              <FormTD placeholder="Terms & Conditions" />
+            </tr>
           </FormTBody>
         </table>
         {urlBool ? (

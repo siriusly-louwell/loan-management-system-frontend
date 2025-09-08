@@ -8,7 +8,7 @@ import Step from "../components/Step";
 import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { handleChange } from "../services/redux/slices/formSlice";
+import { handleChange, setDisable } from "../services/redux/slices/formSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -582,6 +582,10 @@ export default function ApplicationForm() {
         ? "done"
         : "pend";
   }
+
+  useEffect(() => {
+    dispatch(setDisable(false));
+  }, []);
 
   function stepNavCheck(index) {
     checkEmpty(applicantArray[index - 1], index - 1, "step");

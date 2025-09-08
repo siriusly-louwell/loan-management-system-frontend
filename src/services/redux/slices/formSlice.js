@@ -14,6 +14,8 @@ const formSlice = createSlice({
     colors: [],
     colorIndex: null,
     error: null,
+    disabled: null,
+    selectDisable: false,
   },
   reducers: {
     setColorIndex: (state, action) => {
@@ -77,10 +79,20 @@ const formSlice = createSlice({
       state.formData[state.formType] = action.payload;
     },
 
+    setDisable: (state, action) => {
+      state.disabled = action.payload;
+    },
+
+    disableAddress: (state) => {
+      state.selectDisable =
+        state.formData.address.region === undefined ||
+        state.formData.address.region === "__EMPTY__"
+          ? true
+          : state.disabled;
+    },
+
     copyAddress: (state, action) => {
       const address = state.formData.address;
-
-      console.log(address);
 
       switch (action.payload) {
         case "personal":
@@ -130,5 +142,7 @@ export const {
   setColorIndex,
   initialForm,
   copyAddress,
+  disableAddress,
+  setDisable
 } = formSlice.actions;
 export default formSlice.reducer;

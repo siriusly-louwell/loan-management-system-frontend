@@ -22,14 +22,12 @@ export default function EmploymentInfoForm() {
     location.pathname !== "/staff/apply/employinfo" &&
     location.pathname !== "/ci/apply/employinfo";
 
-  console.log(formData);
-
   return (
     <>
-      <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Employment Information:
       </h3>
-      <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
+      <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
         <FormSelect
           name="income"
           label="Source of income"
@@ -92,17 +90,17 @@ export default function EmploymentInfoForm() {
           placeholder="Type employer name"
           disable={disable}
         />
-        <div class="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-1">
+        <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-1">
           <FormInput
             label="Employer Address (Brgy, municipality/city, province, region)"
             type="text"
             name="employer_address"
             id="name"
             value={
-            //   applicant.view
-            //     ? address.employer_address
-            //     : formData[formType].employment_address
-                formData[formType].employment_address
+              //   applicant.view
+              //     ? address.employer_address
+              //     : formData[formType].employment_address
+              formData[formType].employment_address
             }
             onchange={(e) => dispatchInput(e)}
             placeholder="Type employer address"
@@ -111,10 +109,10 @@ export default function EmploymentInfoForm() {
         </div>
       </div>
 
-      <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Income
       </h3>
-      <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
+      <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
         <FormInput
           label="Salary"
           type="number"
@@ -144,16 +142,17 @@ export default function EmploymentInfoForm() {
           id="name"
           placeholder="Other income"
           disable={disable}
+          onchange={() => {}}
         />
       </div>
 
-      <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Expenses
       </h3>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         Write down all expenses spent every month
       </label>
-      <div class="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
+      <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
         <FormInput
           label="Living"
           type="number"
@@ -222,33 +221,35 @@ export default function EmploymentInfoForm() {
         />
       </div>
 
-      <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Real and/or Personal Properties:
       </h3>
-      <div class="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        <table class="w-full">
+      <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
+        <table className="w-full">
           <FormTHead>
-            <FormTH label="Kind of Property" />
-            <FormTH label="Location" />
-            <FormTH style="flex-end grid sm:grid-cols-1">
-              <label class="pb-3">Valuation</label>
-              <div class="grid sm:cols-span-1 gap-4 sm:grid-cols-2 h-full">
-                <label>Assessment</label>
-                <label>Material</label>
-              </div>
-            </FormTH>
-            <FormTH label="Status" />
+            <tr>
+              <FormTH label="Kind of Property" />
+              <FormTH label="Location" />
+              <FormTH style="flex-end grid sm:grid-cols-1">
+                <label className="pb-3">Valuation</label>
+                <div className="grid sm:cols-span-1 gap-4 sm:grid-cols-2 h-full">
+                  <label>Assessment</label>
+                  <label>Material</label>
+                </div>
+              </FormTH>
+              <FormTH label="Status" />
+            </tr>
           </FormTHead>
           <FormTBody>
             {properties.map((i) => (
-              <tr>
+              <tr key={i}>
                 <FormTD placeholder="Property name here" />
                 <FormTD placeholder="Location here" />
                 <FormTD placeholder="Assessment" style="flex justify-between">
                   <input
                     type="text"
                     placeholder="Material"
-                    class="bg-gray-50 ml-1 border-b border-gray-300 text-gray-900 text-sm focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className="bg-gray-50 ml-1 border-b border-gray-300 text-gray-900 text-sm focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   />
                 </FormTD>
                 <FormTD placeholder="Current status" />
@@ -257,7 +258,7 @@ export default function EmploymentInfoForm() {
           </FormTBody>
         </table>
         {urlBool ? (
-          <div class="grid pt-4 sm:cols-span-1">
+          <div className="grid pt-4 sm:cols-span-1">
             <BttnwithIcon
               type="button"
               click={() => setProperty([...properties, ""])}
@@ -270,25 +271,27 @@ export default function EmploymentInfoForm() {
         )}
       </div>
 
-      <h3 class="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Credit References:
       </h3>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         (List down all financing firms & individual who wxtended credit to you)
       </label>
-      <div class="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        <table class="w-full">
+      <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
+        <table className="w-full">
           <FormTHead>
-            <FormTH label="Name" />
-            <FormTH label="Type of Credit" />
-            <FormTH label="Terms" />
-            <FormTH label="Amount" />
-            <FormTH label="O/S Balance" />
-            <FormTH label="M/A" />
+            <tr>
+              <FormTH label="Name" />
+              <FormTH label="Type of Credit" />
+              <FormTH label="Terms" />
+              <FormTH label="Amount" />
+              <FormTH label="O/S Balance" />
+              <FormTH label="M/A" />
+            </tr>
           </FormTHead>
           <FormTBody>
             {references.map((i) => (
-              <tr>
+              <tr key={i}>
                 <FormTD placeholder="Property name here" />
                 <FormTD placeholder="Location here" />
                 <FormTD placeholder="Current status" />
@@ -300,7 +303,7 @@ export default function EmploymentInfoForm() {
           </FormTBody>
         </table>
         {urlBool ? (
-          <div class="grid pt-4 sm:cols-span-1">
+          <div className="grid pt-4 sm:cols-span-1">
             <BttnwithIcon
               text="Add row"
               type="button"

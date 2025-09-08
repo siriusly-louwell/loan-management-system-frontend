@@ -15,7 +15,7 @@ export default function FormTextarea({
   return (
     <div className="sm:col-span-2">
       <label
-        for={id}
+        htmlFor={id}
         className={`block mb-2 text-sm font-medium text-${color}-900 dark:text-white`}>
         {label} {require ? <strong className="text-rose-500">*</strong> : ""}
       </label>

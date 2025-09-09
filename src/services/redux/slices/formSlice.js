@@ -150,6 +150,8 @@ const formSlice = createSlice({
       state.formData[state.formType] = applicant.form;
       state.formData.address = address.form;
       state.pageComplete = !(applicant.hasEmpty && address.hasEmpty);
+
+      console.log(state.pageComplete);
     },
   },
 });

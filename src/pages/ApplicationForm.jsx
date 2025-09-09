@@ -15,6 +15,7 @@ import {
   handleChange,
   setDisable,
 } from "../services/redux/slices/formSlice";
+import { setAlert } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function ApplicationForm() {
   const [address, setAddress] = useState({});
   const [transactForm, setTransactForm] = useState([]);
   const [files, setFiles] = useState({});
-  const [alert, setAlert] = useState({});
+  // const [alert, setAlert] = useState({});
   const [incomplete, setIncomplete] = useState([]);
   const submitData = new FormData();
   const routerPaths = useMemo(
@@ -412,12 +413,10 @@ export default function ApplicationForm() {
   useEffect(() => {
     if (pageComplete) {
       const nextIndex = currentIndex + 1;
-      if (nextIndex < routerPaths.length)
-        navigate(routerPaths[nextIndex], {
-          state: { selected: state?.selected },
-        });
-    }
-  }, [pageComplete]) 
+      if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
+    } else if (pageComplete !== null)
+      dispatch(setAlert({ message: "some fields", type: "warn" }));
+  }, [pageComplete, routerPaths, navigate, dispatch]);
 
   function handleNext() {
     // if(checkEmpty(applicantArray[currentIndex])) {

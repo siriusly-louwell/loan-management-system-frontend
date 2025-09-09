@@ -347,7 +347,7 @@ export default function PersonalInfoForm() {
                       7,
                       formData.address.region.length
                     )
-                  ].city.map((val) => <option>{val}</option>)
+                  ].city.map((val, i) => <option key={i}>{val}</option>)
                 : ""}
             </FormSelect>
             <FormSelect

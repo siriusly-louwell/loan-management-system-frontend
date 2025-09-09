@@ -24,7 +24,7 @@ export default function Alert() {
       icon = <Info size={24} />;
   }
 
-    switch (alert.type) {
+  switch (alert.type) {
     case "success":
       bgColor = "bg-green-500 border-green-500 text-green-50";
       break;

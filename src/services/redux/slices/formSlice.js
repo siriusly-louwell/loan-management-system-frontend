@@ -18,6 +18,14 @@ const formSlice = createSlice({
     selectDisable: false,
   },
   reducers: {
+    draftForm: (state) => {
+      formRepository.saveForm(state.formData);
+    },
+
+    getDraft: (state) => {
+      state.formData = formRepository.getForm();
+    },
+
     setColorIndex: (state, action) => {
       state.colorIndex = action.payload;
     },
@@ -143,6 +151,8 @@ export const {
   initialForm,
   copyAddress,
   disableAddress,
-  setDisable
+  setDisable,
+  draftForm,
+  getDraft,
 } = formSlice.actions;
 export default formSlice.reducer;

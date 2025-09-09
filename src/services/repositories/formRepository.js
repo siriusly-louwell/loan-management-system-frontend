@@ -1,10 +1,10 @@
 export const formRepository = {
   saveForm(form) {
-    localStorage.setItem("form", form);
+    localStorage.setItem("form", JSON.stringify(form));
   },
 
   getForm() {
-    return localStorage.getItem("form") || false;
+    return JSON.parse(localStorage.getItem("form")) || {};
   },
 
   clearForm() {

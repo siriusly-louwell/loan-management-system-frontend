@@ -17,8 +17,6 @@ import {
   setType,
   copyAddress,
   disableAddress,
-  draftForm,
-  getDraft,
 } from "../services/redux/slices/formSlice";
 
 export default function PersonalInfoForm() {
@@ -50,15 +48,11 @@ export default function PersonalInfoForm() {
   useEffect(() => {
     dispatch(setType("applicant"));
     dispatch(initialForm({}));
-    dispatch(getDraft());
   }, []);
 
   useEffect(() => {
     dispatch(disableAddress());
-    setTimeout(() => {
-      dispatch(draftForm());
-    }, 3000);
-  }, [formData]);
+  }, [formData, dispatch]);
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formRepository } from "../../repositories/formRepository";
+import { FIELD_NAMES } from "../../../constants/formFields";
 
 const formSlice = createSlice({
   name: "form",
@@ -16,6 +17,7 @@ const formSlice = createSlice({
     error: null,
     disabled: null,
     selectDisable: false,
+    pageComplete: null,
   },
   reducers: {
     draftForm: (state) => {
@@ -103,7 +105,8 @@ const formSlice = createSlice({
       const address = state.formData.address;
 
       switch (action.payload) {
-        case "personal":
+        // case "personal":
+        default:
           state.formData.address = {
             ...address,
             prev_region: address.region,
@@ -137,6 +140,32 @@ const formSlice = createSlice({
           };
           break;
       }
+    },
+
+    formCheck: (state, action) => {
+      const fields = FIELD_NAMES[action.payload] || [];
+      let hasEmpty = true;
+
+      const updatedForm = { ...state.formData };
+
+      fields.forEach((field) => {
+        const value = updatedForm[field];
+
+        if (
+          value === undefined ||
+          value === null ||
+          value === "" ||
+          (Array.isArray(value) && value.length === 0)
+        ) {
+          updatedForm[field] = "__EMPTY__";
+          hasEmpty = false;
+        }
+      });
+
+      state.formData = updatedForm;
+      state.pageComplete = hasEmpty;
+
+      // return { isValid: !hasEmpty, updatedForm };
     },
   },
 });

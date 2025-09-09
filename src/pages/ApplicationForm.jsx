@@ -8,14 +8,19 @@ import Step from "../components/Step";
 import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { handleChange, setDisable } from "../services/redux/slices/formSlice";
+import {
+  draftForm,
+  getDraft,
+  handleChange,
+  setDisable,
+} from "../services/redux/slices/formSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = useLocation();
   const dispatch = useDispatch();
-  const { formType } = useSelector((state) => state.form);
+  const { formType, formData } = useSelector((state) => state.form);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicant, setApplicant] = useState({});
   const [address, setAddress] = useState({});
@@ -585,7 +590,14 @@ export default function ApplicationForm() {
 
   useEffect(() => {
     dispatch(setDisable(false));
+    dispatch(getDraft());
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(draftForm());
+    }, 3000);
+  }, [formData, dispatch]);
 
   function stepNavCheck(index) {
     checkEmpty(applicantArray[index - 1], index - 1, "step");

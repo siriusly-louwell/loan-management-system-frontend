@@ -10,6 +10,7 @@ import Spinner from "../components/loading components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import {
   draftForm,
+  formCheck,
   getDraft,
   handleChange,
   setDisable,
@@ -20,7 +21,9 @@ export default function ApplicationForm() {
   const location = useLocation();
   const { state } = useLocation();
   const dispatch = useDispatch();
-  const { formType, formData } = useSelector((state) => state.form);
+  const { formType, formData, pageComplete } = useSelector(
+    (state) => state.form
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicant, setApplicant] = useState({});
   const [address, setAddress] = useState({});
@@ -406,14 +409,32 @@ export default function ApplicationForm() {
     } else return bool;
   }
 
+  useEffect(() => {
+    if (pageComplete) {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < routerPaths.length)
+        navigate(routerPaths[nextIndex], {
+          state: { selected: state?.selected },
+        });
+    }
+  }, [pageComplete]) 
+
   function handleNext() {
     // if(checkEmpty(applicantArray[currentIndex])) {
     // }
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < routerPaths.length)
-      navigate(routerPaths[nextIndex], {
-        state: { selected: state?.selected },
-      });
+    dispatch(formCheck(currentIndex));
+    // if (pageComplete) {
+    //   const nextIndex = currentIndex + 1;
+    //   if (nextIndex < routerPaths.length)
+    //     navigate(routerPaths[nextIndex], {
+    //       state: { selected: state?.selected },
+    //     });
+    // }
+    // const nextIndex = currentIndex + 1;
+    // if (nextIndex < routerPaths.length)
+    //   navigate(routerPaths[nextIndex], {
+    //     state: { selected: state?.selected },
+    //   });
   }
 
   function handlePrev() {
@@ -590,7 +611,7 @@ export default function ApplicationForm() {
 
   useEffect(() => {
     dispatch(setDisable(false));
-    dispatch(getDraft());
+    if (currentIndex > 0) dispatch(getDraft());
   }, []);
 
   useEffect(() => {

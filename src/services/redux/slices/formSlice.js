@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formRepository } from "../../repositories/formRepository";
 import { FIELD_NAMES } from "../../../constants/formFields";
+import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase";
 
 const formSlice = createSlice({
   name: "form",
@@ -143,29 +144,12 @@ const formSlice = createSlice({
     },
 
     formCheck: (state, action) => {
-      const fields = FIELD_NAMES[action.payload] || [];
-      let hasEmpty = true;
-
-      const updatedForm = { ...state.formData };
-
-      fields.forEach((field) => {
-        const value = updatedForm[field];
-
-        if (
-          value === undefined ||
-          value === null ||
-          value === "" ||
-          (Array.isArray(value) && value.length === 0)
-        ) {
-          updatedForm[field] = "__EMPTY__";
-          hasEmpty = false;
-        }
-      });
-
-      state.formData = updatedForm;
-      state.pageComplete = hasEmpty;
-
-      // return { isValid: !hasEmpty, updatedForm };
+      const applicant = checkEmptyUseCase(action.payload, state.formData);
+      const address = checkEmptyUseCase(action.payload, state.formData, "address");
+      
+      state.formData[state.formType] = applicant.form;
+      state.formData.address = address.form;
+      state.pageComplete = !(applicant.hasEmpty && address.hasEmpty);
     },
   },
 });
@@ -183,5 +167,6 @@ export const {
   setDisable,
   draftForm,
   getDraft,
+  formCheck,
 } = formSlice.actions;
 export default formSlice.reducer;

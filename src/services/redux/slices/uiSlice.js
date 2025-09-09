@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { FORM_ROUTES } from "../../../constants/formRoutes";
 
 const initialState = {
   alert: {
@@ -11,6 +12,8 @@ const initialState = {
   modals: {},
   carouselSlide: 0,
   filter: null,
+  pageNum: 0,
+  pageRoute: null,
 };
 
 const uiSlice = createSlice({
@@ -74,6 +77,24 @@ const uiSlice = createSlice({
           return data.value === "__EMPTY__";
       }
     },
+
+    nextPage: (state, action) => {
+      const nextIndex = state.pageNum + 1;
+
+      if (nextIndex < FORM_ROUTES.length) {
+        state.pageRoute = action.payload;
+        state.pageNum = nextIndex;
+      }
+    },
+
+    prevPage: (state, action) => {
+      const nextIndex = state.pageNum - 1;
+
+      if (nextIndex > 0) {
+        state.pageRoute = FORM_ROUTES[action.payload];
+        state.pageNum = nextIndex;
+      }
+    },
   },
 });
 
@@ -85,5 +106,7 @@ export const {
   toggleSlide,
   setFilter,
   inputCheck,
+  nextIndex,
+  prevPage
 } = uiSlice.actions;
 export default uiSlice.reducer;

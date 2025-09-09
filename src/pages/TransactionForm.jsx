@@ -10,11 +10,16 @@ import FormSelect from "../components/inputs/FormSelect";
 import SelectColor from "../components/checkboxes/SelectColor";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntity } from "../services/entities/Unit";
-import { handleChange, initialForm, setType } from "../services/redux/slices/formSlice";
+import {
+  handleChange,
+  initialForm,
+  setType,
+} from "../services/redux/slices/formSlice";
 import { fetchUnit } from "../services/redux/slices/unitSlice";
 
 export default function TransactionForm() {
   const {
+    dispatchInput,
     ids,
     handleTransaction,
     transactForm,
@@ -31,7 +36,9 @@ export default function TransactionForm() {
   // const [downPayment, setDownPayment] = useState([]);
 
   function changeColor(newColor) {
-    dispatch(handleChange({ name: "color", value: newColor }));
+    dispatch(
+      handleChange({ name: "color", value: newColor, formType: formType })
+    );
 
     // handleTransForm(i, newColor, "color");
   }
@@ -90,11 +97,11 @@ export default function TransactionForm() {
   //   handleTransForm(i, downpayment, "downpayment");
   // }
 
-  function dispatchInput(event) {
-    dispatch(
-      handleChange({ name: event.target.name, value: event.target.value })
-    );
-  }
+  // function dispatchInput(event) {
+  //   dispatch(
+  //     handleChange({ name: event.target.name, value: event.target.value })
+  //   );
+  // }
 
   function dispatchQuantity(value) {
     dispatch(handleChange({ name: "quantity", value: value }));
@@ -155,6 +162,7 @@ export default function TransactionForm() {
                   <FormInput
                     type="number"
                     placeholder="Input downpayment here"
+                    onchange={() => {}}
                   />
                 </div>
                 <FormSelect name="tenure" label="Loan Years">
@@ -221,11 +229,11 @@ export default function TransactionForm() {
                     value={formData[formType].downpayment}
                     name="downpayment"
                     onchange={(e) => dispatchInput(e)}
-                    // value={downPayment}
                     // onchange={(e) => handleDown(5, Number(e.target.value))}
                     placeholder="Input downpayment here"
                   />
-                  {formData[formType].downpayment < Number(unit.downpayment) && (
+                  {formData[formType].downpayment <
+                    Number(unit.downpayment) && (
                     <p className="text-red-500">
                       * Downpayment must not go below the minimum payment
                     </p>
@@ -235,9 +243,8 @@ export default function TransactionForm() {
                   name="tenure"
                   label="Loan Years"
                   id="tenure"
-                  // value={transactForm.tenure}
+                  value={formData[formType].tenure}
                   onchange={(e) => dispatchInput(e)}
-                  // onchange={(e) => handleTransaction(5, e)}
                   require={true}>
                   {[...Array(unit.tenure)].map((_, i) => (
                     <option key={i} value={i + 1}>
@@ -248,21 +255,6 @@ export default function TransactionForm() {
               </div>
             </div>
           </div>
-          {/* {transact.map((select, i) => (
-            <TransactionFormat
-              key={select.id}
-              index={i}
-              id={select.id}
-              transact={select}
-              transactForm={transactForm[i]}
-              handleTransaction={handleTransaction}
-              handleTransForm={handleTransForm}
-              colors={colors}
-              changeColor={changeColor}
-              downPayment={downPayment[i]}
-              handleDown={handleDown}
-            />
-          ))} */}
         </>
       )}
     </>

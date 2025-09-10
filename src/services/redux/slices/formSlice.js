@@ -144,14 +144,23 @@ const formSlice = createSlice({
     },
 
     formCheck: (state, action) => {
-      const applicant = checkEmptyUseCase(action.payload, state.formData);
-      const address = checkEmptyUseCase(action.payload, state.formData, "address");
-      
+      const index = action.payload;
+      const applicant = checkEmptyUseCase(
+        index,
+        state.formData[state.formType]
+      );
+      const address = checkEmptyUseCase(
+        index,
+        state.formData.address,
+        "address"
+      );
+
       state.formData[state.formType] = applicant.form;
       state.formData.address = address.form;
-      state.pageComplete = !(applicant.hasEmpty && address.hasEmpty);
-
-      console.log(state.pageComplete);
+      state.pageComplete =
+        index !== 0 && index !== 2 && index !== 4
+          ? !(applicant.hasEmpty && address.hasEmpty)
+          : !applicant.hasEmpty;
     },
   },
 });

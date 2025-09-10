@@ -4,22 +4,23 @@ export function checkEmptyUseCase(pageNum, form, type = "applicant") {
   const fields =
     type === "applicant" ? FIELD_NAMES[pageNum] : ADDRESS_NAMES[pageNum];
   let hasEmpty = false;
-  const updatedForm = { ...form[type] };
+  const updatedForm = { ...form };
 
-  fields.forEach((field) => {
-    const value = updatedForm[field];
+  if (fields.length > 0)
+    fields.forEach((field) => {
+      const value = updatedForm[field];
 
-    if (
-      value === "__EMPTY__" ||
-      value === undefined ||
-      value === null ||
-      value === "" ||
-      (Array.isArray(value) && value.length === 0)
-    ) {
-      updatedForm[field] = "__EMPTY__";
-      hasEmpty = true;
-    }
-  });
+      if (
+        value === "__EMPTY__" ||
+        value === undefined ||
+        value === null ||
+        value === "" ||
+        (Array.isArray(value) && value.length === 0)
+      ) {
+        updatedForm[field] = "__EMPTY__";
+        hasEmpty = true;
+      }
+    });
 
   return { form: updatedForm, hasEmpty: hasEmpty };
 }

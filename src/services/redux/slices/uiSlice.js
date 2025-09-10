@@ -78,13 +78,15 @@ const uiSlice = createSlice({
       }
     },
 
-    nextPage: (state, action) => {
+    nextPage: (state) => {
       const nextIndex = state.pageNum + 1;
 
       if (nextIndex < FORM_ROUTES.length) {
-        state.pageRoute = action.payload;
+        state.pageRoute = FORM_ROUTES[nextIndex];
         state.pageNum = nextIndex;
       }
+
+      console.log(state.pageRoute, state.pageNum);
     },
 
     prevPage: (state, action) => {
@@ -106,7 +108,7 @@ export const {
   toggleSlide,
   setFilter,
   inputCheck,
-  nextIndex,
+  nextPage,
   prevPage
 } = uiSlice.actions;
 export default uiSlice.reducer;

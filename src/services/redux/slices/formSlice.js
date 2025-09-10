@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { formRepository } from "../../repositories/formRepository";
-import { FIELD_NAMES } from "../../../constants/formFields";
 import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase";
 
 const formSlice = createSlice({
@@ -19,6 +18,7 @@ const formSlice = createSlice({
     disabled: null,
     selectDisable: false,
     pageComplete: null,
+    isChecked: null,
   },
   reducers: {
     draftForm: (state) => {
@@ -155,11 +155,12 @@ const formSlice = createSlice({
         "address"
       );
 
+      state.isChecked = Date.now();
       state.formData[state.formType] = applicant.form;
       state.formData.address = address.form;
       state.pageComplete =
         index !== 0 && index !== 2 && index !== 4
-          ? !(applicant.hasEmpty && address.hasEmpty)
+          ? !(applicant.hasEmpty || address.hasEmpty)
           : !applicant.hasEmpty;
     },
   },

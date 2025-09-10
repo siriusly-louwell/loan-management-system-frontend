@@ -15,21 +15,23 @@ import {
   handleChange,
   setDisable,
 } from "../services/redux/slices/formSlice";
-import { setAlert } from "../services/redux/slices/uiSlice";
+import { nextPage, setAlert } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = useLocation();
   const dispatch = useDispatch();
-  const { formType, formData, pageComplete } = useSelector(
+  const { formType, formData, pageComplete, isChecked } = useSelector(
     (state) => state.form
   );
+  const { pageRoute } = useSelector((state) => state.ui);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicant, setApplicant] = useState({});
   const [address, setAddress] = useState({});
   const [transactForm, setTransactForm] = useState([]);
   const [files, setFiles] = useState({});
+  const [pageType, setPageType] = useState("next");
   // const [alert, setAlert] = useState({});
   const [incomplete, setIncomplete] = useState([]);
   const submitData = new FormData();
@@ -411,16 +413,19 @@ export default function ApplicationForm() {
   }
 
   useEffect(() => {
-    if (pageComplete) {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
-    } else if (pageComplete !== null)
-      dispatch(setAlert({ message: "some fields", type: "warn" }));
-  }, [pageComplete, routerPaths, navigate, dispatch]);
+    if (pageType === "next") {
+      if (pageComplete) {
+        const nextIndex = currentIndex + 1;
+        if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
+      } else if (pageComplete !== null)
+        dispatch(setAlert({ message: "some fields", type: "warn" }));
+    }
+  }, [isChecked, pageComplete, pageType, navigate, dispatch]);
 
   function handleNext() {
     // if(checkEmpty(applicantArray[currentIndex])) {
     // }
+    setPageType("next");
     dispatch(formCheck(currentIndex));
     // if (pageComplete) {
     //   const nextIndex = currentIndex + 1;
@@ -437,6 +442,8 @@ export default function ApplicationForm() {
   }
 
   function handlePrev() {
+    setPageType("prev");
+    // dispatch(formCheck(currentIndex));
     const prevIndex = currentIndex - 1;
     if (prevIndex >= 0)
       navigate(routerPaths[prevIndex], {

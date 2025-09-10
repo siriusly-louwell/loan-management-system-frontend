@@ -418,7 +418,7 @@ export default function ApplicationForm() {
         const nextIndex = currentIndex + 1;
         if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
       } else if (pageComplete !== null)
-        dispatch(setAlert({ message: "some fields", type: "warn" }));
+        dispatch(setAlert({ message: "Some fields are required!", type: "warn" }));
     }
   }, [isChecked, pageComplete, pageType, navigate, dispatch]);
 
@@ -576,7 +576,6 @@ export default function ApplicationForm() {
   //   }
 
   function dispatchInput(event, type = formType) {
-    console.log(formType);
     dispatch(
       handleChange({
         name: event.target.name,

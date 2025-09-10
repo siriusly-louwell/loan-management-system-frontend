@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
@@ -11,6 +11,7 @@ import FormTBody from "../components/tables/FormTBody";
 import FormTD from "../components/tables/FormTD";
 import copy_icon from "../assets/images/copy_icon.png";
 import { useDispatch, useSelector } from "react-redux";
+import { copyAddress, disableAddress } from "../services/redux/slices/formSlice";
 
 export default function FamilyInfoForm() {
   const {
@@ -19,12 +20,12 @@ export default function FamilyInfoForm() {
     addressChange,
     applicant,
     address,
-    copyAddress,
+    // copyAddress,
     disable,
     locations,
   } = useOutletContext();
   const dispatch = useDispatch();
-  const { formData } = useSelector((state) => state.form);
+  const { formData, selectDisable } = useSelector((state) => state.form);
   const pDisBool =
     address.p_region === undefined || address.p_region === "__EMPTY__"
       ? true
@@ -40,7 +41,9 @@ export default function FamilyInfoForm() {
     location.pathname !== "/staff/apply/familyinfo" &&
     location.pathname !== "/ci/apply/familyinfo";
 
-    console.log(formData);
+  useEffect(() => {
+    dispatch(disableAddress());
+  }, [formData, dispatch]);
 
   return (
     <>
@@ -274,7 +277,8 @@ export default function FamilyInfoForm() {
               label="Region"
               id="region"
               value={formData.address.p_region}
-              onchange={addressChange}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
               disable={disable}>
               <option>Region I</option>
@@ -297,9 +301,9 @@ export default function FamilyInfoForm() {
               label="Province"
               id="province"
               value={formData.address.p_province}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={pDisBool}>
+              disable={selectDisable.parent}>
               {formData.address.p_region !== undefined &&
               formData.address.p_region !== "__EMPTY__"
                 ? locations[
@@ -307,7 +311,7 @@ export default function FamilyInfoForm() {
                       7,
                       formData.address.p_region.length
                     )
-                  ].province.map((val) => <option>{val}</option>)
+                  ].province.map((val, i) => <option key={i}>{val}</option>)
                 : ""}
             </FormSelect>
             <FormSelect
@@ -315,9 +319,10 @@ export default function FamilyInfoForm() {
               label="Municipality/City"
               id="city"
               value={formData.address.p_city}
-              onchange={addressChange}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={pDisBool}>
+              disable={selectDisable.parent}>
               {formData.address.p_region !== undefined &&
               formData.address.p_region !== "__EMPTY__"
                 ? locations[
@@ -325,7 +330,7 @@ export default function FamilyInfoForm() {
                       7,
                       formData.address.p_region.length
                     )
-                  ].city.map((val) => <option>{val}</option>)
+                  ].city.map((val, i) => <option key={i}>{val}</option>)
                 : ""}
             </FormSelect>
             <FormSelect
@@ -333,9 +338,10 @@ export default function FamilyInfoForm() {
               label="Barangay"
               id="brgy"
               value={formData.address.p_brgy}
-              onchange={addressChange}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={pDisBool}>
+              disable={selectDisable.parent}>
               <option>A. O. Floriendo</option>
               <option>Buenavista</option>
               <option>Cacao</option>
@@ -382,7 +388,8 @@ export default function FamilyInfoForm() {
               name="p_purok"
               id="p_purok"
               value={formData.address.p_purok}
-              onchange={addressChange}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
               require={true}
               disable={disable}
@@ -393,7 +400,8 @@ export default function FamilyInfoForm() {
               name="p_lot_num"
               id="p_lot_num"
               value={formData.address.p_lot_num}
-              onchange={addressChange}
+              // onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
               disable={disable}
@@ -410,7 +418,7 @@ export default function FamilyInfoForm() {
           type="checkbox"
           id="parent_address"
           style="mb-4"
-          change={() => copyAddress("parent")}
+          change={() => dispatch(copyAddress("parent"))}
           disable={disable}
           icon={copy_icon}
         />
@@ -448,7 +456,7 @@ export default function FamilyInfoForm() {
               name="p_prev_province"
               id="province"
               value={formData.address.p_prev_province}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
               require={true}
               disable={disable}
@@ -459,7 +467,7 @@ export default function FamilyInfoForm() {
               name="p_prev_city"
               id="city"
               value={formData.address.p_prev_city}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
               require={true}
               disable={disable}
@@ -470,7 +478,7 @@ export default function FamilyInfoForm() {
               name="p_prev_brgy"
               id="brgy"
               value={formData.address.p_prev_brgy}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"
               require={true}
               disable={disable}
@@ -481,7 +489,7 @@ export default function FamilyInfoForm() {
               name="p_prev_purok"
               id="purok"
               value={formData.address.p_prev_purok}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
               disable={disable}
@@ -492,7 +500,7 @@ export default function FamilyInfoForm() {
               name="p_prev_lot_num"
               id="lot_num"
               value={formData.address.p_prev_lot_num}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
               disable={disable}
@@ -523,7 +531,7 @@ export default function FamilyInfoForm() {
               label="Region"
               id="region"
               value={formData.address.sp_region}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               disable={disable}>
               <option>Region I</option>
               <option>Region II</option>
@@ -545,8 +553,8 @@ export default function FamilyInfoForm() {
               label="Province"
               id="province"
               value={formData.address.sp_province}
-              onchange={addressChange}
-              disable={spDisBool}>
+              onchange={(e) => dispatchInput(e, "address")}
+              disable={selectDisable.spouse}>
               {formData.address.sp_region !== undefined &&
               formData.address.sp_region !== "__EMPTY__"
                 ? locations[
@@ -554,7 +562,7 @@ export default function FamilyInfoForm() {
                       7,
                       formData.address.sp_region.length
                     )
-                  ].province.map((val) => <option>{val}</option>)
+                  ].province.map((val, i) => <option key={i}>{val}</option>)
                 : ""}
             </FormSelect>
             <FormSelect
@@ -562,8 +570,8 @@ export default function FamilyInfoForm() {
               label="Municipality/City"
               id="city"
               value={formData.address.sp_city}
-              onchange={addressChange}
-              disable={spDisBool}>
+              onchange={(e) => dispatchInput(e, "address")}
+              disable={selectDisable.spouse}>
               {formData.address.sp_region !== undefined &&
               formData.address.sp_region !== "__EMPTY__"
                 ? locations[
@@ -571,7 +579,7 @@ export default function FamilyInfoForm() {
                       7,
                       formData.address.sp_region.length
                     )
-                  ].city.map((val) => <option>{val}</option>)
+                  ].city.map((val, i) => <option key={i}>{val}</option>)
                 : ""}
             </FormSelect>
             <FormSelect
@@ -579,8 +587,8 @@ export default function FamilyInfoForm() {
               label="Barangay"
               id="brgy"
               value={formData.address.sp_brgy}
-              onchange={addressChange}
-              disable={spDisBool}>
+              onchange={(e) => dispatchInput(e, "address")}
+              disable={selectDisable.spouse}>
               <option>A. O. Floriendo</option>
               <option>Buenavista</option>
               <option>Cacao</option>
@@ -627,7 +635,7 @@ export default function FamilyInfoForm() {
               name="sp_purok"
               id="sp_purok"
               value={formData.address.sp_purok}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
               disable={disable}
             />
@@ -637,7 +645,7 @@ export default function FamilyInfoForm() {
               name="sp_lot_num"
               id="sp_lot_num"
               value={formData.address.sp_lot_num}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               disable={disable}
             />
@@ -653,7 +661,7 @@ export default function FamilyInfoForm() {
           type="checkbox"
           id="spouse_address"
           style="mb-4"
-          change={() => copyAddress("spouse")}
+          change={() => dispatch(copyAddress("spouse"))}
           disable={disable}
           icon={copy_icon}
         />
@@ -680,7 +688,7 @@ export default function FamilyInfoForm() {
               name="sp_prev_region"
               id="region"
               value={formData.address.sp_prev_region}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
               disable={disable}
             />
@@ -690,7 +698,7 @@ export default function FamilyInfoForm() {
               name="sp_prev_province"
               id="province"
               value={formData.address.sp_prev_province}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
               disable={disable}
             />
@@ -700,7 +708,7 @@ export default function FamilyInfoForm() {
               name="sp_prev_city"
               id="city"
               value={formData.address.sp_prev_city}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
               disable={disable}
             />
@@ -720,7 +728,7 @@ export default function FamilyInfoForm() {
               name="sp_prev_purok"
               id="purok"
               value={formData.address.sp_prev_purok}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               disable={disable}
             />
@@ -730,7 +738,7 @@ export default function FamilyInfoForm() {
               name="sp_prev_lot_num"
               id="lot_num"
               value={formData.address.sp_prev_lot_num}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               disable={disable}
             />

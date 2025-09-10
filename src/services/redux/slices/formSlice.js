@@ -16,7 +16,7 @@ const formSlice = createSlice({
     colorIndex: null,
     error: null,
     disabled: null,
-    selectDisable: false,
+    selectDisable: {},
     pageComplete: null,
     isChecked: null,
   },
@@ -94,12 +94,19 @@ const formSlice = createSlice({
       state.disabled = action.payload;
     },
 
-    disableAddress: (state) => {
-      state.selectDisable =
-        state.formData.address.region === undefined ||
-        state.formData.address.region === "__EMPTY__"
-          ? true
-          : state.disabled;
+    disableAddress: (state, action) => {
+      const regions = [
+        state.formData.address.region,
+        state.formData.address.p_region,
+        state.formData.address.sp_region,
+      ];
+      const props = ["personal", "parent", "spouse"];
+
+      regions.forEach((region, i) => {
+
+        state.selectDisable[props[i]] =
+          region === undefined || region === "__EMPTY__" ? true : false;
+      });
     },
 
     copyAddress: (state, action) => {

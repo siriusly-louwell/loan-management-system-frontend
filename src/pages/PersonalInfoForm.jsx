@@ -321,7 +321,7 @@ export default function PersonalInfoForm() {
               value={formData.address.province}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={selectDisable}>
+              disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
               formData.address.region !== "__EMPTY__"
                 ? locations[
@@ -339,7 +339,7 @@ export default function PersonalInfoForm() {
               value={formData.address.city}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={selectDisable}>
+              disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
               formData.address.region !== "__EMPTY__"
                 ? locations[
@@ -357,7 +357,7 @@ export default function PersonalInfoForm() {
               value={formData.address.brgy}
               onchange={(e) => dispatchInput(e, "address")}
               require={true}
-              disable={disBool}>
+              disable={selectDisable.personal}>
               <option>A. O. Floriendo</option>
               <option>Buenavista</option>
               <option>Cacao</option>

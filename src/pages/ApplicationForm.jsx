@@ -576,6 +576,7 @@ export default function ApplicationForm() {
   //   }
 
   function dispatchInput(event, type = formType) {
+    console.log(formType);
     dispatch(
       handleChange({
         name: event.target.name,

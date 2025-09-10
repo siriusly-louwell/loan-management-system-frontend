@@ -32,7 +32,7 @@ export default function EmploymentInfoForm() {
           name="income"
           label="Source of income"
           id="income"
-          value={formData[formType].income}
+          value={formData.applicant.income}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -44,7 +44,7 @@ export default function EmploymentInfoForm() {
           type="text"
           name="superior"
           id="superior"
-          value={formData[formType].superior}
+          value={formData.applicant.superior}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type superior name"
           disable={disable}
@@ -54,7 +54,7 @@ export default function EmploymentInfoForm() {
           type="text"
           name="employment_status"
           id="emp_stat"
-          value={formData[formType].employment_status}
+          value={formData.applicant.employment_status}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type status"
           disable={disable}
@@ -64,7 +64,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="yrs_in_service"
           id="yrs"
-          value={formData[formType].yrs_in_service}
+          value={formData.applicant.yrs_in_service}
           onchange={(e) => dispatchInput(e)}
           placeholder="Years"
           disable={disable}
@@ -74,7 +74,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="rate"
           id="rate"
-          value={formData[formType].rate}
+          value={formData.applicant.rate}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱1,000"
           require={true}
@@ -85,7 +85,7 @@ export default function EmploymentInfoForm() {
           type="text"
           name="employer"
           id="employer"
-          value={formData[formType].employer}
+          value={formData.applicant.employer}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type employer name"
           disable={disable}
@@ -99,8 +99,8 @@ export default function EmploymentInfoForm() {
             value={
               //   applicant.view
               //     ? address.employer_address
-              //     : formData[formType].employment_address
-              formData[formType].employment_address
+              //     : formData.applicant.employment_address
+              formData.applicant.employment_address
             }
             onchange={(e) => dispatchInput(e)}
             placeholder="Type employer address"
@@ -118,7 +118,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="salary"
           id="salary"
-          value={formData[formType].salary}
+          value={formData.applicant.salary}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱15,000 per month"
           require={true}
@@ -129,7 +129,7 @@ export default function EmploymentInfoForm() {
           type="text"
           name="business"
           id="business"
-          value={formData[formType].business}
+          value={formData.applicant.business}
           onchange={(e) => dispatchInput(e)}
           placeholder="Name your business"
           require={true}
@@ -158,7 +158,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="living_exp"
           id="living"
-          value={formData[formType].living_exp}
+          value={formData.applicant.living_exp}
           onchange={(e) => dispatchInput(e)}
           placeholder="Living expenses/month"
           require={true}
@@ -169,7 +169,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="rental_exp"
           id="rental"
-          value={formData[formType].rental_exp}
+          value={formData.applicant.rental_exp}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500 per month"
           require={true}
@@ -180,7 +180,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="education_exp"
           id="education"
-          value={formData[formType].education_exp}
+          value={formData.applicant.education_exp}
           onchange={(e) => dispatchInput(e)}
           placeholder="Education expenses/month"
           require={true}
@@ -191,7 +191,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="transportation"
           id="transport"
-          value={formData[formType].transportation}
+          value={formData.applicant.transportation}
           onchange={(e) => dispatchInput(e)}
           placeholder="Transport expenses/month"
           require={true}
@@ -202,7 +202,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="insurance"
           id="insurance"
-          value={formData[formType].insurance}
+          value={formData.applicant.insurance}
           onchange={(e) => dispatchInput(e)}
           placeholder="Insurance expenses/month"
           require={true}
@@ -213,7 +213,7 @@ export default function EmploymentInfoForm() {
           type="number"
           name="bills"
           id="bills"
-          value={formData[formType].bills}
+          value={formData.applicant.bills}
           onchange={(e) => dispatchInput(e)}
           placeholder="Billing expenses/month"
           require={true}

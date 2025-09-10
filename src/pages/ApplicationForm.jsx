@@ -15,17 +15,15 @@ import {
   handleChange,
   setDisable,
 } from "../services/redux/slices/formSlice";
-import { nextPage, setAlert } from "../services/redux/slices/uiSlice";
+import { setAlert } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = useLocation();
   const dispatch = useDispatch();
-  const { formType, formData, pageComplete, isChecked } = useSelector(
-    (state) => state.form
-  );
-  const { pageRoute } = useSelector((state) => state.ui);
+  const { formType, formData, pageComplete, isChecked, stepLevel } =
+    useSelector((state) => state.form);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicant, setApplicant] = useState({});
   const [address, setAddress] = useState({});
@@ -417,12 +415,18 @@ export default function ApplicationForm() {
       if (pageComplete) {
         const nextIndex = currentIndex + 1;
         if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
-      } else if (pageComplete !== null)
-        dispatch(
-          setAlert({ message: "Some fields are required!", type: "warn" })
-        );
+      }
     }
+
+    if (!pageComplete && pageComplete !== null)
+      dispatch(
+        setAlert({ message: "Some fields are required!", type: "warn" })
+      );
   }, [isChecked, pageComplete, pageType, navigate, dispatch]);
+
+  useEffect(() => {
+    navigate(routerPaths[stepLevel]);
+  }, [stepLevel, navigate, routerPaths]);
 
   function handleNext() {
     // if(checkEmpty(applicantArray[currentIndex])) {

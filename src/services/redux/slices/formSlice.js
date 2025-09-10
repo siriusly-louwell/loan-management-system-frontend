@@ -1,6 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { formRepository } from "../../repositories/formRepository";
 import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase";
+
+export const applyLoan = createAsyncThunk(
+  "unit/applyLoan",
+  async (unit, thunkAPI) => {
+    try {
+      return await applyUseCase(unit);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 const formSlice = createSlice({
   name: "form",
@@ -28,8 +39,6 @@ const formSlice = createSlice({
 
     getDraft: (state) => {
       state.formData = formRepository.getForm();
-
-      console.log(state.formData);
     },
 
     setColorIndex: (state, action) => {
@@ -168,7 +177,7 @@ const formSlice = createSlice({
           : !applicant.hasEmpty;
     },
 
-    gotoStep: (state, action) => {
+    goToStep: (state, action) => {
       state.stepLevel = action.payload;
     },
   },
@@ -188,5 +197,6 @@ export const {
   draftForm,
   getDraft,
   formCheck,
+  goToStep,
 } = formSlice.actions;
 export default formSlice.reducer;

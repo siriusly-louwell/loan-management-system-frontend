@@ -12,6 +12,7 @@ import {
   draftForm,
   formCheck,
   getDraft,
+  goToStep,
   handleChange,
   setDisable,
 } from "../services/redux/slices/formSlice";
@@ -414,7 +415,12 @@ export default function ApplicationForm() {
     if (pageType === "next") {
       if (pageComplete) {
         const nextIndex = currentIndex + 1;
+        console.log(routerPaths[nextIndex]);
         if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
+      }
+    } else if (pageType === "step") {
+      if (pageComplete) {
+        navigate(routerPaths[stepLevel]);
       }
     }
 
@@ -424,9 +430,10 @@ export default function ApplicationForm() {
       );
   }, [isChecked, pageComplete, pageType, navigate, dispatch]);
 
-  useEffect(() => {
-    navigate(routerPaths[stepLevel]);
-  }, [stepLevel, navigate, routerPaths]);
+  // useEffect(() => {
+  //   setPageType("step");
+  //   dispatch(formCheck(currentIndex));
+  // }, [stepLevel, routerPaths]);
 
   function handleNext() {
     // if(checkEmpty(applicantArray[currentIndex])) {
@@ -633,8 +640,11 @@ export default function ApplicationForm() {
   }, [formData, dispatch]);
 
   function stepNavCheck(index) {
-    checkEmpty(applicantArray[index - 1], index - 1, "step");
-    navigate(routerPaths[index], { state: { selected: state?.selected } });
+    setPageType("step");
+    dispatch(goToStep(index));
+    dispatch(formCheck(currentIndex));
+    // checkEmpty(applicantArray[index - 1], index - 1, "step");
+    // navigate(routerPaths[index], { state: { selected: state?.selected } });
   }
 
   const ids = state?.selected;
@@ -664,13 +674,12 @@ export default function ApplicationForm() {
         <Step
           label="1. Loan Setup"
           status={stepCheck(0)}
-          click={() =>
-            navigate(routerPaths[0], { state: { selected: state?.selected } })
-          }
+          click={() => navigate(routerPaths[0])}
         />
         <Step
           label="2. Personal Information"
           status={stepCheck(1)}
+          // click={() => dispatch(goToStep(1))}
           click={() => stepNavCheck(1)}
         />
         <Step
@@ -691,9 +700,7 @@ export default function ApplicationForm() {
         <Step
           label="6. Comaker Form"
           status={stepCheck(5)}
-          click={() =>
-            navigate(routerPaths[5], { state: { selected: state?.selected } })
-          }
+          click={() => stepNavCheck(5)}
         />
       </Stepper>
       <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">

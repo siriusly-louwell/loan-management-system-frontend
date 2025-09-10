@@ -1,4 +1,4 @@
-import ApplicationAPI from "../api/applicationAPI";
+import ApplicationAPI from "../api/ApplicationAPI";
 
 export const applyRepository = {
   //   async fetchAll() {

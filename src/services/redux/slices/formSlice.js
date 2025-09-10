@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { formRepository } from "../../repositories/formRepository";
 import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase";
+import { applyUseCase } from "../../usecases/application/applyUseCase";
 
 export const applyLoan = createAsyncThunk(
   "unit/applyLoan",

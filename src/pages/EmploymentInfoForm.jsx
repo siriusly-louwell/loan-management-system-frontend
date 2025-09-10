@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
@@ -8,12 +8,14 @@ import FormTHead from "../components/tables/FormTHead";
 import FormTH from "../components/tables/FormTH";
 import FormTBody from "../components/tables/FormTBody";
 import FormTD from "../components/tables/FormTD";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setType } from "../services/redux/slices/formSlice";
 
 export default function EmploymentInfoForm() {
   const { handleChange, dispatchInput, applicant, address, disable } =
     useOutletContext();
   const location = useLocation();
+  const dispatch = useDispatch();
   const { formData, formType } = useSelector((state) => state.form);
   const [properties, setProperty] = useState([""]);
   const [references, setReference] = useState([""]);
@@ -21,6 +23,10 @@ export default function EmploymentInfoForm() {
     location.pathname !== "/admin/apply/employinfo" &&
     location.pathname !== "/staff/apply/employinfo" &&
     location.pathname !== "/ci/apply/employinfo";
+
+  useEffect(() => {
+    dispatch(setType("applicant"));
+  }, []);
 
   return (
     <>

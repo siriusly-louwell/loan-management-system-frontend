@@ -27,6 +27,8 @@ const formSlice = createSlice({
 
     getDraft: (state) => {
       state.formData = formRepository.getForm();
+
+      console.log(state.formData);
     },
 
     setColorIndex: (state, action) => {
@@ -59,11 +61,6 @@ const formSlice = createSlice({
         ...state.formData[data.formType],
         [data.name]: data.value,
       };
-
-      // state.formData[state.formType] = {
-      //   ...state.formData[state.formType],
-      //   [data.name]: data.value,
-      // };
     },
 
     handleQuantity: (state, action) => {
@@ -103,7 +100,6 @@ const formSlice = createSlice({
       const props = ["personal", "parent", "spouse"];
 
       regions.forEach((region, i) => {
-
         state.selectDisable[props[i]] =
           region === undefined || region === "__EMPTY__" ? true : false;
       });

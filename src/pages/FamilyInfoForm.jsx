@@ -11,7 +11,11 @@ import FormTBody from "../components/tables/FormTBody";
 import FormTD from "../components/tables/FormTD";
 import copy_icon from "../assets/images/copy_icon.png";
 import { useDispatch, useSelector } from "react-redux";
-import { copyAddress, disableAddress } from "../services/redux/slices/formSlice";
+import {
+  copyAddress,
+  disableAddress,
+  setType,
+} from "../services/redux/slices/formSlice";
 
 export default function FamilyInfoForm() {
   const {
@@ -44,6 +48,10 @@ export default function FamilyInfoForm() {
   useEffect(() => {
     dispatch(disableAddress());
   }, [formData, dispatch]);
+
+  useEffect(() => {
+    dispatch(setType("applicant"));
+  }, []);
 
   return (
     <>

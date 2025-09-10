@@ -20,12 +20,12 @@ import { fetchUnit } from "../services/redux/slices/unitSlice";
 export default function TransactionForm() {
   const {
     dispatchInput,
-    ids,
-    handleTransaction,
-    transactForm,
-    handleTransForm,
-    setTransactForm,
-    selectColor,
+    // ids,
+    // handleTransaction,
+    // transactForm,
+    // handleTransForm,
+    // setTransactForm,
+    // selectColor,
   } = useOutletContext();
   const dispatch = useDispatch();
   const { formData, formType } = useSelector((state) => state.form);
@@ -45,6 +45,9 @@ export default function TransactionForm() {
 
   useEffect(() => {
     dispatch(fetchUnit());
+  }, []);
+
+  useEffect(() => {
     dispatch(setType("unit"));
     dispatch(
       initialForm({
@@ -54,7 +57,7 @@ export default function TransactionForm() {
         quantity: 1,
       })
     );
-  }, []);
+  }, [transLoad, dispatch]);
 
   useEffect(() => {
     setTimeout(() => {

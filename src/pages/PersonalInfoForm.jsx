@@ -21,14 +21,14 @@ import {
 
 export default function PersonalInfoForm() {
   const location = useLocation();
-  const { formData, selectDisable, disabled } = useSelector(
+  const { formData, selectDisable } = useSelector(
     (state) => state.form
   );
   const dispatch = useDispatch();
   const {
-    handleChange,
     dispatchInput,
-    addressChange,
+    // handleChange,
+    // addressChange,
     applicant,
     address,
     // copyAddress,

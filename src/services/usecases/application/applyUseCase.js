@@ -7,10 +7,10 @@ export async function applyUseCase(data) {
       type: "warn",
     };
 
-  const address = data.form.address;
+  const address = data.formData.address;
 
-  data.form.applicant = {
-    ...data.form.applicant,
+  const applicant = {
+    ...data.formData.applicant,
     personal_pres: `${address.lot_num}, ${address.purok} ${address.brgy},  ${address.city} ${address.province}, ${address.region}`,
     personal_prev: `${address.prev_lot_num}, ${address.prev_purok} ${address.prev_brgy},  ${address.prev_city} ${address.prev_province}, ${address.prev_region}`,
     parent_pres: `${address.p_lot_num}, ${address.p_purok} ${address.p_brgy},  ${address.p_city} ${address.p_province}, ${address.p_region}`,
@@ -19,7 +19,13 @@ export async function applyUseCase(data) {
     spouse_prev: `${address.sp_prev_lot_num}, ${address.sp_prev_purok} ${address.sp_prev_brgy},  ${address.sp_prev_city} ${address.sp_prev_province}, ${address.sp_prev_region}`,
   };
 
-  const response = await applyRepository.apply(data);
+  console.log("usecase: ", applicant, data.files, data.formData.unit);
+
+  const response = await applyRepository.apply({
+    applicant: applicant,
+    unit: data.formData.unit,
+    files: data.files,
+  });
 
   return response;
 }

@@ -40,7 +40,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Type first name here"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -49,7 +49,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Type middle name here"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -58,7 +58,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Type last name here"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -66,7 +66,7 @@ export default function ComakerInfo() {
           type="date"
           name="prod_name"
           id="name"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -75,10 +75,12 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Birth place address"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
-        <FormSelect name="gender" label="Sex" id="gender" require={true}>
+        <FormSelect name="gender" label="Sex" id="gender"
+        // require={true}
+        >
           <option>Male</option>
           <option>Female</option>
           <option>Prefer not to say</option>
@@ -87,7 +89,8 @@ export default function ComakerInfo() {
           name="status"
           label="Civil Status"
           id="status"
-          require={true}>
+          // require={true}
+          >
           <option>Single</option>
           <option>In a relationship</option>
           <option>Married</option>
@@ -122,7 +125,8 @@ export default function ComakerInfo() {
           id="country"
           value={comaker.country}
           onchange={comakeChange}
-          require={true}>
+          // require={true}
+          >
           <option>Nigeria</option>
           <option>Greece</option>
           <option>USA</option>
@@ -144,7 +148,8 @@ export default function ComakerInfo() {
           id="region"
           value={comaker.region}
           onchange={comakeChange}
-          require={true}>
+          // require={true}
+          >
           <option>Region I</option>
           <option>Region II</option>
           <option>Region III</option>
@@ -166,7 +171,8 @@ export default function ComakerInfo() {
           id="province"
           value={comaker.province}
           onchange={comakeChange}
-          require={true}>
+          // require={true}
+          >
           <option>Zamboanga del norte</option>
           <option>Zamboanga del sur</option>
           <option>Zamboanga sibugay</option>
@@ -185,7 +191,8 @@ export default function ComakerInfo() {
           id="city"
           value={comaker.city}
           onchange={comakeChange}
-          require={true}>
+          // require={true}
+          >
           <option>Davao City</option>
           <option>Panabo City</option>
           <option>Tagum City</option>
@@ -205,7 +212,8 @@ export default function ComakerInfo() {
           id="brgy"
           value={comaker.brgy}
           onchange={comakeChange}
-          require={true}>
+          // require={true}
+          >
           <option>A. O. Floriendo</option>
           <option>Buenavista</option>
           <option>Cacao</option>
@@ -266,7 +274,7 @@ export default function ComakerInfo() {
           value={comaker.perm_country}
           onchange={comakeChange}
           placeholder="Type country here"
-          require={true}
+          // require={true}
         />
         <FormInput
           label="Region"
@@ -276,7 +284,7 @@ export default function ComakerInfo() {
           value={comaker.perm_region}
           onchange={comakeChange}
           placeholder="Type region here"
-          require={true}
+          // require={true}
         />
         <FormInput
           label="Province"
@@ -286,7 +294,7 @@ export default function ComakerInfo() {
           value={comaker.perm_province}
           onchange={comakeChange}
           placeholder="Type province here"
-          require={true}
+          // require={true}
         />
         <FormInput
           label="City/Municipality"
@@ -296,7 +304,7 @@ export default function ComakerInfo() {
           value={comaker.perm_city}
           onchange={comakeChange}
           placeholder="Type city here"
-          require={true}
+          // require={true}
         />
         <FormInput
           label="Barangay"
@@ -306,7 +314,7 @@ export default function ComakerInfo() {
           value={comaker.perm_brgy}
           onchange={comakeChange}
           placeholder="Type barangay here"
-          require={true}
+          // require={true}
         />
       </div>
 
@@ -317,7 +325,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Type citizenhip"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -326,7 +334,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Type occupation here"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -335,7 +343,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Type last name here"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -343,7 +351,7 @@ export default function ComakerInfo() {
           type="date"
           name="prod_name"
           id="name"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -352,7 +360,7 @@ export default function ComakerInfo() {
           name="prod_name"
           id="name"
           placeholder="Phone number here"
-          require={true}
+          // require={true}
           onchange={() => {}}
         />
         <FormInput
@@ -555,7 +563,9 @@ export default function ComakerInfo() {
         Parent's Address:
       </h3>
       <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-        <FormSelect name="country" label="Country" id="country" require={true}>
+        <FormSelect name="country" label="Country" id="country"
+        // require={true}
+        >
           <option>Nigeria</option>
           <option>Greece</option>
           <option>USA</option>
@@ -571,7 +581,9 @@ export default function ComakerInfo() {
           <option>France</option>
           <option>Great Britain</option>
         </FormSelect>
-        <FormSelect name="region" label="Region" id="region" require={true}>
+        <FormSelect name="region" label="Region" id="region"
+        // require={true}
+        >
           <option>Region I</option>
           <option>Region II</option>
           <option>Region III</option>
@@ -591,7 +603,8 @@ export default function ComakerInfo() {
           name="province"
           label="Province"
           id="province"
-          require={true}>
+          // require={true}
+          >
           <option>Zamboanga del norte</option>
           <option>Zamboanga del sur</option>
           <option>Zamboanga sibugay</option>
@@ -608,7 +621,8 @@ export default function ComakerInfo() {
           name="city"
           label="Municipality/City"
           id="city"
-          require={true}>
+          // require={true}
+          >
           <option>Davao City</option>
           <option>Panabo City</option>
           <option>Tagum City</option>
@@ -622,7 +636,9 @@ export default function ComakerInfo() {
           <option>New Corilla</option>
           <option>Sto. Tomas</option>
         </FormSelect>
-        <FormSelect name="brgy" label="Barangay" id="brgy" require={true}>
+        <FormSelect name="brgy" label="Barangay" id="brgy"
+        // require={true}
+        >
           <option>A. O. Floriendo</option>
           <option>Buenavista</option>
           <option>Cacao</option>
@@ -708,10 +724,18 @@ export default function ComakerInfo() {
       </div>
 
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-        <FileInput label="Sketch Image" type="img" require={true} />
-        <FileInput label="Valid ID" type="img" require={true} />
-        <FileInput label="2x2 ID picture" type="img" require={true} />
-        <FileInput label="Proof of Residence" type="img" require={true} />
+        <FileInput label="Sketch Image" type="img"
+        // require={true}
+        />
+        <FileInput label="Valid ID" type="img"
+        // require={true}
+        />
+        <FileInput label="2x2 ID picture" type="img"
+        // require={true}
+        />
+        <FileInput label="Proof of Residence" type="img"
+        // require={true}
+        />
       </div>
     </>
   );

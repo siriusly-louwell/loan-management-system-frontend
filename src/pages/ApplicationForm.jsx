@@ -9,14 +9,16 @@ import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  applyLoan,
   draftForm,
   formCheck,
   getDraft,
   goToStep,
   handleChange,
+  resetInput,
   setDisable,
 } from "../services/redux/slices/formSlice";
-import { setAlert } from "../services/redux/slices/uiSlice";
+import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -31,9 +33,9 @@ export default function ApplicationForm() {
   const [transactForm, setTransactForm] = useState([]);
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
-  // const [alert, setAlert] = useState({});
+  const [modal, setModal] = useState({});
   const [incomplete, setIncomplete] = useState([]);
-  const submitData = new FormData();
+  // const submitData = new FormData();
   const routerPaths = useMemo(
     () => [
       "/customer/apply",
@@ -45,80 +47,80 @@ export default function ApplicationForm() {
     ],
     []
   );
-  const applicantArray = [
-    [["tenure"], []],
-    [
-      [
-        "home_description",
-        "comm_standing",
-        "rent",
-        "amortization",
-        "residence",
-        "educ_attain",
-        "birth_place",
-        "birth_day",
-        "status",
-        "contact_num",
-        "gender",
-        "last_name",
-        "first_name",
-      ],
-      [
-        "prev_lot_num",
-        "prev_purok",
-        "prev_brgy",
-        "prev_city",
-        "prev_province",
-        "prev_region",
-        "lot_num",
-        "purok",
-        "brgy",
-        "city",
-        "province",
-        "region",
-      ],
-    ],
-    [
-      [
-        "bills",
-        "insurance",
-        "transportation",
-        "education_exp",
-        "rental_exp",
-        "living_exp",
-        "business",
-        "salary",
-        "rate",
-        "income",
-      ],
-      [],
-    ],
-    [
-      [
-        "mother_last",
-        "mother_middle",
-        "mother_first",
-        "father_last",
-        "father_middle",
-        "father_first",
-      ],
-      [
-        "p_prev_lot_num",
-        "p_prev_purok",
-        "p_prev_brgy",
-        "p_prev_city",
-        "p_prev_province",
-        "p_prev_region",
-        "p_lot_num",
-        "p_purok",
-        "p_brgy",
-        "p_city",
-        "p_province",
-        "p_region",
-      ],
-    ],
-    [[], []],
-  ];
+  // const applicantArray = [
+  //   [["tenure"], []],
+  //   [
+  //     [
+  //       "home_description",
+  //       "comm_standing",
+  //       "rent",
+  //       "amortization",
+  //       "residence",
+  //       "educ_attain",
+  //       "birth_place",
+  //       "birth_day",
+  //       "status",
+  //       "contact_num",
+  //       "gender",
+  //       "last_name",
+  //       "first_name",
+  //     ],
+  //     [
+  //       "prev_lot_num",
+  //       "prev_purok",
+  //       "prev_brgy",
+  //       "prev_city",
+  //       "prev_province",
+  //       "prev_region",
+  //       "lot_num",
+  //       "purok",
+  //       "brgy",
+  //       "city",
+  //       "province",
+  //       "region",
+  //     ],
+  //   ],
+  //   [
+  //     [
+  //       "bills",
+  //       "insurance",
+  //       "transportation",
+  //       "education_exp",
+  //       "rental_exp",
+  //       "living_exp",
+  //       "business",
+  //       "salary",
+  //       "rate",
+  //       "income",
+  //     ],
+  //     [],
+  //   ],
+  //   [
+  //     [
+  //       "mother_last",
+  //       "mother_middle",
+  //       "mother_first",
+  //       "father_last",
+  //       "father_middle",
+  //       "father_first",
+  //     ],
+  //     [
+  //       "p_prev_lot_num",
+  //       "p_prev_purok",
+  //       "p_prev_brgy",
+  //       "p_prev_city",
+  //       "p_prev_province",
+  //       "p_prev_region",
+  //       "p_lot_num",
+  //       "p_purok",
+  //       "p_brgy",
+  //       "p_city",
+  //       "p_province",
+  //       "p_region",
+  //     ],
+  //   ],
+  //   [[], []],
+  // ];
   const locations = {
     I: {
       province: ["Ilocos Norte", "Ilocos Sur", "La Union", "Pangasinan"],
@@ -361,55 +363,55 @@ export default function ApplicationForm() {
   //   setTransactForm(len);
   // }, []);
 
-  function checkEmpty(array, i, type = "none") {
-    let bool = true;
+  // function checkEmpty(array, i, type = "none") {
+  //   let bool = true;
 
-    if ((currentIndex > 0 && type === "none") || (i > 0 && type === "step")) {
-      array[0].forEach((val) => {
-        if (!applicant.hasOwnProperty(val) || applicant[val] === "__EMPTY__") {
-          setApplicant({ ...applicant, [val]: "__EMPTY__" });
-          bool = false;
-        }
-      });
+  //   if ((currentIndex > 0 && type === "none") || (i > 0 && type === "step")) {
+  //     array[0].forEach((val) => {
+  //       if (!applicant.hasOwnProperty(val) || applicant[val] === "__EMPTY__") {
+  //         setApplicant({ ...applicant, [val]: "__EMPTY__" });
+  //         bool = false;
+  //       }
+  //     });
 
-      array[1].forEach((val) => {
-        if (!address.hasOwnProperty(val) || address[val] === "__EMPTY__") {
-          setAddress({ ...address, [val]: "__EMPTY__" });
-          bool = false;
-        }
-      });
-    } else {
-      array[0].forEach((val) => {
-        transactForm.map((_, i) => {
-          if (
-            !transactForm[i].hasOwnProperty(val) ||
-            transactForm[i][val] === "__EMPTY__"
-          ) {
-            const form = [...transactForm];
-            form[i] = {
-              ...transactForm[i],
-              [val]: "__EMPTY__",
-            };
+  //     array[1].forEach((val) => {
+  //       if (!address.hasOwnProperty(val) || address[val] === "__EMPTY__") {
+  //         setAddress({ ...address, [val]: "__EMPTY__" });
+  //         bool = false;
+  //       }
+  //     });
+  //   } else {
+  //     array[0].forEach((val) => {
+  //       transactForm.map((_, i) => {
+  //         if (
+  //           !transactForm[i].hasOwnProperty(val) ||
+  //           transactForm[i][val] === "__EMPTY__"
+  //         ) {
+  //           const form = [...transactForm];
+  //           form[i] = {
+  //             ...transactForm[i],
+  //             [val]: "__EMPTY__",
+  //           };
 
-            setTransactForm(form);
-            bool = false;
-          }
-        });
-      });
-    }
+  //           setTransactForm(form);
+  //           bool = false;
+  //         }
+  //       });
+  //     });
+  //   }
 
-    if (!bool) {
-      setAlert({ text: "Some fields are required!" });
-      document.getElementById("emptyInput").style.display = "block";
-    }
+  //   if (!bool) {
+  //     setAlert({ text: "Some fields are required!" });
+  //     document.getElementById("emptyInput").style.display = "block";
+  //   }
 
-    if (type === "step" && !bool) setIncomplete([...incomplete, i]);
-    else if (incomplete.includes(i) && bool) {
-      const inc = incomplete.filter((num) => num !== i);
+  //   if (type === "step" && !bool) setIncomplete([...incomplete, i]);
+  //   else if (incomplete.includes(i) && bool) {
+  //     const inc = incomplete.filter((num) => num !== i);
 
-      setIncomplete(inc);
-    } else return bool;
-  }
+  //     setIncomplete(inc);
+  //   } else return bool;
+  // }
 
   useEffect(() => {
     if (pageType === "next") {
@@ -466,67 +468,99 @@ export default function ApplicationForm() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    document.getElementById("saving_application").style.display = "flex";
+    dispatch(
+      setLoading({
+        isActive: true,
+        text: "Submitting application. Please wait...",
+      })
+    );
 
-    if (files.length === 0) {
-      setAlert({
-        text: "Please upload a file in the requirements section.",
-        icon: "warn",
-      });
-      document.getElementById("application_submit").style.display = "block";
-      document.getElementById("saving_application").style.display = "none";
-      return;
-    }
-
-    applicant.personal_pres = `${address.lot_num}, ${address.purok} ${address.brgy},  ${address.city} ${address.province}, ${address.region}`;
-    applicant.personal_prev = `${address.prev_lot_num}, ${address.prev_purok} ${address.prev_brgy},  ${address.prev_city} ${address.prev_province}, ${address.prev_region}`;
-    applicant.parent_pres = `${address.p_lot_num}, ${address.p_purok} ${address.p_brgy},  ${address.p_city} ${address.p_province}, ${address.p_region}`;
-    applicant.parent_prev = `${address.p_prev_lot_num}, ${address.p_prev_purok} ${address.p_prev_brgy},  ${address.p_prev_city} ${address.p_prev_province}, ${address.p_prev_region}`;
-    applicant.spouse_pres = `${address.sp_lot_num}, ${address.sp_purok} ${address.sp_brgy},  ${address.sp_city} ${address.sp_province}, ${address.sp_region}`;
-    applicant.spouse_prev = `${address.sp_prev_lot_num}, ${address.sp_prev_purok} ${address.sp_prev_brgy},  ${address.sp_prev_city} ${address.sp_prev_province}, ${address.sp_prev_region}`;
-
-    for (let key in applicant) {
-      submitData.append(`${key}`, applicant[key]);
-    }
-
-    transactForm.forEach((trans, index) => {
-      submitData.append(`transactions[${index}]`, JSON.stringify(trans));
-    });
-
-    Object.entries(files).forEach(([key, file]) => {
-      submitData.append(key, file);
-    });
+    console.log("reached");
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/application", {
-        method: "POST",
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     'Accept': 'application/json'
-        // },
-        body: submitData,
-        // body: JSON.stringify(applicant)
-      });
+      const response = await dispatch(applyLoan({ formData, files })).unwrap();
 
-      const result = await response.json();
-      if (!response.ok) throw new Error("Update failed");
-      setAlert({
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      dispatch(resetInput());
+      setFiles([]);
+      setModal({
         text: `Your application has been submitted!`,
         icon: "done",
-        id: result.record_id,
-        contact: result.contact,
+        id: response.record_id,
+        contact: response.contact,
       });
-      document.getElementById("saving_application").style.display = "none";
       document.getElementById("application_submit").style.display = "block";
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Failed to save data",
-        icon: "warn",
-      });
-      document.getElementById("application_submit").style.display = "block";
-      document.getElementById("saving_application").style.display = "none";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
+
+    // if (files.length === 0) {
+    //   setAlert({
+    //     text: "Please upload a file in the requirements section.",
+    //     icon: "warn",
+    //   });
+    //   document.getElementById("application_submit").style.display = "block";
+    //   document.getElementById("saving_application").style.display = "none";
+    //   return;
+    // }
+
+    // applicant.personal_pres = `${address.lot_num}, ${address.purok} ${address.brgy},  ${address.city} ${address.province}, ${address.region}`;
+    // applicant.personal_prev = `${address.prev_lot_num}, ${address.prev_purok} ${address.prev_brgy},  ${address.prev_city} ${address.prev_province}, ${address.prev_region}`;
+    // applicant.parent_pres = `${address.p_lot_num}, ${address.p_purok} ${address.p_brgy},  ${address.p_city} ${address.p_province}, ${address.p_region}`;
+    // applicant.parent_prev = `${address.p_prev_lot_num}, ${address.p_prev_purok} ${address.p_prev_brgy},  ${address.p_prev_city} ${address.p_prev_province}, ${address.p_prev_region}`;
+    // applicant.spouse_pres = `${address.sp_lot_num}, ${address.sp_purok} ${address.sp_brgy},  ${address.sp_city} ${address.sp_province}, ${address.sp_region}`;
+    // applicant.spouse_prev = `${address.sp_prev_lot_num}, ${address.sp_prev_purok} ${address.sp_prev_brgy},  ${address.sp_prev_city} ${address.sp_prev_province}, ${address.sp_prev_region}`;
+
+    // for (let key in applicant) {
+    //   submitData.append(`${key}`, applicant[key]);
+    // }
+
+    // transactForm.forEach((trans, index) => {
+    //   submitData.append(`transactions[${index}]`, JSON.stringify(trans));
+    // });
+
+    // Object.entries(files).forEach(([key, file]) => {
+    //   submitData.append(key, file);
+    // });
+
+    // try {
+    //   const response = await fetch("http://127.0.0.1:8000/api/application", {
+    //     method: "POST",
+    //     // headers: {
+    //     //     'Content-Type': 'application/json',
+    //     //     'Accept': 'application/json'
+    //     // },
+    //     body: submitData,
+    //     // body: JSON.stringify(applicant)
+    //   });
+
+    //   const result = await response.json();
+    //   if (!response.ok) throw new Error("Update failed");
+    //   setAlert({
+    //     text: `Your application has been submitted!`,
+    //     icon: "done",
+    //     id: result.record_id,
+    //     contact: result.contact,
+    //   });
+    //   document.getElementById("saving_application").style.display = "none";
+    //   document.getElementById("application_submit").style.display = "block";
+    // } catch (error) {
+    //   console.error("Error: ", error);
+    //   setAlert({
+    //     text: "Failed to save data",
+    //     icon: "warn",
+    //   });
+    //   document.getElementById("application_submit").style.display = "block";
+    //   document.getElementById("saving_application").style.display = "none";
+    // }
   }
 
   function fileChange(event) {
@@ -536,50 +570,50 @@ export default function ApplicationForm() {
     });
   }
 
-  function addressChange(event) {
-    setAddress({
-      ...address,
-      [event.target.name]: event.target.value,
-    });
-  }
+  // function addressChange(event) {
+  //   setAddress({
+  //     ...address,
+  //     [event.target.name]: event.target.value,
+  //   });
+  // }
 
-  function copyAddress(type) {
-    switch (type) {
-      case "personal":
-        setAddress({
-          ...address,
-          prev_region: address.region,
-          prev_province: address.province,
-          prev_city: address.city,
-          prev_brgy: address.brgy,
-          prev_purok: address.purok,
-          prev_lot_num: address.lot_num,
-        });
-        break;
-      case "parent":
-        setAddress({
-          ...address,
-          p_prev_region: address.p_region,
-          p_prev_province: address.p_province,
-          p_prev_city: address.p_city,
-          p_prev_brgy: address.p_brgy,
-          p_prev_purok: address.p_purok,
-          p_prev_lot_num: address.p_lot_num,
-        });
-        break;
-      case "spouse":
-        setAddress({
-          ...address,
-          sp_prev_region: address.sp_region,
-          sp_prev_province: address.sp_province,
-          sp_prev_city: address.sp_city,
-          sp_prev_brgy: address.sp_brgy,
-          sp_prev_purok: address.sp_purok,
-          sp_prev_lot_num: address.sp_lot_num,
-        });
-        break;
-    }
-  }
+  // function copyAddress(type) {
+  //   switch (type) {
+  //     case "personal":
+  //       setAddress({
+  //         ...address,
+  //         prev_region: address.region,
+  //         prev_province: address.province,
+  //         prev_city: address.city,
+  //         prev_brgy: address.brgy,
+  //         prev_purok: address.purok,
+  //         prev_lot_num: address.lot_num,
+  //       });
+  //       break;
+  //     case "parent":
+  //       setAddress({
+  //         ...address,
+  //         p_prev_region: address.p_region,
+  //         p_prev_province: address.p_province,
+  //         p_prev_city: address.p_city,
+  //         p_prev_brgy: address.p_brgy,
+  //         p_prev_purok: address.p_purok,
+  //         p_prev_lot_num: address.p_lot_num,
+  //       });
+  //       break;
+  //     case "spouse":
+  //       setAddress({
+  //         ...address,
+  //         sp_prev_region: address.sp_region,
+  //         sp_prev_province: address.sp_province,
+  //         sp_prev_city: address.sp_city,
+  //         sp_prev_brgy: address.sp_brgy,
+  //         sp_prev_purok: address.sp_purok,
+  //         sp_prev_lot_num: address.sp_lot_num,
+  //       });
+  //       break;
+  //   }
+  // }
 
   //   function handleChange(event) {
   //     setApplicant({
@@ -598,25 +632,25 @@ export default function ApplicationForm() {
     );
   }
 
-  function handleTransaction(i, event) {
-    const form = [...transactForm];
-    form[i] = {
-      ...transactForm[i],
-      [event.target.name]: event.target.value,
-    };
+  // function handleTransaction(i, event) {
+  //   const form = [...transactForm];
+  //   form[i] = {
+  //     ...transactForm[i],
+  //     [event.target.name]: event.target.value,
+  //   };
 
-    setTransactForm(form);
-  }
+  //   setTransactForm(form);
+  // }
 
-  function handleTransForm(i, num, key) {
-    const form = [...transactForm];
-    form[i] = {
-      ...transactForm[i],
-      [key]: num,
-    };
+  // function handleTransForm(i, num, key) {
+  //   const form = [...transactForm];
+  //   form[i] = {
+  //     ...transactForm[i],
+  //     [key]: num,
+  //   };
 
-    setTransactForm(form);
-  }
+  //   setTransactForm(form);
+  // }
 
   function stepCheck(index) {
     if (incomplete.includes(index)) return "incomplete";
@@ -634,6 +668,7 @@ export default function ApplicationForm() {
   }, []);
 
   useEffect(() => {
+    console.log(formData);
     setTimeout(() => {
       dispatch(draftForm());
     }, 3000);
@@ -651,16 +686,16 @@ export default function ApplicationForm() {
   const selectColor = state?.selectColor;
   const disable = false;
   const outletContext = {
+    // handleTransaction,
+    // handleTransForm,
+    // addressChange,
+    // copyAddress,
     handleChange,
     dispatchInput,
-    handleTransaction,
     transactForm,
-    handleTransForm,
     setTransactForm,
-    addressChange,
     applicant,
     address,
-    copyAddress,
     fileChange,
     ids,
     disable,
@@ -738,8 +773,8 @@ export default function ApplicationForm() {
               }
             />
           </Alert>
-          <Alert id="application_submit" text={alert.text} icon={alert.icon}>
-            {alert.icon === "warn" ? (
+          <Alert id="application_submit" text={modal.text} icon={modal.icon}>
+            {/* {modal.icon === "warn" ? (
               <Button
                 text="Ok"
                 type="button"
@@ -750,31 +785,30 @@ export default function ApplicationForm() {
               />
             ) : (
               <>
-                <h2 className="text-gray-600 dark:text-white">
-                  Your Record ID:{" "}
-                  <strong className="text-rose-500">{alert.id}</strong>
-                </h2>
-                <p className="text-rose-500 mb-2">
-                  Please save or take a photo of your record ID.
-                </p>
-                <p className="text-gray-600 dark:text-white mb-5">
-                  Your application is under review, we will notify you once it
-                  is done. A notification will be sent to you via SMS on{" "}
-                  <strong className="text-rose-500">{alert.contact}</strong>.
-                  Please check for more detailed information.
-                </p>
-                <Button
-                  text="Finish"
-                  type="button"
-                  onclick={() => {
-                    document.getElementById(
-                      "application_submit"
-                    ).style.display = "none";
-                    navigate("/");
-                  }}
-                />
               </>
-            )}
+            )} */}
+            <h2 className="text-gray-600 dark:text-white">
+              Your Record ID:{" "}
+              <strong className="text-rose-500">{modal.id}</strong>
+            </h2>
+            <p className="text-rose-500 mb-2">
+              Please save or take a photo of your record ID.
+            </p>
+            <p className="text-gray-600 dark:text-white mb-5">
+              Your application is under review, we will notify you once it is
+              done. A notification will be sent to you via SMS on{" "}
+              <strong className="text-rose-500">{modal.contact}</strong>. Please
+              check for more detailed information.
+            </p>
+            <Button
+              text="Finish"
+              type="button"
+              onclick={() => {
+                document.getElementById("application_submit").style.display =
+                  "none";
+                navigate("/");
+              }}
+            />
           </Alert>
         </div>
       </div>

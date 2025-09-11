@@ -106,7 +106,7 @@ export default function EmploymentInfoForm() {
               //   applicant.view
               //     ? address.employer_address
               //     : formData.applicant.employment_address
-              formData.applicant.employment_address
+              formData.applicant.employer_address
             }
             onchange={(e) => dispatchInput(e)}
             placeholder="Type employer address"

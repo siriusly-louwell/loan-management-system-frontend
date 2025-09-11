@@ -59,8 +59,6 @@ export default function CreateProduct() {
     }
   }
 
-  console.log(formData);
-
   function fileChange(event, i) {
     const updatedFiles = [...files];
     updatedFiles[i] = [...event.target.files];

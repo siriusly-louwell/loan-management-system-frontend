@@ -4,10 +4,10 @@ import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase"
 import { applyUseCase } from "../../usecases/application/applyUseCase";
 
 export const applyLoan = createAsyncThunk(
-  "unit/applyLoan",
-  async (unit, thunkAPI) => {
+  "form/applyLoan",
+  async (form, thunkAPI) => {
     try {
-      return await applyUseCase(unit);
+      return await applyUseCase(form);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -61,8 +61,14 @@ const formSlice = createSlice({
     },
 
     resetInput: (state) => {
-      state.formData[state.formType] = {};
+      state.formData = {
+        createUnit: {},
+        unit: {},
+        applicant: {},
+        address: {},
+      };
       state.colors = [];
+      formRepository.clearForm();
     },
 
     handleChange: (state, action) => {

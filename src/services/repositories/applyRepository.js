@@ -18,6 +18,8 @@ export const applyRepository = {
     const form = this.appendData(data);
     const response = await ApplicationAPI.apply(form);
 
+    console.log("repository: ", response);
+
     if (!response) {
       return {
         message: "Failed to submit application",
@@ -30,17 +32,19 @@ export const applyRepository = {
 
   appendData(data) {
     const submitData = new FormData();
-    const form = data.form.applicant;
+    const form = data.applicant;
 
     for (let key in form) {
       submitData.append(`${key}`, form[key]);
     }
 
-    submitData.append('transaction', JSON.stringify(data.form.unit));
+    submitData.append('transaction', JSON.stringify(data.unit));
 
     Object.entries(data.files).forEach(([key, file]) => {
       submitData.append(key, file);
     });
+
+    console.log("append called");
 
     return submitData;
   },

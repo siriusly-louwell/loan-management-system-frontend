@@ -98,6 +98,11 @@ const uiSlice = createSlice({
 
       state.toggled = Date.now();
     },
+
+    goToStep: (state, action) => {
+      state.pageRoute = FORM_ROUTES[action.payload];
+      state.pageNum = action.payload;
+    },
   },
 });
 
@@ -111,5 +116,6 @@ export const {
   inputCheck,
   nextPage,
   prevPage,
+  goToStep,
 } = uiSlice.actions;
 export default uiSlice.reducer;

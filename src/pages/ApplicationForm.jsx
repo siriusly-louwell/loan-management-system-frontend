@@ -13,7 +13,6 @@ import {
   draftForm,
   formCheck,
   getDraft,
-  goToStep,
   handleChange,
   resetInput,
   setDisable,
@@ -23,6 +22,7 @@ import {
   prevPage,
   setAlert,
   setLoading,
+  goToStep,
 } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
@@ -32,7 +32,7 @@ export default function ApplicationForm() {
   const dispatch = useDispatch();
   const { formType, formData, pageComplete, isChecked, stepLevel } =
     useSelector((state) => state.form);
-  const { toggled, pageRoute } = useSelector((state) => state.ui);
+  const { toggled, pageRoute, pageNum } = useSelector((state) => state.ui);
   const [applicant, setApplicant] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState({});
@@ -285,16 +285,9 @@ export default function ApplicationForm() {
   }, [location, routerPaths, currentIndex]);
 
   useEffect(() => {
-    if (pageComplete) {
-      if (pageType === "next") {
-        // const nextIndex = currentIndex + 1;
-        // if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
-        dispatch(nextPage());
-        // navigate(pageRoute);
-      } else if (pageType === "step") navigate(routerPaths[stepLevel]);
-    }
-
-    if (pageType === "prev") navigate(pageRoute);
+    if (pageType === "next" && pageComplete) dispatch(nextPage());
+    if (pageType === "prev" || (pageType === "step" && pageComplete))
+      navigate(pageRoute);
 
     if (!pageComplete && pageComplete !== null)
       dispatch(
@@ -304,18 +297,16 @@ export default function ApplicationForm() {
 
   useEffect(() => {
     if (pageType === "next") navigate(pageRoute);
-  }, [pageRoute])
+  }, [pageRoute]);
 
   function handleNext() {
     setPageType("next");
-    dispatch(formCheck(currentIndex));
+    dispatch(formCheck(pageNum));
   }
 
   function handlePrev() {
     setPageType("prev");
     dispatch(prevPage());
-    // const prevIndex = currentIndex - 1;
-    // if (prevIndex >= 0) navigate(routerPaths[prevIndex]);
   }
 
   async function handleSubmit(event) {

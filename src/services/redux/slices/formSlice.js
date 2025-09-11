@@ -184,9 +184,9 @@ const formSlice = createSlice({
           : !applicant.hasEmpty;
     },
 
-    goToStep: (state, action) => {
-      state.stepLevel = action.payload;
-    },
+    // goToStep: (state, action) => {
+    //   state.stepLevel = action.payload;
+    // },
   },
 });
 
@@ -204,6 +204,6 @@ export const {
   draftForm,
   getDraft,
   formCheck,
-  goToStep,
+  // goToStep,
 } = formSlice.actions;
 export default formSlice.reducer;

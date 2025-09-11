@@ -443,7 +443,7 @@ export default function FamilyInfoForm() {
               name="p_prev_region"
               id="region"
               value={formData.address.p_prev_region}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
               require={true}
               disable={disable}
@@ -716,7 +716,7 @@ export default function FamilyInfoForm() {
               name="sp_prev_brgy"
               id="brgy"
               value={formData.address.sp_prev_brgy}
-              onchange={addressChange}
+              onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"
               disable={disable}
             />

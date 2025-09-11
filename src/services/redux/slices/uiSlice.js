@@ -14,6 +14,7 @@ const initialState = {
   filter: null,
   pageNum: 0,
   pageRoute: null,
+  toggled: null,
 };
 
 const uiSlice = createSlice({
@@ -90,10 +91,12 @@ const uiSlice = createSlice({
     prevPage: (state) => {
       const nextIndex = state.pageNum - 1;
 
-      if (nextIndex > 0) {
+      if (nextIndex >= 0) {
         state.pageRoute = FORM_ROUTES[nextIndex];
         state.pageNum = nextIndex;
       }
+
+      state.toggled = Date.now();
     },
   },
 });
@@ -107,6 +110,6 @@ export const {
   setFilter,
   inputCheck,
   nextPage,
-  prevPage
+  prevPage,
 } = uiSlice.actions;
 export default uiSlice.reducer;

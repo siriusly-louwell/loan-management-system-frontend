@@ -18,7 +18,12 @@ import {
   resetInput,
   setDisable,
 } from "../services/redux/slices/formSlice";
-import { prevPage, setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import {
+  nextPage,
+  prevPage,
+  setAlert,
+  setLoading,
+} from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ export default function ApplicationForm() {
   const dispatch = useDispatch();
   const { formType, formData, pageComplete, isChecked, stepLevel } =
     useSelector((state) => state.form);
-  const { pageNum, pageRoute } = useSelector((state) => state.ui);
+  const { toggled, pageRoute } = useSelector((state) => state.ui);
   const [applicant, setApplicant] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState({});
@@ -282,8 +287,10 @@ export default function ApplicationForm() {
   useEffect(() => {
     if (pageComplete) {
       if (pageType === "next") {
-        const nextIndex = currentIndex + 1;
-        if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
+        // const nextIndex = currentIndex + 1;
+        // if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
+        dispatch(nextPage());
+        // navigate(pageRoute);
       } else if (pageType === "step") navigate(routerPaths[stepLevel]);
     }
 
@@ -293,7 +300,11 @@ export default function ApplicationForm() {
       dispatch(
         setAlert({ message: "Some fields are required!", type: "warn" })
       );
-  }, [isChecked, pageComplete, pageRoute, pageType, navigate, dispatch]);
+  }, [isChecked, toggled, pageComplete, pageType, dispatch]);
+
+  useEffect(() => {
+    if (pageType === "next") navigate(pageRoute);
+  }, [pageRoute])
 
   function handleNext() {
     setPageType("next");

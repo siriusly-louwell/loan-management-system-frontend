@@ -18,29 +18,16 @@ import {
 import { fetchUnit } from "../services/redux/slices/unitSlice";
 
 export default function TransactionForm() {
-  const {
-    dispatchInput,
-    // ids,
-    // handleTransaction,
-    // transactForm,
-    // handleTransForm,
-    // setTransactForm,
-    // selectColor,
-  } = useOutletContext();
+  const { dispatchInput } = useOutletContext();
   const dispatch = useDispatch();
   const { formData, formType } = useSelector((state) => state.form);
   const unit = useSelector(UnitEntity);
   const [transLoad, setTransLoad] = useState(true);
-  // const [transact, setTransact] = useState([]);
-  // const [colors, setColors] = useState("");
-  // const [downPayment, setDownPayment] = useState([]);
 
   function changeColor(newColor) {
     dispatch(
       handleChange({ name: "color", value: newColor, formType: formType })
     );
-
-    // handleTransForm(i, newColor, "color");
   }
 
   useEffect(() => {
@@ -65,66 +52,9 @@ export default function TransactionForm() {
     }, 1000);
   }, []);
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://127.0.0.1:8000/api/motorcycle/", {
-  //       params: { ids: ids },
-  //     })
-  //     .then((response) => {
-  //       setTransact(response.data);
-  //       setTransLoad(false);
-  //       setColors((prev) => {
-  //         const updated = [...prev];
-  //         updated[selectColor[0]] = selectColor[1];
-  //         return updated;
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching products:", error);
-  //       setTransLoad(true);
-  //     });
-  // }, [ids]);
-
-  // useEffect(() => {
-  //   const payments = transact.map((trans) => trans.downpayment);
-  //   setDownPayment(payments);
-  // }, [transact]);
-
-  // function handleDown(i, downpayment) {
-  //   setDownPayment((prev) => {
-  //     const updated = [...prev];
-  //     updated[i] = downpayment;
-  //     return updated;
-  //   });
-
-  //   handleTransForm(i, downpayment, "downpayment");
-  // }
-
-  // function dispatchInput(event) {
-  //   dispatch(
-  //     handleChange({ name: event.target.name, value: event.target.value })
-  //   );
-  // }
-
   function dispatchQuantity(value) {
     dispatch(handleChange({ name: "quantity", value: value }));
   }
-
-  // useEffect(() => {
-  //   const initializedForm = transact.map((t, i) => ({
-  //     motorcycle_id: t.id,
-  //     downpayment: t.downpayment,
-  //     quantity: 1,
-  //   }));
-
-  //   setTransactForm(initializedForm);
-  // }, [transact]);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     handleTransForm(selectColor[0], selectColor[1], "color");
-  //   }, 2000);
-  // }, [colors]);
 
   return (
     <>

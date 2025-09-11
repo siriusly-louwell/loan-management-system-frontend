@@ -19,8 +19,6 @@ export async function applyUseCase(data) {
     spouse_prev: `${address.sp_prev_lot_num}, ${address.sp_prev_purok} ${address.sp_prev_brgy},  ${address.sp_prev_city} ${address.sp_prev_province}, ${address.sp_prev_region}`,
   };
 
-  console.log("usecase: ", applicant, data.files, data.formData.unit);
-
   const response = await applyRepository.apply({
     applicant: applicant,
     unit: data.formData.unit,

@@ -19,25 +19,15 @@ import {
 
 export default function FamilyInfoForm() {
   const {
-    handleChange,
     dispatchInput,
     addressChange,
     applicant,
     address,
-    // copyAddress,
     disable,
     locations,
   } = useOutletContext();
   const dispatch = useDispatch();
   const { formData, selectDisable } = useSelector((state) => state.form);
-  const pDisBool =
-    address.p_region === undefined || address.p_region === "__EMPTY__"
-      ? true
-      : disable;
-  const spDisBool =
-    address.sp_region === undefined || address.sp_region === "__EMPTY__"
-      ? true
-      : disable;
   const [relatives, setRelative] = useState([""]);
   const location = useLocation();
   const urlBool =

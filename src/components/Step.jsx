@@ -8,30 +8,29 @@ export default function Step({ label, status, click }) {
   switch (status) {
     case "current":
       style =
-        "text-blue-700 bg-gray-100 border-blue-300 dark:border-blue-800 dark:text-blue-400 hover:bg-gray-200";
+        "text-blue-700 bg-gray-100 border-blue-300 dark:border-blue-800 dark:text-blue-400";
       break;
     case "done":
       style =
-        "text-green-700 bg-gray-100 border-green-300 dark:border-green-800 dark:text-green-400 hover:bg-gray-200";
+        "text-green-700 bg-gray-100 border-green-300 dark:border-green-800 dark:text-green-400";
       break;
     case "incomplete":
       style =
-        "text-red-700 bg-gray-100 border-red-300 dark:border-red-800 dark:text-red-400 hover:bg-gray-200";
+        "text-red-700 bg-gray-100 border-red-300 dark:border-red-800 dark:text-red-400";
       break;
     default:
       style =
-        "text-gray-900 bg-gray-100 border-gray-300 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200";
+        "text-gray-900 bg-gray-100 border-gray-300 dark:border-gray-700 dark:text-gray-400";
       break;
   }
-  // const style = status == 'current' ? "text-blue-700 bg-gray-100 border-blue-300 dark:border-blue-800 dark:text-blue-400 hover:bg-gray-200"
-  //     : (status == 'done' ? "text-green-700 bg-gray-100 border-green-300 dark:border-green-800 dark:text-green-400 hover:bg-gray-200"
-  //     : "text-gray-900 bg-gray-100 border-gray-300 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200");
 
-  const className = "w-full p-4 border rounded-lg dark:bg-gray-800 " + style;
+  const className =
+    "w-full p-4 border rounded-lg dark:bg-gray-800 hover:bg-gray-200  dark:hover:bg-gray-600 " +
+    style;
   const icon =
-    status == "current" ? (
+    status === "current" ? (
       <LeftArrow />
-    ) : status == "done" ? (
+    ) : status === "done" ? (
       <Check color="green" />
     ) : (
       ""

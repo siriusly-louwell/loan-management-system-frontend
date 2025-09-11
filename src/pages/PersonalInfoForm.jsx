@@ -27,19 +27,11 @@ export default function PersonalInfoForm() {
   const dispatch = useDispatch();
   const {
     dispatchInput,
-    // handleChange,
-    // addressChange,
     applicant,
     address,
-    // copyAddress,
     disable,
     locations,
   } = useOutletContext();
-  const disBool =
-    formData.address.region === undefined ||
-    formData.address.region === "__EMPTY__"
-      ? true
-      : disable;
   const urlBool =
     location.pathname !== "/admin/apply" &&
     location.pathname !== "/staff/apply" &&

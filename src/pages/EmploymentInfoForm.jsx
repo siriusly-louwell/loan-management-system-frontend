@@ -12,11 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setType } from "../services/redux/slices/formSlice";
 
 export default function EmploymentInfoForm() {
-  const { handleChange, dispatchInput, applicant, address, disable } =
+  const { dispatchInput, disable } =
     useOutletContext();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { formData, formType } = useSelector((state) => state.form);
+  const { formData } = useSelector((state) => state.form);
   const [properties, setProperty] = useState([""]);
   const [references, setReference] = useState([""]);
   const urlBool =

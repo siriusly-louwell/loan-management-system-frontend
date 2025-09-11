@@ -18,7 +18,7 @@ import {
   resetInput,
   setDisable,
 } from "../services/redux/slices/formSlice";
-import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import { prevPage, setAlert, setLoading } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ export default function ApplicationForm() {
   const dispatch = useDispatch();
   const { formType, formData, pageComplete, isChecked, stepLevel } =
     useSelector((state) => state.form);
+  const { pageNum, pageRoute } = useSelector((state) => state.ui);
   const [applicant, setApplicant] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState({});
@@ -279,22 +280,20 @@ export default function ApplicationForm() {
   }, [location, routerPaths, currentIndex]);
 
   useEffect(() => {
-    if (pageType === "next") {
-      if (pageComplete) {
+    if (pageComplete) {
+      if (pageType === "next") {
         const nextIndex = currentIndex + 1;
         if (nextIndex < routerPaths.length) navigate(routerPaths[nextIndex]);
-      }
-    } else if (pageType === "step") {
-      if (pageComplete) {
-        navigate(routerPaths[stepLevel]);
-      }
+      } else if (pageType === "step") navigate(routerPaths[stepLevel]);
     }
+
+    if (pageType === "prev") navigate(pageRoute);
 
     if (!pageComplete && pageComplete !== null)
       dispatch(
         setAlert({ message: "Some fields are required!", type: "warn" })
       );
-  }, [isChecked, pageComplete, pageType, navigate, dispatch]);
+  }, [isChecked, pageComplete, pageRoute, pageType, navigate, dispatch]);
 
   function handleNext() {
     setPageType("next");
@@ -303,8 +302,9 @@ export default function ApplicationForm() {
 
   function handlePrev() {
     setPageType("prev");
-    const prevIndex = currentIndex - 1;
-    if (prevIndex >= 0) navigate(routerPaths[prevIndex]);
+    dispatch(prevPage());
+    // const prevIndex = currentIndex - 1;
+    // if (prevIndex >= 0) navigate(routerPaths[prevIndex]);
   }
 
   async function handleSubmit(event) {
@@ -386,8 +386,6 @@ export default function ApplicationForm() {
     dispatch(formCheck(currentIndex));
   }
 
-  // const ids = state?.selected;
-  // const selectColor = state?.selectColor;
   const disable = false;
   const outletContext = {
     applicant,
@@ -396,8 +394,6 @@ export default function ApplicationForm() {
     fileChange,
     disable,
     locations,
-    // ids,
-    // selectColor,
   };
 
   return (
@@ -411,7 +407,6 @@ export default function ApplicationForm() {
         <Step
           label="2. Personal Information"
           status={stepCheck(1)}
-          // click={() => dispatch(goToStep(1))}
           click={() => stepNavCheck(1)}
         />
         <Step

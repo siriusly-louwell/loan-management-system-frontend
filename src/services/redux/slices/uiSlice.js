@@ -85,15 +85,13 @@ const uiSlice = createSlice({
         state.pageRoute = FORM_ROUTES[nextIndex];
         state.pageNum = nextIndex;
       }
-
-      console.log(state.pageRoute, state.pageNum);
     },
 
-    prevPage: (state, action) => {
+    prevPage: (state) => {
       const nextIndex = state.pageNum - 1;
 
       if (nextIndex > 0) {
-        state.pageRoute = FORM_ROUTES[action.payload];
+        state.pageRoute = FORM_ROUTES[nextIndex];
         state.pageNum = nextIndex;
       }
     },

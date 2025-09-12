@@ -23,6 +23,7 @@ import {
   setAlert,
   setLoading,
   goToStep,
+  setStep,
 } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
@@ -30,11 +31,14 @@ export default function ApplicationForm() {
   const location = useLocation();
   // const { state } = useLocation();
   const dispatch = useDispatch();
-  const { formType, formData, pageComplete, isChecked, stepLevel } =
-    useSelector((state) => state.form);
-  const { toggled, pageRoute, pageNum } = useSelector((state) => state.ui);
+  const { formType, formData, pageComplete, isChecked } = useSelector(
+    (state) => state.form
+  );
+  const { toggled, pageRoute, pageNum, stepIndex } = useSelector(
+    (state) => state.ui
+  );
   const [applicant, setApplicant] = useState({});
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
   const [modal, setModal] = useState({});
@@ -279,24 +283,18 @@ export default function ApplicationForm() {
   };
 
   useEffect(() => {
-    const index = routerPaths.indexOf(location.pathname);
-    if (index >= 0 && index !== currentIndex) setCurrentIndex(index);
-    window.scrollTo(0, 0);
-  }, [location, routerPaths, currentIndex]);
-
-  useEffect(() => {
     if (pageType === "next" && pageComplete) dispatch(nextPage());
-    if (pageType === "prev" || (pageType === "step" && pageComplete))
-      navigate(pageRoute);
+    if (pageType === "step" && pageComplete) dispatch(goToStep(stepIndex));
+    if (pageType === "prev") navigate(pageRoute);
 
     if (!pageComplete && pageComplete !== null)
       dispatch(
         setAlert({ message: "Some fields are required!", type: "warn" })
       );
-  }, [isChecked, toggled, pageComplete, pageType, dispatch]);
+  }, [isChecked, stepIndex, toggled, pageComplete, pageType, dispatch]);
 
   useEffect(() => {
-    if (pageType === "next") navigate(pageRoute);
+    if (pageType === "next" || pageType === "step") navigate(pageRoute);
   }, [pageRoute]);
 
   function handleNext() {
@@ -364,11 +362,7 @@ export default function ApplicationForm() {
   function stepCheck(index) {
     if (incomplete.includes(index)) return "incomplete";
     else
-      return currentIndex === index
-        ? "current"
-        : currentIndex > index
-        ? "done"
-        : "pend";
+      return pageNum === index ? "current" : pageNum > index ? "done" : "pend";
   }
 
   useEffect(() => {
@@ -384,8 +378,8 @@ export default function ApplicationForm() {
 
   function stepNavCheck(index) {
     setPageType("step");
-    dispatch(goToStep(index));
-    dispatch(formCheck(currentIndex));
+    dispatch(setStep(index));
+    dispatch(formCheck(pageNum));
   }
 
   const disable = false;
@@ -445,10 +439,10 @@ export default function ApplicationForm() {
             <Outlet context={outletContext} />
 
             <div className="space-y-4 sm:flex sm:w-1/3 sm:space-y-0 sm:space-x-4">
-              {currentIndex > 0 && (
+              {pageNum > 0 && (
                 <Button text="Back" bttnType="button" onclick={handlePrev} />
               )}
-              {currentIndex < routerPaths.length - 1 ? (
+              {pageNum < routerPaths.length - 1 ? (
                 <Button text="Next" bttnType="button" onclick={handleNext} />
               ) : (
                 <Button text="Done" bttnType="submit" />

@@ -13,6 +13,7 @@ const initialState = {
   carouselSlide: 0,
   filter: null,
   pageNum: 0,
+  stepIndex: null,
   pageRoute: null,
   toggled: null,
 };
@@ -99,6 +100,10 @@ const uiSlice = createSlice({
       state.toggled = Date.now();
     },
 
+    setStep: (state, action) => {
+      state.stepIndex = action.payload;
+    },
+
     goToStep: (state, action) => {
       state.pageRoute = FORM_ROUTES[action.payload];
       state.pageNum = action.payload;
@@ -117,5 +122,6 @@ export const {
   nextPage,
   prevPage,
   goToStep,
+  setStep,
 } = uiSlice.actions;
 export default uiSlice.reducer;

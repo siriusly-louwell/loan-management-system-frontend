@@ -31,7 +31,6 @@ const formSlice = createSlice({
     selectDisable: {},
     pageComplete: null,
     isChecked: null,
-    stepLevel: 0,
   },
   reducers: {
     draftForm: (state) => {
@@ -183,10 +182,6 @@ const formSlice = createSlice({
           ? !(applicant.hasEmpty || address.hasEmpty)
           : !applicant.hasEmpty;
     },
-
-    // goToStep: (state, action) => {
-    //   state.stepLevel = action.payload;
-    // },
   },
 });
 

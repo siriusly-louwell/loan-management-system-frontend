@@ -10,6 +10,7 @@ const initialState = {
   },
   loading: { isActive: false, text: "Fetching data..." },
   modals: {},
+  modal: {},
   carouselSlide: 0,
   filter: null,
   pageNum: 0,
@@ -46,6 +47,10 @@ const uiSlice = createSlice({
         ...state.modals,
         [action.payload.name]: !action.payload.value,
       };
+    },
+
+    setModal: (state, action) => {
+      state.modal = action.payload;
     },
 
     toggleSlide: (state, action) => {
@@ -116,6 +121,7 @@ export const {
   clearAlert,
   setLoading,
   toggleModal,
+  setModal,
   toggleSlide,
   setFilter,
   inputCheck,

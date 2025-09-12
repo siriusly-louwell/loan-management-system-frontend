@@ -24,8 +24,10 @@ import {
   setLoading,
   goToStep,
   setStep,
-  stepCheck,
+  toggleModal,
 } from "../services/redux/slices/uiSlice";
+import BasicModal from "../components/modals/BasicModal";
+import Check from "../assets/icons/Check";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ export default function ApplicationForm() {
   const { formType, formData, pageComplete, isChecked } = useSelector(
     (state) => state.form
   );
-  const { toggled, pageRoute, pageNum, stepIndex } = useSelector(
+  const { toggled, pageRoute, pageNum, stepIndex, modals } = useSelector(
     (state) => state.ui
   );
   const [applicant, setApplicant] = useState({});
@@ -317,7 +319,13 @@ export default function ApplicationForm() {
         id: response.record_id,
         contact: response.contact,
       });
-      document.getElementById("application_submit").style.display = "block";
+      dispatch(
+        toggleModal({
+          name: "application",
+          value: modals?.application,
+        })
+      );
+      // document.getElementById("application_submit").style.display = "block";
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -430,49 +438,43 @@ export default function ApplicationForm() {
               {pageNum > 0 && (
                 <Button text="Back" bttnType="button" onclick={handlePrev} />
               )}
-              {pageNum < 6 ? (
-                <Button text="Next" bttnType="button" onclick={handleNext} />
-              ) : (
+              {location.pathname === "/customer/apply/comakerform" ? (
                 <Button text="Done" bttnType="submit" />
+              ) : (
+                <Button text="Next" bttnType="button" onclick={handleNext} />
               )}
             </div>
           </form>
-          <Spinner
-            id="saving_application"
-            text="Submitting application. Please wait..."
-          />
-          <Alert id="emptyInput" text={alert.text} icon="warn">
-            <Button
-              text="Understood"
-              onclick={() =>
-                (document.getElementById("emptyInput").style.display = "none")
-              }
-            />
-          </Alert>
-          <Alert id="application_submit" text={modal.text} icon={modal.icon}>
-            <h2 className="text-gray-600 dark:text-white">
-              Your Record ID:{" "}
-              <strong className="text-rose-500">{modal.id}</strong>
-            </h2>
-            <p className="text-rose-500 mb-2">
-              Please save or take a photo of your record ID.
-            </p>
-            <p className="text-gray-600 dark:text-white mb-5">
-              Your application is under review, we will notify you once it is
-              done. A notification will be sent to you via SMS on{" "}
-              <strong className="text-rose-500">{modal.contact}</strong>. Please
-              check for more detailed information.
-            </p>
-            <Button
-              text="Finish"
-              type="button"
-              onclick={() => {
-                document.getElementById("application_submit").style.display =
-                  "none";
-                navigate("/");
-              }}
-            />
-          </Alert>
+          {modals.application ? (
+            <BasicModal
+              text={modal.text}
+              icon={
+                <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
+                  <Check color="green" size={7} />
+                </div>
+              }>
+              <h2 className="text-gray-600 dark:text-white">
+                Your Record ID:{" "}
+                <strong className="text-rose-500">{modal.id}</strong>
+              </h2>
+              <p className="text-rose-500 mb-2">
+                Please save or take a photo of your record ID.
+              </p>
+              <p className="text-gray-600 dark:text-white mb-5">
+                Your application is under review, we will notify you once it is
+                done. A notification will be sent to you via SMS on{" "}
+                <strong className="text-rose-500">{modal.contact}</strong>.
+                Please check for more detailed information.
+              </p>
+              <Button
+                text="Finish"
+                type="button"
+                onclick={() => navigate("/")}
+              />
+            </BasicModal>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

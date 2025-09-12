@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import FileInput from "../components/inputs/FileInput";
+import LeafletMap from "../components/maps/LeafletMap";
 
 export default function FormRequirements() {
   const { fileChange, applicant } = useOutletContext();
@@ -23,6 +24,7 @@ export default function FormRequirements() {
               <img
                 src={`http://127.0.0.1:8000/storage/${applicant.valid_id}`}
                 className="rounded rounded-lg w-20"
+                alt="valid id"
               />
             </div>
             <div>
@@ -32,6 +34,7 @@ export default function FormRequirements() {
               <img
                 src={`http://127.0.0.1:8000/storage/${applicant.id_pic}`}
                 className="rounded rounded-lg w-20"
+                alt="id pic"
               />
             </div>
             <div>
@@ -41,6 +44,7 @@ export default function FormRequirements() {
               <img
                 src={`http://127.0.0.1:8000/storage/${applicant.residence_proof}`}
                 className="rounded rounded-lg w-20"
+                alt="residence"
               />
             </div>
             <div>
@@ -50,6 +54,7 @@ export default function FormRequirements() {
               <img
                 src={`http://127.0.0.1:8000/storage/${applicant.income_proof}`}
                 className="rounded rounded-lg w-20"
+                alt="income"
               />
             </div>
           </>
@@ -92,6 +97,14 @@ export default function FormRequirements() {
             />
           </>
         )}
+
+        <div className="grid col-span-2 grid-cols-1">
+          <label className="text-md font-medium text-gray-900 dark:text-white">
+            Address Location
+            <strong className="text-rose-500"> *</strong>
+          </label>
+          <LeafletMap />
+        </div>
       </div>
     </>
   );

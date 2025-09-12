@@ -24,12 +24,12 @@ import {
   setLoading,
   goToStep,
   setStep,
+  stepCheck,
 } from "../services/redux/slices/uiSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  // const { state } = useLocation();
   const dispatch = useDispatch();
   const { formType, formData, pageComplete, isChecked } = useSelector(
     (state) => state.form
@@ -38,22 +38,10 @@ export default function ApplicationForm() {
     (state) => state.ui
   );
   const [applicant, setApplicant] = useState({});
-  // const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
   const [modal, setModal] = useState({});
   const [incomplete, setIncomplete] = useState([]);
-  const routerPaths = useMemo(
-    () => [
-      "/customer/apply",
-      "/customer/apply/personalinfo",
-      "/customer/apply/employinfo",
-      "/customer/apply/familyinfo",
-      "/customer/apply/requirements",
-      "/customer/apply/comakerform",
-    ],
-    []
-  );
   const locations = {
     I: {
       province: ["Ilocos Norte", "Ilocos Sur", "La Union", "Pangasinan"],
@@ -398,7 +386,7 @@ export default function ApplicationForm() {
         <Step
           label="1. Loan Setup"
           status={stepCheck(0)}
-          click={() => navigate(routerPaths[0])}
+          click={() => stepNavCheck(0)}
         />
         <Step
           label="2. Personal Information"
@@ -442,7 +430,7 @@ export default function ApplicationForm() {
               {pageNum > 0 && (
                 <Button text="Back" bttnType="button" onclick={handlePrev} />
               )}
-              {pageNum < routerPaths.length - 1 ? (
+              {pageNum < 6 ? (
                 <Button text="Next" bttnType="button" onclick={handleNext} />
               ) : (
                 <Button text="Done" bttnType="submit" />

@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Zoom control container */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border-radius: 0.75rem; /* rounded-lg */
+  overflow: hidden;
+}
+
+/* Zoom in/out buttons */
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background-color: #f43f5e !important; /* Tailwind blue-600 */
+  color: white !important;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: #1d4ed8 !important; /* Tailwind blue-700 */
+}

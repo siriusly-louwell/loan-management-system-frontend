@@ -39,7 +39,6 @@ export default function ProductList() {
         <UnderlineTabs />
         <Outlet />
       </div>
-      {/* <FilterPanel /> */}
     </section>
   );
 }

@@ -12,8 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setType } from "../services/redux/slices/formSlice";
 
 export default function EmploymentInfoForm() {
-  const { dispatchInput, disable } =
-    useOutletContext();
+  const { dispatchInput, disable } = useOutletContext();
   const location = useLocation();
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
@@ -263,7 +262,7 @@ export default function EmploymentInfoForm() {
             ))}
           </FormTBody>
         </table>
-        {urlBool ? (
+        {urlBool && (
           <div className="grid pt-4 sm:cols-span-1">
             <BttnwithIcon
               type="button"
@@ -272,8 +271,6 @@ export default function EmploymentInfoForm() {
               <Plus />
             </BttnwithIcon>
           </div>
-        ) : (
-          ""
         )}
       </div>
 
@@ -308,7 +305,7 @@ export default function EmploymentInfoForm() {
             ))}
           </FormTBody>
         </table>
-        {urlBool ? (
+        {urlBool && (
           <div className="grid pt-4 sm:cols-span-1">
             <BttnwithIcon
               text="Add row"
@@ -317,8 +314,6 @@ export default function EmploymentInfoForm() {
               <Plus />
             </BttnwithIcon>
           </div>
-        ) : (
-          ""
         )}
       </div>
     </>

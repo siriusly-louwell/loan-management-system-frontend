@@ -51,7 +51,7 @@ export default function CreateProduct() {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
       dispatch(
-      setAlert({
+        setAlert({
           message: "Something went wrong. Please try again",
           type: "error",
         })
@@ -71,7 +71,7 @@ export default function CreateProduct() {
       handleChange({
         name: event.target.name,
         value: event.target.value,
-        formType: "createUnit"
+        formType: "createUnit",
       })
     );
   }
@@ -207,7 +207,7 @@ export default function CreateProduct() {
                       Images & Colors
                     </span>
                     {rows.map((_, i) => (
-                      <>
+                      <section key={i}>
                         <div className="flex justify-center items-center w-full">
                           <label
                             htmlFor={`dropzone_${i}`}
@@ -238,7 +238,7 @@ export default function CreateProduct() {
                               id={`dropzone_${i}`}
                               name={`file_${i}`}
                               type="file"
-                              class="hidden"
+                              className="hidden"
                               onChange={(e) => fileChange(e, i)}
                               multiple
                             />
@@ -249,18 +249,22 @@ export default function CreateProduct() {
                             <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
                               Color:
                             </p>
-                            {colors.length > 0 && colors[i] ? (
+                            {colors.length > 0 && colors[i] && (
                               <ColorLabel style={colors[i]} />
-                            ) : (
-                              ""
                             )}
                             <CustomBttn
                               text="Select Color"
                               onclick={() => {
                                 dispatch(setColorIndex(i));
-                                document.getElementById(
-                                  "colorModal"
-                                ).style.display = "flex";
+                                dispatch(
+                                  toggleModal({
+                                    name: "colorModal",
+                                    value: modals?.colorModal,
+                                  })
+                                );
+                                // document.getElementById(
+                                //   "colorModal"
+                                // ).style.display = "flex";
                               }}
                               classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
                             />
@@ -272,7 +276,7 @@ export default function CreateProduct() {
                             type="create-unit"
                           />
                         </div>
-                      </>
+                      </section>
                     ))}
                     <BttnwithIcon
                       type="button"
@@ -582,7 +586,7 @@ export default function CreateProduct() {
                   </div>
                 </section>
               </form>
-              <ColorModal colors={colors} />
+              {modals?.colorModal && <ColorModal colors={colors} />}
             </div>
           </div>
         </motion.div>

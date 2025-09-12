@@ -21,17 +21,10 @@ import {
 
 export default function PersonalInfoForm() {
   const location = useLocation();
-  const { formData, selectDisable } = useSelector(
-    (state) => state.form
-  );
+  const { formData, selectDisable } = useSelector((state) => state.form);
   const dispatch = useDispatch();
-  const {
-    dispatchInput,
-    applicant,
-    address,
-    disable,
-    locations,
-  } = useOutletContext();
+  const { dispatchInput, applicant, address, disable, locations } =
+    useOutletContext();
   const urlBool =
     location.pathname !== "/admin/apply" &&
     location.pathname !== "/staff/apply" &&
@@ -51,9 +44,7 @@ export default function PersonalInfoForm() {
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Buyer's Personal Infomation:
       </h3>
-      {urlBool ? (
-        ""
-      ) : (
+      {!urlBool && (
         <img
           src={`http://127.0.0.1:8000/storage/${applicant.id_pic}`}
           className="rounded rounded-lg w-20"
@@ -419,7 +410,7 @@ export default function PersonalInfoForm() {
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Previous Address:
       </h3>
-      {!disable ? (
+      {!disable && (
         <FormCheck
           label="Copy Present Address"
           type="checkbox"
@@ -429,8 +420,6 @@ export default function PersonalInfoForm() {
           change={() => dispatch(copyAddress("personal"))}
           icon={copy_icon}
         />
-      ) : (
-        ""
       )}
       <div
         className={
@@ -549,14 +538,12 @@ export default function PersonalInfoForm() {
             </tr>
           </FormTBody>
         </table>
-        {urlBool ? (
+        {urlBool && (
           <div className="grid pt-4 sm:cols-span-1">
             <BttnwithIcon text="Add row">
               <Plus />
             </BttnwithIcon>
           </div>
-        ) : (
-          ""
         )}
       </div>
     </>

@@ -14,6 +14,7 @@ export class Unit {
     tenure,
     downpayment,
     colors,
+    created_at,
   }) {
     this.id = id;
     this.name = name;
@@ -27,10 +28,23 @@ export class Unit {
     this.tenure = tenure;
     this.downpayment = downpayment;
     this.colors = colors;
+    this.created_at = created_at;
   }
 
   isBrand(filter) {
     return this.brand === filter && filter !== null;
+  }
+
+  isNew() {
+    const date = new Date(this.created_at);
+    const now = new Date();
+    const start = new Date();
+
+    now.setHours(23, 59, 59, 999);
+    start.setDate(now.getDate() - 2);
+    start.setHours(0, 0, 0, 0);
+
+    return date >= start && date <= now;
   }
 }
 

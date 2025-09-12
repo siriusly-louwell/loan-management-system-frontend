@@ -136,13 +136,11 @@ export default function UnitsAll() {
           })
         )}
       </ProductGrid>
-      {motors.length === 0 && !unitsLoading ? (
+      {motors.length === 0 && !unitsLoading && (
         <EmptySearch
           label="No results found"
           context="Try changing the filter or go to a different category"
         />
-      ) : (
-        ""
       )}
       <div className="w-full text-center">
         <BasicButton text="Show more" />

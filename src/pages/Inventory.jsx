@@ -6,6 +6,7 @@ import EditProduct from "./EditProduct";
 import StockModal from "../components/modals/StockModal";
 import { useDispatch, useSelector } from "react-redux";
 import { initialForm, setType } from "../services/redux/slices/formSlice";
+import { fetchUnits } from "../services/redux/slices/unitSlice";
 
 export default function Inventory() {
   const dispatch = useDispatch();
@@ -22,17 +23,21 @@ export default function Inventory() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/motorcycle")
-      .then((response) => response.json())
-      .then((data) => {
-        setMotor(data);
-        setLoad(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setLoad(true);
-      });
+    dispatch(fetchUnits());
   }, []);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8000/api/motorcycle")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setMotor(data);
+  //       setLoad(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data: ", error);
+  //       setLoad(true);
+  //     });
+  // }, []);
 
   async function editMotor(id) {
     const response = await fetch("http://localhost:8000/api/motorcycle/" + id);

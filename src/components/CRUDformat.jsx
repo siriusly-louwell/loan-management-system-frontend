@@ -45,24 +45,24 @@ export default function CRUDformat({
 
   return (
     <>
-      <section class="bg-gray-200 dark:bg-gray-800 w-full py-3 sm:p-5 antialiased">
-        <div class="mx-auto px-4 lg:px-4">
-          <div class="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-              <div class="flex-1 flex items-center space-x-2">
+      <section className="bg-gray-200 dark:bg-gray-800 w-full py-3 sm:p-5 antialiased">
+        <div className="mx-auto px-4 lg:px-4">
+          <div className="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+              <div className="flex-1 flex items-center space-x-2">
                 <h5>
-                  <span class="text-gray-500">All {label}s:</span>
-                  <span class="dark:text-white">123456</span>
+                  <span className="text-gray-500">All {label}s:</span>
+                  <span className="dark:text-white">123456</span>
                 </h5>
-                <h5 class="text-gray-500 dark:text-gray-400 ml-1">
+                <h5 className="text-gray-500 dark:text-gray-400 ml-1">
                   1-100 (436)
                 </h5>
               </div>
             </div>
-            <div class="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
-              <div class="w-full md:w-1/2">
-                <form class="flex items-center">
-                  <label for="simple-search" class="sr-only">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
+              <div className="w-full md:w-1/2">
+                <form className="flex items-center">
+                  <label htmlFor="simple-search" className="sr-only">
                     Search
                   </label>
                   <SearchInput
@@ -73,12 +73,12 @@ export default function CRUDformat({
                   </SearchInput>
                 </form>
               </div>
-              <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+              <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                 {location.pathname !== "/admin/accounts/applicants" &&
                 location.pathname !== "/admin/accounts/customers" &&
                 location.pathname !== "/admin/accounts" ? (
                   <CustomBttn
-                    text={"Add " + label}
+                    text={`Add ${label}`}
                     classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                     onclick={() => {
                       dispatch(
@@ -93,21 +93,20 @@ export default function CRUDformat({
                 ) : (
                   ""
                 )}
-                <DropdownBttn text={"Filter " + label + "s"}>
-                  <Filter />
-                </DropdownBttn>
-                <div class="flex items-center space-x-3 w-full md:w-auto">
-                  <DropdownBttn text="Actions" toggleMenu={toggleDropdown} />
+                <DropdownBttn text={`Filter ${label}s`} icon={<Filter />} />
+                <div className="flex items-center space-x-3 w-full md:w-auto">
+                  <DropdownBttn text="Actions" toggleMenu={toggleDropdown}>
+                    <DropdownMenu
+                      ref={dropdownRef}
+                      classStyle={isOpen ? "block" : "hidden"}>
+                      <MenuLink pathName="Mass Edit" />
+                      <MenuLink pathName="Delete All" />
+                    </DropdownMenu>
+                  </DropdownBttn>
                 </div>
               </div>
             </div>
-            <DropdownMenu
-              ref={dropdownRef}
-              classStyle={isOpen ? "block" : "hidden"}>
-              <MenuLink pathName="Mass Edit" />
-              <MenuLink pathName="Delete All" />
-            </DropdownMenu>
-            <div class="overflow-x-auto min-h-40">{children}</div>
+            <div className="overflow-x-auto min-h-40">{children}</div>
             <PageNav />
           </div>
         </div>

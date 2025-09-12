@@ -170,14 +170,12 @@ export default function FamilyInfoForm() {
             onchange={() => {}}
           />
         </div>
-        {urlBool ? (
+        {urlBool && (
           <div className="grid pt-4 sm:cols-span-3">
             <BttnwithIcon text="Add row">
               <Plus />
             </BttnwithIcon>
           </div>
-        ) : (
-          ""
         )}
       </div>
 
@@ -410,7 +408,7 @@ export default function FamilyInfoForm() {
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Parent's Previous Address:
       </h3>
-      {!disable ? (
+      {!disable && (
         <FormCheck
           label="Copy Present Address"
           type="checkbox"
@@ -420,8 +418,6 @@ export default function FamilyInfoForm() {
           disable={disable}
           icon={copy_icon}
         />
-      ) : (
-        ""
       )}
       <div
         className={
@@ -653,7 +649,7 @@ export default function FamilyInfoForm() {
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Spouse's Previous Address:
       </h3>
-      {!disable ? (
+      {!disable && (
         <FormCheck
           label="Copy Present Address"
           type="checkbox"
@@ -663,8 +659,6 @@ export default function FamilyInfoForm() {
           disable={disable}
           icon={copy_icon}
         />
-      ) : (
-        ""
       )}
       <div
         className={
@@ -769,7 +763,7 @@ export default function FamilyInfoForm() {
             ))}
           </FormTBody>
         </table>
-        {urlBool ? (
+        {urlBool && (
           <div className="grid pt-4 sm:cols-span-1">
             <BttnwithIcon
               text="Add row"
@@ -778,8 +772,6 @@ export default function FamilyInfoForm() {
               <Plus />
             </BttnwithIcon>
           </div>
-        ) : (
-          ""
         )}
 
         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
@@ -804,14 +796,12 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTBody>
           </table>
-          {urlBool ? (
+          {urlBool && (
             <div className="grid pt-4 sm:cols-span-1">
               <BttnwithIcon text="Add row">
                 <Plus />
               </BttnwithIcon>
             </div>
-          ) : (
-            ""
           )}
         </div>
 
@@ -837,14 +827,12 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTBody>
           </table>
-          {urlBool ? (
+          {urlBool && (
             <div className="grid pt-4 sm:cols-span-1">
               <BttnwithIcon text="Add row">
                 <Plus />
               </BttnwithIcon>
             </div>
-          ) : (
-            ""
           )}
         </div>
       </div>

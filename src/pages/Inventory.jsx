@@ -4,40 +4,22 @@ import InventoryTable from "../components/tables/InventoryTable";
 import CRUDformat from "../components/CRUDformat";
 import EditProduct from "./EditProduct";
 import StockModal from "../components/modals/StockModal";
-import { useDispatch, useSelector } from "react-redux";
-import { initialForm, setType } from "../services/redux/slices/formSlice";
+import { useDispatch } from "react-redux";
+import { initialForm } from "../services/redux/slices/formSlice";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 
 export default function Inventory() {
   const dispatch = useDispatch();
-  const { formData } = useSelector((state) => state.form);
-  const [motorcycles, setMotor] = useState([]);
   const [row, setRow] = useState({});
   const [stock, setStock] = useState({ type: "", modal: false });
-  const [localLoad, setLoad] = useState(true);
 
   useEffect(() => {
-    // dispatch(setType("createUnit"));
-
     dispatch(initialForm({ quantity: [1] }));
   }, []);
 
   useEffect(() => {
     dispatch(fetchUnits());
   }, []);
-
-  // useEffect(() => {
-  //   fetch("http://localhost:8000/api/motorcycle")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setMotor(data);
-  //       setLoad(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data: ", error);
-  //       setLoad(true);
-  //     });
-  // }, []);
 
   async function editMotor(id) {
     const response = await fetch("http://localhost:8000/api/motorcycle/" + id);
@@ -79,26 +61,18 @@ export default function Inventory() {
       adjustStock={adjustStock}
       modal={stock.modal}>
       <InventoryTable
-        motorcycles={motorcycles}
-        loading={localLoad}
         // loading={loading}
         adjustStock={adjustStock}
         editMotor={editMotor}
         stock={stock}
         setStock={setStock}
       />
-      {row.bool ? (
+      {row.bool && (
         <EditProduct
           motor={Object.keys(row.motor).length > 0 ? row.motor : {}}
         />
-      ) : (
-        ""
       )}
-      {stock.type !== "" ? (
-        <StockModal setStock={setStock} stock={stock} />
-      ) : (
-        ""
-      )}
+      {stock.type !== "" && <StockModal setStock={setStock} stock={stock} />}
     </CRUDformat>
   );
 }

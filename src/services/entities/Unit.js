@@ -31,6 +31,10 @@ export class Unit {
     this.created_at = created_at;
   }
 
+  imgURL() {
+    return `${process.env.REACT_APP_API_URL}/storage/${this.file_path}`;
+  }
+
   isBrand(filter) {
     return this.brand === filter && filter !== null;
   }

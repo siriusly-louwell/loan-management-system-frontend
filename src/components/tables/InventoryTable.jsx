@@ -18,8 +18,6 @@ import { useSelector } from "react-redux";
 import { UnitEntities } from "../../services/entities/Unit";
 
 export default function InventoryTable({
-  motorcycles,
-  loading,
   editMotor,
   setStock,
   stock,
@@ -28,18 +26,6 @@ export default function InventoryTable({
   const motors = useSelector(UnitEntities);
   const { unitsLoading } = useSelector((state) => state.unit);
   if (!unitsLoading) motors.sort((a, b) => b.id - a.id);
-
-  function isThisWeek(created_at) {
-    const date = new Date(created_at);
-    const now = new Date();
-    const start = new Date();
-
-    now.setHours(23, 59, 59, 999);
-    start.setDate(now.getDate() - 2);
-    start.setHours(0, 0, 0, 0);
-
-    return date >= start && date <= now;
-  }
 
   return (
     <>
@@ -67,8 +53,8 @@ export default function InventoryTable({
                 data={[
                   <div className="flex items-center mr-3 space-x-2">
                     <img
-                      src={"http://127.0.0.1:8000/storage/" + motor.file_path}
-                      alt="unit image"
+                      src={motor.imgURL()}
+                      alt="unit"
                       className="h-8 w-auto mr-3 rounded-lg"
                     />
                     {motor.name}
@@ -120,7 +106,7 @@ export default function InventoryTable({
           <SmallSpin size={50} />
         </div>
       )}
-      {motors.length === 0 && !loading && <EmptyFolder />}
+      {motors.length === 0 && !unitsLoading && <EmptyFolder />}
     </>
   );
 }

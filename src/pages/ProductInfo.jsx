@@ -15,6 +15,7 @@ import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "../services/entities/UnitSpecs";
 import { toggleSlide } from "../services/redux/slices/uiSlice";
 import BasicCarousel from "../components/cards/BasicCarousel";
+import { SPECS } from "../constants/motorSpecs";
 
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
@@ -225,56 +226,23 @@ export default function ProductInfo({ staff = false }) {
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:gap-5 col-span-2 mb-5 lg:grid-cols-5 grid-cols-2 md:grid-cols-3">
-                <PfpLabel caption="Engine" label={specs.engine} />
-                <PfpLabel
-                  caption="Compression Ratio"
-                  label={specs.compression}
-                />
-                <PfpLabel
-                  caption="Displacement (cc)"
-                  label={specs.displacement}
-                />
-                <PfpLabel caption="Horsepower (hp)" label={specs.horsepower} />
-                <PfpLabel caption="Torque (Nm)" label={specs.torque} />
-                <PfpLabel caption="Fuel System" label={specs.fuel} />
-                <PfpLabel caption="Final Drive" label={specs.drive} />
-                <PfpLabel caption="Transmission" label={specs.transmission} />
-                <PfpLabel caption="Cooling System" label={specs.cooling} />
-                <PfpLabel
-                  caption="Front Suspension"
-                  label={specs.front_suspension}
-                />
-                <PfpLabel
-                  caption="Rear Suspension"
-                  label={specs.rear_suspension}
-                />
-                <PfpLabel caption="Frame Type" label={specs.frame} />
-                <PfpLabel
-                  caption="Front/Rear Travel (mm/in)"
-                  label={specs.travel}
-                />
-                <PfpLabel caption="Swingarm Type" label={specs.swingarm} />
-                <PfpLabel caption="Dry Weight" label={specs.dry_weight} />
-                <PfpLabel caption="Wet Weight" label={specs.wet_weight} />
-                <PfpLabel caption="Seat Height (mm/in)" label={specs.seat} />
-                <PfpLabel caption="Wheelbase" label={specs.wheelbase} />
-                <PfpLabel
-                  caption="Fuel Tank Capacity"
-                  label={specs.fuel_tank}
-                />
-                <PfpLabel caption="Ground Clearance" label={specs.clearance} />
-                <PfpLabel caption="Tire Size" label={specs.tires} />
-                <PfpLabel caption="Wheel Type" label={specs.wheel} />
-                <PfpLabel caption="Brakes" label={specs.brakes} />
-                <PfpLabel caption="ABS" label={specs.abs} />
-                <PfpLabel caption="Traction Control" label={specs.traction} />
-                <PfpLabel caption="TFT Display" label={specs.tft} />
-                <PfpLabel caption="Lighting" label={specs.lighting} />
-                <PfpLabel caption="Riding Modes" label={specs.ride_mode} />
-                <PfpLabel caption="Quickshifter" label={specs.quickshifter} />
-                <PfpLabel caption="Cruise Control" label={specs.cruise} />
-              </div>
+              <section className="max-w-5xl col-span-2 mx-auto px-4 py-8">
+                <h2 className="text-2xl dark:text-white font-bold mb-6">Specifications</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-y-4 gap-x-7">
+                  {Object.entries(specs)
+                    .filter(([key]) => key !== "images" && key !== "id")
+                    .map(([key, value]) => (
+                      <div
+                        key={key}
+                        className="rounded-xl border border-gray-700 bg-gray-900 p-4 shadow-sm hover:shadow-md transition">
+                        <p className="text-sm text-gray-400">{SPECS[key]}</p>
+                        <p className="text-lg font-semibold text-gray-100">
+                          {value || "—"}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              </section>
             </>
           }
         </div>
@@ -289,46 +257,6 @@ export default function ProductInfo({ staff = false }) {
         staff={staff}
         load={unitLoading}
       />
-      {/* <div
-        id="add_units"
-        className="overflow-y-auto overflow-x-hidden hidden fixed bg-gray-400 dark:bg-gray-700 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
-        <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
-          <div className="relative p-4 bg-gray-100 h-fit rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
-            <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Select units
-              </h3>
-              <CloseBttn id="add_units" cancel={[]} trigger={setSelected} />
-            </div>
-            <ProductGrid addunit={true}>
-              {addLoad ? (
-                <div>Loading...</div>
-              ) : (
-                addUnit.map((motor) => {
-                  return id !== motor.id ? (
-                    <ProductCard
-                      key={motor.id}
-                      id={motor.id}
-                      unit={motor}
-                      selected={selected}
-                      selectUnits={selectUnits}
-                    />
-                  ) : (
-                    ""
-                  );
-                })
-              )}
-            </ProductGrid>
-            <Button
-              text="Done"
-              onclick={() =>
-                (document.getElementById("add_units").style.display = "none")
-              }
-            />
-            <Spinner id="product_spin" />
-          </div>
-        </div>
-      </div> */}
     </section>
   );
 }

@@ -23,6 +23,14 @@ const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
+    resetState: (state) => {
+      state.pageNum = 0;
+      state.stepIndex = null;
+      state.pageRoute = null;
+      state.modals = {};
+      state.modal = {};
+    },
+
     setAlert: (state, action) => {
       state.alert = {
         toggle: true,
@@ -117,6 +125,7 @@ const uiSlice = createSlice({
 });
 
 export const {
+  resetState,
   setAlert,
   clearAlert,
   setLoading,

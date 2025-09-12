@@ -1,12 +1,9 @@
 import React from "react";
-import axios from "axios";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/buttons/Button";
 import Stepper from "../components/Stepper";
 import Step from "../components/Step";
-import Alert from "../components/Alert";
-import Spinner from "../components/loading components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import {
   applyLoan,
@@ -25,9 +22,11 @@ import {
   goToStep,
   setStep,
   toggleModal,
+  resetState,
 } from "../services/redux/slices/uiSlice";
 import BasicModal from "../components/modals/BasicModal";
 import Check from "../assets/icons/Check";
+import SaveButton from "../components/buttons/SaveButton";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -281,6 +280,8 @@ export default function ApplicationForm() {
       dispatch(
         setAlert({ message: "Some fields are required!", type: "warn" })
       );
+
+    window.scrollTo(0, 0);
   }, [isChecked, stepIndex, toggled, pageComplete, pageType, dispatch]);
 
   useEffect(() => {
@@ -312,6 +313,7 @@ export default function ApplicationForm() {
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(resetInput());
+      dispatch(resetState());
       setFiles([]);
       setModal({
         text: `Your application has been submitted!`,
@@ -325,7 +327,6 @@ export default function ApplicationForm() {
           value: modals?.application,
         })
       );
-      // document.getElementById("application_submit").style.display = "block";
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -424,12 +425,13 @@ export default function ApplicationForm() {
       </Stepper>
       <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">
         <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
-          <div className="flex justify-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+          <div className="flex justify-between pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
               {location.pathname === "/customer/apply/comakerform"
                 ? "COMAKER FORM"
                 : "APPLICATION FORM"}
             </h3>
+            <SaveButton trigger={() => dispatch(draftForm())} />
           </div>
           <form onSubmit={handleSubmit}>
             <Outlet context={outletContext} />

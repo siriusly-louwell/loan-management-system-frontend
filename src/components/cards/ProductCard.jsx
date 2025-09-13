@@ -22,7 +22,7 @@ export default function ProductCard({ unit }) {
         <div className="h-56 w-full rounded-lg">
           <img
             className="mx-auto rounded-lg object-contain h-full"
-            src={"http://127.0.0.1:8000/storage/" + unit.file_path}
+            src={unit.imgURL()}
             alt="Unit"
           />
         </div>

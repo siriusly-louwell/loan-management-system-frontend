@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import ProductRow from "./ProductRow";
 import TableHead from "./TableHead";
 import CustomBttn from "../buttons/CustomBttn";
 import Table from "./Table";
 import ColorLabel from "../ColorLabel";
 import Edit from "../../assets/icons/Edit";
-import Eye from "../../assets/icons/Eye";
-import Trash from "../../assets/icons/Trash";
-import Cart from "../../assets/icons/Cart";
-import Ex from "../../assets/icons/Ex";
 import CustomBadge from "../badges/CustomBadge";
 import EmptyFolder from "../empty states/EmptyFolder";
 import SmallSpin from "../loading components/SmallSpin";

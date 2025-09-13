@@ -24,24 +24,9 @@ export default function CRUDformat({
   modal,
   adjustStock,
 }) {
-  const { modals, filter } = useSelector((state) => state.ui);
+  const { modals } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <>
@@ -76,7 +61,7 @@ export default function CRUDformat({
               <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                 {location.pathname !== "/admin/accounts/applicants" &&
                 location.pathname !== "/admin/accounts/customers" &&
-                location.pathname !== "/admin/accounts" ? (
+                location.pathname !== "/admin/accounts" && (
                   <CustomBttn
                     text={`Add ${label}`}
                     classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
@@ -90,20 +75,22 @@ export default function CRUDformat({
                     }}>
                     <Plus />
                   </CustomBttn>
-                ) : (
-                  ""
                 )}
                 <DropdownBttn text={`Filter ${label}s`} icon={<Filter />} />
-                <div className="flex items-center space-x-3 w-full md:w-auto">
-                  <DropdownBttn text="Actions" toggleMenu={toggleDropdown}>
-                    <DropdownMenu
-                      ref={dropdownRef}
-                      classStyle={isOpen ? "block" : "hidden"}>
-                      <MenuLink pathName="Mass Edit" />
-                      <MenuLink pathName="Delete All" />
-                    </DropdownMenu>
-                  </DropdownBttn>
-                </div>
+                <DropdownBttn
+                  text="Actions"
+                  toggleMenu={() =>
+                    dispatch(
+                      toggleModal({ name: "actions", value: modals?.actions })
+                    )
+                  }>
+                  <DropdownMenu
+                    classStyle={modals.actions ? "block" : "hidden"}>
+                    <MenuLink pathName="Mass Edit" />
+                    <MenuLink pathName="Delete All" />
+                  </DropdownMenu>
+                </DropdownBttn>
+                <div className="flex items-center space-x-3 w-full md:w-auto"></div>
               </div>
             </div>
             <div className="overflow-x-auto min-h-40">{children}</div>
@@ -111,9 +98,9 @@ export default function CRUDformat({
           </div>
         </div>
       </section>
-      {modals.createUnit ? addModal : ""}
+      {modals.createUnit && addModal}
       {/* {addModal} */}
-      {modal ? (
+      {modal && (
         <Alert id="stock_adjust" text="Stock Adjustment Type:" icon="warn">
           <CustomBttn
             text="Restock"
@@ -126,8 +113,6 @@ export default function CRUDformat({
             classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
           />
         </Alert>
-      ) : (
-        ""
       )}
     </>
   );

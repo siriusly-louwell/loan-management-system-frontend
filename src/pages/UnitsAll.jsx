@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import ProductCard from "../components/cards/ProductCard";
 import ProductGrid from "../components/cards/ProductGrid";
 import BasicButton from "../components/buttons/BasicBttn";

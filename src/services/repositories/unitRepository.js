@@ -54,6 +54,6 @@ export const unitRepository = {
   },
 
   clearId() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("unit-id");
   },
 };

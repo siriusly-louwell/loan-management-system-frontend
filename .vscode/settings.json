@@ -17,12 +17,12 @@
     ],
 
     "indentRainbow.colors": [
-  "rgba(72, 61, 139, 0.12)",   // dark slate blue tint
-  "rgba(65, 105, 225, 0.12)",  // royal blue tint
-  "rgba(123, 104, 238, 0.12)", // medium slate blue tint
-  "rgba(138, 43, 226, 0.12)",  // blue violet tint
-  "rgba(0, 206, 209, 0.12)",   // dark turquoise tint
-  "rgba(199, 21, 133, 0.12)"   // medium violet-red tint
-],
-"indentRainbow.errorColor": "rgba(255, 99, 71, 0.25)"
+      "rgba(138, 43, 226, 0.14)",   // Blue Violet (bridge between both themes)
+      "rgba(0, 191, 255, 0.14)",    // Deep Sky Blue (Tokyo Night cyan, Synthwave neon)
+      "rgba(255, 105, 180, 0.14)",  // Hot Pink (Synthwave, but muted for Tokyo Night)
+      "rgba(123, 104, 238, 0.14)",  // Medium Slate Blue (Tokyo Night base tone)
+      "rgba(0, 255, 170, 0.14)",    // Neon Green-Cyan (Synthwave glow, still cool)
+      "rgba(255, 215, 0, 0.14)"     // Gold (Synthwave highlight, low opacity so it works in Tokyo Night)
+    ],
+    "indentRainbow.errorColor": "rgba(255, 69, 0, 0.28)" // OrangeRed for bad indents
 }

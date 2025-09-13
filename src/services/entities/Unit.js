@@ -32,7 +32,7 @@ export class Unit {
   }
 
   imgURL() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.file_path}`;
+    return `http://127.0.0.1:8000/storage/${this.file_path}`;
   }
 
   isBrand(filter) {

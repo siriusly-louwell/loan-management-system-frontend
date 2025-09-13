@@ -51,6 +51,10 @@ const UnitSlice = createSlice({
     storeID: (state, action) => {
       unitRepository.saveId(action.payload);
     },
+
+    clearID: (state) => {
+      unitRepository.clearId();
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -101,5 +105,5 @@ const UnitSlice = createSlice({
   },
 });
 
-export const { storeID, getID } = UnitSlice.actions;
+export const { storeID, getID, clearID } = UnitSlice.actions;
 export default UnitSlice.reducer;

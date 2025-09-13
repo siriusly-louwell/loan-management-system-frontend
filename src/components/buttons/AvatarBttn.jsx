@@ -1,12 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { UserEntity } from "../../services/entities/User";
+// import { useSelector } from "react-redux";
+// import { UserEntity } from "../../services/entities/User";
 
-export default function AvatarBttn({ dropMenu }) {
-  const user = useSelector(UserEntity);
-  const API_URL = process.env.REACT_APP_API_URL;
-  const src = user?.pfp
-    ? `${API_URL}/storage/${user?.pfp}`
+export default function AvatarBttn({ dropMenu, pfp }) {
+  // const user = useSelector(UserEntity);
+  // const API_URL = process.env.REACT_APP_API_URL;
+  const src = pfp
+    ? pfp
     : "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png";
 
   return (

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CloseBttn from "../buttons/CloseBttn";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
 
-export default function BasicModal({ text, children, icon }) {
+export default function Dialog({ text, children, icon }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
 

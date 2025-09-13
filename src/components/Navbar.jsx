@@ -7,9 +7,11 @@ import AvatarBttn from "./buttons/AvatarBttn";
 import MenuLink from "./links/MenuLink";
 import Button from "./buttons/Button";
 import RMCI from "../assets/images/RMCI.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
 import { clearAuth, logout } from "../services/redux/slices/authSlice";
+import { clearID } from "../services/redux/slices/unitSlice";
+import { UserEntity } from "../services/entities/User";
 
 export default function Navbar({ links, path }) {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ export default function Navbar({ links, path }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
+  const user = useSelector(UserEntity);
   const apply = [
     "/customer/apply",
     "/customer/apply/personalinfo",
@@ -40,6 +43,7 @@ export default function Navbar({ links, path }) {
           type: "success",
         })
       );
+      dispatch(clearID());
       dispatch(setLoading({ isActive: false }));
     }, 2000);
 
@@ -77,28 +81,32 @@ export default function Navbar({ links, path }) {
             </span>
           </a>
           <div className="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">
-            {location.pathname == "/" ||
-            location.pathname == "/about" ||
-            location.pathname == "/find" ||
-            location.pathname == "/application" ||
-            location.pathname == "/unit" ||
-            location.pathname == "/services" ||
-            location.pathname == "/prodlist" ? (
+            {location.pathname === "/" ||
+            location.pathname === "/about" ||
+            location.pathname === "/find" ||
+            location.pathname === "/application" ||
+            location.pathname === "/unit" ||
+            location.pathname === "/services" ||
+            location.pathname === "/prodlist" ? (
               <Button text="Login" onclick={() => navigate("/login")} />
             ) : (
               <div>
-                <AvatarBttn dropMenu={toggleDropdown} />
+                <AvatarBttn dropMenu={toggleDropdown} pfp={false} />
                 <DropdownMenu
                   ref={dropdownRef}
                   classStyle={isOpen ? "block" : "hidden"}>
-                  <div className="px-4 py-3">
-                    <span className="block text-sm text-gray-900 dark:text-white">
-                      Bonnie Green
-                    </span>
-                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                      name@flowbite.com
-                    </span>
-                  </div>
+                  {user && (
+                    <div className="px-4 py-3">
+                      <span className="block text-sm text-gray-900 dark:text-white">
+                        Bonnie Green 
+                        {/* {user?.fullName()} */}
+                      </span>
+                      <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                        name@flowbite.com
+                        {/* {user?.email} */}
+                      </span>
+                    </div>
+                  )}
                   <MenuLink pathName="Profile" path={path + "/profile"} />
                   <MenuLink pathName="Settings" path="" />
                   <MenuLink pathName="Log out" click={toggleLogout} />

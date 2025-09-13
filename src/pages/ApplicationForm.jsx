@@ -24,7 +24,7 @@ import {
   toggleModal,
   resetState,
 } from "../services/redux/slices/uiSlice";
-import BasicModal from "../components/modals/BasicModal";
+import Dialog from "../components/modals/Dialog";
 import Check from "../assets/icons/Check";
 import SaveButton from "../components/buttons/SaveButton";
 
@@ -448,7 +448,7 @@ export default function ApplicationForm() {
             </div>
           </form>
           {modals.application ? (
-            <BasicModal
+            <Dialog
               text={modal.text}
               icon={
                 <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
@@ -473,7 +473,7 @@ export default function ApplicationForm() {
                 type="button"
                 onclick={() => navigate("/")}
               />
-            </BasicModal>
+            </Dialog>
           ) : (
             ""
           )}

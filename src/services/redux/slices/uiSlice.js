@@ -8,7 +8,7 @@ const initialState = {
     message: "",
     duration: 0.4,
   },
-  loading: { isActive: false, text: "Fetching data..." },
+  loading: { isActive: false },
   modals: {},
   modal: {},
   carouselSlide: 0,

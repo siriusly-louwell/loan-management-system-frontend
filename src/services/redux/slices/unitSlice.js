@@ -27,9 +27,9 @@ export const fetchUnits = createAsyncThunk(
 
 export const fetchUnit = createAsyncThunk(
   "unit/fetchUnit",
-  async (unit, thunkAPI) => {
+  async (unitID, thunkAPI) => {
     try {
-      const id = unitRepository.getId();
+      const id = unitID ? unitID : unitRepository.getId();
       return await UnitAPI.fetchUnit(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -54,10 +54,11 @@ const UnitSlice = createSlice({
 
     clearID: (state) => {
       unitRepository.clearId();
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
+      // ? Create a unit
       .addCase(addUnit.pending, (state) => {
         state.unitLoading = true;
         state.error = null;
@@ -94,8 +95,8 @@ const UnitSlice = createSlice({
         state.unitLoading = false;
         state.unit = action.payload;
 
-        state.unit.images.map((file, i) => {
-          state.images[i] = `http://127.0.0.1:8000/storage/${file.path}`;
+        state.unit.images.forEach((file, i) => {
+          state.images[i] = UnitAPI.imgPath(file.path);
         });
       })
       .addCase(fetchUnit.rejected, (state, action) => {

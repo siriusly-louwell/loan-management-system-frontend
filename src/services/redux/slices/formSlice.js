@@ -199,6 +199,5 @@ export const {
   draftForm,
   getDraft,
   formCheck,
-  // goToStep,
 } = formSlice.actions;
 export default formSlice.reducer;

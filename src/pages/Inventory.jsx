@@ -4,13 +4,14 @@ import InventoryTable from "../components/tables/InventoryTable";
 import CRUDformat from "../components/CRUDformat";
 import EditProduct from "./EditProduct";
 import StockModal from "../components/modals/StockModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { initialForm } from "../services/redux/slices/formSlice";
-import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { fetchUnit, fetchUnits } from "../services/redux/slices/unitSlice";
+import { setLoading, toggleModal } from "../services/redux/slices/uiSlice";
 
 export default function Inventory() {
   const dispatch = useDispatch();
-  const [row, setRow] = useState({});
+  const { modals } = useSelector((state) => state.ui);
   const [stock, setStock] = useState({ type: "", modal: false });
 
   useEffect(() => {
@@ -22,15 +23,10 @@ export default function Inventory() {
   }, []);
 
   async function editMotor(id) {
-    const response = await fetch("http://localhost:8000/api/motorcycle/" + id);
-
-    if (!response.ok) {
-      throw new Error("Motorcycle not found");
-    }
-
-    const data = await response.json();
-    setRow({ motor: data, bool: true });
-    // document.getElementById('editProduct').style.display = 'block';
+    dispatch(setLoading({ text: "Fetching data...", isActive: true }));
+    await dispatch(fetchUnit(id));
+    dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
+    dispatch(setLoading({ isActive: false }));
   }
 
   async function adjustStock(type, id) {
@@ -67,11 +63,7 @@ export default function Inventory() {
         stock={stock}
         setStock={setStock}
       />
-      {row.bool && (
-        <EditProduct
-          motor={Object.keys(row.motor).length > 0 ? row.motor : {}}
-        />
-      )}
+      {modals?.editUnit && <EditProduct />}
       {stock.type !== "" && <StockModal setStock={setStock} stock={stock} />}
     </CRUDformat>
   );

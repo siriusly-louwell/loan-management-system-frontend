@@ -5,7 +5,7 @@ export default function GlobalLoading() {
 
   return (
     loading.isActive && (
-      <div className="fixed z-50 flex left-0 right-0 md:inset-0 h-full w-full flex justify-center items-center bg-gray-100 bg-opacity-50 dark:bg-gray-700 dark:bg-opacity-50">
+      <div className="fixed z-50 flex left-0 right-0 md:inset-0 h-full w-full flex justify-center items-center bg-gray-100 bg-opacity-50 dark:bg-gray-800 dark:bg-opacity-50">
         <div className="grid gap-3">
           <div className="flex items-center justify-center">
             <svg

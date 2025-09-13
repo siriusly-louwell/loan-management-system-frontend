@@ -18,6 +18,10 @@ const UnitAPI = {
     return response.data;
   },
 
+  imgPath(image) {
+    return `${API_URL}/storage/${image}`;
+  },
+
 };
 
 export default UnitAPI;

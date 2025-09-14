@@ -6,7 +6,6 @@ import Button from "../components/buttons/Button";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Cloud from "../assets/icons/Cloud";
 import Spinner from "../components/loading components/Spinner";
-import SelectColor from "../components/checkboxes/SelectColor";
 import ColorLabel from "../components/ColorLabel";
 import Alert from "../components/Alert";
 import CustomBttn from "../components/buttons/CustomBttn";
@@ -20,15 +19,21 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "./../services/entities/UnitSpecs";
 import FileInput from "../components/inputs/FileInput";
-import { setColors, setColorIndex } from "../services/redux/slices/formSlice";
+import {
+  setColors,
+  setColorIndex,
+  handleChange,
+  initialForm,
+  setType,
+} from "../services/redux/slices/formSlice";
 
-export default function EditProduct({ motor }) {
+export default function EditProduct() {
   const dispatch = useDispatch();
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
   const { unitLoading } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
-  const { colors } = useSelector((state) => state.form);
+  const { colors, formData } = useSelector((state) => state.form);
   const [formEdit, setFormEdit] = useState({});
   const [editColor, setEditColor] = useState([]);
   const [alert, setAlert] = useState({});
@@ -47,11 +52,16 @@ export default function EditProduct({ motor }) {
     //   setFormEdit(motor);
     // }
     const colorArr = unit.colors.map((i) => i.color);
+    const { colors, ...unitRest } = unit;
+    const { images, ...specRest } = specs;
+    
     dispatch(setColors(colorArr));
+    dispatch(setType("editUnit"));
+    dispatch(initialForm({ ...unitRest, ...specRest }));
   }, []);
 
   useEffect(() => {
-    if (Object.keys(specs).length > 0 && files.length === 0) {
+    if (Object.keys(specs).length > 0) {
       const images = specs.images.map((img, i) => ({
         id: img.id,
         url: specs.imgURL(i),
@@ -61,7 +71,7 @@ export default function EditProduct({ motor }) {
 
       setFiles(images);
     }
-  }, [specs, specs.images]);
+  }, [specs?.images?.length]);
 
   function changeEditColor(newColor) {
     // const updatedColors = editColor.includes(newColor)
@@ -127,23 +137,34 @@ export default function EditProduct({ motor }) {
   }
 
   function fileChange(event, i) {
+    const file = event.target.files[0];
     const updatedFiles = [...files];
     // updatedFiles[i] = [...event.target.files];
     updatedFiles[i] = {
       id: null,
-      url: null,
-      file: event.target.file,
+      url: URL.createObjectURL(file),
+      file: file,
       status: "new",
     };
 
     setFiles(updatedFiles);
   }
 
-  function handleChange(event) {
-    setFormEdit({
-      ...formEdit,
-      [event.target.name]: event.target.value,
-    });
+  // function handleChange(event) {
+  //   setFormEdit({
+  //     ...formEdit,
+  //     [event.target.name]: event.target.value,
+  //   });
+  // }
+
+  function dispatchInput(event) {
+    dispatch(
+      handleChange({
+        name: event.target.name,
+        value: event.target.value,
+        formType: "editUnit",
+      })
+    );
   }
 
   return (
@@ -182,8 +203,8 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Motorcycle Name"
                       type="text"
-                      value={unit.name || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.name || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="name"
                       id="name"
                     />
@@ -192,8 +213,8 @@ export default function EditProduct({ motor }) {
                       type="text"
                       name="brand"
                       id="brand"
-                      value={unit.brand || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.brand || ""}
+                      onchange={(e) => dispatchInput(e)}
                     />
                     <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                       <FormInput
@@ -201,48 +222,48 @@ export default function EditProduct({ motor }) {
                         type="number"
                         id="price"
                         name="price"
-                        value={unit.price || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.price || ""}
+                        onchange={(e) => dispatchInput(e)}
                       />
                       <FormInput
                         label="Minimum Downpayment"
                         type="number"
                         id="down"
                         name="downpayment"
-                        value={unit.downpayment || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.downpayment || ""}
+                        onchange={(e) => dispatchInput(e)}
                       />
                       <FormInput
                         label="Rebate"
                         type="number"
                         id="rebate"
                         name="rebate"
-                        value={unit.rebate || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.rebate || ""}
+                        onchange={(e) => dispatchInput(e)}
                       />
                       <FormInput
                         label="Interest Rate (%)"
                         type="number"
                         id="interest"
                         name="interest"
-                        value={unit.interest || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.interest || ""}
+                        onchange={(e) => dispatchInput(e)}
                       />
                       <FormInput
                         label="Loan Tenure"
                         type="number"
                         id="tenure"
                         name="tenure"
-                        value={unit.tenure || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.tenure || ""}
+                        onchange={(e) => dispatchInput(e)}
                       />
                     </div>
                     <FormTextarea
                       name="description"
                       id="description"
                       label="Description"
-                      value={unit.description || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.description || ""}
+                      onchange={(e) => dispatchInput(e)}
                     />
                   </div>
                   <div className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
@@ -262,14 +283,14 @@ export default function EditProduct({ motor }) {
                             />
                           ) : (
                             <label
-                              htmlFor={`dropzone_${i}`}
+                              htmlFor={`file_${i}`}
                               className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                               <div className="flex flex-col justify-center items-center pt-5 pb-6">
                                 {file.file ? (
                                   <span
                                     key={i}
                                     className="font-semibold dark:text-white">
-                                    {file.name}
+                                    {file.file.name}
                                   </span>
                                 ) : (
                                   // {files.length > 0 && files[i] ? (
@@ -290,7 +311,7 @@ export default function EditProduct({ motor }) {
                                 )}
                               </div>
                               <input
-                                id={`dropzone_${i}`}
+                                id={`file_${i}`}
                                 name={`file_${i}`}
                                 type="file"
                                 className="hidden"
@@ -332,69 +353,6 @@ export default function EditProduct({ motor }) {
                         </div>
                       </section>
                     ))}
-                    {rows.map((_, i) => (
-                      <section key={i}>
-                        <div className="flex justify-center items-center w-full">
-                          <label
-                            htmlFor={`dropzone_${i}`}
-                            className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                              {files.length > 0 && files[i] ? (
-                                files[i].map((file, i) => (
-                                  <span
-                                    key={i}
-                                    className="font-semibold dark:text-white">
-                                    {file.name}
-                                  </span>
-                                ))
-                              ) : (
-                                <>
-                                  <Cloud />
-                                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                    <span className="font-semibold">
-                                      Click to upload{" "}
-                                    </span>
-                                    or drag and drop
-                                  </p>
-                                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    SVG, PNG or JPG (MAX. 800x400px)
-                                  </p>
-                                </>
-                              )}
-                            </div>
-                            <input
-                              id={`dropzone_${i}`}
-                              name={`file_${i}`}
-                              type="file"
-                              className="hidden"
-                              onChange={(e) => fileChange(e, i)}
-                              multiple
-                            />
-                          </label>
-                        </div>
-                        <div className="sm:flex justify-between items-center mb-3">
-                          <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                            Color:
-                          </p>
-                          {colors.length > 0 && colors[i] && (
-                            <ColorLabel style={colors[i]} />
-                          )}
-                          <CustomBttn
-                            text="Select Color"
-                            onclick={() => {
-                              dispatch(setColorIndex(i));
-                              dispatch(
-                                toggleModal({
-                                  name: "colorModal",
-                                  value: modals?.colorModal,
-                                })
-                              );
-                            }}
-                            classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
-                          />
-                        </div>
-                      </section>
-                    ))}
                     <BttnwithIcon
                       type="button"
                       text="Add Color"
@@ -417,16 +375,16 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Engine"
                       type="text"
-                      value={specs.engine || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.engine || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="engine"
                       id="name"
                     />
                     <FormInput
                       label="Compression Ratio"
                       type="text"
-                      value={specs.compression || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.compression || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="compression"
                       id="name"
                     />
@@ -434,48 +392,48 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Displacement (cc)"
                         type="text"
-                        value={specs.displacement || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.displacement || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="displacement"
                         id="name"
                       />
                       <FormInput
                         label="Horsepower (hp)"
                         type="text"
-                        value={specs.horsepower || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.horsepower || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="horsepower"
                         id="name"
                       />
                       <FormInput
                         label="Torque (Nm)"
                         type="text"
-                        value={specs.torque || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.torque || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="torque"
                         id="name"
                       />
                       <FormInput
                         label="Fuel System"
                         type="text"
-                        value={specs.fuel || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.fuel || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="fuel"
                         id="name"
                       />
                       <FormInput
                         label="Final Drive"
                         type="text"
-                        value={specs.drive || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.drive || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="drive"
                         id="name"
                       />
                       <FormInput
                         label="Transmission"
                         type="text"
-                        value={specs.transmission || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.transmission || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="transmission"
                         id="name"
                       />
@@ -483,8 +441,8 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Cooling System"
                       type="text"
-                      value={specs.cooling || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.cooling || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="cooling"
                       id="name"
                     />
@@ -493,16 +451,16 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Front Suspension"
                       type="text"
-                      value={specs.front_suspension || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.front_suspension || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="front_suspension"
                       id="name"
                     />
                     <FormInput
                       label="Rear Suspension"
                       type="text"
-                      value={specs.rear_suspension || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.rear_suspension || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="rear_suspension"
                       id="name"
                     />
@@ -510,24 +468,24 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Frame Type"
                         type="text"
-                        value={specs.frame || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.frame || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="frame"
                         id="name"
                       />
                       <FormInput
                         label="Front/Rear Travel (mm/in)"
                         type="text"
-                        value={specs.travel || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.travel || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="travel"
                         id="name"
                       />
                       <FormInput
                         label="Swingarm Type"
                         type="text"
-                        value={specs.swingarm || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.swingarm || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="swingarm"
                         id="name"
                       />
@@ -538,48 +496,48 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Dry Weight"
                         type="text"
-                        value={specs.dry_weight || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.dry_weight || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="dry_weight"
                         id="name"
                       />
                       <FormInput
                         label="Wet weight"
                         type="text"
-                        value={specs.wet_weight || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.wet_weight || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="wet_weight"
                         id="name"
                       />
                       <FormInput
                         label="Seat Height (mm/in)"
                         type="text"
-                        value={specs.seat || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.seat || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="seat"
                         id="name"
                       />
                       <FormInput
                         label="Wheelbase"
                         type="text"
-                        value={specs.wheelbase || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.wheelbase || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="wheelbase"
                         id="name"
                       />
                       <FormInput
                         label="Fuel Tank Capacity"
                         type="text"
-                        value={specs.fuel_tank || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.fuel_tank || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="fuel_tank"
                         id="name"
                       />
                       <FormInput
                         label="Ground Clearance"
                         type="text"
-                        value={specs.clearance || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.clearance || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="clearance"
                         id="name"
                       />
@@ -590,24 +548,24 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Tire Size"
                         type="text"
-                        value={specs.tires || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.tires || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="tires"
                         id="name"
                       />
                       <FormInput
                         label="Wheel Type"
                         type="text"
-                        value={specs.wheel || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.wheel || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="wheel"
                         id="name"
                       />
                       <FormInput
                         label="Brakes"
                         type="text"
-                        value={specs.brakes || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.brakes || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="brakes"
                         id="name"
                       />
@@ -617,32 +575,32 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="ABS"
                       type="text"
-                      value={specs.abs || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.abs || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="abs"
                       id="name"
                     />
                     <FormInput
                       label="Traction Control"
                       type="text"
-                      value={specs.traction || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.traction || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="traction"
                       id="name"
                     />
                     <FormInput
                       label="TFT Display"
                       type="text"
-                      value={specs.tft || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.tft || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="tft"
                       id="name"
                     />
                     <FormInput
                       label="Lighting"
                       type="text"
-                      value={specs.lighting || ""}
-                      onchange={handleChange}
+                      value={formData.editUnit.lighting || ""}
+                      onchange={(e) => dispatchInput(e)}
                       name="lighting"
                       id="name"
                     />
@@ -650,24 +608,24 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Riding Modes"
                         type="text"
-                        value={specs.ride_mode || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.ride_mode || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="ride_mode"
                         id="name"
                       />
                       <FormInput
                         label="Quickshifter"
                         type="text"
-                        value={specs.quickshifter || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.quickshifter || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="quickshifter"
                         id="name"
                       />
                       <FormInput
                         label="Cruise Control"
                         type="text"
-                        value={specs.cruise || ""}
-                        onchange={handleChange}
+                        value={formData.editUnit.cruise || ""}
+                        onchange={(e) => dispatchInput(e)}
                         name="cruise"
                         id="name"
                       />

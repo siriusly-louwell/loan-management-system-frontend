@@ -19,6 +19,7 @@ const formSlice = createSlice({
   initialState: {
     formData: {
       createUnit: {},
+      editUnit: {},
       unit: {},
       applicant: {},
       address: {},

@@ -9,7 +9,7 @@ export default function FileInput({
 }) {
   const fileType =
     type === "img"
-      ? "SVG, PNG, JPG, PDF or DOCX (MAX. 2MB 800x400px)"
+      ? "SVG, PNG, or JPG (MAX. 2MB 800x400px)"
       : "PDF or DOCX (MAX. 2MB)";
   return (
     <div className="mb-4">

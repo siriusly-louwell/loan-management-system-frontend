@@ -18,30 +18,35 @@ import ColorModal from "../components/modals/ColorModal";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import { UnitEntity } from "../services/entities/Unit";
+import { UnitSpecsEntity } from "./../services/entities/UnitSpecs";
+import FileInput from "../components/inputs/FileInput";
+import { setColors, setColorIndex } from "../services/redux/slices/formSlice";
 
 export default function EditProduct({ motor }) {
   const dispatch = useDispatch();
   const unit = useSelector(UnitEntity);
+  const specs = useSelector(UnitSpecsEntity);
   const { modals } = useSelector((state) => state.ui);
+  const { colors } = useSelector((state) => state.form);
   const [files, setFiles] = useState([]);
   const [formEdit, setFormEdit] = useState({});
   const [editColor, setEditColor] = useState([]);
   const [alert, setAlert] = useState({});
   const [rows, setRows] = useState([""]);
-  const [colorIndex, setColorIndex] = useState();
-
-  console.log(unit);
+  // const [colorIndex, setColorIndex] = useState();
 
   useEffect(() => {
-    if (Object.keys(motor).length > 0) {
-      const colorArr = motor.colors.map((i) => i.color);
-      // delete motor.colors;
-      delete motor.images;
+    // if (Object.keys(motor).length > 0) {
+    //   const colorArr = motor.colors.map((i) => i.color);
+    //   // delete motor.colors;
+    //   delete motor.images;
 
-      setEditColor(colorArr);
-      setRows(colorArr);
-      setFormEdit(motor);
-    }
+    //   setEditColor(colorArr);
+    //   setRows(colorArr);
+    //   setFormEdit(motor);
+    // }
+    const colorArr = unit.colors.map((i) => i.color);
+    dispatch(setColors(colorArr));
   }, []);
 
   function changeEditColor(newColor) {
@@ -53,9 +58,9 @@ export default function EditProduct({ motor }) {
 
     const updatedColors = [...editColor];
 
-    if (updatedColors[colorIndex] === newColor)
-      updatedColors[colorIndex] = null;
-    else updatedColors[colorIndex] = newColor;
+    // if (updatedColors[colorIndex] === newColor)
+    //   updatedColors[colorIndex] = null;
+    // else updatedColors[colorIndex] = newColor;
 
     setEditColor(updatedColors);
   }
@@ -226,17 +231,24 @@ export default function EditProduct({ motor }) {
                     <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       Images & Colors
                     </span>
-                    {rows.map((_, i) => (
-                      <section key={i}>
+                    {specs.images.map((_, i) => (
+                      <section
+                        key={i}
+                        className="border-b border-gray-400 mb-2">
                         <div className="flex justify-center items-center w-full">
-                          <label
-                            htmlFor={`dropzone_${i}`}
-                            className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                          <img
+                            className="w-auto h-[30vh] object-contain rounded-lg flex-shrink-0"
+                            src={specs.imgURL(i)}
+                            alt="unit"
+                          />
+                          {/* <section className="flex flex-col justify-center items-center w-full h-full bg-gray-50 rounded-lg border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600">
+                            <div className="flex flex-col justify-center items-center py-2">
                               {files.length > 0 && files[i] ? (
                                 // <span className="font-semibold dark:text-white">{files.name}</span>
-                                files[i].map((file) => (
-                                  <span className="font-semibold dark:text-white">
+                                files[i].map((file, i) => (
+                                  <span
+                                    key={i}
+                                    className="font-semibold dark:text-white">
                                     {file.name}
                                   </span>
                                 ))
@@ -263,26 +275,34 @@ export default function EditProduct({ motor }) {
                               onChange={(e) => fileChange(e, i)}
                               multiple
                             />
-                          </label>
+                        </section> */}
                         </div>
-                        <div className="sm:flex space-x-2 items-center mb-3">
-                          <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                            Color:
-                          </p>
-                          {editColor.length > 0 && editColor[i] ? (
-                            <ColorLabel style={editColor[i]} />
-                          ) : (
-                            ""
-                          )}
-                          <CustomBttn
-                            text="Select Color"
-                            onclick={() => {
-                              setColorIndex(i);
-                              document.getElementById(
-                                "colorModal"
-                              ).style.display = "flex";
-                            }}
-                            classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
+                        <div className="sm:flex space-x-2 justify-between mt-3">
+                          <div className="flex items-center space-x-2">
+                            <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
+                              Color:
+                            </p>
+                            {colors.length > 0 && <ColorLabel style={colors[i]} />}
+                            <CustomBttn
+                              text="Select Color"
+                              onclick={() => {
+                                // setColorIndex(i);
+                                dispatch(setColorIndex(i));
+                                dispatch(
+                                  toggleModal({
+                                    name: "colorModal",
+                                    value: modals?.colorModal,
+                                  })
+                                );
+                              }}
+                              classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
+                            />
+                          </div>
+                          <FileInput
+                            label="Change Photo"
+                            name={`file_${i}`}
+                            type="img"
+                            change={(e) => fileChange(e, i)}
                           />
                         </div>
                       </section>
@@ -296,7 +316,7 @@ export default function EditProduct({ motor }) {
                   </div>
                 </section>
 
-                <section className="lg:w-1/2 border-l border-gray-300 lg:pl-3">
+                <section className="lg:w-1/2 lg:border-l border-gray-300 lg:pl-3">
                   <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
                     Specifications
                   </h3>
@@ -304,7 +324,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Engine"
                       type="text"
-                      value={formEdit.engine || ""}
+                      value={specs.engine || ""}
                       onchange={handleChange}
                       name="engine"
                       id="name"
@@ -312,7 +332,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Compression Ratio"
                       type="text"
-                      value={formEdit.compression || ""}
+                      value={specs.compression || ""}
                       onchange={handleChange}
                       name="compression"
                       id="name"
@@ -321,7 +341,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Displacement (cc)"
                         type="text"
-                        value={formEdit.displacement || ""}
+                        value={specs.displacement || ""}
                         onchange={handleChange}
                         name="displacement"
                         id="name"
@@ -329,7 +349,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Horsepower (hp)"
                         type="text"
-                        value={formEdit.horsepower || ""}
+                        value={specs.horsepower || ""}
                         onchange={handleChange}
                         name="horsepower"
                         id="name"
@@ -337,7 +357,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Torque (Nm)"
                         type="text"
-                        value={formEdit.torque || ""}
+                        value={specs.torque || ""}
                         onchange={handleChange}
                         name="torque"
                         id="name"
@@ -345,7 +365,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Fuel System"
                         type="text"
-                        value={formEdit.fuel || ""}
+                        value={specs.fuel || ""}
                         onchange={handleChange}
                         name="fuel"
                         id="name"
@@ -353,7 +373,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Final Drive"
                         type="text"
-                        value={formEdit.drive || ""}
+                        value={specs.drive || ""}
                         onchange={handleChange}
                         name="drive"
                         id="name"
@@ -361,7 +381,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Transmission"
                         type="text"
-                        value={formEdit.transmission || ""}
+                        value={specs.transmission || ""}
                         onchange={handleChange}
                         name="transmission"
                         id="name"
@@ -370,7 +390,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Cooling System"
                       type="text"
-                      value={formEdit.cooling || ""}
+                      value={specs.cooling || ""}
                       onchange={handleChange}
                       name="cooling"
                       id="name"
@@ -380,7 +400,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Front Suspension"
                       type="text"
-                      value={formEdit.front_suspension || ""}
+                      value={specs.front_suspension || ""}
                       onchange={handleChange}
                       name="front_suspension"
                       id="name"
@@ -388,7 +408,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Rear Suspension"
                       type="text"
-                      value={formEdit.rear_suspension || ""}
+                      value={specs.rear_suspension || ""}
                       onchange={handleChange}
                       name="rear_suspension"
                       id="name"
@@ -397,7 +417,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Frame Type"
                         type="text"
-                        value={formEdit.frame || ""}
+                        value={specs.frame || ""}
                         onchange={handleChange}
                         name="frame"
                         id="name"
@@ -405,7 +425,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Front/Rear Travel (mm/in)"
                         type="text"
-                        value={formEdit.travel || ""}
+                        value={specs.travel || ""}
                         onchange={handleChange}
                         name="travel"
                         id="name"
@@ -413,7 +433,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Swingarm Type"
                         type="text"
-                        value={formEdit.swingarm || ""}
+                        value={specs.swingarm || ""}
                         onchange={handleChange}
                         name="swingarm"
                         id="name"
@@ -425,7 +445,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Dry Weight"
                         type="text"
-                        value={formEdit.dry_weight || ""}
+                        value={specs.dry_weight || ""}
                         onchange={handleChange}
                         name="dry_weight"
                         id="name"
@@ -433,7 +453,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Wet weight"
                         type="text"
-                        value={formEdit.wet_weight || ""}
+                        value={specs.wet_weight || ""}
                         onchange={handleChange}
                         name="wet_weight"
                         id="name"
@@ -441,7 +461,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Seat Height (mm/in)"
                         type="text"
-                        value={formEdit.seat || ""}
+                        value={specs.seat || ""}
                         onchange={handleChange}
                         name="seat"
                         id="name"
@@ -449,7 +469,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Wheelbase"
                         type="text"
-                        value={formEdit.wheelbase || ""}
+                        value={specs.wheelbase || ""}
                         onchange={handleChange}
                         name="wheelbase"
                         id="name"
@@ -457,7 +477,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Fuel Tank Capacity"
                         type="text"
-                        value={formEdit.fuel_tank || ""}
+                        value={specs.fuel_tank || ""}
                         onchange={handleChange}
                         name="fuel_tank"
                         id="name"
@@ -465,7 +485,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Ground Clearance"
                         type="text"
-                        value={formEdit.clearance || ""}
+                        value={specs.clearance || ""}
                         onchange={handleChange}
                         name="clearance"
                         id="name"
@@ -477,7 +497,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Tire Size"
                         type="text"
-                        value={formEdit.tires || ""}
+                        value={specs.tires || ""}
                         onchange={handleChange}
                         name="tires"
                         id="name"
@@ -485,7 +505,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Wheel Type"
                         type="text"
-                        value={formEdit.wheel || ""}
+                        value={specs.wheel || ""}
                         onchange={handleChange}
                         name="wheel"
                         id="name"
@@ -493,7 +513,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Brakes"
                         type="text"
-                        value={formEdit.brakes || ""}
+                        value={specs.brakes || ""}
                         onchange={handleChange}
                         name="brakes"
                         id="name"
@@ -504,7 +524,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="ABS"
                       type="text"
-                      value={formEdit.abs || ""}
+                      value={specs.abs || ""}
                       onchange={handleChange}
                       name="abs"
                       id="name"
@@ -512,7 +532,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Traction Control"
                       type="text"
-                      value={formEdit.traction || ""}
+                      value={specs.traction || ""}
                       onchange={handleChange}
                       name="traction"
                       id="name"
@@ -520,7 +540,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="TFT Display"
                       type="text"
-                      value={formEdit.tft || ""}
+                      value={specs.tft || ""}
                       onchange={handleChange}
                       name="tft"
                       id="name"
@@ -528,7 +548,7 @@ export default function EditProduct({ motor }) {
                     <FormInput
                       label="Lighting"
                       type="text"
-                      value={formEdit.lighting || ""}
+                      value={specs.lighting || ""}
                       onchange={handleChange}
                       name="lighting"
                       id="name"
@@ -537,7 +557,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Riding Modes"
                         type="text"
-                        value={formEdit.ride_mode || ""}
+                        value={specs.ride_mode || ""}
                         onchange={handleChange}
                         name="ride_mode"
                         id="name"
@@ -545,7 +565,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Quickshifter"
                         type="text"
-                        value={formEdit.quickshifter || ""}
+                        value={specs.quickshifter || ""}
                         onchange={handleChange}
                         name="quickshifter"
                         id="name"
@@ -553,7 +573,7 @@ export default function EditProduct({ motor }) {
                       <FormInput
                         label="Cruise Control"
                         type="text"
-                        value={formEdit.cruise || ""}
+                        value={specs.cruise || ""}
                         onchange={handleChange}
                         name="cruise"
                         id="name"

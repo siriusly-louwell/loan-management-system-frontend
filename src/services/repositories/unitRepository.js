@@ -15,7 +15,8 @@ export const unitRepository = {
   },
 
   async add(data) {
-    const form = unitRepository.appendData({ ...data });
+    // const form = unitRepository.appendData({ ...data });
+    const form = this.appendData({ ...data });
     const response = await UnitAPI.add(form);
 
     if (!response) {

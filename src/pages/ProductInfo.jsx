@@ -58,7 +58,7 @@ export default function ProductInfo({ staff = false }) {
                     </div>
                   ) : (
                     <>
-                      {staff ? (
+                      {staff && (
                         <FormSelect
                           name="motor"
                           id="motor"
@@ -74,8 +74,6 @@ export default function ProductInfo({ staff = false }) {
                             </option>
                           ))}
                         </FormSelect>
-                      ) : (
-                        ""
                       )}
                       {images.map((src, index) => (
                         <img
@@ -85,7 +83,6 @@ export default function ProductInfo({ staff = false }) {
                           className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
                         />
                       ))}
-                      ={" "}
                     </>
                   )}
                 </BasicCarousel>
@@ -227,7 +224,9 @@ export default function ProductInfo({ staff = false }) {
               </div>
 
               <section className="max-w-5xl col-span-2 mx-auto px-4 py-8">
-                <h2 className="text-2xl dark:text-white font-bold mb-6">Specifications</h2>
+                <h2 className="text-2xl dark:text-white font-bold mb-6">
+                  Specifications
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-y-4 gap-x-7">
                   {Object.entries(specs)
                     .filter(([key]) => key !== "images" && key !== "id")

@@ -45,6 +45,10 @@ const formSlice = createSlice({
       state.colorIndex = action.payload;
     },
 
+    setColors: (state, action) => {
+      state.colors = action.payload
+    },
+
     changeColor: (state, action) => {
       const updatedColors = [...state.colors];
 
@@ -186,6 +190,7 @@ const formSlice = createSlice({
 });
 
 export const {
+  setColors,
   changeColor,
   setType,
   resetInput,

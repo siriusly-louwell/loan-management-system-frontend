@@ -63,7 +63,7 @@ export default function Inventory() {
         stock={stock}
         setStock={setStock}
       />
-      {modals?.editUnit && <EditProduct />}
+      {modals?.editUnit && <EditProduct motor={{}} />}
       {stock.type !== "" && <StockModal setStock={setStock} stock={stock} />}
     </CRUDformat>
   );

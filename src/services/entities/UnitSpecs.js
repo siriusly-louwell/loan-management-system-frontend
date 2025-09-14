@@ -66,8 +66,11 @@ export class UnitSpecs {
     this.quickshift = quickshift;
     this.cruise = cruise;
   }
+
+  imgURL(index) {
+    return `${process.env.REACT_APP_API_URL}/storage/${this.images[index].path}`;
+  }
 }
 
 // ? selector
-export const UnitSpecsEntity = (state) =>
-  new UnitSpecs(state.unit.unit) ?? {};
+export const UnitSpecsEntity = (state) => new UnitSpecs(state.unit.unit) ?? {};

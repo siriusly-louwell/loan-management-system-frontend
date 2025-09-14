@@ -142,7 +142,7 @@ export default function EditProduct({ motor }) {
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Add Unit
+                  Edit Unit - #{unit.id}
                 </h3>
                 <CloseBttn
                   trigger={() =>
@@ -286,7 +286,6 @@ export default function EditProduct({ motor }) {
                             <CustomBttn
                               text="Select Color"
                               onclick={() => {
-                                // setColorIndex(i);
                                 dispatch(setColorIndex(i));
                                 dispatch(
                                   toggleModal({
@@ -603,7 +602,7 @@ export default function EditProduct({ motor }) {
                 />
               </Alert>
               {modals.colorModal && (
-                <ColorModal colors={editColor} changeColor={changeEditColor} />
+                <ColorModal colors={colors} />
               )}
             </div>
           </div>

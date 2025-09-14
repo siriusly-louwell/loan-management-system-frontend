@@ -49,7 +49,7 @@ export default function InventoryTable({
                   <img
                     src={motor.imgURL()}
                     alt="unit"
-                    className="h-8 w-auto mr-3 rounded-lg"
+                    className="h-8 w-10 mr-3 rounded-md object-cover"
                   />
                   {motor.name}
                   {motor.isNew() && <CustomBadge text="new" color="red" />}

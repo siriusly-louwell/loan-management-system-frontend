@@ -15,7 +15,11 @@ import Ex from "../assets/icons/Ex";
 import axios from "axios";
 import ColorModal from "../components/modals/ColorModal";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert, setLoading, toggleModal } from "../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
 import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "./../services/entities/UnitSpecs";
 import FileInput from "../components/inputs/FileInput";
@@ -113,8 +117,9 @@ export default function EditProduct() {
         editUnit({ form, files, colors, id: unit.id })
       ).unwrap();
 
-      dispatch(setLoading({ isActive: false }));
+      dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
       dispatch(setAlert({ message: response.message, type: response.type }));
+      dispatch(setLoading({ isActive: false }));
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));

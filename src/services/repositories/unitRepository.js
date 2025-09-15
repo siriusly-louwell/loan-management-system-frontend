@@ -50,17 +50,26 @@ export const unitRepository = {
       submitData.append(`${key}`, form[key]);
     }
 
-    if (type === "edit") submitData.append("_method", "PATCH");
-    else submitData.append(`quantity`, data.totalQuantity);
+    if (type === "edit") {
+      submitData.append("_method", "PATCH");
+
+      submitData.append(
+        "fileStats",
+        JSON.stringify(
+          data.files.map((obj) => ({
+            id: obj.id,
+            status: obj.status,
+          }))
+        )
+      );
+    } else submitData.append(`quantity`, data.totalQuantity);
 
     data.colors.forEach((color) => submitData.append("colors[]", color));
 
     data.files.forEach((obj) => {
       const file = type === "edit" ? obj.file : obj;
 
-      if (type === "edit")
-        submitData.append("fileStats[]", { id: obj.id, status: obj.status });
-      if (obj.file) submitData.append("files[]", file);
+      submitData.append("files[]", file);
     });
 
     return submitData;

@@ -61,7 +61,7 @@ export default function CreateProduct() {
 
   function fileChange(event, i) {
     const updatedFiles = [...files];
-    updatedFiles[i] = [...event.target.files];
+    updatedFiles[i] = event.target.files[0];
 
     setFiles(updatedFiles);
   }
@@ -214,13 +214,11 @@ export default function CreateProduct() {
                             className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <div className="flex flex-col justify-center items-center pt-5 pb-6">
                               {files.length > 0 && files[i] ? (
-                                files[i].map((file, i) => (
-                                  <span
-                                    key={i}
-                                    className="font-semibold dark:text-white">
-                                    {file.name}
-                                  </span>
-                                ))
+                                <span
+                                  key={i}
+                                  className="font-semibold dark:text-white">
+                                  {files[i].name}
+                                </span>
                               ) : (
                                 <>
                                   <Cloud />
@@ -242,7 +240,6 @@ export default function CreateProduct() {
                               type="file"
                               className="hidden"
                               onChange={(e) => fileChange(e, i)}
-                              multiple
                             />
                           </label>
                         </div>

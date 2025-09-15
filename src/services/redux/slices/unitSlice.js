@@ -14,6 +14,17 @@ export const addUnit = createAsyncThunk(
   }
 );
 
+export const editUnit = createAsyncThunk(
+  "unit/editUnit",
+  async (unit, thunkAPI) => {
+    try {
+      return await unitRepository.edit(unit);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchUnits = createAsyncThunk(
   "unit/fetchUnits",
   async (unit, thunkAPI) => {
@@ -68,6 +79,20 @@ const UnitSlice = createSlice({
         state.unit = action.payload;
       })
       .addCase(addUnit.rejected, (state, action) => {
+        state.unitLoading = false;
+        state.error = action.payload;
+      })
+
+      // ? Edit a unit
+      .addCase(editUnit.pending, (state) => {
+        state.unitLoading = true;
+        state.error = null;
+      })
+      .addCase(editUnit.fulfilled, (state, action) => {
+        state.unitLoading = false;
+        state.unit = action.payload;
+      })
+      .addCase(editUnit.rejected, (state, action) => {
         state.unitLoading = false;
         state.error = action.payload;
       })

@@ -15,7 +15,7 @@ import Ex from "../assets/icons/Ex";
 import axios from "axios";
 import ColorModal from "../components/modals/ColorModal";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../services/redux/slices/uiSlice";
+import { setLoading, toggleModal } from "../services/redux/slices/uiSlice";
 import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "./../services/entities/UnitSpecs";
 import FileInput from "../components/inputs/FileInput";
@@ -26,6 +26,7 @@ import {
   initialForm,
   setType,
 } from "../services/redux/slices/formSlice";
+import { editUnit } from "../services/redux/slices/unitSlice";
 
 export default function EditProduct() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export default function EditProduct() {
   const specs = useSelector(UnitSpecsEntity);
   const { unitLoading } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
-  const { colors, formData } = useSelector((state) => state.form);
+  const { colors, formData, form } = useSelector((state) => state.form);
   const [formEdit, setFormEdit] = useState({});
   const [editColor, setEditColor] = useState([]);
   const [alert, setAlert] = useState({});
@@ -51,10 +52,10 @@ export default function EditProduct() {
     //   setRows(colorArr);
     //   setFormEdit(motor);
     // }
-    const colorArr = unit.colors.map((i) => i.color);
     const { colors, ...unitRest } = unit;
     const { images, ...specRest } = specs;
-    
+    const colorArr = colors.map((i) => i.color);
+
     dispatch(setColors(colorArr));
     dispatch(setType("editUnit"));
     dispatch(initialForm({ ...unitRest, ...specRest }));
@@ -91,42 +92,62 @@ export default function EditProduct() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const editData = new FormData();
+    dispatch(setLoading({ isActive: true, text: "Updating data..." }));
+    // const editData = new FormData();
 
-    if (files.length > 0) {
-      files.forEach((file) => editData.append("files[]", file));
-    }
+    // if (files.length > 0) {
+    //   files.forEach((file) => editData.append("files[]", file));
+    // }
 
-    for (const key in formEdit) {
-      editData.append(key, formEdit[key]);
-    }
+    // for (const key in formEdit) {
+    //   editData.append(key, formEdit[key]);
+    // }
 
-    editData.append("_method", "PATCH");
-    editColor.forEach((color) => editData.append(`colors[]`, color));
-    document.getElementById("edit_unit").style.display = "flex";
+    // editData.append("_method", "PATCH");
+    // editColor.forEach((color) => editData.append(`colors[]`, color));
+    // document.getElementById("edit_unit").style.display = "flex";
 
     try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/motorcycle/${formEdit.id}`,
-        editData
-      );
+      const form = formData.editUnit;
+      const response = await dispatch(
+        editUnit({ form, files, colors, id: unit.id })
+      ).unwrap();
 
-      console.log("Success: ", response.data.message);
-      document.getElementById("edit_unit").style.display = "none";
-      setAlert({
-        text: "Unit updated succcessfully!",
-        icon: "done",
-      });
-      resetInput();
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Failed to update data",
-        icon: "warn",
-      });
-      document.getElementById("edit_unit").style.display = "none";
-      document.getElementById("editUnit").style.display = "block";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Unexpected error. Something went wrong.",
+          type: "error",
+        })
+      );
     }
+
+    // try {
+    //   const response = await axios.post(
+    //     `http://127.0.0.1:8000/api/motorcycle/${formEdit.id}`,
+    //     editData
+    //   );
+
+    //   console.log("Success: ", response.data.message);
+    //   document.getElementById("edit_unit").style.display = "none";
+    //   setAlert({
+    //     text: "Unit updated successfully!",
+    //     icon: "done",
+    //   });
+    //   resetInput();
+    // } catch (error) {
+    //   console.error("Error: ", error);
+    //   setAlert({
+    //     text: "Failed to update data",
+    //     icon: "warn",
+    //   });
+    //   document.getElementById("edit_unit").style.display = "none";
+    //   document.getElementById("editUnit").style.display = "block";
+    // }
   }
 
   function resetInput() {
@@ -168,7 +189,7 @@ export default function EditProduct() {
   }
 
   return (
-    <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+    <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
       <AnimatePresence>
         <motion.div
           initial={{ scale: 0.8, opacity: 1 }}

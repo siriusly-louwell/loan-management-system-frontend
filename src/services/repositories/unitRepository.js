@@ -15,7 +15,6 @@ export const unitRepository = {
   },
 
   async add(data) {
-    // const form = unitRepository.appendData({ ...data });
     const form = this.appendData({ ...data });
     const response = await UnitAPI.add(form);
 
@@ -29,7 +28,23 @@ export const unitRepository = {
     return await response;
   },
 
-  appendData(data) {
+  async edit(data) {
+    const form = this.appendData({ ...data }, "edit");
+    const response = await UnitAPI.edit(form, data.id);
+
+    console.log("reached");
+
+    if (!response) {
+      return {
+        message: "Failed to edit unit",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
+
+  appendData(data, type = "add") {
     const submitData = new FormData();
     const form = data.form;
 
@@ -37,10 +52,14 @@ export const unitRepository = {
       submitData.append(`${key}`, form[key]);
     }
 
-    submitData.append(`quantity`, data.totalQuantity);
+    if (type === "edit") submitData.append("_method", "PATCH");
+    else submitData.append(`quantity`, data.totalQuantity);
+
     data.colors.forEach((color) => submitData.append("colors[]", color));
-    data.files.forEach((arr) => {
-      arr.forEach((file) => submitData.append("files[]", file));
+    data.files.forEach((obj) => {
+      const file = type === "edit" ? obj.file : obj;
+
+      if (obj.file) submitData.append("files[]", file);
     });
 
     return submitData;

@@ -30,7 +30,7 @@ export class UnitSpecs {
     tft,
     lighting,
     ride_mode,
-    quickshift,
+    quickshifter,
     cruise,
   }) {
     this.id = id;
@@ -63,7 +63,7 @@ export class UnitSpecs {
     this.tft = tft;
     this.lighting = lighting;
     this.ride_mode = ride_mode;
-    this.quickshift = quickshift;
+    this.quickshifter = quickshifter;
     this.cruise = cruise;
   }
 

@@ -20,7 +20,6 @@ const UnitAPI = {
 
   async edit(data, id) {
     const response = await axios.post(`${API_URL}/api/motorcycle/${id}`, data);
-    console.log("api reached");
     return response.data;
   },
 

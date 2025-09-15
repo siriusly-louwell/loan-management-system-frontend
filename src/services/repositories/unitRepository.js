@@ -32,8 +32,6 @@ export const unitRepository = {
     const form = this.appendData({ ...data }, "edit");
     const response = await UnitAPI.edit(form, data.id);
 
-    console.log("reached");
-
     if (!response) {
       return {
         message: "Failed to edit unit",
@@ -56,9 +54,12 @@ export const unitRepository = {
     else submitData.append(`quantity`, data.totalQuantity);
 
     data.colors.forEach((color) => submitData.append("colors[]", color));
+
     data.files.forEach((obj) => {
       const file = type === "edit" ? obj.file : obj;
 
+      if (type === "edit")
+        submitData.append("fileStats[]", { id: obj.id, status: obj.status });
       if (obj.file) submitData.append("files[]", file);
     });
 

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { addUnitUseCase } from "../../usecases/unit/addUnitUseCase";
 import { unitRepository } from "../../repositories/unitRepository";
 import UnitAPI from "../../api/UnitAPI";
+import { MOTOR_BRANDS } from "../../../constants/brands";
 
 export const addUnit = createAsyncThunk(
   "unit/addUnit",
@@ -57,6 +58,7 @@ const UnitSlice = createSlice({
     unitsLoading: true,
     images: [],
     error: null,
+    brands: MOTOR_BRANDS,
   },
   reducers: {
     storeID: (state, action) => {

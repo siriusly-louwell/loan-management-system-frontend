@@ -3,7 +3,7 @@ import TableData from "../tables/TableData";
 
 export default function ProductRow({ data, recent }) {
   const newRow = recent
-    ? "bg-rose-100 hover:bg-rose-100 dark:hover:bg-rose-600 dark:hover:bg-opacity-70 dark:bg-rose-600 dark:bg-opacity-20"
+    ? "bg-rose-100 hover:bg-rose-100 dark:hover:bg-rose-600 dark:hover:bg-opacity-40 dark:bg-rose-600 dark:bg-opacity-20"
     : "dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700";
 
   return (

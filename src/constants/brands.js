@@ -1,0 +1,16 @@
+export const MOTOR_BRANDS = [
+  "Honda",
+  "Yamaha",
+  "Kawasaki",
+  "Suzuki",
+  "KTM",
+  "Kymco",
+  "SYM",
+  "Skygo",
+  "Bennelli",
+  "Bristol",
+  "Rusi",
+  "Motorstar",
+  "QJMotor",
+  "FKM",
+];

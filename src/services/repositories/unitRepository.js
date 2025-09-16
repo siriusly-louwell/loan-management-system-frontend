@@ -42,7 +42,7 @@ export const unitRepository = {
     return await response;
   },
 
-  appendData(data, type = "add") {
+  appendData(data, type) {
     const submitData = new FormData();
     const form = data.form;
 
@@ -63,7 +63,7 @@ export const unitRepository = {
         "fileStats",
         JSON.stringify(
           data.files
-            .filter((obj) => obj.status !== "keep")
+            .filter((obj) => obj.status !== "keep" && obj.status !== "ignore")
             .map((obj) => ({ id: obj.id, status: obj.status }))
         )
       );

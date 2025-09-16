@@ -56,10 +56,12 @@ export const unitRepository = {
       submitData.append(
         "fileStats",
         JSON.stringify(
-          data.files.map((obj) => ({
-            id: obj.id,
-            status: obj.status,
-          }))
+          data.files
+            .filter((obj) => obj.status !== "keep")
+            .map((obj) => ({
+              id: obj.id,
+              status: obj.status,
+            }))
         )
       );
     } else submitData.append(`quantity`, data.totalQuantity);

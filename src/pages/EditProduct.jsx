@@ -5,14 +5,11 @@ import FormTextarea from "../components/inputs/FormTextarea";
 import Button from "../components/buttons/Button";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Cloud from "../assets/icons/Cloud";
-import Spinner from "../components/loading components/Spinner";
 import ColorLabel from "../components/ColorLabel";
-import Alert from "../components/Alert";
 import CustomBttn from "../components/buttons/CustomBttn";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
 import Ex from "../assets/icons/Ex";
-import axios from "axios";
 import ColorModal from "../components/modals/ColorModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,26 +33,11 @@ export default function EditProduct() {
   const dispatch = useDispatch();
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
-  const { unitLoading } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
-  const { colors, formData, form } = useSelector((state) => state.form);
-  const [formEdit, setFormEdit] = useState({});
-  const [editColor, setEditColor] = useState([]);
-  // const [alert, setAlert] = useState({});
-  const [rows, setRows] = useState([]);
+  const { colors, formData } = useSelector((state) => state.form);
   const [files, setFiles] = useState([]);
-  // const [colorIndex, setColorIndex] = useState();
 
   useEffect(() => {
-    // if (Object.keys(motor).length > 0) {
-    //   const colorArr = motor.colors.map((i) => i.color);
-    //   // delete motor.colors;
-    //   delete motor.images;
-
-    //   setEditColor(colorArr);
-    //   setRows(colorArr);
-    //   setFormEdit(motor);
-    // }
     const { colors, ...unitRest } = unit;
     const { images, ...specRest } = specs;
     const colorArr = colors.map((i) => i.color);
@@ -66,7 +48,7 @@ export default function EditProduct() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(specs).length > 0) {
+    if (Object.keys(specs).length > 0 && specs.images) {
       const images = specs.images.map((img, i) => ({
         id: img.id,
         url: specs.imgURL(i),
@@ -78,38 +60,9 @@ export default function EditProduct() {
     }
   }, [specs?.images?.length]);
 
-  function changeEditColor(newColor) {
-    // const updatedColors = editColor.includes(newColor)
-    //     ? editColor.filter(color => color !== newColor)
-    //     : [...editColor, newColor];
-
-    // setEditColor(updatedColors);
-
-    const updatedColors = [...editColor];
-
-    // if (updatedColors[colorIndex] === newColor)
-    //   updatedColors[colorIndex] = null;
-    // else updatedColors[colorIndex] = newColor;
-
-    setEditColor(updatedColors);
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
     dispatch(setLoading({ isActive: true, text: "Updating data..." }));
-    // const editData = new FormData();
-
-    // if (files.length > 0) {
-    //   files.forEach((file) => editData.append("files[]", file));
-    // }
-
-    // for (const key in formEdit) {
-    //   editData.append(key, formEdit[key]);
-    // }
-
-    // editData.append("_method", "PATCH");
-    // editColor.forEach((color) => editData.append(`colors[]`, color));
-    // document.getElementById("edit_unit").style.display = "flex";
 
     try {
       const form = formData.editUnit;
@@ -117,9 +70,9 @@ export default function EditProduct() {
         editUnit({ form, files, colors, id: unit.id })
       ).unwrap();
 
-      dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(setLoading({ isActive: false }));
+      dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -130,42 +83,11 @@ export default function EditProduct() {
         })
       );
     }
-
-    // try {
-    //   const response = await axios.post(
-    //     `http://127.0.0.1:8000/api/motorcycle/${formEdit.id}`,
-    //     editData
-    //   );
-
-    //   console.log("Success: ", response.data.message);
-    //   document.getElementById("edit_unit").style.display = "none";
-    //   setAlert({
-    //     text: "Unit updated successfully!",
-    //     icon: "done",
-    //   });
-    //   resetInput();
-    // } catch (error) {
-    //   console.error("Error: ", error);
-    //   setAlert({
-    //     text: "Failed to update data",
-    //     icon: "warn",
-    //   });
-    //   document.getElementById("edit_unit").style.display = "none";
-    //   document.getElementById("editUnit").style.display = "block";
-    // }
-  }
-
-  function resetInput() {
-    setFormEdit({});
-    setEditColor([]);
-    setFiles([]);
-    document.getElementById("editUnit").style.display = "block";
   }
 
   function fileChange(event, i) {
     const file = event.target.files[0];
     const updatedFiles = [...files];
-    // updatedFiles[i] = [...event.target.files];
     updatedFiles[i] = {
       id: null,
       url: URL.createObjectURL(file),
@@ -175,13 +97,6 @@ export default function EditProduct() {
 
     setFiles(updatedFiles);
   }
-
-  // function handleChange(event) {
-  //   setFormEdit({
-  //     ...formEdit,
-  //     [event.target.name]: event.target.value,
-  //   });
-  // }
 
   function dispatchInput(event) {
     dispatch(
@@ -319,9 +234,6 @@ export default function EditProduct() {
                                     {file.file.name}
                                   </span>
                                 ) : (
-                                  // {files.length > 0 && files[i] ? (
-                                  //   files[i].map((file, i) => (
-                                  //   ))
                                   <>
                                     <Cloud />
                                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
@@ -667,18 +579,6 @@ export default function EditProduct() {
                   </div>
                 </section>
               </form>
-              <Spinner id="edit_unit" text="Saving data..." />
-              <Alert id="editUnit" text={alert.text} icon={alert.icon}>
-                <Button
-                  text="Ok"
-                  onclick={() => {
-                    if (alert.icon === "done")
-                      document.getElementById("editProduct").style.display =
-                        "none";
-                    document.getElementById("editUnit").style.display = "none";
-                  }}
-                />
-              </Alert>
               {modals.colorModal && <ColorModal colors={colors} />}
             </div>
           </div>

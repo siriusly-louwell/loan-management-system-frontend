@@ -25,6 +25,7 @@ import {
   handleChange,
   initialForm,
   setType,
+  removeColor,
 } from "../services/redux/slices/formSlice";
 import { editUnit } from "../services/redux/slices/unitSlice";
 
@@ -86,9 +87,9 @@ export default function EditProduct() {
 
   function fileChange(event, i) {
     const file = event.target.files[0];
-    const updatedFiles = [...files];
-
+    
     if (file !== undefined) {
+      const updatedFiles = [...files];
       updatedFiles[i] = {
         id: null,
         url: URL.createObjectURL(file),
@@ -108,6 +109,7 @@ export default function EditProduct() {
       fileArr[index] = { ...fileArr[index], status: "delete" };
     } else fileArr = files.filter((_, i) => i !== index);
 
+    dispatch(removeColor(index));
     setFiles(fileArr);
   }
 

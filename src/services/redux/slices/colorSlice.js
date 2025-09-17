@@ -10,19 +10,20 @@ const colorSlice = createSlice({
     newColor: null,
   },
   reducers: {
-    setup: (state, action) => {
-      state.colors =
-        action.payload.type === "ofc" ? OFC_COLORS : action.payload.arr;
+    // setup: (state, action) => {
+    //   state.colors =
+    //     action.payload.type === "ofc" ? OFC_COLORS : action.payload.arr;
 
-      state.type = action.payload.type === "ofc" ? "official" : "custom";
-    },
+    //   state.type = action.payload.type === "ofc" ? "official" : "custom";
+    // },
 
-    setColors: (state, action) => {
-        const data = action.payload;
-        state.newColor = state.type ? data.color.color : data.color;
-    }
+    // setColors: (state, action) => {
+    //     const data = action.payload;
+    //     state.newColor = state.type ? data.color.color : data.color;
+    // },
+
   },
 });
 
-export const {} = colorSlice.actions;
+// export const {  } = colorSlice.actions;
 export default colorSlice.reducer;

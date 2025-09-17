@@ -1,10 +1,17 @@
+import { formRepository } from "../../repositories/formRepository";
 import { unitRepository } from "../../repositories/unitRepository";
 
 export async function editUnitUseCase(data) {
-  const deletes = data.files.filter((file) => file.status === "delete");
-  const news = data.files.filter((file) => file.status === "new");
+  const payload = {
+    ...data.form,
+    _method: "PATCH",
+    colors: data.colors,
+    deletes: data.files.filter((f) => f.status === "delete").map((f) => f.id),
+    news: data.files.filter((f) => f.status === "new").map((f)=>f.file),
+  };
 
-  const response = await unitRepository.edit({ ...data, deletes, news });
+  const formData = formRepository.formData(payload);
+  const response = await unitRepository.edit(formData, data.id);
 
   return response;
 }

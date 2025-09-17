@@ -3,6 +3,7 @@ import { addUnitUseCase } from "../../usecases/unit/addUnitUseCase";
 import { unitRepository } from "../../repositories/unitRepository";
 import UnitAPI from "../../api/UnitAPI";
 import { MOTOR_BRANDS } from "../../../constants/brands";
+import { editUnitUseCase } from "../../usecases/unit/editUnitUseCase";
 
 export const addUnit = createAsyncThunk(
   "unit/addUnit",
@@ -19,7 +20,7 @@ export const editUnit = createAsyncThunk(
   "unit/editUnit",
   async (unit, thunkAPI) => {
     try {
-      return await unitRepository.edit(unit);
+      return await editUnitUseCase(unit);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

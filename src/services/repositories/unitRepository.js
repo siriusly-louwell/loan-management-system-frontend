@@ -28,9 +28,8 @@ export const unitRepository = {
     return await response;
   },
 
-  async edit(data) {
-    const form = this.appendData({ ...data }, "edit");
-    const response = await UnitAPI.edit(form, data.id);
+  async edit(data, id) {
+    const response = await UnitAPI.edit(data, id);
 
     if (!response) {
       return {

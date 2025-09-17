@@ -87,14 +87,17 @@ export default function EditProduct() {
   function fileChange(event, i) {
     const file = event.target.files[0];
     const updatedFiles = [...files];
-    updatedFiles[i] = {
-      id: null,
-      url: URL.createObjectURL(file),
-      file: file,
-      status: "new",
-    };
 
-    setFiles(updatedFiles);
+    if (file !== undefined) {
+      updatedFiles[i] = {
+        id: null,
+        url: URL.createObjectURL(file),
+        file: file,
+        status: "new",
+      };
+
+      setFiles(updatedFiles);
+    }
   }
 
   function removeFile(index) {
@@ -229,13 +232,17 @@ export default function EditProduct() {
                             className="border-b border-gray-400 mb-2">
                             <label
                               htmlFor={`file_${i}`}
-                              className="flex flex-col justify-center items-center rounded-2xl w-full cursor-pointer">
+                              className={`flex flex-col justify-center items-center rounded-2xl w-full ${
+                                file.status !== "keep" && "cursor-pointer"
+                              }`}>
                               <div className="self-end mb-1">
                                 <CloseBttn trigger={() => removeFile(i)} />
                               </div>
                               {file.status !== "ignore" ? (
                                 <img
-                                  className="w-auto h-[30vh] object-contain rounded-2xl flex-shrink-0 hover:opacity-80"
+                                  className={`w-auto h-[30vh] object-contain rounded-2xl flex-shrink-0 ${
+                                    file.status !== "keep" && "hover:opacity-80"
+                                  }`}
                                   src={file.url}
                                   alt="unit"
                                 />
@@ -255,13 +262,15 @@ export default function EditProduct() {
                                   </div>
                                 </div>
                               )}
-                              <input
-                                id={`file_${i}`}
-                                name={`file_${i}`}
-                                type="file"
-                                className="hidden"
-                                onChange={(e) => fileChange(e, i)}
-                              />
+                              {file.status !== "keep" && (
+                                <input
+                                  id={`file_${i}`}
+                                  name={`file_${i}`}
+                                  type="file"
+                                  className="hidden"
+                                  onChange={(e) => fileChange(e, i)}
+                                />
+                              )}
                             </label>
                             <div className="sm:flex space-x-2 justify-between mt-3 mb-2">
                               <div className="flex items-center space-x-2">

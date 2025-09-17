@@ -15,11 +15,17 @@ const UnitAPI = {
 
   async add(data) {
     const response = await axios.post(`${API_URL}/api/motorcycle/`, data);
+
     return response.data;
   },
 
   async edit(data, id) {
     const response = await axios.post(`${API_URL}/api/motorcycle/${id}`, data);
+    return response.data;
+  },
+
+  async patch(data, id) {
+    const response = await axios.patch(`${API_URL}/api/motorcycle/${id}`, data);
     return response.data;
   },
 

@@ -15,8 +15,7 @@ export const unitRepository = {
   },
 
   async add(data) {
-    const form = this.appendData({ ...data });
-    const response = await UnitAPI.add(form);
+    const response = await UnitAPI.add(data);
 
     if (!response) {
       return {
@@ -39,36 +38,6 @@ export const unitRepository = {
     }
 
     return await response;
-  },
-
-  appendData(data, type) {
-    const submitData = new FormData();
-    const form = data.form;
-
-    for (let key in form) {
-      submitData.append(`${key}`, form[key]);
-    }
-
-    data.colors.forEach((color) => submitData.append("colors[]", color));
-    data.files.forEach((obj) => {
-      const file = type === "edit" ? obj.file : obj;
-      submitData.append("files[]", file);
-    });
-
-    if (type === "edit") {
-      submitData.append("_method", "PATCH");
-
-      submitData.append(
-        "fileStats",
-        JSON.stringify(
-          data.files
-            .filter((obj) => obj.status !== "keep" && obj.status !== "ignore")
-            .map((obj) => ({ id: obj.id, status: obj.status }))
-        )
-      );
-    } else submitData.append(`quantity`, data.totalQuantity);
-
-    return submitData;
   },
 
   saveId(id) {

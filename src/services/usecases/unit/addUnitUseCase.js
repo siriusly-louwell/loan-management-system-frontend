@@ -1,3 +1,4 @@
+import { formRepository } from "../../repositories/formRepository";
 import { unitRepository } from "../../repositories/unitRepository";
 
 export async function addUnitUseCase(data) {
@@ -8,7 +9,15 @@ export async function addUnitUseCase(data) {
     };
 
   const totalQuantity = data.form.quantity.reduce((sum, num) => sum + num, 0);
-  const response = await unitRepository.add({ ...data, totalQuantity });
+  const payload = {
+    ...data.form,
+    quantity: totalQuantity,
+    colors: data.colors,
+    files: data.files,
+  };
+
+  const formData = formRepository.formData(payload);
+  const response = await unitRepository.add(formData);
 
   return response;
 }

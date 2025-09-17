@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import axios from "axios";
 import Ex from "../../assets/icons/Ex";
 import QuantityInput from "../buttons/QuantityInput";
@@ -6,8 +7,15 @@ import Button from "../buttons/Button";
 import Alert from "../Alert";
 import Spinner from "../loading components/Spinner";
 import ColorLabel from "../ColorLabel";
+import { useDispatch, useSelector } from "react-redux";
+import { UnitEntity } from "../../services/entities/Unit";
+import CloseBttn from "../buttons/CloseBttn";
+import { toggleModal } from "../../services/redux/slices/uiSlice";
 
 export default function StockModal({ stock, setStock }) {
+  const dispatch = useDispatch();
+  const unit = useSelector(UnitEntity);
+  const { modals } = useSelector((state) => state.ui);
   const [quantity, setQuantity] = useState([]);
   const [alert, setAlert] = useState({});
   const handleQuantity = (i, num, key) => {
@@ -46,57 +54,71 @@ export default function StockModal({ stock, setStock }) {
 
   return (
     <>
-      <div
-        id="stockModal"
-        tabIndex="-1"
-        className="fixed top-0 left-0 right-0 z-50 p-20 bg-gray-500 bg-opacity-30 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div className="relative w-full h-auto max-w-md max-h-full">
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 border dark:border-gray-500">
-            <button
-              type="button"
-              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-              data-modal-toggle="delete-modal"
-              onClick={() => setStock({ ...stock, type: "" })}>
-              <Ex className="w-5 h-5" />
-              <span className="sr-only">Close modal</span>
-            </button>
-            <div className="p-6 items-center">
-              <h2 className="text-lg font-semibold text-gray-900 w-full text-center pb-4 mb-4 border-b border-gray-400 dark:text-white">
-                Stock Management
-              </h2>
-              <div className="grid sm:grid-cols-2 mb-3 gap-4">
-                <div class="grid col-span-2 sm:grid-cols-2">
-                  <img
-                    class="h-16 w-16 rounded-lg"
-                    src={`http://127.0.0.1:8000/storage/${stock.img}`}
-                    alt="Helene avatar"
+      <div className="fixed top-0 left-0 right-0 z-40 p-20 bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <AnimatePresence>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 1 }}
+            animate={{ scale: [0.8, 1, 1], opacity: 1 }}
+            transition={{
+              duration: 0.2,
+              ease: "easeOut",
+            }}>
+            <div className="relative w-full h-auto max-w-md max-h-full">
+              <div className="relative flex flex-col bg-white rounded-lg shadow dark:bg-gray-800 border dark:border-gray-500">
+                <div className="self-end mr-1 mt-1">
+                  <CloseBttn
+                    trigger={() =>
+                      dispatch(
+                        toggleModal({
+                          name: "unitStock",
+                          value: modals?.unitStock,
+                        })
+                      )
+                    }
                   />
-                  <p class="flex items-center text-lg font-bold leading-none text-gray-900 dark:text-white">
-                    {stock.name}
-                  </p>
                 </div>
-                <p>Current Stock: </p>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  {stock.quantity}
-                </span>
-                {stock.colors.map((color, i) => (
-                  <div className="grid col-span-2 grid-cols-3 border-t border-gray-400">
-                    <p className="mt-5">Color:</p>
-                    <div className="mt-5">
-                      <ColorLabel style={color.color} size={7} />
+                <div className="p-6 pt-0 items-center">
+                  <h2 className="text-lg font-semibold text-gray-900 w-full text-center pb-4 mb-4 border-b border-gray-400 dark:text-white">
+                    Stock Management
+                  </h2>
+                  <div className="grid sm:grid-cols-2 mb-3 gap-4">
+                    <div className="grid col-span-2 sm:grid-cols-2">
+                      <img
+                        className="h-26 w-28 rounded-lg object-cover"
+                        src={unit.imgURL()}
+                        alt="unit"
+                      />
+                      <p className="flex items-center text-lg font-bold leading-none text-gray-900 dark:text-white">
+                        {unit.name}
+                      </p>
                     </div>
-                    <QuantityInput
-                      max={200}
-                      index={i}
-                      change={handleQuantity}
-                    />
+                    <p className="dark:text-white">Current Stock: </p>
+                    <span className="text-xl font-bold text-gray-900 dark:text-white">
+                      {/* {stock.quantity} */}
+                      {unit.quantity}
+                    </span>
+                    {unit.colors.map((color, i) => (
+                      <div
+                        key={i}
+                        className="grid col-span-2 grid-cols-3 border-t border-gray-400">
+                        <p className="mt-5 dark:text-white">Color:</p>
+                        <div className="mt-5">
+                          <ColorLabel style={color.color} size={7} />
+                        </div>
+                        <QuantityInput
+                          max={200}
+                          index={i}
+                          change={handleQuantity}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                  <Button text="Done" onclick={changeStock} />
+                </div>
               </div>
-              <Button text="Done" onclick={changeStock} />
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
       <Spinner id="stockSpinner" text="Adjusting stock... " />
       <Alert id="done_stock" text={alert.text} icon={alert.icon}>

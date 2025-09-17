@@ -30,23 +30,28 @@ export default function Inventory() {
   }
 
   async function adjustStock(type, id) {
-    const response = await fetch(`http://localhost:8000/api/motorcycle/${id}`);
+    dispatch(setLoading({ text: "Fetching data...", isActive: true }));
+    await dispatch(fetchUnit(id));
+    dispatch(toggleModal({ name: "unitStock", value: modals?.unitStock }));
+    dispatch(setLoading({ isActive: false }));
 
-    if (!response.ok) {
-      throw new Error("Motorcycle not found");
-    }
+    // const response = await fetch(`http://localhost:8000/api/motorcycle/${id}`);
 
-    const data = await response.json();
-    setStock({
-      ...stock,
-      id: data.id,
-      modal: false,
-      quantity: data.quantity,
-      colors: data.colors,
-      type: type,
-      img: data.file_path,
-      name: data.name,
-    });
+    // if (!response.ok) {
+    //   throw new Error("Motorcycle not found");
+    // }
+
+    // const data = await response.json();
+    // setStock({
+    //   ...stock,
+    //   id: data.id,
+    //   modal: false,
+    //   quantity: data.quantity,
+    //   colors: data.colors,
+    //   type: type,
+    //   img: data.file_path,
+    //   name: data.name,
+    // });
   }
 
   return (
@@ -63,8 +68,9 @@ export default function Inventory() {
         stock={stock}
         setStock={setStock}
       />
-      {modals?.editUnit && <EditProduct motor={{}} />}
-      {stock.type !== "" && <StockModal setStock={setStock} stock={stock} />}
+      {modals?.editUnit && <EditProduct />}
+      {modals?.unitStock && <StockModal setStock={setStock} stock={stock} />}
+      {/* {stock.type !== "" && <StockModal setStock={setStock} stock={stock} />} */}
     </CRUDformat>
   );
 }

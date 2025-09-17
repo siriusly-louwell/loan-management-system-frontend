@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import motor_icon from "../../assets/images/motor_icon.png";
 
 export class Unit {
   constructor({
@@ -32,7 +33,9 @@ export class Unit {
   }
 
   imgURL() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.file_path}`;
+    return this.file_path === "motor_icon"
+      ? motor_icon
+      : `${process.env.REACT_APP_API_URL}/storage/${this.file_path}`;
   }
 
   isBrand(filter) {

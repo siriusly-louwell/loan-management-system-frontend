@@ -28,11 +28,13 @@ import {
   removeColor,
 } from "../services/redux/slices/formSlice";
 import { editUnit } from "../services/redux/slices/unitSlice";
+import FormSelect from "../components/inputs/FormSelect";
 
 export default function EditProduct() {
   const dispatch = useDispatch();
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
+  const { brands } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
   const { colors, formData } = useSelector((state) => state.form);
   const [files, setFiles] = useState([]);
@@ -87,7 +89,7 @@ export default function EditProduct() {
 
   function fileChange(event, i) {
     const file = event.target.files[0];
-    
+
     if (file !== undefined) {
       const updatedFiles = [...files];
       updatedFiles[i] = {
@@ -164,14 +166,16 @@ export default function EditProduct() {
                       name="name"
                       id="name"
                     />
-                    <FormInput
+                    <FormSelect
                       label="Brand Name"
-                      type="text"
                       name="brand"
                       id="brand"
-                      value={formData.editUnit.brand || ""}
-                      onchange={(e) => dispatchInput(e)}
-                    />
+                      value={formData.createUnit.brand || ""}
+                      onchange={dispatchInput}>
+                      {brands.map((brand, i) => (
+                        <option key={i}>{brand}</option>
+                      ))}
+                    </FormSelect>
                     <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                       <FormInput
                         label="Price"

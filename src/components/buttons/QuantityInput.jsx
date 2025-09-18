@@ -4,13 +4,11 @@ import { handleQuantity } from "../../services/redux/slices/formSlice";
 
 export default function QuantityInput({
   label,
-  max,
+  max = 200,
   require,
   index,
-  change,
   quantType,
 }) {
-  const { formData, formType } = useSelector((state) => state.form);
   const dispatch = useDispatch();
   const [number, setNumber] = useState(1);
 
@@ -110,11 +108,11 @@ export default function QuantityInput({
           </svg>
         </button>
       </div>
-      <p
-        id="helper-text-explanation"
-        className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-        Must not exceed <strong>{max}</strong> units
-      </p>
+      {max < 200 && (
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          Must not exceed <strong>{max}</strong> units
+        </p>
+      )}
     </div>
   );
 }

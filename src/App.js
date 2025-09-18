@@ -24,7 +24,6 @@ import Profile from "./pages/Profile";
 import EMICalculator from "./pages/EMICalculator";
 import ApplicationForm from "./pages/ApplicationForm";
 import TransactionForm from "./pages/TransactionForm";
-import TransactionFormat from "./components/TransactionFormat";
 import PersonalInfoForm from "./pages/PersonalInfoForm";
 import EmploymentInfoForm from "./pages/EmploymentInfoForm";
 import FamilyInfoForm from "./pages/FamilyInfoForm";
@@ -49,6 +48,7 @@ import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
 import GlobalLoading from "./components/loading components/GlobalLoading";
 import { UserEntity } from "./services/entities/User";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +67,7 @@ function App() {
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<PageNotFound />} />
 
         {/* Guest Routes */}
@@ -245,7 +246,6 @@ function App() {
 
           <Route path="apply" element={<ApplicationForm />}>
             <Route index element={<TransactionForm />} />
-            <Route path="transaction" element={<TransactionFormat />} />
             <Route path="personalinfo" element={<PersonalInfoForm />} />
             <Route path="employinfo" element={<EmploymentInfoForm />} />
             <Route path="familyinfo" element={<FamilyInfoForm />} />

@@ -2,24 +2,27 @@ import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
 import { UserEntity } from "../services/entities/User";
+import { useEffect } from "react";
 
 export default function ProtectedRoute({ children, type }) {
   const { loading, loggedOut } = useSelector((state) => state.auth);
   const user = useSelector(UserEntity);
   const dispatch = useDispatch();
-  const isUnauthorized = !loading && !loggedOut && !user.isAuthorized(type);
+  let isUnauthorized = !loading && !loggedOut && !user?.isAuthorized(type);
 
-  if (isUnauthorized) {
-    dispatch(setAlert({ message: "Unauthorized access", type: "error" }));
-  }
+  useEffect(() => {
+    if (isUnauthorized)
+      dispatch(setAlert({ message: "Unauthorized access", type: "error" }));
+  }, [isUnauthorized, dispatch]);
 
-  if (loading) {
-    dispatch(setLoading({ isActive: true, text: "Loading..." }));
+  useEffect(() => {
+    if (loading) dispatch(setLoading({ isActive: true, text: "Loading..." }));
+    else dispatch(setLoading({ isActive: false }));
+  }, [loading, dispatch]);
 
-    return <div></div>;
-  } else dispatch(setLoading({ isActive: false }));
+  if (loading) return <div></div>;
 
-  if (isUnauthorized || loggedOut) return <Navigate to="/login" replace />;
+  if (isUnauthorized || loggedOut) return <Navigate to="/unauthorized" replace />;
 
   return children;
 }

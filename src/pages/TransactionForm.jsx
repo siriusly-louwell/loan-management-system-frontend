@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
-import TransactionFormat from "../components/TransactionFormat";
 import SmallLabel from "../components/texts/SmallLabel";
 import SmallSpin from "../components/loading components/SmallSpin";
 import QuantityInput from "../components/buttons/QuantityInput";

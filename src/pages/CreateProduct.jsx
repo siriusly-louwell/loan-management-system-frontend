@@ -6,7 +6,7 @@ import {
   setAlert,
   toggleModal,
 } from "../services/redux/slices/uiSlice";
-import { addUnit } from "../services/redux/slices/unitSlice";
+import { addUnit, fetchUnits } from "../services/redux/slices/unitSlice";
 import FormInput from "../components/inputs/FormInput";
 import FormTextarea from "../components/inputs/FormTextarea";
 import Button from "../components/buttons/Button";
@@ -47,6 +47,7 @@ export default function CreateProduct() {
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(resetInput());
       setFiles([]);
+      dispatch(fetchUnits());
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));

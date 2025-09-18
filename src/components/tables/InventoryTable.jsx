@@ -8,19 +8,25 @@ import CustomBadge from "../badges/CustomBadge";
 import EmptyFolder from "../empty states/EmptyFolder";
 import SmallSpin from "../loading components/SmallSpin";
 import Plus from "../../assets/icons/Plus";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UnitEntities } from "../../services/entities/Unit";
 import RowSkeleton from "../loading components/RowSkeleton";
+import { setLoading, toggleModal } from "../../services/redux/slices/uiSlice";
+import { fetchUnit } from "../../services/redux/slices/unitSlice";
 
-export default function InventoryTable({
-  editMotor,
-  setStock,
-  stock,
-  adjustStock,
-}) {
+export default function InventoryTable({ adjustStock }) {
+  const dispatch = useDispatch();
   const motors = useSelector(UnitEntities);
+  const { modals } = useSelector((state) => state.ui);
   const { unitsLoading } = useSelector((state) => state.unit);
   if (!unitsLoading) motors.sort((a, b) => b.id - a.id);
+
+  async function unitModal(id, modal) {
+    dispatch(setLoading({ text: "Fetching data...", isActive: true }));
+    await dispatch(fetchUnit(id));
+    dispatch(setLoading({ isActive: false }));
+    dispatch(toggleModal({ name: modal, value: modals?.[modal] }));
+  }
 
   return (
     <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
@@ -40,7 +46,7 @@ export default function InventoryTable({
           ]}
         />
         <tbody>
-          {motors.map((motor) => (
+          {!unitsLoading && motors.map((motor) => (
             <ProductRow
               key={motor.id}
               recent={motor.isNew()}
@@ -70,7 +76,7 @@ export default function InventoryTable({
                 <div className="flex items-center space-x-4">
                   <CustomBttn
                     text="Edit"
-                    onclick={() => editMotor(motor.id)}
+                    onclick={() => unitModal(motor.id, "editUnit")}
                     classname="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-rose-600 rounded-lg hover:bg-rose-600 focus:ring-4 focus:outline-none focus:ring-rose-600 dark:bg-rose-600 dark:hover:bg-rose-500 dark:focus:bg-rose-700 dark:focus:ring-rose-600">
                     <Edit />
                   </CustomBttn>

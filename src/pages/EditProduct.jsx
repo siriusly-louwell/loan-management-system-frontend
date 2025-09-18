@@ -27,7 +27,7 @@ import {
   setType,
   removeColor,
 } from "../services/redux/slices/formSlice";
-import { editUnit } from "../services/redux/slices/unitSlice";
+import { editUnit, fetchUnits } from "../services/redux/slices/unitSlice";
 import FormSelect from "../components/inputs/FormSelect";
 
 export default function EditProduct() {
@@ -75,6 +75,7 @@ export default function EditProduct() {
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(setLoading({ isActive: false }));
       dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
+      dispatch(fetchUnits());
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));

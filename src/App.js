@@ -548,17 +548,17 @@ function App() {
           <Route
             path=""
             element={
+              <ProtectedRoute type="admin">
                 <Inventory />
-              // <ProtectedRoute type="admin">
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
           <Route
             path="inventory"
             element={
+              <ProtectedRoute type="admin">
                 <Inventory />
-              // <ProtectedRoute type="admin">
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
           <Route

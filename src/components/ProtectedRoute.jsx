@@ -7,9 +7,9 @@ export default function ProtectedRoute({ children, type }) {
   const { loading, loggedOut } = useSelector((state) => state.auth);
   const user = useSelector(UserEntity);
   const dispatch = useDispatch();
-  const isUnauthorized = !loading && !loggedOut && !user.isAuthorized(type);
+  let isUnauthorized = !loading && !loggedOut && !user?.isAuthorized(type);
 
-  if (isUnauthorized) {
+  if (isUnauthorized || !user.id) {
     dispatch(setAlert({ message: "Unauthorized access", type: "error" }));
   }
 

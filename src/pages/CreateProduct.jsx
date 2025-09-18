@@ -26,12 +26,14 @@ import {
 } from "../services/redux/slices/formSlice";
 
 export default function CreateProduct() {
+  const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const { brands } = useSelector((state) => state.unit);
   const { colors, formData, formType } = useSelector((state) => state.form);
-  const [rows, setRows] = useState([""]);
+  const [colorRows, setColorRows] = useState([""]);
+  const [angleRows, setAngleRows] = useState([""]);
   const [files, setFiles] = useState([]);
-  const dispatch = useDispatch();
+  const [angles, setAngle] = useState([]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -67,12 +69,25 @@ export default function CreateProduct() {
     setFiles(updatedFiles);
   }
 
+  function angleChange(event, i) {
+    const updatedFiles = [...angles];
+    updatedFiles[i] = event.target.files[0];
+
+    setAngle(updatedFiles);
+  }
+
   function removeFile(index) {
     const fileArr = files.filter((_, i) => i !== index);
-    const rowArr = rows.filter((_, i) => i !== index);
+    const rowArr = colorRows.filter((_, i) => i !== index);
 
-    setRows(rowArr);
+    setColorRows(rowArr);
     setFiles(fileArr);
+  }
+
+  function removeAngle(index) {
+    const fileArr = angles.filter((_, i) => i !== index);
+
+    setAngle(fileArr);
   }
 
   function dispatchInput(event) {
@@ -86,9 +101,7 @@ export default function CreateProduct() {
   }
 
   return (
-    <div
-      id="createProduct"
-      className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+    <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
       <AnimatePresence>
         <motion.div
           initial={{ scale: 0.8, opacity: 1 }}
@@ -97,14 +110,13 @@ export default function CreateProduct() {
             duration: 0.2,
             ease: "easeOut",
           }}>
-          <div className="relative p-4 w-full max-w-6xl h-full md:h-auto">
+          <div className="relative p-4 w-full lg:w-[120vh] h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Add Unit
                 </h3>
                 <CloseBttn
-                  id="createProduct"
                   trigger={() =>
                     dispatch(
                       toggleModal({
@@ -115,8 +127,8 @@ export default function CreateProduct() {
                   }
                 />
               </div>
-              <form onSubmit={handleSubmit} className="lg:flex">
-                <section className="lg:w-1/2 lg:pr-3">
+              <form onSubmit={handleSubmit} className="w-full">
+                <section className="lg:pr-3">
                   <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
                     Motorcycle Details
                   </h3>
@@ -200,91 +212,9 @@ export default function CreateProduct() {
                       placeholder="Write motorcycle description here"
                     />
                   </div>
-                  <div className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
-                    <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Images & Colors
-                    </span>
-                    {rows.map((_, i) => (
-                      <section
-                        key={i}
-                        className="border-b border-gray-400 mb-2">
-                        <label
-                          htmlFor={`dropzone_${i}`}
-                          className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
-                          <div className="self-end mb-1">
-                            <CloseBttn trigger={() => removeFile(i)} />
-                          </div>
-                          {files.length > 0 && files[i] ? (
-                            <img
-                              className="w-auto h-[30vh] object-contain rounded-lg flex-shrink-0 hover:opacity-80"
-                              src={URL.createObjectURL(files[i])}
-                              alt="unit"
-                            />
-                          ) : (
-                            <div className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                              <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                <Cloud />
-                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                  <span className="font-semibold">
-                                    Click to upload{" "}
-                                  </span>
-                                  or drag and drop
-                                </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
-                                  SVG, PNG or JPG (MAX. 800x400px)
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                          <input
-                            id={`dropzone_${i}`}
-                            name={`file_${i}`}
-                            type="file"
-                            className="hidden"
-                            onChange={(e) => fileChange(e, i)}
-                          />
-                        </label>
-                        <div className="sm:flex justify-between items-center mb-3">
-                          <div className="flex items-center space-x-2">
-                            <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                              Color:
-                            </p>
-                            {colors.length > 0 && colors[i] && (
-                              <ColorLabel style={colors[i]} />
-                            )}
-                            <CustomBttn
-                              text="Select Color"
-                              onclick={() => {
-                                dispatch(setColorIndex(i));
-                                dispatch(
-                                  toggleModal({
-                                    name: "colorModal",
-                                    value: modals?.colorModal,
-                                  })
-                                );
-                              }}
-                              classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
-                            />
-                          </div>
-                          <QuantityInput
-                            max={200}
-                            label="Quantity"
-                            index={i}
-                            type="create-unit"
-                          />
-                        </div>
-                      </section>
-                    ))}
-                    <BttnwithIcon
-                      type="button"
-                      text="Add Color"
-                      click={() => setRows([...rows, ""])}>
-                      <Plus />
-                    </BttnwithIcon>
-                  </div>
                 </section>
 
-                <section className="lg:w-1/2 border-l border-gray-300 lg:pl-3">
+                <section className="lg:pl-3">
                   <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
                     Specifications
                   </h3>
@@ -511,7 +441,7 @@ export default function CreateProduct() {
                       />
                     </div>
                   </div>
-                  <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
+                  <div className="grid gap-4 mb-5 pb-2 sm:grid-cols-2">
                     <FormInput
                       label="ABS"
                       type="text"
@@ -578,6 +508,156 @@ export default function CreateProduct() {
                       />
                     </div>
                   </div>
+                </section>
+
+                <section>
+                  <div className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
+                    <section className="flex w-full justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
+                        Images & Colors
+                      </h3>
+                      <BttnwithIcon
+                        type="button"
+                        text="Add Image"
+                        click={() => setColorRows([...colorRows, ""])}>
+                        <Plus />
+                      </BttnwithIcon>
+                    </section>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {colorRows.map((_, i) => (
+                        <section
+                          key={i}
+                          className="border-b border-gray-400 pb-2">
+                          <label
+                            htmlFor={`dropzone_${i}`}
+                            className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
+                            <div className="self-end mb-1">
+                              <CloseBttn trigger={() => removeFile(i)} />
+                            </div>
+                            {files.length > 0 && files[i] ? (
+                              <img
+                                className="w-auto h-[15vh] object-contain rounded-lg flex-shrink-0 hover:opacity-80"
+                                src={URL.createObjectURL(files[i])}
+                                alt="unit"
+                              />
+                            ) : (
+                              <div className="flex flex-col justify-center items-center w-full h-[15vh] bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                                  <Cloud />
+                                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="font-semibold">
+                                      Click to upload{" "}
+                                    </span>
+                                    or drag and drop
+                                  </p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    SVG, PNG or JPG (MAX. 800x400px)
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                            <input
+                              id={`dropzone_${i}`}
+                              name={`file_${i}`}
+                              type="file"
+                              className="hidden"
+                              onChange={(e) => fileChange(e, i)}
+                            />
+                          </label>
+                          <div className="flex justify-between items-center mt-3">
+                            <div className="flex items-center space-x-2">
+                              <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
+                                Color:
+                              </p>
+                              {colors.length > 0 && colors[i] && (
+                                <ColorLabel style={colors[i]} />
+                              )}
+                              <CustomBttn
+                                text="Select Color"
+                                onclick={() => {
+                                  dispatch(setColorIndex(i));
+                                  dispatch(
+                                    toggleModal({
+                                      name: "colorModal",
+                                      value: modals?.colorModal,
+                                    })
+                                  );
+                                }}
+                                classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
+                              />
+                            </div>
+                            <QuantityInput
+                              // max={200}
+                              label="Quantity"
+                              index={i}
+                              type="create-unit"
+                            />
+                          </div>
+                        </section>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <div className="mb-4 gap-y-2 pt-5">
+                    <section className="flex w-full justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
+                        Motorcycle Angles
+                      </h3>
+                      <BttnwithIcon
+                        type="button"
+                        text="Add Angle"
+                        click={() => setAngleRows([...angleRows, ""])}>
+                        <Plus />
+                      </BttnwithIcon>
+                    </section>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                      {angleRows.map((_, i) => (
+                        <section
+                          key={i}
+                          className="border-b border-gray-400 mb-2 pb-2">
+                          <label
+                            htmlFor={`angle_${i}`}
+                            className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
+                            <div className="self-end mb-1">
+                              <CloseBttn trigger={() => removeAngle(i)} />
+                            </div>
+                            {angles.length > 0 && angles[i] ? (
+                              <img
+                                className="w-auto h-[15vh] object-contain rounded-lg flex-shrink-0 hover:opacity-80"
+                                src={URL.createObjectURL(angles[i])}
+                                alt="unit"
+                              />
+                            ) : (
+                              <div className="flex flex-col justify-center items-center w-full h-[15vh] bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                                  <Cloud />
+                                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="font-semibold">
+                                      Click to upload{" "}
+                                    </span>
+                                    or drag and drop
+                                  </p>
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    SVG, PNG or JPG (MAX. 800x400px)
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                            <input
+                              id={`angle_${i}`}
+                              name={`angle_${i}`}
+                              type="file"
+                              className="hidden"
+                              onChange={(e) => angleChange(e, i)}
+                            />
+                          </label>
+                        </section>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                     <Button text="Add Unit" bttnType="submit" />
                   </div>

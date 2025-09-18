@@ -1,8 +1,6 @@
 import React from "react";
-import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CustomBttn from "../components/buttons/CustomBttn";
-import BasicBttn from "../components/buttons/BasicBttn";
 import Plus from "../assets/icons/Plus";
 import DropdownBttn from "../components/buttons/DropdownBttn";
 import Filter from "../assets/icons/Filter";
@@ -11,19 +9,10 @@ import Search from "../assets/icons/Search";
 import DropdownMenu from "../components/DropdownMenu";
 import MenuLink from "../components/links/MenuLink";
 import PageNav from "../components/PageNav";
-import Alert from "../components/Alert";
-import StockModal from "./modals/StockModal";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 
-export default function CRUDformat({
-  children,
-  addModal,
-  label,
-  modalId,
-  modal,
-  adjustStock,
-}) {
+export default function CRUDformat({ children, addModal, label }) {
   const { modals } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -99,21 +88,6 @@ export default function CRUDformat({
         </div>
       </section>
       {modals.createUnit && addModal}
-      {/* {addModal} */}
-      {modal && (
-        <Alert id="stock_adjust" text="Stock Adjustment Type:" icon="warn">
-          <CustomBttn
-            text="Restock"
-            onclick={() => adjustStock("restock")}
-            classname="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-          />
-          <CustomBttn
-            text="Destock"
-            onclick={() => adjustStock("destock")}
-            classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-          />
-        </Alert>
-      )}
     </>
   );
 }

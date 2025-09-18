@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import FormInput from "../components/inputs/FormInput";
 import FormTextarea from "../components/inputs/FormTextarea";
 import Button from "../components/buttons/Button";
@@ -226,96 +225,6 @@ export default function EditProduct() {
                     onchange={(e) => dispatchInput(e)}
                   />
                 </div>
-                {/* <div className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
-                    <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Images & Colors
-                    </span>
-                    {files.map(
-                      (file, i) =>
-                        file.status !== "delete" && (
-                          <section
-                            key={i}
-                            className="border-b border-gray-400 mb-2">
-                            <label
-                              htmlFor={`file_${i}`}
-                              className={`flex flex-col justify-center items-center rounded-2xl w-full ${
-                                file.status !== "keep" && "cursor-pointer"
-                              }`}>
-                              <div className="self-end mb-1">
-                                <CloseBttn trigger={() => removeFile(i)} />
-                              </div>
-                              {file.status !== "ignore" ? (
-                                <img
-                                  className={`w-auto h-[30vh] object-contain rounded-2xl flex-shrink-0 ${
-                                    file.status !== "keep" && "hover:opacity-80"
-                                  }`}
-                                  src={file.url}
-                                  alt="unit"
-                                />
-                              ) : (
-                                <div className="flex flex-col justify-center items-center w-full h-24 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                  <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                    <Cloud />
-                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                      <span className="font-semibold">
-                                        Click to upload{" "}
-                                      </span>
-                                      or drag and drop
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                      SVG, PNG or JPG (MAX. 800x400px)
-                                    </p>
-                                  </div>
-                                </div>
-                              )}
-                              {file.status !== "keep" && (
-                                <input
-                                  id={`file_${i}`}
-                                  name={`file_${i}`}
-                                  type="file"
-                                  className="hidden"
-                                  onChange={(e) => fileChange(e, i)}
-                                />
-                              )}
-                            </label>
-                            <div className="sm:flex space-x-2 justify-between mt-3 mb-2">
-                              <div className="flex items-center space-x-2">
-                                <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                                  Color:
-                                </p>
-                                {colors.length > 0 && colors[i] && (
-                                  <ColorLabel style={colors[i]} />
-                                )}
-                                <CustomBttn
-                                  text="Select Color"
-                                  onclick={() => {
-                                    dispatch(setColorIndex(i));
-                                    dispatch(
-                                      toggleModal({
-                                        name: "colorModal",
-                                        value: modals?.colorModal,
-                                      })
-                                    );
-                                  }}
-                                  classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
-                                />
-                              </div>
-                            </div>
-                          </section>
-                        )
-                    )}
-                    <BttnwithIcon
-                      type="button"
-                      text="Add Color"
-                      click={() =>
-                        setFiles([
-                          ...files,
-                          { id: null, url: null, file: null, status: "ignore" },
-                        ])
-                      }>
-                      <Plus />
-                    </BttnwithIcon>
-                  </div> */}
               </section>
 
               <section className="lg:pl-3">

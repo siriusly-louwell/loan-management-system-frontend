@@ -49,6 +49,7 @@ import Accounts from "./pages/Accounts";
 import Alert from "./components/modals/Alert";
 import GlobalLoading from "./components/loading components/GlobalLoading";
 import { UserEntity } from "./services/entities/User";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function App() {
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<PageNotFound />} />
 
         {/* Guest Routes */}

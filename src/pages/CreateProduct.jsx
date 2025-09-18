@@ -86,8 +86,10 @@ export default function CreateProduct() {
 
   function removeAngle(index) {
     const fileArr = angles.filter((_, i) => i !== index);
+    const angleArr = angleRows.filter((_, i) => i !== index);
 
     setAngle(fileArr);
+    setAngleRows(angleArr);
   }
 
   function dispatchInput(event) {
@@ -587,7 +589,6 @@ export default function CreateProduct() {
                               />
                             </div>
                             <QuantityInput
-                              // max={200}
                               label="Quantity"
                               index={i}
                               type="create-unit"

@@ -24,7 +24,6 @@ import Profile from "./pages/Profile";
 import EMICalculator from "./pages/EMICalculator";
 import ApplicationForm from "./pages/ApplicationForm";
 import TransactionForm from "./pages/TransactionForm";
-import TransactionFormat from "./components/TransactionFormat";
 import PersonalInfoForm from "./pages/PersonalInfoForm";
 import EmploymentInfoForm from "./pages/EmploymentInfoForm";
 import FamilyInfoForm from "./pages/FamilyInfoForm";
@@ -247,7 +246,6 @@ function App() {
 
           <Route path="apply" element={<ApplicationForm />}>
             <Route index element={<TransactionForm />} />
-            <Route path="transaction" element={<TransactionFormat />} />
             <Route path="personalinfo" element={<PersonalInfoForm />} />
             <Route path="employinfo" element={<EmploymentInfoForm />} />
             <Route path="familyinfo" element={<FamilyInfoForm />} />
@@ -550,17 +548,17 @@ function App() {
           <Route
             path=""
             element={
-              <ProtectedRoute type="admin">
                 <Inventory />
-              </ProtectedRoute>
+              // <ProtectedRoute type="admin">
+              // </ProtectedRoute>
             }
           />
           <Route
             path="inventory"
             element={
-              <ProtectedRoute type="admin">
                 <Inventory />
-              </ProtectedRoute>
+              // <ProtectedRoute type="admin">
+              // </ProtectedRoute>
             }
           />
           <Route

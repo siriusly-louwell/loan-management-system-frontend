@@ -8,7 +8,11 @@ import ColorLabel from "../ColorLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntity } from "../../services/entities/Unit";
 import CloseBttn from "../buttons/CloseBttn";
-import { setAlert, setLoading, toggleModal } from "../../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../../services/redux/slices/uiSlice";
 import PopAnimate from "../animations/popAnimate";
 import { setType } from "../../services/redux/slices/formSlice";
 import { editUnit, fetchUnits } from "../../services/redux/slices/unitSlice";
@@ -18,7 +22,7 @@ export default function StockModal({ stock, setStock }) {
   const unit = useSelector(UnitEntity);
   const { modals } = useSelector((state) => state.ui);
   const { formData } = useSelector((state) => state.form);
-  const [quantity, setQuantity] = useState([]);
+  // const [quantity, setQuantity] = useState([]);
   // const [alert, setAlert] = useState({});
 
   // const handleQuantity = (i, num, key) => {
@@ -32,28 +36,29 @@ export default function StockModal({ stock, setStock }) {
   }, []);
 
   async function changeStock() {
-    document.getElementById("stockSpinner").style.display = "flex";
-    const totalQuantity = quantity.reduce((sum, num) => sum + num, 0);
+    // document.getElementById("stockSpinner").style.display = "flex";
+    // const totalQuantity = quantity.reduce((sum, num) => sum + num, 0);
+    dispatch(setLoading({ isActive: true, text: "Updating stock..." }));
 
     try {
-          const response = await dispatch(
-            editUnit({ quantity: totalQuantity, id: unit.id })
-          ).unwrap();
-    
-          dispatch(setAlert({ message: response.message, type: response.type }));
-          dispatch(setLoading({ isActive: false }));
-          dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
-          dispatch(fetchUnits());
-        } catch (error) {
-          console.error("Error: ", error);
-          dispatch(setLoading({ isActive: false }));
-          dispatch(
-            setAlert({
-              message: "Unexpected error. Something went wrong.",
-              type: "error",
-            })
-          );
-        }
+      const response = await dispatch(
+        editUnit({ form: formData.editUnit, type: "patch" })
+      ).unwrap();
+
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      dispatch(setLoading({ isActive: false }));
+      dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
+      dispatch(fetchUnits());
+    } catch (error) {
+      console.error("Error: ", error);
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Unexpected error. Something went wrong.",
+          type: "error",
+        })
+      );
+    }
 
     // try {
     //   const response = await axios.patch(

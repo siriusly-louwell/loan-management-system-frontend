@@ -51,7 +51,7 @@ export default function ProductInfo({ staff = false }) {
             <>
               <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
                 <BasicCarousel length={images.length}>
-                  {unitLoading ? (
+                  {unitLoading.isActive ? (
                     //   <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
                     <div className="flex justify-center items-center w-full h-full">
                       <ImageSkeleton />
@@ -89,7 +89,7 @@ export default function ProductInfo({ staff = false }) {
               </div>
 
               <div className="mt-6 sm:mt-8 lg:mt-0">
-                {unitLoading ? (
+                {unitLoading.isActive ? (
                   <h1 className="h-5 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-60 mb-4"></h1>
                 ) : (
                   <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
@@ -98,7 +98,7 @@ export default function ProductInfo({ staff = false }) {
                 )}
 
                 <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
-                  {unitLoading ? (
+                  {unitLoading.isActive ? (
                     <p className="h-8 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-40 mb-4"></p>
                   ) : (
                     <p className="text-2xl font-extrabold text-rose-600 sm:text-3xl dark:text-rose-500">
@@ -107,7 +107,7 @@ export default function ProductInfo({ staff = false }) {
                   )}
                   <div className="flex space-x-2">
                     <div className="grid grid-cols-10 gap-y-2">
-                      {unitLoading
+                      {unitLoading.isActive
                         ? ""
                         : unit.colors.map((color, i) => (
                             <div key={i}>
@@ -132,7 +132,7 @@ export default function ProductInfo({ staff = false }) {
                   <SmallLabel
                     label="Annual Interest"
                     text={
-                      unitLoading ? (
+                      unitLoading.isActive ? (
                         <SmallSpin size={20} />
                       ) : (
                         `${unit.interest}%`
@@ -142,7 +142,7 @@ export default function ProductInfo({ staff = false }) {
                   <SmallLabel
                     label="Rebate"
                     text={
-                      unitLoading ? (
+                      unitLoading.isActive ? (
                         <SmallSpin size={20} />
                       ) : (
                         `₱${parseFloat(unit.rebate).toLocaleString()}`
@@ -152,7 +152,7 @@ export default function ProductInfo({ staff = false }) {
                   <SmallLabel
                     label="Loan Tenure"
                     text={
-                      unitLoading ? (
+                      unitLoading.isActive ? (
                         <SmallSpin size={20} />
                       ) : (
                         `${unit.tenure} years`
@@ -162,7 +162,7 @@ export default function ProductInfo({ staff = false }) {
                   <SmallLabel
                     label="Stock"
                     text={
-                      unitLoading ? (
+                      unitLoading.isActive ? (
                         <SmallSpin size={20} />
                       ) : (
                         `${unit.quantity} units`
@@ -198,7 +198,7 @@ export default function ProductInfo({ staff = false }) {
                 </div>
                 <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
                 <div className="mb-6 text-gray-500 dark:text-gray-400">
-                  {unitLoading ? (
+                  {unitLoading.isActive ? (
                     <>
                       <div className="w-full flex justify-between items-start animate-pulse">
                         <div className="block">
@@ -254,7 +254,7 @@ export default function ProductInfo({ staff = false }) {
         down={unit.downpayment}
         interest={unit.interest}
         staff={staff}
-        load={unitLoading}
+        load={unitLoading.isActive}
       />
     </section>
   );

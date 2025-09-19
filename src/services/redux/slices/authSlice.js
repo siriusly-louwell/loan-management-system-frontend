@@ -32,7 +32,7 @@ const authSlice = createSlice({
     isAuthenticated: false,
     authorized: false,
     loggedOut: false,
-    loading: true,
+    authLoading: true,
     error: null,
   },
   reducers: {
@@ -48,41 +48,41 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.authorized = false;
       state.loggedOut = false;
-      state.loading = true;
+      state.authLoading = false;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        state.loading = true;
+        state.authLoading = true;
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
+        state.authLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload.user;
         state.initialized = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
+        state.authLoading = false;
         state.error = action.payload;
         state.initialized = true;
       })
 
       // ? loginUserWithToken
       .addCase(loginUserWithToken.pending, (state) => {
-        state.loading = true;
+        state.authLoading = { isActive: true, text: "Loading..." };
         state.error = null;
       })
       .addCase(loginUserWithToken.fulfilled, (state, action) => {
-        state.loading = false;
+        state.authLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload;
         state.initialized = true;
       })
       .addCase(loginUserWithToken.rejected, (state, action) => {
-        state.loading = false;
+        state.authLoading = false;
         state.error = action.payload;
         state.initialized = true;
       });

@@ -56,7 +56,7 @@ const UnitSlice = createSlice({
     unit: {},
     units: [],
     unitLoading: true,
-    unitsLoading: true,
+    unitsLoading: false,
     images: [],
     error: null,
     brands: MOTOR_BRANDS,
@@ -74,7 +74,7 @@ const UnitSlice = createSlice({
     builder
       // ? Create a unit
       .addCase(addUnit.pending, (state) => {
-        state.unitLoading = true;
+        state.unitLoading = { isActive: true, text: "Saving data..." };
         state.error = null;
       })
       .addCase(addUnit.fulfilled, (state, action) => {
@@ -116,11 +116,11 @@ const UnitSlice = createSlice({
 
       // ? fetch a unit
       .addCase(fetchUnit.pending, (state) => {
-        state.unitLoading = true;
+        state.unitLoading = { isActive: true, text: "Fetching data..." };
         state.error = null;
       })
       .addCase(fetchUnit.fulfilled, (state, action) => {
-        state.unitLoading = false;
+        state.unitLoading = {isActive: false};
         state.unit = action.payload;
 
         state.unit.images.forEach((file, i) => {
@@ -128,7 +128,7 @@ const UnitSlice = createSlice({
         });
       })
       .addCase(fetchUnit.rejected, (state, action) => {
-        state.unitLoading = false;
+        state.unitLoading = {isActive: false};
         state.error = action.payload;
       });
   },

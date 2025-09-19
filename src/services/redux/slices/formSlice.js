@@ -20,11 +20,13 @@ const formSlice = createSlice({
     formData: {
       createUnit: {},
       editUnit: {},
+      unitStock: {},
       unit: {},
       applicant: {},
       address: {},
     },
     formType: "createUnit",
+    formLoading: true,
     colors: [],
     colorIndex: null,
     error: null,
@@ -191,6 +193,22 @@ const formSlice = createSlice({
           ? !(applicant.hasEmpty || address.hasEmpty)
           : !applicant.hasEmpty;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      // ? Application
+      .addCase(applyLoan.pending, (state) => {
+        state.formLoading = true;
+        state.error = null;
+      })
+      .addCase(applyLoan.fulfilled, (state, action) => {
+        state.formLoading = false;
+        state.unit = action.payload;
+      })
+      .addCase(applyLoan.rejected, (state, action) => {
+        state.formLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 

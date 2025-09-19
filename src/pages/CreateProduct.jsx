@@ -47,9 +47,11 @@ export default function CreateProduct() {
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
-      dispatch(resetInput());
-      setFiles([]);
-      dispatch(fetchUnits());
+      if (response.type === "success") {
+        dispatch(resetInput());
+        setFiles([]);
+        dispatch(fetchUnits());
+      }
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -138,6 +140,7 @@ export default function CreateProduct() {
                       name="name"
                       id="name"
                       placeholder="Type motorcycle name"
+                      require={true}
                     />
                   </div>
                 </div>
@@ -148,6 +151,7 @@ export default function CreateProduct() {
                       name="brand"
                       id="brand"
                       value={formData.createUnit.brand || ""}
+                      require={true}
                       onchange={dispatchInput}>
                       {brands.map((brand, i) => (
                         <option key={i}>{brand}</option>
@@ -161,6 +165,7 @@ export default function CreateProduct() {
                       value={formData.createUnit.price || ""}
                       onchange={dispatchInput}
                       placeholder="₱150,000"
+                      require={true}
                     />
                     <FormInput
                       label="Minimum Downpayment"
@@ -170,6 +175,7 @@ export default function CreateProduct() {
                       value={formData.createUnit.downpayment || ""}
                       onchange={dispatchInput}
                       placeholder="₱25,000"
+                      require={true}
                     />
                     <FormInput
                       label="Rebate"
@@ -179,6 +185,7 @@ export default function CreateProduct() {
                       value={formData.createUnit.rebate || ""}
                       onchange={dispatchInput}
                       placeholder="₱15,000"
+                      require={true}
                     />
                     <FormInput
                       label="Interest Rate (%)"
@@ -188,6 +195,7 @@ export default function CreateProduct() {
                       value={formData.createUnit.interest || ""}
                       onchange={dispatchInput}
                       placeholder="10%"
+                      require={true}
                     />
                     <FormInput
                       label="Loan Tenure"
@@ -197,6 +205,7 @@ export default function CreateProduct() {
                       value={formData.createUnit.tenure || ""}
                       onchange={dispatchInput}
                       placeholder="5 years"
+                      require={true}
                     />
                   </div>
                   <FormTextarea
@@ -206,6 +215,7 @@ export default function CreateProduct() {
                     value={formData.createUnit.description || ""}
                     onchange={dispatchInput}
                     placeholder="Write motorcycle description here"
+                    require={true}
                   />
                 </div>
               </section>

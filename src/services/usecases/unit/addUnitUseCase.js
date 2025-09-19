@@ -8,12 +8,24 @@ export async function addUnitUseCase(data) {
       type: "warn",
     };
 
-  // const totalQuantity = data.form.quantity.reduce((sum, num) => sum + num, 0);
+  if (data.colors.length === 0)
+    return {
+      message: "The unit must have colors.",
+      type: "warn",
+    };
+
+  if (data.angles.length === 0)
+    return {
+      message: "Add images from different angles of the unit.",
+      type: "warn",
+    };
+
   const payload = {
     ...data.form,
     quantity: data.form.quantity.reduce((sum, num) => sum + num, 0),
     colors: data.colors,
     files: data.files,
+    angles: data.angles,
   };
 
   const formData = formRepository.formData(payload);

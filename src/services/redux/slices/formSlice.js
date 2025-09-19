@@ -136,7 +136,6 @@ const formSlice = createSlice({
       const address = state.formData.address;
 
       switch (action.payload) {
-        // case "personal":
         default:
           state.formData.address = {
             ...address,

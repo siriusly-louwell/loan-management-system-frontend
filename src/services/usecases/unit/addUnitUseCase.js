@@ -8,7 +8,7 @@ export async function addUnitUseCase(data) {
       type: "warn",
     };
 
-  if (data.colors.length === 0)
+  if (data.colors.length === 0 || data.colors.length !== data.files.length)
     return {
       message: "The unit must have colors.",
       type: "warn",

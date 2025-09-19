@@ -8,7 +8,7 @@ export default function EmptyFolder() {
   const { modals } = useSelector((state) => state.ui);
 
   return (
-    <div className="w-full flex items-center min-h-[59vh] mt-1 py-8 bg-gray-100 dark:bg-gray-700 rounded-b-xl flex-wrap justify-center gap-10">
+    <div className="w-full flex items-center min-h-[59vh] mt-1 py-8 bg-gray-100 dark:bg-gray-800 rounded-b-xl flex-wrap justify-center gap-10">
       <div className="grid gap-4 w-60">
         <svg
           className="mx-auto"

@@ -50,6 +50,7 @@ export default function CreateProduct() {
       if (response.type === "success") {
         dispatch(resetInput());
         setFiles([]);
+        setAngle([]);
         dispatch(fetchUnits());
       }
     } catch (error) {
@@ -86,14 +87,6 @@ export default function CreateProduct() {
       setAngleRows(rowArr);
     }
   }
-
-  // function removeFile(index) {
-  //   const fileArr = files.filter((_, i) => i !== index);
-  //   const rowArr = colorRows.filter((_, i) => i !== index);
-
-  //   setColorRows(rowArr);
-  //   setFiles(fileArr);
-  // }
 
   function dispatchInput(event) {
     dispatch(

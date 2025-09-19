@@ -74,13 +74,15 @@ export default function EditProduct() {
     try {
       const form = formData.editUnit;
       const response = await dispatch(
-        editUnit({ form, files, colors, id: unit.id, type: "edit" })
+        editUnit({ form, files, angles, colors, id: unit.id, type: "edit" })
       ).unwrap();
 
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(setLoading({ isActive: false }));
-      dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
-      dispatch(fetchUnits());
+      if (response.type === "success") {
+        dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
+        dispatch(fetchUnits());
+      }
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -93,32 +95,37 @@ export default function EditProduct() {
     }
   }
 
-  function fileChange(event, i) {
+  function fileChange(event, i, type) {
     const file = event.target.files[0];
 
     if (file !== undefined) {
-      const updatedFiles = [...files];
+      const updatedFiles = type === "color" ? [...files] : [...angles];
       updatedFiles[i] = {
         id: null,
+        type: type,
         url: URL.createObjectURL(file),
         file: file,
         status: "new",
       };
 
-      setFiles(updatedFiles);
+      if (type === "color") setFiles(updatedFiles);
+      else setAngles(updatedFiles);
     }
   }
 
-  function removeFile(index) {
+  function removeFile(index, type) {
     let fileArr;
+    const images = type === "color" ? files : angles;
 
-    if (files[index].status === "keep") {
-      fileArr = [...files];
+    if (images[index].status === "keep") {
+      fileArr = [...images];
       fileArr[index] = { ...fileArr[index], status: "delete" };
-    } else fileArr = files.filter((_, i) => i !== index);
+    } else fileArr = images.filter((_, i) => i !== index);
 
-    dispatch(removeColor(index));
-    setFiles(fileArr);
+    if (type === "color") {
+      dispatch(removeColor(index));
+      setFiles(fileArr);
+    } else setAngles(fileArr);
   }
 
   function dispatchInput(event) {
@@ -491,14 +498,6 @@ export default function EditProduct() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                  <Button text="Save Changes" bttnType="submit" />
-                  <CustomBttn
-                    text="Move to Archive"
-                    classname="flex items-center whitespace-nowrap text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900">
-                    <Ex className="mr-1 -ml-1 w-5 h-5" />
-                  </CustomBttn>
-                </div>
               </section>
 
               <section className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
@@ -512,7 +511,13 @@ export default function EditProduct() {
                     click={() =>
                       setFiles([
                         ...files,
-                        { id: null, url: null, file: null, status: "ignore" },
+                        {
+                          id: null,
+                          type: "color",
+                          url: null,
+                          file: null,
+                          status: "ignore",
+                        },
                       ])
                     }>
                     <Plus />
@@ -532,7 +537,9 @@ export default function EditProduct() {
                               file.status !== "keep" && "cursor-pointer"
                             }`}>
                             <div className="self-end mb-1">
-                              <CloseBttn trigger={() => removeFile(i)} />
+                              <CloseBttn
+                                trigger={() => removeFile(i, "color")}
+                              />
                             </div>
                             {file.status !== "ignore" ? (
                               <img
@@ -564,7 +571,7 @@ export default function EditProduct() {
                                 name={`file_${i}`}
                                 type="file"
                                 className="hidden"
-                                onChange={(e) => fileChange(e, i)}
+                                onChange={(e) => fileChange(e, i, "color")}
                               />
                             )}
                           </label>
@@ -597,7 +604,7 @@ export default function EditProduct() {
                 </div>
               </section>
 
-              <section className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
+              <section className="mb-4 grid grid-cols-1 gap-y-2 pt-5">
                 <section className="flex w-full justify-between">
                   <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
                     Motorcycle Angles
@@ -607,7 +614,7 @@ export default function EditProduct() {
                     text="Add Angle"
                     click={() =>
                       setAngles([
-                        ...files,
+                        ...angles,
                         {
                           id: null,
                           type: "angle",
@@ -629,12 +636,14 @@ export default function EditProduct() {
                           key={i}
                           className="border-b border-gray-400 mb-2">
                           <label
-                            htmlFor={`file_${i}`}
+                            htmlFor={`angle_${i}`}
                             className={`flex flex-col justify-center items-center rounded-2xl w-full ${
                               file.status !== "keep" && "cursor-pointer"
                             }`}>
                             <div className="self-end mb-1">
-                              <CloseBttn trigger={() => removeFile(i)} />
+                              <CloseBttn
+                                trigger={() => removeFile(i, "angles")}
+                              />
                             </div>
                             {file.status !== "ignore" ? (
                               <img
@@ -666,13 +675,21 @@ export default function EditProduct() {
                                 name={`angle_${i}`}
                                 type="file"
                                 className="hidden"
-                                onChange={(e) => fileChange(e, i)}
+                                onChange={(e) => fileChange(e, i, "angles")}
                               />
                             )}
                           </label>
                         </section>
                       )
                   )}
+                </div>
+                <div className="flex items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
+                  <Button text="Save Changes" bttnType="submit" />
+                  <CustomBttn
+                    text="Move to Archive"
+                    classname="flex items-center whitespace-nowrap text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900">
+                    <Ex className="mr-1 -ml-1 w-5 h-5" />
+                  </CustomBttn>
                 </div>
               </section>
             </form>

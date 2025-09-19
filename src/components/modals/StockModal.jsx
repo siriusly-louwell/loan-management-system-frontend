@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import QuantityInput from "../buttons/QuantityInput";
 import Button from "../buttons/Button";
-import Alert from "../Alert";
-import Spinner from "../loading components/Spinner";
 import ColorLabel from "../ColorLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { UnitEntity } from "../../services/entities/Unit";
@@ -89,7 +87,6 @@ export default function StockModal({ stock, setStock }) {
                 </div>
                 <p className="dark:text-white">Current Stock: </p>
                 <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  {/* {stock.quantity} */}
                   {unit.quantity}
                 </span>
                 {unit?.colors?.map((color, i) => (

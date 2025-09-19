@@ -53,7 +53,13 @@ const formSlice = createSlice({
     },
 
     removeColor: (state, action) => {
-      if (state.colors[action.payload]) state.colors.splice(action.payload, 1);
+      const index = action.payload;
+
+      if (state.colors[index]) {
+        const current = state.colors.filter((_, i) => i !== index);
+
+        state.colors = current;
+      }
     },
 
     changeColor: (state, action) => {

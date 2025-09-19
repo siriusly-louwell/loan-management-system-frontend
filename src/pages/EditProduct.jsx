@@ -74,7 +74,7 @@ export default function EditProduct() {
     try {
       const form = formData.editUnit;
       const response = await dispatch(
-        editUnit({ form, files, colors, id: unit.id })
+        editUnit({ form, files, colors, id: unit.id, type: "edit" })
       ).unwrap();
 
       dispatch(setAlert({ message: response.message, type: response.type }));

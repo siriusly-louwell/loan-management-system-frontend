@@ -40,6 +40,19 @@ export const unitRepository = {
     return await response;
   },
 
+  async patch(data, id) {
+    const response = await UnitAPI.patch(data, id);
+
+    if (!response) {
+      return {
+        message: "Failed to update unit",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
+
   saveId(id) {
     localStorage.setItem("unit-id", id);
   },

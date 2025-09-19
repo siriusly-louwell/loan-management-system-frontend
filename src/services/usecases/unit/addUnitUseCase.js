@@ -8,10 +8,10 @@ export async function addUnitUseCase(data) {
       type: "warn",
     };
 
-  const totalQuantity = data.form.quantity.reduce((sum, num) => sum + num, 0);
+  // const totalQuantity = data.form.quantity.reduce((sum, num) => sum + num, 0);
   const payload = {
     ...data.form,
-    quantity: totalQuantity,
+    quantity: data.form.quantity.reduce((sum, num) => sum + num, 0),
     colors: data.colors,
     files: data.files,
   };

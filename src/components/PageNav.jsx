@@ -2,7 +2,6 @@ import React from "react";
 import Pagination from "@mui/material/Pagination";
 
 export default function PageNav({ pagination, changePage }) {
-
   return (
     <nav className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4">
       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -20,7 +19,7 @@ export default function PageNav({ pagination, changePage }) {
       <Pagination
         count={pagination.lastPage}
         page={pagination.currentPage}
-        onChange={changePage}
+        onChange={(_, page) => changePage({ page: page })}
         variant="outlined"
         shape="rounded"
         sx={{

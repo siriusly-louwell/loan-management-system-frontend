@@ -8,10 +8,10 @@ const UnitAPI = {
     return response.data;
   },
 
-  async paginate(page, perPage) {
-    const response = await axios.get(
-      `${API_URL}/api/motorcycle?page=${page}&per_page=${perPage}`
-    );
+  async paginate(page, perPage, search) {
+    const response = await axios.get(`${API_URL}/api/motorcycle`, {
+      params: { page, per_page: perPage, search },
+    });
     return response.data;
   },
 

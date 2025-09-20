@@ -5,16 +5,17 @@ import Plus from "../assets/icons/Plus";
 import DropdownBttn from "../components/buttons/DropdownBttn";
 import Filter from "../assets/icons/Filter";
 import SearchInput from "../components/inputs/SearchInput";
-import Search from "../assets/icons/Search";
 import DropdownMenu from "../components/DropdownMenu";
 import MenuLink from "../components/links/MenuLink";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../services/redux/slices/uiSlice";
+import PageNav from "./PageNav";
 
-export default function CRUDformat({ children, addModal, label, pageNav }) {
-  const { modals } = useSelector((state) => state.ui);
+export default function CRUDformat({ children, addModal, label, setPage }) {
   const dispatch = useDispatch();
   const location = useLocation();
+  const { pagination } = useSelector((state) => state.unit);
+  const { modals } = useSelector((state) => state.ui);
 
   return (
     <>
@@ -22,15 +23,9 @@ export default function CRUDformat({ children, addModal, label, pageNav }) {
         <div className="mx-auto px-4 lg:px-4">
           <div className="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-              <div className="flex-1 flex items-center space-x-2">
-                <h5>
-                  <span className="text-gray-500">All {label}s:</span>
-                  <span className="dark:text-white">123456</span>
-                </h5>
-                <h5 className="text-gray-500 dark:text-gray-400 ml-1">
-                  1-100 (436)
-                </h5>
-              </div>
+              <h1 className="text-gray-100 font-medium text-2xl">
+                Mootorcycle Inventory
+              </h1>
             </div>
             <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
               <div className="w-full md:w-1/2">
@@ -41,9 +36,9 @@ export default function CRUDformat({ children, addModal, label, pageNav }) {
                   <SearchInput
                     name="findProd"
                     id="simple-search"
-                    placeholder="Search here...">
-                    <Search />
-                  </SearchInput>
+                    placeholder="Search here..."
+                    change={setPage}
+                  />
                 </form>
               </div>
               <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
@@ -82,7 +77,7 @@ export default function CRUDformat({ children, addModal, label, pageNav }) {
               </div>
             </div>
             <div className="overflow-x-auto min-h-40">{children}</div>
-            {pageNav}
+            <PageNav pagination={pagination} changePage={setPage} />
           </div>
         </div>
       </section>

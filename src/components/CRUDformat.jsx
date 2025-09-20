@@ -8,11 +8,10 @@ import SearchInput from "../components/inputs/SearchInput";
 import Search from "../assets/icons/Search";
 import DropdownMenu from "../components/DropdownMenu";
 import MenuLink from "../components/links/MenuLink";
-import PageNav from "../components/PageNav";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 
-export default function CRUDformat({ children, addModal, label }) {
+export default function CRUDformat({ children, addModal, label, pageNav }) {
   const { modals } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -83,7 +82,7 @@ export default function CRUDformat({ children, addModal, label }) {
               </div>
             </div>
             <div className="overflow-x-auto min-h-40">{children}</div>
-            <PageNav />
+            {pageNav}
           </div>
         </div>
       </section>

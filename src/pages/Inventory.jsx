@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import CreateProduct from "./CreateProduct";
 import InventoryTable from "../components/tables/InventoryTable";
 import CRUDformat from "../components/CRUDformat";
@@ -6,28 +6,29 @@ import EditProduct from "./EditProduct";
 import StockModal from "../components/modals/StockModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
+import PageNav from "../components/PageNav";
 
 export default function Inventory() {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
-  const [stock, setStock] = useState({ type: "", modal: false });
+  const { pagination } = useSelector((state) => state.unit);
 
   useEffect(() => {
-    dispatch(fetchUnits());
+    dispatch(fetchUnits(1));
   }, [dispatch]);
+
+  const changePage = (_, page) => {
+    dispatch(fetchUnits(page));
+  };
 
   return (
     <CRUDformat
-      addModal={<CreateProduct />}
-      modalId="createProduct"
       label="Unit"
-      modal={stock.modal}>
-      <InventoryTable
-        stock={stock}
-        setStock={setStock}
-      />
+      addModal={<CreateProduct />}
+      pageNav={<PageNav pagination={pagination} changePage={changePage} />}>
+      <InventoryTable />
       {modals?.editUnit && <EditProduct />}
-      {modals?.unitStock && <StockModal setStock={setStock} stock={stock} />}
+      {modals?.unitStock && <StockModal />}
     </CRUDformat>
   );
 }

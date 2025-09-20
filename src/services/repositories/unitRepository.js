@@ -14,6 +14,19 @@ export const unitRepository = {
     return await response;
   },
 
+  async fetchPage(page = 1, perPage = 8) {
+    const response = await UnitAPI.paginate(page, perPage);
+
+    if (!response) {
+      return {
+        message: "Failed to fetch units",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
+
   async add(data) {
     const response = await UnitAPI.add(data);
 

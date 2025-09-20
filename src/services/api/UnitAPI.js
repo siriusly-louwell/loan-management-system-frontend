@@ -8,6 +8,13 @@ const UnitAPI = {
     return response.data;
   },
 
+  async paginate(page, perPage) {
+    const response = await axios.get(
+      `${API_URL}/api/motorcycle?page=${page}&per_page=${perPage}`
+    );
+    return response.data;
+  },
+
   async fetchUnit(id) {
     const response = await axios.get(`${API_URL}/api/motorcycle/${id}`);
     return response.data;

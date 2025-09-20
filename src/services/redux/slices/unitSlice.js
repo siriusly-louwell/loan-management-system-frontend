@@ -29,9 +29,11 @@ export const editUnit = createAsyncThunk(
 
 export const fetchUnits = createAsyncThunk(
   "unit/fetchUnits",
-  async (unit, thunkAPI) => {
+  async (page, thunkAPI) => {
     try {
-      return await unitRepository.fetchAll();
+      return page
+        ? await unitRepository.fetchPage(page)
+        : await unitRepository.fetchAll();
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -60,6 +62,13 @@ const UnitSlice = createSlice({
     images: [],
     error: null,
     brands: MOTOR_BRANDS,
+    pagination: {
+      from: 1,
+      to: 1,
+      currentPage: 1,
+      lastPage: 1,
+      total: 0,
+    },
   },
   reducers: {
     storeID: (state, action) => {
@@ -111,7 +120,14 @@ const UnitSlice = createSlice({
       })
       .addCase(fetchUnits.fulfilled, (state, action) => {
         state.unitsLoading = false;
-        state.units = action.payload;
+        state.units = action.payload.data;
+        state.pagination = {
+          from: action.payload.from,
+          to: action.payload.to,
+          currentPage: action.payload.current_page,
+          lastPage: action.payload.last_page,
+          total: action.payload.total,
+        };
       })
       .addCase(fetchUnits.rejected, (state, action) => {
         state.unitsLoading = false;

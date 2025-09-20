@@ -14,7 +14,7 @@ import PopAnimate from "../animations/popAnimate";
 import { initialForm, setType } from "../../services/redux/slices/formSlice";
 import { editUnit, fetchUnits } from "../../services/redux/slices/unitSlice";
 
-export default function StockModal({ stock, setStock }) {
+export default function StockModal() {
   const dispatch = useDispatch();
   const unit = useSelector(UnitEntity);
   const { modals } = useSelector((state) => state.ui);

@@ -18,8 +18,7 @@ export default function InventoryTable() {
   const motors = useSelector(UnitEntities);
   const { modals } = useSelector((state) => state.ui);
   const { unitsLoading } = useSelector((state) => state.unit);
-  if (!unitsLoading) motors.sort((a, b) => b.id - a.id);
-
+  
   async function unitModal(id, modal) {
     dispatch(setLoading({ text: "Fetching data...", isActive: true }));
     await dispatch(fetchUnit(id));
@@ -33,7 +32,7 @@ export default function InventoryTable() {
         <TableHead
           headers={[
             "",
-            "Product",
+            "Unit",
             "Brand",
             "Colors",
             "Price",

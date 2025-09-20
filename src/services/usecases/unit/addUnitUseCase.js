@@ -22,7 +22,7 @@ export async function addUnitUseCase(data) {
 
   const payload = {
     ...data.form,
-    quantity: data.form.quantity.reduce((sum, num) => sum + num, 0),
+    totalQuantity: data.form.quantity.reduce((sum, num) => sum + num, 0),
     colors: data.colors,
     files: data.files,
     angles: data.angles,

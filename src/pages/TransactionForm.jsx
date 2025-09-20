@@ -81,7 +81,6 @@ export default function TransactionForm() {
               <div className="grid lg:grid-cols-2 gap-x-5 gap-y-4">
                 <SmallSpin size={30} />
                 <p className="h-8 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-40 mb-4"></p>
-                {/* <QuantityInput label="Quantity" /> */}
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="font-medium text-gray-700 dark:text-gray-200">
@@ -161,7 +160,6 @@ export default function TransactionForm() {
                     value={formData[formType].downpayment}
                     name="downpayment"
                     onchange={(e) => dispatchInput(e)}
-                    // onchange={(e) => handleDown(5, Number(e.target.value))}
                     placeholder="Input downpayment here"
                   />
                   {formData[formType].downpayment <

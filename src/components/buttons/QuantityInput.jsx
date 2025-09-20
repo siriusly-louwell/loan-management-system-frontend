@@ -12,24 +12,12 @@ export default function QuantityInput({
   const dispatch = useDispatch();
   const [number, setNumber] = useState(1);
 
-  // useEffect(() => {
-  //   dispatch(
-  //     handleQuantity({
-  //       index: index,
-  //       num: 1,
-  //       type: quantType,
-  //     })
-  //   );
-  //   // change(index, 1, "quantity");
-  // }, []);
-
   function handleNumber(type) {
     if (type === "increment" && number < max) {
       setNumber(number + 1);
       dispatch(
         handleQuantity({ index: index, num: number + 1, type: quantType })
       );
-      //   change(index, number + 1, "quantity");
     }
 
     if (type === "decrement" && number > 1) {
@@ -37,7 +25,6 @@ export default function QuantityInput({
       dispatch(
         handleQuantity({ index: index, num: number - 1, type: quantType })
       );
-      //   change(index, number - 1, "quantity");
     }
   }
 
@@ -46,7 +33,6 @@ export default function QuantityInput({
 
     setNumber(val);
     dispatch(handleQuantity({ index: index, num: val, type: quantType }));
-    // change(index, val, "quantity");
   }
 
   return (

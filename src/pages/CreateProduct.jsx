@@ -1,10 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setLoading,
-  setAlert,
-  toggleModal,
-} from "../services/redux/slices/uiSlice";
 import { addUnit, fetchUnits } from "../services/redux/slices/unitSlice";
 import FormInput from "../components/inputs/FormInput";
 import FormTextarea from "../components/inputs/FormTextarea";
@@ -18,12 +13,18 @@ import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import Plus from "../assets/icons/Plus";
 import ColorLabel from "../components/ColorLabel";
 import FormSelect from "../components/inputs/FormSelect";
+import PopAnimate from "../components/animations/popAnimate";
+import {
+  setLoading,
+  setAlert,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
 import {
   setColorIndex,
   resetInput,
   handleChange,
+  initialForm,
 } from "../services/redux/slices/formSlice";
-import PopAnimate from "../components/animations/popAnimate";
 
 export default function CreateProduct() {
   const dispatch = useDispatch();
@@ -34,6 +35,10 @@ export default function CreateProduct() {
   const [angleRows, setAngleRows] = useState([""]);
   const [files, setFiles] = useState([]);
   const [angles, setAngle] = useState([]);
+
+  useEffect(() => {
+      dispatch(initialForm({ quantity: [1] }));
+    }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();

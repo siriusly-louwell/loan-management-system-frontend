@@ -25,8 +25,13 @@ import {
   initialForm,
   setType,
   removeColor,
+  resetInput,
 } from "../services/redux/slices/formSlice";
-import { editUnit, fetchUnits } from "../services/redux/slices/unitSlice";
+import {
+  clearUnit,
+  editUnit,
+  fetchUnits,
+} from "../services/redux/slices/unitSlice";
 import FormSelect from "../components/inputs/FormSelect";
 import PopAnimate from "../components/animations/popAnimate";
 
@@ -80,8 +85,9 @@ export default function EditProduct() {
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(setLoading({ isActive: false }));
       if (response.type === "success") {
-        dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
         dispatch(fetchUnits());
+        closeModal();
+        // dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
       }
     } catch (error) {
       console.error("Error: ", error);
@@ -138,6 +144,12 @@ export default function EditProduct() {
     );
   }
 
+  function closeModal() {
+    dispatch(clearUnit());
+    dispatch(resetInput());
+    dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
+  }
+
   return (
     <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
       <PopAnimate>
@@ -147,16 +159,7 @@ export default function EditProduct() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Edit Unit - #{unit.id}
               </h3>
-              <CloseBttn
-                trigger={() =>
-                  dispatch(
-                    toggleModal({
-                      name: "editUnit",
-                      value: modals?.editUnit,
-                    })
-                  )
-                }
-              />
+              <CloseBttn trigger={closeModal} />
             </div>
             <form onSubmit={handleSubmit} className="w-full">
               <section className="lg:pr-3">

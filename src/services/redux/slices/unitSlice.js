@@ -69,6 +69,10 @@ const UnitSlice = createSlice({
     clearID: (state) => {
       unitRepository.clearId();
     },
+
+    clearUnit: (state) => {
+      state.unit = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -120,7 +124,7 @@ const UnitSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUnit.fulfilled, (state, action) => {
-        state.unitLoading = {isActive: false};
+        state.unitLoading = { isActive: false };
         state.unit = action.payload;
 
         state.unit.images.forEach((file, i) => {
@@ -128,11 +132,11 @@ const UnitSlice = createSlice({
         });
       })
       .addCase(fetchUnit.rejected, (state, action) => {
-        state.unitLoading = {isActive: false};
+        state.unitLoading = { isActive: false };
         state.error = action.payload;
       });
   },
 });
 
-export const { storeID, getID, clearID } = UnitSlice.actions;
+export const { storeID, getID, clearID, clearUnit } = UnitSlice.actions;
 export default UnitSlice.reducer;

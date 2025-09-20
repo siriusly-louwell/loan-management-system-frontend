@@ -5,12 +5,23 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./services/redux/store";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#1976d2",
+    },
+  },
+});
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ThemeProvider theme={theme}>
         <App />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

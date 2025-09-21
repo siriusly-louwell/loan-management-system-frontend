@@ -18,9 +18,16 @@ export default function CRUDformat({ children, addModal, label, setPage }) {
   const { pagination } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
 
-  function setFilter(type) {
-    dispatch(setFilterType(type));
+  function setFilter(filter, type) {
+    dispatch(setFilterType(filter));
     dispatch(toggleModal({ name: "unitFilter", value: modals?.unitFilter }));
+    setPage({
+      page: 1,
+      type: type,
+      min: undefined,
+      max: undefined,
+      search: undefined,
+    });
   }
 
   return (
@@ -78,16 +85,38 @@ export default function CRUDformat({ children, addModal, label, setPage }) {
                   }>
                   {modals.unitFilter && (
                     <DropdownMenu>
-                      <MenuLink pathName="by Brand" click={() => setFilter("brand")} />
-                      <MenuLink pathName="by Quantity" click={() => setFilter("quantity")} />
-                      <MenuLink pathName="by Price" />
-                      <MenuLink pathName="by Interest" />
-                      <MenuLink pathName="by Rebate value" />
-                      <MenuLink pathName="by Tenure year" />
+                      <MenuLink
+                        pathName="by Date"
+                        click={() => setFilter("date", "created_at")}
+                      />
+                      <MenuLink
+                        pathName="by Brand"
+                        click={() => setFilter("brand")}
+                      />
+                      <MenuLink
+                        pathName="by Quantity"
+                        click={() => setFilter("range", "quantity")}
+                      />
+                      <MenuLink
+                        pathName="by Price"
+                        click={() => setFilter("range", "price")}
+                      />
+                      <MenuLink
+                        pathName="by Interest"
+                        click={() => setFilter("range", "interest")}
+                      />
+                      <MenuLink
+                        pathName="by Rebate value"
+                        click={() => setFilter("range", "rebate")}
+                      />
+                      <MenuLink
+                        pathName="by Tenure year"
+                        click={() => setFilter("range", "tenure")}
+                      />
                     </DropdownMenu>
                   )}
                 </DropdownBttn>
-                <UnitFilter  setPage={setPage}/>
+                <UnitFilter setPage={setPage} />
                 <DropdownBttn
                   text="Actions"
                   toggleMenu={() =>

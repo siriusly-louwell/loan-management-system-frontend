@@ -11,12 +11,22 @@ import useDebounce from "../hooks/useDebounce";
 export default function Inventory() {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
-  const [navPage, setNavPage] = useState({ search: "" });
-  const debounce = useDebounce(navPage.search, 500);
+  const [navPage, setNavPage] = useState({});
+  const search = useDebounce(navPage.search, 500);
+  const min = useDebounce(navPage.min, 1000);
+  const max = useDebounce(navPage.max, 500);
 
   useEffect(() => {
-    dispatch(fetchUnits({ ...navPage, search: debounce }));
-  }, [dispatch, navPage.page, navPage.max, navPage.min, debounce]);
+    dispatch(
+      fetchUnits({
+        page: navPage.page,
+        type: navPage.type,
+        search: search,
+        min: min,
+        max: max,
+      })
+    );
+  }, [dispatch, navPage.page, navPage.type, max, min, search]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 

@@ -144,6 +144,9 @@ export default function EditProduct() {
     } else fileArr = images.filter((_, i) => i !== index);
 
     if (type === "color") {
+      const quant = quantity.filter((_, i) => index !== i);
+
+      setQuantity(quant);
       dispatch(removeColor(index));
       setFiles(fileArr);
     } else setAngles(fileArr);

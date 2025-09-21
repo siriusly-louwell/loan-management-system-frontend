@@ -5,26 +5,30 @@ import StepCard from "../components/cards/StepCard";
 import BttnSmall from "../components/buttons/BttnSmall";
 import FormInput from "../components/inputs/FormInput";
 import SmallSpin from "../components/loading components/SmallSpin";
+import { useSelector } from "react-redux";
+import { UnitEntity } from "../services/entities/Unit";
 
 export default function EMICalculator({
-  name,
-  brand,
-  motorPrice,
-  years,
-  interest,
-  down,
+  // name,
+  // brand,
+  // motorPrice,
+  // years,
+  // interest,
+  // unit.downpayment,
+  // load,
   staff,
-  load,
 }) {
+  const unit = useSelector(UnitEntity);
+  const { unitLoading } = useSelector((state) => state.unit);
   const [downPayment, setDownPayment] = useState();
   const [tenure, setTenure] = useState(12);
 
   useEffect(() => {
-    setDownPayment(down);
-  }, [down]);
+    setDownPayment(unit?.downpayment);
+  }, [unit?.downpayment]);
 
   useEffect(() => {
-    if (downPayment < down) {
+    if (downPayment < unit?.downpayment) {
       document.getElementById("down_warn").style.display = "block";
       document.getElementById("downpayment").style.outline = "1px solid red";
       document.getElementById("downpayment").style.border = "1px solid red";
@@ -37,11 +41,11 @@ export default function EMICalculator({
   }, [downPayment]);
 
   // const downPayment = (motorPrice * downPayment) / 100;
-  const loanAmount = motorPrice - downPayment;
-  const monthlyRate = interest / 12 / 100;
+  const loanAmount = unit?.price - downPayment;
+  const monthlyRate = unit?.interest / 12 / 100;
 
   const emi =
-    loanAmount === 0 || interest === 0
+    loanAmount === 0 || unit?.interest === 0
       ? loanAmount / tenure
       : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
         (Math.pow(1 + monthlyRate, tenure) - 1);
@@ -73,11 +77,11 @@ export default function EMICalculator({
               </h3>
               <h3 className="font-medium text-gray-700 flex gap-x-2 dark:text-gray-200">
                 Minimum Payment:{" "}
-                {load ? (
+                {unitLoading ? (
                   <SmallSpin size={20} />
                 ) : (
                   <span className="font-bold text-rose-600">
-                    ₱{parseFloat(down).toLocaleString()}
+                    ₱{parseFloat(unit?.downpayment).toLocaleString()}
                   </span>
                 )}
               </h3>
@@ -136,7 +140,7 @@ export default function EMICalculator({
                 defaultChecked={tenure === 12}
                 className="hidden"
               />
-              {load ? (
+              {unitLoading ? (
                 <>
                   <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
                   <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
@@ -145,7 +149,7 @@ export default function EMICalculator({
                   <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
                 </>
               ) : (
-                [...Array(years)].map((_, i) => (
+                [...Array(unit?.tenure)].map((_, i) => (
                   <BttnSmall
                     key={i + 1}
                     text={i + 1 + " Year"}
@@ -157,14 +161,14 @@ export default function EMICalculator({
           </div>
         </div>
 
-        {load ? (
+        {unitLoading ? (
           <div className="bg-gray-200 dark:bg-gray-600 h-40 rounded-2x1 shadow-lg sm:w-1/3 flex items-center justify-center animate-pulse rounded-xl p-10 mb-4">
             <SmallSpin size={40} />
           </div>
         ) : (
           <div className="bg-white dark:bg-gray-700 rounded-2x1 shadow-lg sm:w-1/3 justify-items-center rounded-xl p-5 mb-4">
             <p className="text-xl font-bold text-gray-800 dark:text-white mb-5">
-              {brand} - {name}
+              {unit?.brand} - {unit?.name}
             </p>
             <div className="flex justify-between items-center space-x-5 mb-4">
               <div className="justify-items-center">

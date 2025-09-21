@@ -10,7 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import PageNav from "./PageNav";
 
-export default function CRUDformat({ children, addModal, label, setPage, filterComponent }) {
+export default function CRUDformat({
+  children,
+  addModal,
+  label,
+  setPage,
+  filterComponent,
+}) {
   const dispatch = useDispatch();
   const location = useLocation();
   const { pagination } = useSelector((state) => state.unit);
@@ -47,19 +53,19 @@ export default function CRUDformat({ children, addModal, label, setPage, filterC
                     <CustomBttn
                       text={`Add ${label}`}
                       classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                      onclick={() => {
+                      onclick={() =>
                         dispatch(
                           toggleModal({
                             name: "createUnit",
                             value: modals?.createUnit,
                           })
-                        );
-                      }}>
+                        )
+                      }>
                       <Plus />
                     </CustomBttn>
                   )}
 
-                  {filterComponent}
+                {filterComponent}
 
                 <DropdownBttn
                   text="Actions"

@@ -134,7 +134,10 @@ export default function ProductCard({ unit }) {
             </p>
             <AddtoCartBttn
               url={`${url}/unit`}
-              click={() => dispatch(storeID(unit.id))}
+              click={() => {
+                dispatch(storeID(unit.id));
+                window.scrollTo(0, 0);
+              }}
               text="Inquire"
             />
           </div>

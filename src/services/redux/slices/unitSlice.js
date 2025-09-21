@@ -143,8 +143,12 @@ const UnitSlice = createSlice({
         state.unitLoading = false;
         state.unit = action.payload;
 
+        state.images = [];
         state.unit.images.forEach((file, i) => {
-          state.images[i] = UnitAPI.imgPath(file.path);
+          state.images[i] = {
+            url: UnitAPI.imgPath(file.path),
+            type: file.image_type,
+          };
         });
       })
       .addCase(fetchUnit.rejected, (state, action) => {

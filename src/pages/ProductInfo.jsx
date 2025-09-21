@@ -6,19 +6,24 @@ import EMICalculator from "./EMICalculator";
 import ColorLabel from "../components/ColorLabel";
 import SmallLabel from "../components/texts/SmallLabel";
 import FormSelect from "../components/inputs/FormSelect";
-import PfpLabel from "../components/PfpLabel";
 import SmallSpin from "../components/loading components/SmallSpin";
 import ImageSkeleton from "../components/loading components/ImageSkeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnit } from "../services/redux/slices/unitSlice";
 import { UnitEntity } from "../services/entities/Unit";
 import { UnitSpecsEntity } from "../services/entities/UnitSpecs";
-import { toggleSlide } from "../services/redux/slices/uiSlice";
+import {
+  setPreview,
+  toggleModal,
+  toggleSlide,
+} from "../services/redux/slices/uiSlice";
 import BasicCarousel from "../components/cards/BasicCarousel";
 import { SPECS } from "../constants/motorSpecs";
+import ImageModal from "../components/modals/ImageModal";
 
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
+  const { modals } = useSelector((state) => state.ui);
   const { unitId, unitLoading, images } = useSelector((state) => state.unit);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
@@ -49,48 +54,74 @@ export default function ProductInfo({ staff = false }) {
         <div className="lg:grid lg:grid-cols-2 lg:gap-15 xl:gap-16">
           {
             <>
-              <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
-                <BasicCarousel length={images.length}>
-                  {unitLoading.isActive ? (
-                    //   <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
-                    <div className="flex justify-center items-center w-full h-full">
-                      <ImageSkeleton />
-                    </div>
-                  ) : (
-                    <>
-                      {staff && (
-                        <FormSelect
-                          name="motor"
-                          id="motor"
-                          value={`${unit.brand}: ${unit.name} - ₱${parseFloat(
-                            unit.price
-                          ).toLocaleString()}`}
-                          label="Select Unit"
-                          onchange={(e) => setId(e.target.value)}>
-                          {addUnit.map((motor) => (
-                            <option value={motor.id}>
-                              {motor.brand}: {motor.name} - ₱
-                              {parseFloat(motor.price).toLocaleString()}
-                            </option>
+              <section className="flex flex-col space-y-2">
+                <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
+                  <BasicCarousel
+                    length={images.filter((f) => f.type === "color").length}>
+                    {unitLoading ? (
+                      //   <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
+                      <div className="flex justify-center items-center w-full h-full">
+                        <ImageSkeleton />
+                      </div>
+                    ) : (
+                      <>
+                        {staff && (
+                          <FormSelect
+                            name="motor"
+                            id="motor"
+                            value={`${unit.brand}: ${unit.name} - ₱${parseFloat(
+                              unit.price
+                            ).toLocaleString()}`}
+                            label="Select Unit"
+                            onchange={(e) => setId(e.target.value)}>
+                            {addUnit.map((motor) => (
+                              <option value={motor.id}>
+                                {motor.brand}: {motor.name} - ₱
+                                {parseFloat(motor.price).toLocaleString()}
+                              </option>
+                            ))}
+                          </FormSelect>
+                        )}
+                        {images
+                          .filter((f) => f.type === "color")
+                          .map((src, index) => (
+                            <img
+                              key={index}
+                              src={src.url}
+                              alt={`Slide ${index + 1}`}
+                              className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
+                            />
                           ))}
-                        </FormSelect>
-                      )}
-                      {images.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Slide ${index + 1}`}
-                          className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
-                        />
-                      ))}
-                    </>
-                  )}
-                </BasicCarousel>
-              </div>
+                      </>
+                    )}
+                  </BasicCarousel>
+                </div>
+                <section className="flex w-full space-x-2 overflow-x-auto rounded-lg">
+                  {images
+                    .filter((f) => f.type === "angle")
+                    .map((img, i) => (
+                      <img
+                        key={i}
+                        src={img.url}
+                        alt="angle"
+                        onClick={() => {
+                          dispatch(setPreview(img.url));
+                          dispatch(
+                            toggleModal({
+                              name: "previewModal",
+                              value: modals?.previewModal,
+                            })
+                          );
+                        }}
+                        className="object-contain w-[20vh] rounded-lg cursor-pointer hover:opacity-80"
+                      />
+                    ))}
+                </section>
+              </section>
 
               <div className="mt-6 sm:mt-8 lg:mt-0">
                 {unitLoading ? (
-                  <h1 className="h-5 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-60 mb-4"></h1>
+                  <div className="h-5 bg-gray-200 dark:bg-gray-500 rounded-full animate-pulse w-60 mb-4"></div>
                 ) : (
                   <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
                     {unit.name} ({unit.brand})
@@ -107,23 +138,22 @@ export default function ProductInfo({ staff = false }) {
                   )}
                   <div className="flex space-x-2">
                     <div className="grid grid-cols-10 gap-y-2">
-                      {unitLoading
-                        ? ""
-                        : unit.colors.map((color, i) => (
-                            <div key={i}>
-                              <label htmlFor={`${i}_${color.color}`}>
-                                <ColorLabel key={i} style={color.color} />
-                              </label>
-                              <input
-                                type="button"
-                                id={`${i}_${color.color}`}
-                                className="hidden"
-                                onClick={() => {
-                                  dispatch(toggleSlide({ value: i }));
-                                }}
-                              />
-                            </div>
-                          ))}
+                      {!unitLoading &&
+                        unit.colors.map((color, i) => (
+                          <div key={i}>
+                            <label htmlFor={`${i}_${color.color}`}>
+                              <ColorLabel key={i} style={color.color} />
+                            </label>
+                            <input
+                              type="button"
+                              id={`${i}_${color.color}`}
+                              className="hidden"
+                              onClick={() => {
+                                dispatch(toggleSlide({ value: i }));
+                              }}
+                            />
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
@@ -256,6 +286,8 @@ export default function ProductInfo({ staff = false }) {
         staff={staff}
         load={unitLoading}
       />
+
+      {modals?.previewModal && <ImageModal />}
     </section>
   );
 }

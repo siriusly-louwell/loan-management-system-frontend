@@ -11,6 +11,7 @@ const initialState = {
   loading: { isActive: false },
   modals: {},
   modal: {},
+  imgPreview: null,
   carouselSlide: 0,
   filter: null,
   filterType: null,
@@ -60,6 +61,10 @@ const uiSlice = createSlice({
 
     setModal: (state, action) => {
       state.modal = action.payload;
+    },
+
+    setPreview: (state, action) => {
+      state.imgPreview = action.payload;
     },
 
     toggleSlide: (state, action) => {
@@ -136,6 +141,7 @@ export const {
   setLoading,
   toggleModal,
   setModal,
+  setPreview,
   toggleSlide,
   setFilter,
   setFilterType,

@@ -31,7 +31,7 @@ export const fetchUnits = createAsyncThunk(
   "unit/fetchUnits",
   async (page, thunkAPI) => {
     try {
-      return page?.page
+      return page?.page || page?.min
         ? await unitRepository.fetchPage(page)
         : await unitRepository.fetchAll();
     } catch (error) {

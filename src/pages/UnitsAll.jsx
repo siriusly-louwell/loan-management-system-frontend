@@ -33,68 +33,70 @@ export default function UnitsAll() {
               dispatch(toggleModal({ name: "filter", value: modals?.filter }))
             }
             text="Filter by Brand">
-            <DropdownMenu classStyle={modals.filter ? "block" : "hidden"}>
-              <MenuLink
-                pathName="All"
-                click={() => dispatch(setFilter(null))}
-              />
-              <MenuLink
-                pathName="Honda"
-                click={() => dispatch(setFilter("Honda"))}
-              />
-              <MenuLink
-                pathName="Yamaha"
-                click={() => dispatch(setFilter("Yamaha"))}
-              />
-              <MenuLink
-                pathName="Suzuki"
-                click={() => dispatch(setFilter("Suzuki"))}
-              />
-              <MenuLink
-                pathName="Kawasaki"
-                click={() => dispatch(setFilter("Kawasaki"))}
-              />
-              <MenuLink
-                pathName="KTM"
-                click={() => dispatch(setFilter("KTM"))}
-              />
-              <MenuLink
-                pathName="Kymco"
-                click={() => dispatch(setFilter("Kymco"))}
-              />
-              <MenuLink
-                pathName="SYM"
-                click={() => dispatch(setFilter("SYM"))}
-              />
-              <MenuLink
-                pathName="Skygo"
-                click={() => dispatch(setFilter("Skygo"))}
-              />
-              <MenuLink
-                pathName="Bennelli"
-                click={() => dispatch(setFilter("Bennelli"))}
-              />
-              <MenuLink
-                pathName="Bristol"
-                click={() => dispatch(setFilter("Bristol"))}
-              />
-              <MenuLink
-                pathName="Rusi"
-                click={() => dispatch(setFilter("Rusi"))}
-              />
-              <MenuLink
-                pathName="Motorstar"
-                click={() => dispatch(setFilter("Motorstar"))}
-              />
-              <MenuLink
-                pathName="QJMotor"
-                click={() => dispatch(setFilter("QJMotor"))}
-              />
-              <MenuLink
-                pathName="FKM"
-                click={() => dispatch(setFilter("FKM"))}
-              />
-            </DropdownMenu>
+            {modals.filter && (
+              <DropdownMenu>
+                <MenuLink
+                  pathName="All"
+                  click={() => dispatch(setFilter(null))}
+                />
+                <MenuLink
+                  pathName="Honda"
+                  click={() => dispatch(setFilter("Honda"))}
+                />
+                <MenuLink
+                  pathName="Yamaha"
+                  click={() => dispatch(setFilter("Yamaha"))}
+                />
+                <MenuLink
+                  pathName="Suzuki"
+                  click={() => dispatch(setFilter("Suzuki"))}
+                />
+                <MenuLink
+                  pathName="Kawasaki"
+                  click={() => dispatch(setFilter("Kawasaki"))}
+                />
+                <MenuLink
+                  pathName="KTM"
+                  click={() => dispatch(setFilter("KTM"))}
+                />
+                <MenuLink
+                  pathName="Kymco"
+                  click={() => dispatch(setFilter("Kymco"))}
+                />
+                <MenuLink
+                  pathName="SYM"
+                  click={() => dispatch(setFilter("SYM"))}
+                />
+                <MenuLink
+                  pathName="Skygo"
+                  click={() => dispatch(setFilter("Skygo"))}
+                />
+                <MenuLink
+                  pathName="Bennelli"
+                  click={() => dispatch(setFilter("Bennelli"))}
+                />
+                <MenuLink
+                  pathName="Bristol"
+                  click={() => dispatch(setFilter("Bristol"))}
+                />
+                <MenuLink
+                  pathName="Rusi"
+                  click={() => dispatch(setFilter("Rusi"))}
+                />
+                <MenuLink
+                  pathName="Motorstar"
+                  click={() => dispatch(setFilter("Motorstar"))}
+                />
+                <MenuLink
+                  pathName="QJMotor"
+                  click={() => dispatch(setFilter("QJMotor"))}
+                />
+                <MenuLink
+                  pathName="FKM"
+                  click={() => dispatch(setFilter("FKM"))}
+                />
+              </DropdownMenu>
+            )}
           </DropdownBttn>
 
           <DropdownBttn
@@ -103,16 +105,16 @@ export default function UnitsAll() {
               dispatch(toggleModal({ name: "sort", value: modals?.sort }))
             }
             text="Sort">
-            <DropdownMenu
-              classStyle={modals.sort ? "block" : "hidden"}
-              pad={20}>
-              <MenuLink pathName="The most popular" />
-              <MenuLink pathName="Newest" />
-              <MenuLink pathName="Increasing price" />
-              <MenuLink pathName="Decreasing price" />
-              <MenuLink pathName="No. reviews" />
-              <MenuLink pathName="Discount %" />
-            </DropdownMenu>
+            {modals.sort && (
+              <DropdownMenu pad={20}>
+                <MenuLink pathName="The most popular" />
+                <MenuLink pathName="Newest" />
+                <MenuLink pathName="Increasing price" />
+                <MenuLink pathName="Decreasing price" />
+                <MenuLink pathName="No. reviews" />
+                <MenuLink pathName="Discount %" />
+              </DropdownMenu>
+            )}
           </DropdownBttn>
         </div>
       </div>

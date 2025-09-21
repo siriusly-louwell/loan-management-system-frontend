@@ -16,7 +16,7 @@ export default function Inventory() {
 
   useEffect(() => {
     dispatch(fetchUnits({ ...navPage, search: debounce }));
-  }, [dispatch, navPage.page, debounce]);
+  }, [dispatch, navPage.page, navPage.max, navPage.min, debounce]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 

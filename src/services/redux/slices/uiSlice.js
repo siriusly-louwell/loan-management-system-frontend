@@ -13,6 +13,7 @@ const initialState = {
   modal: {},
   carouselSlide: 0,
   filter: null,
+  filterType: null,
   pageNum: 0,
   stepIndex: null,
   pageRoute: null,
@@ -82,6 +83,10 @@ const uiSlice = createSlice({
       state.filter = action.payload;
     },
 
+    setFilterType: (state, action) => {
+      state.filterType = action.payload;
+    },
+
     inputCheck: (state, action) => {
       const data = action.payload;
 
@@ -133,6 +138,7 @@ export const {
   setModal,
   toggleSlide,
   setFilter,
+  setFilterType,
   inputCheck,
   nextPage,
   prevPage,

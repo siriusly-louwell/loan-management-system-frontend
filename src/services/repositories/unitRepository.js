@@ -14,8 +14,8 @@ export const unitRepository = {
     return await response;
   },
 
-  async fetchPage({ page = 1, perPage = 8, search = "" }) {
-    const response = await UnitAPI.paginate(page, perPage, search);
+  async fetchPage({ page = 1, perPage = 8, ...params }) {
+    const response = await UnitAPI.paginate(page, perPage, params);
 
     if (!response) {
       return {

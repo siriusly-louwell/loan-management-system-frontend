@@ -8,9 +8,9 @@ const UnitAPI = {
     return response.data;
   },
 
-  async paginate(page, perPage, search) {
+  async paginate(page, perPage, params) {
     const response = await axios.get(`${API_URL}/api/motorcycle`, {
-      params: { page, per_page: perPage, search },
+      params: { page, per_page: perPage, ...params },
     });
     return response.data;
   },

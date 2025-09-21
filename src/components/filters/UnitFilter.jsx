@@ -15,6 +15,18 @@ export default function UnitFilter({ setPage }) {
   const dispatch = useDispatch();
   const { modals, filterType } = useSelector((state) => state.ui);
 
+  function setDropdown(filter, type) {
+    dispatch(setFilterType(filter));
+    dispatch(toggleModal({ name: "unitFilter", value: modals?.unitFilter }));
+    setPage({
+      page: 1,
+      type: type,
+      min: undefined,
+      max: undefined,
+      search: undefined,
+    });
+  }
+
   function setFilter(prop, value) {
     setPage({ page: 1, [prop]: value });
     if (modals.brandFilter)
@@ -25,6 +37,50 @@ export default function UnitFilter({ setPage }) {
 
   return (
     <>
+      {/* Filter type selector */}
+      <DropdownBttn
+        text="Filter by"
+        icon={<Filter />}
+        toggleMenu={() =>
+          dispatch(
+            toggleModal({
+              name: "unitFilter",
+              value: modals?.unitFilter,
+            })
+          )
+        }>
+        {modals.unitFilter && (
+          <DropdownMenu>
+            <MenuLink
+              pathName="by Date"
+              click={() => setDropdown("date", "created_at")}
+            />
+            <MenuLink pathName="by Brand" click={() => setDropdown("brand")} />
+            <MenuLink
+              pathName="by Quantity"
+              click={() => setDropdown("range", "quantity")}
+            />
+            <MenuLink
+              pathName="by Price"
+              click={() => setDropdown("range", "price")}
+            />
+            <MenuLink
+              pathName="by Interest"
+              click={() => setDropdown("range", "interest")}
+            />
+            <MenuLink
+              pathName="by Rebate value"
+              click={() => setDropdown("range", "rebate")}
+            />
+            <MenuLink
+              pathName="by Tenure year"
+              click={() => setDropdown("range", "tenure")}
+            />
+          </DropdownMenu>
+        )}
+      </DropdownBttn>
+
+      {/* Filter type */}
       {filterType === "brand" && (
         <DropdownBttn
           text={`Filter by Brand`}

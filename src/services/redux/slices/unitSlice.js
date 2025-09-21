@@ -136,11 +136,11 @@ const UnitSlice = createSlice({
 
       // ? fetch a unit
       .addCase(fetchUnit.pending, (state) => {
-        state.unitLoading = { isActive: true, text: "Fetching data..." };
+        state.unitLoading = true;
         state.error = null;
       })
       .addCase(fetchUnit.fulfilled, (state, action) => {
-        state.unitLoading = { isActive: false };
+        state.unitLoading = false;
         state.unit = action.payload;
 
         state.unit.images.forEach((file, i) => {
@@ -148,7 +148,7 @@ const UnitSlice = createSlice({
         });
       })
       .addCase(fetchUnit.rejected, (state, action) => {
-        state.unitLoading = { isActive: false };
+        state.unitLoading = false;
         state.error = action.payload;
       });
   },

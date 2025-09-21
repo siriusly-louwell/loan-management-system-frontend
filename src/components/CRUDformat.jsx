@@ -3,32 +3,18 @@ import { useLocation } from "react-router-dom";
 import CustomBttn from "../components/buttons/CustomBttn";
 import Plus from "../assets/icons/Plus";
 import DropdownBttn from "../components/buttons/DropdownBttn";
-import Filter from "../assets/icons/Filter";
 import SearchInput from "../components/inputs/SearchInput";
 import DropdownMenu from "../components/DropdownMenu";
 import MenuLink from "../components/links/MenuLink";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilterType, toggleModal } from "../services/redux/slices/uiSlice";
+import { toggleModal } from "../services/redux/slices/uiSlice";
 import PageNav from "./PageNav";
-import UnitFilter from "./filters/UnitFilter";
 
-export default function CRUDformat({ children, addModal, label, setPage }) {
+export default function CRUDformat({ children, addModal, label, setPage, filterComponent }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const { pagination } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
-
-  function setFilter(filter, type) {
-    dispatch(setFilterType(filter));
-    dispatch(toggleModal({ name: "unitFilter", value: modals?.unitFilter }));
-    setPage({
-      page: 1,
-      type: type,
-      min: undefined,
-      max: undefined,
-      search: undefined,
-    });
-  }
 
   return (
     <>
@@ -72,51 +58,9 @@ export default function CRUDformat({ children, addModal, label, setPage }) {
                       <Plus />
                     </CustomBttn>
                   )}
-                <DropdownBttn
-                  text={`Filter ${label}s`}
-                  icon={<Filter />}
-                  toggleMenu={() =>
-                    dispatch(
-                      toggleModal({
-                        name: "unitFilter",
-                        value: modals?.unitFilter,
-                      })
-                    )
-                  }>
-                  {modals.unitFilter && (
-                    <DropdownMenu>
-                      <MenuLink
-                        pathName="by Date"
-                        click={() => setFilter("date", "created_at")}
-                      />
-                      <MenuLink
-                        pathName="by Brand"
-                        click={() => setFilter("brand")}
-                      />
-                      <MenuLink
-                        pathName="by Quantity"
-                        click={() => setFilter("range", "quantity")}
-                      />
-                      <MenuLink
-                        pathName="by Price"
-                        click={() => setFilter("range", "price")}
-                      />
-                      <MenuLink
-                        pathName="by Interest"
-                        click={() => setFilter("range", "interest")}
-                      />
-                      <MenuLink
-                        pathName="by Rebate value"
-                        click={() => setFilter("range", "rebate")}
-                      />
-                      <MenuLink
-                        pathName="by Tenure year"
-                        click={() => setFilter("range", "tenure")}
-                      />
-                    </DropdownMenu>
-                  )}
-                </DropdownBttn>
-                <UnitFilter setPage={setPage} />
+
+                  {filterComponent}
+
                 <DropdownBttn
                   text="Actions"
                   toggleMenu={() =>
@@ -134,7 +78,9 @@ export default function CRUDformat({ children, addModal, label, setPage }) {
                 <div className="flex items-center space-x-3 w-full md:w-auto"></div>
               </div>
             </div>
+
             <div className="overflow-x-auto min-h-40">{children}</div>
+
             <PageNav pagination={pagination} changePage={setPage} />
           </div>
         </div>

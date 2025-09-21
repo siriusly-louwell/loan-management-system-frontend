@@ -7,6 +7,7 @@ import StockModal from "../components/modals/StockModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 import useDebounce from "../hooks/useDebounce";
+import UnitFilter from "../components/filters/UnitFilter";
 
 export default function Inventory() {
   const dispatch = useDispatch();
@@ -31,7 +32,11 @@ export default function Inventory() {
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 
   return (
-    <CRUDformat label="Unit" setPage={setPage} addModal={<CreateProduct />}>
+    <CRUDformat
+      label="Unit"
+      setPage={setPage}
+      addModal={<CreateProduct />}
+      filterComponent={<UnitFilter setPage={setPage} />}>
       <InventoryTable />
       {modals?.editUnit && <EditProduct />}
       {modals?.unitStock && <StockModal />}

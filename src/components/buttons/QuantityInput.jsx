@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { handleQuantity } from "../../services/redux/slices/formSlice";
 
@@ -7,10 +7,18 @@ export default function QuantityInput({
   max = 200,
   require,
   index,
+  initial = 1,
   quantType,
 }) {
   const dispatch = useDispatch();
   const [number, setNumber] = useState(1);
+
+  useEffect(() => {
+    if (!quantType) {
+      setNumber(initial);
+      dispatch(handleQuantity({ index: index, num: initial, type: quantType }));
+    }
+  }, [initial]);
 
   function handleNumber(type) {
     if (type === "increment" && number < max) {

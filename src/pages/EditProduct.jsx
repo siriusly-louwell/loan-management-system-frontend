@@ -44,12 +44,15 @@ export default function EditProduct() {
   const { colors, formData } = useSelector((state) => state.form);
   const [files, setFiles] = useState([]);
   const [angles, setAngles] = useState([]);
+  const [quantity, setQuantity] = useState([]);
 
   useEffect(() => {
     const { colors, ...unitRest } = unit;
     const { images, ...specRest } = specs;
     const colorArr = colors.map((i) => i.color);
+    const quant = colors.map((i) => i.quantity);
 
+    setQuantity(quant);
     dispatch(setColors(colorArr));
     dispatch(setType("editUnit"));
     dispatch(initialForm({ ...unitRest, ...specRest }));
@@ -79,7 +82,15 @@ export default function EditProduct() {
     try {
       const form = formData.editUnit;
       const response = await dispatch(
-        editUnit({ form, files, angles, colors, id: unit.id, type: "edit" })
+        editUnit({
+          form,
+          files,
+          angles,
+          colors,
+          id: unit.id,
+          totalQuantity: quantity,
+          type: "edit",
+        })
       ).unwrap();
 
       dispatch(setAlert({ message: response.message, type: response.type }));
@@ -87,7 +98,6 @@ export default function EditProduct() {
       if (response.type === "success") {
         dispatch(fetchUnits());
         closeModal();
-        // dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
       }
     } catch (error) {
       console.error("Error: ", error);
@@ -114,8 +124,13 @@ export default function EditProduct() {
         status: "new",
       };
 
-      if (type === "color") setFiles(updatedFiles);
-      else setAngles(updatedFiles);
+      if (type === "color") {
+        const quant = [...quantity];
+        quant[i] = 1;
+
+        setQuantity(quant);
+        setFiles(updatedFiles);
+      } else setAngles(updatedFiles);
     }
   }
 

@@ -33,6 +33,7 @@ export default function StockModal() {
         editUnit({
           quantity: formData.unitStock.quantity,
           id: unit.id,
+          colors: unit.colors.map((c) => c.color),
           type: "patch",
         })
       ).unwrap();
@@ -97,7 +98,7 @@ export default function StockModal() {
                     <div className="mt-5">
                       <ColorLabel style={color.color} size={7} />
                     </div>
-                    <QuantityInput max={200} index={i} />
+                    <QuantityInput max={200} index={i} initial={color.quantity} />
                   </div>
                 ))}
               </div>

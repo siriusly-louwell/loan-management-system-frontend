@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CreditBanner from "../components/cards/CreditBanner";
 import BasicBanner from "../components/cards/BasicBanner";
 import SpecialOfferBanner from "../components/cards/SpecialOfferBanner";
@@ -13,10 +12,21 @@ import BasicCarousel from "../components/cards/BasicCarousel";
 export default function ProductList() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { filter } = useSelector((state) => state.ui);
 
   useEffect(() => {
-    dispatch(fetchUnits({ page: 1, perPage: 4 }));
-  }, []);
+    dispatch(
+      fetchUnits({
+        page: 1,
+        perPage: 24,
+        search: filter,
+      })
+    );
+  }, [dispatch, filter]);
+
+  // useEffect(() => {
+  //   dispatch(fetchUnits({ page: 1, perPage: 4 }));
+  // }, []);
 
   return (
     <section className="bg-gray-100 py-8 justify-items-center antialiased dark:bg-gray-800 md:py-12">

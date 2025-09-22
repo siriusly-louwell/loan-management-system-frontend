@@ -18,19 +18,26 @@ import { fetchUnits } from "../services/redux/slices/unitSlice";
 export default function UnitsAll() {
   const dispatch = useDispatch();
   const motors = useSelector(UnitEntities);
-  const { unitsLoading } = useSelector((state) => state.unit);
+  const { unitsLoading, pagination } = useSelector((state) => state.unit);
   const { modals, filter } = useSelector((state) => state.ui);
   const [units, setUnits] = useState([]);
   const [pageNum, setPageNum] = useState(2);
 
   useEffect(() => {
     setUnits([...units, ...motors]);
-  }, [motors[0]?.id]);
+  }, [motors.length]);
 
-  const showMore = () => {
-    dispatch(fetchUnits({ page: pageNum, perPage: 4 }));
-    setPageNum(pageNum + 1);
-  };
+  async function showMore() {
+    await dispatch(fetchUnits({ page: pageNum, perPage: 4 }));
+    if (units.length < pagination.total) setPageNum(pageNum + 1);
+  }
+
+  async function toggleFilter(brand) {
+    dispatch(toggleModal({ name: "filter", value: modals?.filter }));
+    dispatch(setFilter(brand));
+    setUnits([]);
+    setPageNum(2);
+  }
 
   return (
     <>
@@ -57,7 +64,7 @@ export default function UnitsAll() {
                   <MenuLink
                     key={i}
                     pathName={brand}
-                    click={() => dispatch(setFilter(brand))}
+                    click={() => toggleFilter(brand)}
                   />
                 ))}
               </DropdownMenu>
@@ -87,13 +94,7 @@ export default function UnitsAll() {
       <ProductGrid>
         {unitsLoading
           ? [...Array(8)].map((_, i) => <CardSkeleton key={i} />)
-          : units.map((motor) => {
-              if (motor.isBrand(filter))
-                return <ProductCard key={motor.id} unit={motor} />;
-              else if (filter === null)
-                return <ProductCard key={motor.id} unit={motor} />;
-              else return "";
-            })}
+          : units.map((motor) => <ProductCard key={motor.id} unit={motor} />)}
       </ProductGrid>
       {units.length === 0 && !unitsLoading && (
         <EmptySearch

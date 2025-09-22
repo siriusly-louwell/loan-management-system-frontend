@@ -15,18 +15,8 @@ export default function ProductList() {
   const { filter } = useSelector((state) => state.ui);
 
   useEffect(() => {
-    dispatch(
-      fetchUnits({
-        page: 1,
-        perPage: 24,
-        search: filter,
-      })
-    );
+    dispatch(fetchUnits({ page: 1, perPage: 24, search: filter }));
   }, [dispatch, filter]);
-
-  // useEffect(() => {
-  //   dispatch(fetchUnits({ page: 1, perPage: 4 }));
-  // }, []);
 
   return (
     <section className="bg-gray-100 py-8 justify-items-center antialiased dark:bg-gray-800 md:py-12">

@@ -25,10 +25,10 @@ export default function UnitsAll() {
 
   useEffect(() => {
     setUnits([...units, ...motors]);
-  }, [motors.length]);
+  }, [motors.length, motors[0]?.id]);
 
   async function showMore() {
-    await dispatch(fetchUnits({ page: pageNum, perPage: 4 }));
+    await dispatch(fetchUnits({ page: pageNum, perPage: 24, search: filter }));
     if (units.length < pagination.total) setPageNum(pageNum + 1);
   }
 
@@ -56,10 +56,7 @@ export default function UnitsAll() {
             text="Filter by Brand">
             {modals.filter && (
               <DropdownMenu>
-                <MenuLink
-                  pathName="All"
-                  click={() => dispatch(setFilter(null))}
-                />
+                <MenuLink pathName="All" click={() => toggleFilter(null)} />
                 {MOTOR_BRANDS.map((brand, i) => (
                   <MenuLink
                     key={i}

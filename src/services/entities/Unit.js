@@ -6,6 +6,7 @@ export class Unit {
     id,
     name,
     brand,
+    unit_type,
     description,
     price,
     quantity,
@@ -20,6 +21,7 @@ export class Unit {
     this.id = id;
     this.name = name;
     this.brand = brand;
+    this.unit_type = unit_type;
     this.description = description;
     this.price = price;
     this.quantity = quantity;

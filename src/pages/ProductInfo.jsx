@@ -113,7 +113,7 @@ export default function ProductInfo({ staff = false }) {
                             })
                           );
                         }}
-                        className="object-contain w-[20vh] rounded-lg cursor-pointer hover:opacity-80"
+                        className="object-contain max-w-[20vh] max-h-[10vh] rounded-lg cursor-pointer hover:opacity-80"
                       />
                     ))}
                 </section>

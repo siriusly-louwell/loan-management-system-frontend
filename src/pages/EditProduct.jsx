@@ -34,6 +34,7 @@ import {
 } from "../services/redux/slices/unitSlice";
 import FormSelect from "../components/inputs/FormSelect";
 import PopAnimate from "../components/animations/popAnimate";
+import FormCheck from "../components/checkboxes/FormCheck";
 
 export default function EditProduct() {
   const dispatch = useDispatch();
@@ -184,15 +185,46 @@ export default function EditProduct() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
                   Motorcycle Details
                 </h3>
+                <div className="grid sm:grid-cols-3 gap-4 mb-3">
+                  <div className="grid gap-4 sm:col-span-2">
+                    <FormInput
+                      label="Motorcycle Name"
+                      type="text"
+                      value={formData.editUnit.name || ""}
+                      onchange={(e) => dispatchInput(e)}
+                      name="name"
+                      id="name"
+                    />
+                  </div>
+                  <section className="space-y-2">
+                    <label className="text-sm font-medium text-gray-900 dark:text-white ">
+                      Unit type <strong className="text-rose-500">*</strong>
+                    </label>
+                    <div className="flex space-x-8">
+                      <FormCheck
+                        id="new"
+                        type="radio"
+                        name="unit_type"
+                        value="new"
+                        label="Brand new"
+                        require={true}
+                        check={formData.editUnit.unit_type === "new"}
+                        change={(e) => dispatchInput(e)}
+                      />
+                      <FormCheck
+                        id="repo"
+                        type="radio"
+                        name="unit_type"
+                        value="repo"
+                        label="Repo unit"
+                        check={formData.editUnit.unit_type === "repo"}
+                        change={(e) => dispatchInput(e)}
+                      />
+                    </div>
+                  </section>
+                </div>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                  <FormInput
-                    label="Motorcycle Name"
-                    type="text"
-                    value={formData.editUnit.name || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="name"
-                    id="name"
-                  />
+                  <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                   <FormSelect
                     label="Brand Name"
                     name="brand"
@@ -203,7 +235,6 @@ export default function EditProduct() {
                       <option key={i}>{brand}</option>
                     ))}
                   </FormSelect>
-                  <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
                     <FormInput
                       label="Price"
                       type="number"

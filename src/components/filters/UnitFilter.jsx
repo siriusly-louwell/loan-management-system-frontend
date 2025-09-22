@@ -96,8 +96,9 @@ export default function UnitFilter({ setPage }) {
           {modals.brandFilter && (
             <DropdownMenu>
               <MenuLink pathName="All" click={() => setFilter("search", "")} />
-              {MOTOR_BRANDS.map((brand) => (
+              {MOTOR_BRANDS.map((brand, i) => (
                 <MenuLink
+                  key={i}
                   pathName={brand}
                   click={() => setFilter("search", brand)}
                 />

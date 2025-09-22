@@ -25,6 +25,7 @@ import {
   handleChange,
   initialForm,
 } from "../services/redux/slices/formSlice";
+import FormCheck from "../components/checkboxes/FormCheck";
 
 export default function CreateProduct() {
   const dispatch = useDispatch();
@@ -37,8 +38,8 @@ export default function CreateProduct() {
   const [angles, setAngle] = useState([]);
 
   useEffect(() => {
-      dispatch(initialForm({ quantity: [1] }));
-    }, []);
+    dispatch(initialForm({ quantity: [1], unit_type: "new" }));
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -141,6 +142,31 @@ export default function CreateProduct() {
                       require={true}
                     />
                   </div>
+                  <section className="space-y-2">
+                    <label className="text-sm font-medium text-gray-900 dark:text-white ">
+                      Unit type <strong className="text-rose-500">*</strong>
+                    </label>
+                    <div className="flex space-x-8">
+                      <FormCheck
+                        id="new"
+                        type="radio"
+                        name="unit_type"
+                        value="new"
+                        label="Brand new"
+                        require={true}
+                        check={formData.createUnit.unit_type === "new"}
+                        change={dispatchInput}
+                      />
+                      <FormCheck
+                        id="repo"
+                        type="radio"
+                        name="unit_type"
+                        value="repo"
+                        label="Repo unit"
+                        change={dispatchInput}
+                      />
+                    </div>
+                  </section>
                 </div>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
                   <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">

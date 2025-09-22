@@ -6,23 +6,17 @@ export async function editUnitUseCase(data) {
 
   // ? edit all unit details
   if (data.type === "edit") {
-    if (data.files.length === 0)
-      return {
-        message: "Please select images for the unit.",
-        type: "warn",
-      };
+    let message;
+
+    if (data.files.length === 0) message = "Please select images for the unit.";
 
     if (data.colors.length !== data.files.length || data.colors.length === 0)
-      return {
-        message: "Specify the color of the image.",
-        type: "warn",
-      };
+      message = "Please specify the color of the image.";
 
     if (data.angles.length === 0)
-      return {
-        message: "Add images from different angles of the unit.",
-        type: "warn",
-      };
+      message = "Add images from different angles of the unit.";
+
+    if (message) return { message: message, type: "warn" };
 
     const images = [...data.files, ...data.angles];
     const payload = {

@@ -15,7 +15,7 @@ export default function ProductList() {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchUnits());
+    dispatch(fetchUnits({ page: 1, perPage: 4 }));
   }, []);
 
   return (

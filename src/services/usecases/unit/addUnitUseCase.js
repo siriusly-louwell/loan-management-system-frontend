@@ -2,23 +2,15 @@ import { formRepository } from "../../repositories/formRepository";
 import { unitRepository } from "../../repositories/unitRepository";
 
 export async function addUnitUseCase(data) {
-  if (data.files.length === 0)
-    return {
-      message: "Please select images for the unit.",
-      type: "warn",
-    };
+  let message;
 
-  if (data.colors.length === 0 || data.colors.length !== data.files.length)
-    return {
-      message: "The unit must have colors.",
-      type: "warn",
-    };
+  if (data.files.length === 0) message = "Please select images for the unit.";
+  else if (data.colors.length === 0 || data.colors.length !== data.files.length)
+    message = "The unit must have colors.";
+  else if (data.angles.length === 0)
+    message = "Add images from different angles of the unit.";
 
-  if (data.angles.length === 0)
-    return {
-      message: "Add images from different angles of the unit.",
-      type: "warn",
-    };
+  if (message) return { message: message, type: "warn" };
 
   const payload = {
     ...data.form,

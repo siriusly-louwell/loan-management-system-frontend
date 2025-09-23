@@ -9,26 +9,26 @@ import Sort from "../assets/icons/Sort";
 import CardSkeleton from "../components/loading components/CardSkeleton";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useDispatch, useSelector } from "react-redux";
-import { UnitEntities } from "../services/entities/Unit";
 import { setFilter, toggleModal } from "../services/redux/slices/uiSlice";
 import { MOTOR_BRANDS } from "../constants/brands";
-import { useEffect, useState } from "react";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { useOutletContext } from "react-router-dom";
 
 export default function UnitsAll() {
   const dispatch = useDispatch();
-  const motors = useSelector(UnitEntities);
+  const { units, setUnits, pageNum, setPageNum, unitType } = useOutletContext();
   const { unitsLoading, pagination } = useSelector((state) => state.unit);
   const { modals, filter } = useSelector((state) => state.ui);
-  const [units, setUnits] = useState([]);
-  const [pageNum, setPageNum] = useState(2);
-
-  useEffect(() => {
-    setUnits([...units, ...motors]);
-  }, [motors.length, motors[0]?.id]);
 
   async function showMore() {
-    await dispatch(fetchUnits({ page: pageNum, perPage: 24, search: filter }));
+    await dispatch(
+      fetchUnits({
+        page: pageNum,
+        perPage: 4,
+        search: filter,
+        unit_type: unitType,
+      })
+    );
     if (units.length < pagination.total) setPageNum(pageNum + 1);
   }
 

@@ -68,6 +68,7 @@ const UnitSlice = createSlice({
       currentPage: 1,
       lastPage: 1,
       total: 0,
+      nextPage: 2,
     },
   },
   reducers: {
@@ -120,7 +121,6 @@ const UnitSlice = createSlice({
       })
       .addCase(fetchUnits.fulfilled, (state, action) => {
         state.unitsLoading = false;
-        state.units = action.payload.data;
         state.pagination = {
           from: action.payload.from,
           to: action.payload.to,
@@ -128,6 +128,11 @@ const UnitSlice = createSlice({
           lastPage: action.payload.last_page,
           total: action.payload.total,
         };
+
+        state.units =
+          action.meta.arg.mode === "append"
+            ? [...state.units, ...action.payload.data]
+            : action.payload.data;
       })
       .addCase(fetchUnits.rejected, (state, action) => {
         state.unitsLoading = false;

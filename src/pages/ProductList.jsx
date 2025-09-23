@@ -28,44 +28,38 @@ export default function ProductList() {
   const { user } = useSelector((state) => state.auth);
   const { filter, modals } = useSelector((state) => state.ui);
   const { unitsLoading, pagination } = useSelector((state) => state.unit);
-  const [units, setUnits] = useState([]);
-  const [unitType, setUnitType] = useState();
+  const [unitType, setUnitType] = useState(null);
   const [pageNum, setPageNum] = useState(2);
 
-  const fetch = (num) =>
+  const fetch = (num, mode) =>
     dispatch(
       fetchUnits({
         page: num,
-        perPage: 4,
+        perPage: 1,
         search: filter,
         unit_type: unitType,
+        mode: mode,
       })
     );
 
   useEffect(() => {
-    fetch(1);
+    fetch(1, "replace");
   }, [dispatch, filter, unitType]);
-
-  useEffect(() => {
-    setUnits([...units, ...motors]);
-  }, [motors.length, motors[0]?.id]);
 
   async function toggleFilter(brand) {
     dispatch(toggleModal({ name: "filter", value: modals?.filter }));
     dispatch(setFilter(brand));
-    setUnits([]);
     setPageNum(2);
   }
 
   async function showMore() {
-    await fetch(pageNum);
-    if (units.length < pagination.total) setPageNum(pageNum + 1);
+    await fetch(pageNum, "append");
+    if (motors.length < pagination.total) setPageNum(pageNum + 1);
   }
 
   async function toggleTab(value) {
     setUnitType(value);
     dispatch(setFilter(null));
-    setUnits([]);
     setPageNum(2);
   }
 
@@ -88,29 +82,21 @@ export default function ProductList() {
         </div>
 
         <UnderlineTabs>
-          <UlTab
-            text="All"
-            isPage={!unitType}
-            click={() => toggleTab(null)}
-            path=""
-          />
+          <UlTab text="All" isPage={!unitType} click={() => toggleTab(null)} />
           <UlTab
             text="Top units"
             isPage={unitType === "top"}
             click={() => toggleTab("top")}
-            path="top"
           />
           <UlTab
             text="Brand New"
             isPage={unitType === "new"}
             click={() => toggleTab("new")}
-            path="new"
           />
           <UlTab
             text="Repo units"
             isPage={unitType === "repo"}
             click={() => toggleTab("repo")}
-            path="repo"
           />
         </UnderlineTabs>
 
@@ -165,10 +151,10 @@ export default function ProductList() {
           {unitsLoading ? (
             <CardSkeleton num={8} />
           ) : (
-            units.map((motor) => <ProductCard key={motor.id} unit={motor} />)
+            motors.map((motor) => <ProductCard key={motor.id} unit={motor} />)
           )}
         </ProductGrid>
-        {units.length === 0 && !unitsLoading && (
+        {motors.length === 0 && !unitsLoading && (
           <EmptySearch
             label="No results found"
             context="Try changing the filter or go to a different category"

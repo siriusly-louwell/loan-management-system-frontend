@@ -72,9 +72,7 @@ function App() {
 
         {/* Guest Routes */}
         <Route path="/" element={<PageLayout links={<GuestNav />} />}>
-          <Route path="" element={<ProductList />}>
-            <Route index element={<UnitsAll />} />
-          </Route>
+          <Route path="" element={<ProductList />} />
           <Route path="prodlist" element={<ProductList />}>
             <Route index element={<UnitsAll />} />
           </Route>
@@ -542,7 +540,7 @@ function App() {
           <Route
             path=""
             element={
-                <Inventory />
+              <Inventory />
               // <ProtectedRoute type="admin">
               // </ProtectedRoute>
             }
@@ -550,7 +548,7 @@ function App() {
           <Route
             path="inventory"
             element={
-                <Inventory />
+              <Inventory />
               // <ProtectedRoute type="admin">
               // </ProtectedRoute>
             }
@@ -696,48 +694,48 @@ function App() {
           <Route
             path="accounts"
             element={
-              <ProtectedRoute type="admin">
                 <Accounts />
-              </ProtectedRoute>
+              // <ProtectedRoute type="admin">
+              // </ProtectedRoute>
             }>
             <Route
               index
               element={
-                <ProtectedRoute type="admin">
                   <AccApplicants />
-                </ProtectedRoute>
+                // <ProtectedRoute type="admin">
+                // </ProtectedRoute>
               }
             />
             <Route
               path="applicants"
               element={
-                <ProtectedRoute type="admin">
                   <AccApplicants />
-                </ProtectedRoute>
+                // <ProtectedRoute type="admin">
+                // </ProtectedRoute>
               }
             />
             <Route
               path="cis"
               element={
-                <ProtectedRoute type="admin">
                   <AccCI />
-                </ProtectedRoute>
+                // <ProtectedRoute type="admin">
+                // </ProtectedRoute>
               }
             />
             <Route
               path="staffs"
               element={
-                <ProtectedRoute type="admin">
                   <AccAdmins />
-                </ProtectedRoute>
+                // <ProtectedRoute type="admin">
+                // </ProtectedRoute>
               }
             />
             <Route
               path="customers"
               element={
-                <ProtectedRoute type="admin">
                   <AccComakers />
-                </ProtectedRoute>
+                // <ProtectedRoute type="admin">
+                // </ProtectedRoute>
               }
             />
           </Route>

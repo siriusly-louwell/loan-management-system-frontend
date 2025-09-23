@@ -24,7 +24,7 @@ export default function UnitsAll() {
     await dispatch(
       fetchUnits({
         page: pageNum,
-        perPage: 4,
+        perPage: 24,
         search: filter,
         unit_type: unitType,
       })
@@ -89,9 +89,11 @@ export default function UnitsAll() {
       </div>
 
       <ProductGrid>
-        {unitsLoading
-          ? [...Array(8)].map((_, i) => <CardSkeleton key={i} />)
-          : units.map((motor) => <ProductCard key={motor.id} unit={motor} />)}
+        {unitsLoading ? (
+          <CardSkeleton num={8} />
+        ) : (
+          units.map((motor) => <ProductCard key={motor.id} unit={motor} />)
+        )}
       </ProductGrid>
       {units.length === 0 && !unitsLoading && (
         <EmptySearch

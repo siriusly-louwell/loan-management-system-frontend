@@ -31,11 +31,11 @@ export default function ProductList() {
   const [unitType, setUnitType] = useState(null);
   const [pageNum, setPageNum] = useState(2);
 
-  const fetch = (num, mode) =>
+  const fetch = (num, mode = "replace") =>
     dispatch(
       fetchUnits({
         page: num,
-        perPage: 1,
+        perPage: 24,
         search: filter,
         unit_type: unitType,
         mode: mode,
@@ -43,7 +43,7 @@ export default function ProductList() {
     );
 
   useEffect(() => {
-    fetch(1, "replace");
+    fetch(1);
   }, [dispatch, filter, unitType]);
 
   async function toggleFilter(brand) {

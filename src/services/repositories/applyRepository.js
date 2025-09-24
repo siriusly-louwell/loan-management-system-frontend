@@ -1,18 +1,31 @@
 import ApplicationAPI from "../api/ApplicationAPI";
 
 export const applyRepository = {
-  //   async fetchAll() {
-  //     const response = await UnitAPI.fetchAll();
+  async fetchAll() {
+    const response = await ApplicationAPI.fetchAll();
 
-  //     if (!response) {
-  //       return {
-  //         message: "Failed to fetch units",
-  //         type: "error",
-  //       };
-  //     }
+    if (!response) {
+      return {
+        message: "Failed to fetch applications",
+        type: "error",
+      };
+    }
 
-  //     return await response;
-  //   },
+    return await response;
+  },
+
+  async fetchPage({ page = 1, perPage = 8, ...params }) {
+    const response = await ApplicationAPI.paginate(page, perPage, params);
+
+    if (!response) {
+      return {
+        message: "Failed to fetch applications",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
 
   async apply(data) {
     const form = this.appendData(data);

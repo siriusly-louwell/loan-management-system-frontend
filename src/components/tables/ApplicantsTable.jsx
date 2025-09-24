@@ -8,23 +8,47 @@ import Eye from "../../assets/icons/Eye";
 import CustomBadge from "../badges/CustomBadge";
 import EmptyRows from "../empty states/EmptyRows";
 import SmallSpin from "../loading components/SmallSpin";
+import { useDispatch, useSelector } from "react-redux";
+import useDebounce from "../../hooks/useDebounce";
+import { fetchApplicants } from "../../services/redux/slices/applicationSlice";
+import RowSkeleton from "../loading components/RowSkeleton";
 
 export default function ApplicantsTable() {
-  const [applicants, setApplicants] = useState([]);
-  const [appLoad, setAppLoad] = useState(true);
+  const dispatch = useDispatch();
+  const { applications, appsLoading } = useSelector(
+    (state) => state.application
+  );
+  const [navPage, setNavPage] = useState({});
+  // const [applicants, setApplicants] = useState([]);
+  // const [appLoad, setAppLoad] = useState(true);
+  const search = useDebounce(navPage.search, 500);
+  const min = useDebounce(navPage.min, 1000);
+  const max = useDebounce(navPage.max, 500);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/application")
-      .then((response) => response.json())
-      .then((data) => {
-        setApplicants(data);
-        setAppLoad(false);
+    dispatch(
+      fetchApplicants({
+        page: navPage.page,
+        type: navPage.type,
+        search: search,
+        min: min,
+        max: max,
       })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setAppLoad(true);
-      });
-  }, []);
+    );
+  }, [dispatch, navPage.page, navPage.type, max, min, search]);
+
+  // useEffect(() => {
+  //   fetch("http://127.0.0.1:8000/api/application")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setApplicants(data);
+  //       setAppLoad(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data: ", error);
+  //       setAppLoad(true);
+  //     });
+  // }, []);
 
   function dateConvert(date) {
     const newDate = new Date(date);
@@ -33,7 +57,7 @@ export default function ApplicantsTable() {
     return formatted;
   }
 
-  if (!appLoad) applicants.sort((a, b) => b.id - a.id);
+  // if (!appLoad) applicants.sort((a, b) => b.id - a.id);
 
   function isThisWeek(created_at) {
     const date = new Date(created_at);
@@ -78,11 +102,9 @@ export default function ApplicantsTable() {
         <TableHead
           headers={["", "Name", "Record ID", "Applied at", "Status", "Actions"]}
         />
-        {appLoad ? (
-          ""
-        ) : (
-          <tbody>
-            {applicants.map((user) => (
+        <tbody>
+          {!appsLoading &&
+            applications.map((user) => (
               <ProductRow
                 key={user.id}
                 recent={isThisWeek(user.created_at)}
@@ -127,17 +149,11 @@ export default function ApplicantsTable() {
                 ]}
               />
             ))}
-          </tbody>
-        )}
+          {appsLoading && <RowSkeleton num={8} count={9} />}
+        </tbody>
       </Table>
-      {appLoad ? (
-        <div className="w-full h-40 py-20 bg-gray-100 dark:bg-gray-700 rounded-b-xl flex justify-center items-center">
-          <SmallSpin size={50} />
-        </div>
-      ) : (
-        ""
-      )}
-      {applicants.length === 0 && !appLoad ? <EmptyRows /> : ""}
+
+      {applications.length === 0 && !appsLoading ? <EmptyRows /> : ""}
     </>
   );
 }

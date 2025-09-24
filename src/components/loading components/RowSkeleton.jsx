@@ -1,6 +1,6 @@
-export default function RowSkeleton({ count }) {
-  return (
-    <tr className="border-b dark:border-gray-600">
+export default function RowSkeleton({ num, count }) {
+  return [...Array(num)].map((_, i) => (
+    <tr key={i} className="border-b dark:border-gray-600">
       <td className="px-4 py-6 w-4">
         <div className="flex items-center">
           <div className="w-4 h-4 bg-gray-300 rounded dark:bg-gray-600 animate-pulse"></div>
@@ -12,5 +12,5 @@ export default function RowSkeleton({ count }) {
         </td>
       ))}
     </tr>
-  );
+  ));
 }

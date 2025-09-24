@@ -18,7 +18,7 @@ export default function InventoryTable() {
   const motors = useSelector(UnitEntities);
   const { modals } = useSelector((state) => state.ui);
   const { unitsLoading } = useSelector((state) => state.unit);
-  
+
   async function unitModal(id, modal) {
     dispatch(setLoading({ text: "Fetching data...", isActive: true }));
     await dispatch(fetchUnit(id));
@@ -90,8 +90,7 @@ export default function InventoryTable() {
               />
             ))}
 
-          {unitsLoading &&
-            [...Array(8)].map((_, i) => <RowSkeleton key={i} count={9} />)}
+          {unitsLoading && <RowSkeleton num={8} count={9} />}
         </tbody>
       </Table>
       {motors.length === 0 && !unitsLoading && <EmptyFolder />}

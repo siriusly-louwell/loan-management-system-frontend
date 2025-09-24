@@ -6,7 +6,7 @@ export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
   async (page, thunkAPI) => {
     try {
-      return page?.page || page?.min
+      return page?.token
         ? await userRepository.fetchPage(page)
         : await userRepository.fetchAll();
     } catch (error) {
@@ -15,7 +15,7 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
-const useSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState: {
     users: [],
@@ -47,20 +47,25 @@ const useSlice = createSlice({
           total: action.payload.total,
         };
 
+        console.log(action.payload);
+
         state.users =
           action.meta.arg.mode === "append"
             ? [...state.users, ...action.payload.data]
-            : action.payload.data;
+            : action.payload;
 
-        state.users.forEach((app, i) => {
-          state.users[i] = {
-            ...app,
-            imgURL: UserAPI.imgPath(app.id_pic),
-            isNew: userRepository.isThisWeek(app.created_at),
-            applied_at: userRepository.dateConvert(app.created_at),
-            status: userRepository.statusBadge(app.apply_status),
-          };
-        });
+        if (state.users && state.users.length > 0) {
+          console.log(state.users);
+          state.users.forEach((app, i) => {
+            state.users[i] = {
+              ...app,
+              imgURL: UserAPI.imgPath(app.id_pic),
+              isNew: userRepository.isThisWeek(app.created_at),
+              applied_at: userRepository.dateConvert(app.created_at),
+              status: userRepository.statusBadge(app.apply_status),
+            };
+          });
+        }
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.usersLoading = false;
@@ -69,5 +74,5 @@ const useSlice = createSlice({
   },
 });
 
-// export const {} = useSlice.actions;
-export default useSlice.reducer;
+// export const {} = userSlice.actions;
+export default userSlice.reducer;

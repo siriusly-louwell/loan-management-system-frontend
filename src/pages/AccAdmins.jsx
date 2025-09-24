@@ -37,7 +37,7 @@ export default function AccAdmins() {
         max: max,
       })
     );
-  }, [dispatch, navPage.page, navPage.type, max, min, search]);
+  }, [dispatch, navPage.page, navPage.type, max, min, search, token]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 
@@ -50,7 +50,7 @@ export default function AccAdmins() {
           />
           <tbody>
             {!usersLoading &&
-              users.map((account) => (
+              users?.map((account) => (
                 <ProductRow
                   key={account.id}
                   data={[
@@ -88,7 +88,7 @@ export default function AccAdmins() {
             {usersLoading && <RowSkeleton num={8} count={5} />}
           </tbody>
         </Table>
-        {users.length === 0 && !usersLoading ? <EmptyRows /> : ""}
+        {users?.length === 0 && !usersLoading ? <EmptyRows /> : ""}
       </div>
     </CRUDformat>
   );

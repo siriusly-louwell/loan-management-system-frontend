@@ -49,12 +49,48 @@ export const applyRepository = {
       submitData.append(`${key}`, form[key]);
     }
 
-    submitData.append('transaction', JSON.stringify(data.unit));
+    submitData.append("transaction", JSON.stringify(data.unit));
 
     Object.entries(data.files).forEach(([key, file]) => {
       submitData.append(key, file);
     });
 
     return submitData;
+  },
+
+  dateConvert(date) {
+    const newDate = new Date(date);
+    const formatted = new Intl.DateTimeFormat("en-GB").format(newDate);
+
+    return formatted;
+  },
+
+  isThisWeek(created_at) {
+    const date = new Date(created_at);
+    const now = new Date();
+    const start = new Date();
+
+    now.setHours(23, 59, 59, 999);
+    start.setDate(now.getDate() - 2);
+    start.setHours(0, 0, 0, 0);
+
+    return date >= start && date <= now;
+  },
+
+  statusBadge(status) {
+    switch (status) {
+      case "accepted":
+        return { text: "Accepted", color: "green" };
+      case "denied":
+        return { text: "Denied", color: "orange" };
+      case "evaluated":
+        return { text: "Evaluated", color: "yellow" };
+      case "approved":
+        return { text: "Approved", color: "purple" };
+      case "declined":
+        return { text: "Declined", color: "red" };
+      default:
+        return { text: "Pending", color: "blue" };
+    }
   },
 };

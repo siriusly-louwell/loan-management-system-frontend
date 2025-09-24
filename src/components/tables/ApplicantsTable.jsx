@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ProductRow from "./ProductRow";
 import TableHead from "./TableHead";
 import CustomBttn from "../buttons/CustomBttn";
@@ -7,97 +7,15 @@ import Table from "./Table";
 import Eye from "../../assets/icons/Eye";
 import CustomBadge from "../badges/CustomBadge";
 import EmptyRows from "../empty states/EmptyRows";
-import SmallSpin from "../loading components/SmallSpin";
-import { useDispatch, useSelector } from "react-redux";
-import useDebounce from "../../hooks/useDebounce";
-import { fetchApplicants } from "../../services/redux/slices/applicationSlice";
 import RowSkeleton from "../loading components/RowSkeleton";
 
 export default function ApplicantsTable() {
-  const dispatch = useDispatch();
   const { applications, appsLoading } = useSelector(
     (state) => state.application
   );
-  const [navPage, setNavPage] = useState({});
-  // const [applicants, setApplicants] = useState([]);
-  // const [appLoad, setAppLoad] = useState(true);
-  const search = useDebounce(navPage.search, 500);
-  const min = useDebounce(navPage.min, 1000);
-  const max = useDebounce(navPage.max, 500);
-
-  useEffect(() => {
-    dispatch(
-      fetchApplicants({
-        page: navPage.page,
-        type: navPage.type,
-        search: search,
-        min: min,
-        max: max,
-      })
-    );
-  }, [dispatch, navPage.page, navPage.type, max, min, search]);
-
-  // useEffect(() => {
-  //   fetch("http://127.0.0.1:8000/api/application")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setApplicants(data);
-  //       setAppLoad(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data: ", error);
-  //       setAppLoad(true);
-  //     });
-  // }, []);
-
-  function dateConvert(date) {
-    const newDate = new Date(date);
-    const formatted = new Intl.DateTimeFormat("en-GB").format(newDate);
-
-    return formatted;
-  }
-
-  // if (!appLoad) applicants.sort((a, b) => b.id - a.id);
-
-  function isThisWeek(created_at) {
-    const date = new Date(created_at);
-    const now = new Date();
-    const start = new Date();
-
-    now.setHours(23, 59, 59, 999);
-    start.setDate(now.getDate() - 2);
-    start.setHours(0, 0, 0, 0);
-
-    return date >= start && date <= now;
-  }
-
-  function statusBadge(status) {
-    let type = [];
-
-    switch (status) {
-      case "accepted":
-        type = ["Accepted", "green"];
-        break;
-      case "denied":
-        type = ["Denied", "orange"];
-        break;
-      case "evaluated":
-        type = ["Evaluated", "yellow"];
-        break;
-      case "approved":
-        type = ["Approved", "purple"];
-        break;
-      case "declined":
-        type = ["Declined", "red"];
-        break;
-      default:
-        type = ["Pending", "blue"];
-    }
-    return <CustomBadge text={type[0]} color={type[1]} />;
-  }
 
   return (
-    <>
+    <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
       <Table>
         <TableHead
           headers={["", "Name", "Record ID", "Applied at", "Status", "Actions"]}
@@ -107,20 +25,16 @@ export default function ApplicantsTable() {
             applications.map((user) => (
               <ProductRow
                 key={user.id}
-                recent={isThisWeek(user.created_at)}
+                recent={user.isNew}
                 data={[
                   <div className="flex items-center mr-3 space-x-2">
                     <img
-                      src={"http://localhost:8000/storage/" + user.id_pic}
+                      src={user.imgURL}
                       alt="applicant id"
                       className="h-8 rounded-full w-auto mr-3"
                     />
                     {user.first_name} {user.last_name}
-                    {isThisWeek(user.created_at) ? (
-                      <CustomBadge text="new" color="red" />
-                    ) : (
-                      ""
-                    )}
+                    {user.isNew && <CustomBadge text="new" color="red" />}
                   </div>,
                   // <div className="flex items-center space-x-4">
                   //     96
@@ -130,14 +44,16 @@ export default function ApplicantsTable() {
                   //     </span>
                   // </div>,
                   user.record_id,
-                  dateConvert(user.created_at),
-                  statusBadge(user.apply_status),
-                  // user.apply_status == 'pending' ? (<CustomBadge text="Pending" color="blue" />) : (<CustomBadge text="Approved" color="green" />),
+                  user.applied_at,
+                  <CustomBadge
+                    text={user.status.text}
+                    color={user.status.color}
+                  />,
                   <div className="flex items-center space-x-4">
                     <Link to="/admin/loan" state={{ id: user.id }}>
                       <CustomBttn
                         text="View"
-                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                         <Eye />
                       </CustomBttn>
                     </Link>
@@ -149,11 +65,11 @@ export default function ApplicantsTable() {
                 ]}
               />
             ))}
-          {appsLoading && <RowSkeleton num={8} count={9} />}
+          {appsLoading && <RowSkeleton num={8} count={5} />}
         </tbody>
       </Table>
 
       {applications.length === 0 && !appsLoading ? <EmptyRows /> : ""}
-    </>
+    </div>
   );
 }

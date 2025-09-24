@@ -131,6 +131,11 @@ const uiSlice = createSlice({
       state.pageRoute = FORM_ROUTES[action.payload];
       state.pageNum = action.payload;
     },
+
+    dateFormat: (state, action) => {
+      const newDate = new Date(action.payload);
+      const formatted = new Intl.DateTimeFormat("en-GB").format(newDate);
+    },
   },
 });
 

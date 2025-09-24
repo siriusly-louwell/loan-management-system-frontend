@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { applyRepository } from "../../repositories/applyRepository";
+import ApplicationAPI from "../../api/ApplicationAPI";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
@@ -50,6 +51,16 @@ const applicationSlice = createSlice({
           action.meta.arg.mode === "append"
             ? [...state.applications, ...action.payload.data]
             : action.payload.data;
+
+        state.applications.forEach((app, i) => {
+          state.applications[i] = {
+            ...app,
+            imgURL: ApplicationAPI.imgPath(app.id_pic),
+            isNew: applyRepository.isThisWeek(app.created_at),
+            applied_at: applyRepository.dateConvert(app.created_at),
+            status: applyRepository.statusBadge(app.apply_status),
+          };
+        });
       })
       .addCase(fetchApplicants.rejected, (state, action) => {
         state.appsLoading = false;

@@ -84,11 +84,11 @@ export default function ProductInfo({ staff = false }) {
                         )}
                         {images
                           .filter((f) => f.type === "color")
-                          .map((src, index) => (
+                          .map((src, i) => (
                             <img
-                              key={index}
+                              key={i}
                               src={src.url}
-                              alt={`Slide ${index + 1}`}
+                              alt={`Slide ${i + 1}`}
                               className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
                             />
                           ))}

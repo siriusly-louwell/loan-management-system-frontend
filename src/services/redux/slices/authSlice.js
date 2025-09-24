@@ -29,6 +29,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {},
+    token: null,
     isAuthenticated: false,
     authorized: false,
     loggedOut: false,
@@ -41,6 +42,10 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
       state.loggedOut = true;
+    },
+
+    getToken: (state) => {
+      state.token = authRepository.getToken();
     },
 
     clearAuth: (state) => {
@@ -89,5 +94,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearAuth } = authSlice.actions;
+export const { logout, clearAuth, getToken } = authSlice.actions;
 export default authSlice.reducer;

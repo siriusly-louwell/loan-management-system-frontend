@@ -4,6 +4,7 @@ import ApplicantsTable from "../components/tables/ApplicantsTable";
 import { fetchApplicants } from "../services/redux/slices/applicationSlice";
 import { useDispatch } from "react-redux";
 import useDebounce from "../hooks/useDebounce";
+import ApplicationFilter from "../components/filters/ApplicationFilter";
 
 export default function AccApplicants() {
   const dispatch = useDispatch();
@@ -27,7 +28,11 @@ export default function AccApplicants() {
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 
   return (
-    <CRUDformat setPage={setPage} modalId="createUser" label="User">
+    <CRUDformat
+      title="Applications"
+      label="User"
+      setPage={setPage}
+      filterComponent={<ApplicationFilter setPage={setPage} />}>
       <ApplicantsTable />
     </CRUDformat>
   );

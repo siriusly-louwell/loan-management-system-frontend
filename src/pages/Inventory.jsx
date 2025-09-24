@@ -33,6 +33,7 @@ export default function Inventory() {
 
   return (
     <CRUDformat
+      title="Motorcycle Inventory"
       label="Unit"
       setPage={setPage}
       addModal={<CreateProduct />}

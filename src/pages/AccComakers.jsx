@@ -34,7 +34,7 @@ export default function AccComakers() {
         return formatted;
     }
 
-    if(!customLoad)customer.sort((a, b) => b.id - a.id);
+    // if(!customLoad)customer.sort((a, b) => b.id - a.id);
 
     function displayRow(custom) {
         if(custom.user) {

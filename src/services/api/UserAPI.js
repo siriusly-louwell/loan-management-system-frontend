@@ -3,13 +3,26 @@ import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const UserAPI = {
+  async fetchAll() {
+    const response = await axios.get(`${API_URL}/api/account`);
+    return response.data;
+  },
+
+  async paginate(token, page, perPage, params) {
+    const response = await axios.get(`${API_URL}/api/account`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { page, per_page: perPage, ...params },
+    });
+    return response.data;
+  },
+
   async fetchUser(token) {
     const response = await axios.get(`${API_URL}/api/account`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   },
-  
+
   async login(credentials) {
     const response = await axios.post(`${API_URL}/api/login`, credentials);
     return response.data;

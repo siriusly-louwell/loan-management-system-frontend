@@ -33,6 +33,10 @@ export class User {
     return `${this.first_name} ${this.last_name}`;
   }
 
+  imgURL() {
+    return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
+  }
+
   isAdmin() {
     return this.role === "admin";
   }
@@ -45,6 +49,11 @@ export class User {
     if (!this.id) return false;
     return this.role === requiredRole;
   }
+
+  get getStatus() {
+    if (this.status === "active") return { text: "Active", color: "green" };
+    else return { text: "Inactive", color: "red" };
+  }
 }
 
 // ? selector
@@ -52,6 +61,11 @@ const selectUserDto = (state) => state.auth.user;
 
 export const UserEntity = createSelector([selectUserDto], (userDto) =>
   userDto ? new User(userDto) : null
+);
+
+export const UserEntities = createSelector(
+  (state) => state.user.users || [],
+  (users) => users.map((u) => new User(u))
 );
 
 // ? permission check

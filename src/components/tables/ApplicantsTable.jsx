@@ -33,7 +33,7 @@ export default function ApplicantsTable() {
                       alt="applicant id"
                       className="h-8 rounded-full w-auto mr-3"
                     />
-                    {user.first_name} {user.last_name}
+                    {user.fullName}
                     {user.isNew && <CustomBadge text="new" color="red" />}
                   </div>,
                   // <div className="flex items-center space-x-4">

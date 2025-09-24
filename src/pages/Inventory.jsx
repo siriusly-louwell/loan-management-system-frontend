@@ -36,6 +36,7 @@ export default function Inventory() {
       title="Motorcycle Inventory"
       label="Unit"
       setPage={setPage}
+      modalName="createUnit"
       addModal={<CreateProduct />}
       filterComponent={<UnitFilter setPage={setPage} />}>
       <InventoryTable />

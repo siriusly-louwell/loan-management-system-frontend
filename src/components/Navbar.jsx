@@ -91,7 +91,7 @@ export default function Navbar({ links, path }) {
               <Button text="Login" onclick={() => navigate("/login")} />
             ) : (
               <div>
-                <AvatarBttn dropMenu={toggleDropdown} pfp={false} />
+                <AvatarBttn dropMenu={toggleDropdown} pfp={user?.imgURL()} />
                 <DropdownMenu
                   ref={dropdownRef}
                   classStyle={isOpen ? "block" : "hidden"}>

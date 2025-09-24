@@ -61,7 +61,7 @@ export class Unit {
 export const UnitEntity = (state) => new Unit(state.unit.unit) ?? {};
 
 // ? Map selector
-const selectUnitDtos = (state) => state.units;
+// const selectUnitDtos = (state) => state.units;
 
 export const UnitEntities = createSelector(
   (state) => state.unit.units || [],

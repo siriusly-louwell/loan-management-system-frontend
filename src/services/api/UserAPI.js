@@ -17,7 +17,7 @@ const UserAPI = {
   },
 
   async fetchUser(token) {
-    const response = await axios.get(`${API_URL}/api/account`, {
+    const response = await axios.get(`${API_URL}/api/user`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -31,6 +31,10 @@ const UserAPI = {
   async register(data) {
     const response = await axios.post(`${API_URL}/api/account`, data);
     return response.data;
+  },
+
+  imgPath(image) {
+    return `${API_URL}/storage/${image}`;
   },
 };
 

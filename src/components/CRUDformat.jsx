@@ -13,6 +13,7 @@ import PageNav from "./PageNav";
 export default function CRUDformat({
   children,
   title,
+  modalName,
   addModal,
   label,
   setPage,
@@ -55,8 +56,8 @@ export default function CRUDformat({
                       onclick={() =>
                         dispatch(
                           toggleModal({
-                            name: "createUnit",
-                            value: modals?.createUnit,
+                            name: modalName,
+                            value: modals[modalName],
                           })
                         )
                       }>

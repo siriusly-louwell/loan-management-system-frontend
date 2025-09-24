@@ -65,6 +65,10 @@ export const applyRepository = {
     return formatted;
   },
 
+  fullName(first, last) {
+    return `${first} ${last}`;
+  },
+
   isThisWeek(created_at) {
     const date = new Date(created_at);
     const now = new Date();

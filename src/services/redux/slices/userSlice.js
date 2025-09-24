@@ -1,14 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userRepository } from "../../repositories/userRepository";
-import UserAPI from "../../api/UserAPI";
 
 export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
   async (page, thunkAPI) => {
     try {
-      return page?.token
-        ? await userRepository.fetchPage(page)
-        : await userRepository.fetchAll();
+      return await userRepository.fetchPage(page)
+        // : await userRepository.fetchAll();
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -47,25 +45,10 @@ const userSlice = createSlice({
           total: action.payload.total,
         };
 
-        console.log(action.payload);
-
         state.users =
           action.meta.arg.mode === "append"
             ? [...state.users, ...action.payload.data]
-            : action.payload;
-
-        if (state.users && state.users.length > 0) {
-          console.log(state.users);
-          state.users.forEach((app, i) => {
-            state.users[i] = {
-              ...app,
-              imgURL: UserAPI.imgPath(app.id_pic),
-              isNew: userRepository.isThisWeek(app.created_at),
-              applied_at: userRepository.dateConvert(app.created_at),
-              status: userRepository.statusBadge(app.apply_status),
-            };
-          });
-        }
+            : action.payload.data;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.usersLoading = false;

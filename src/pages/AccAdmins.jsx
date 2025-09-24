@@ -14,11 +14,13 @@ import useDebounce from "../hooks/useDebounce";
 import { fetchUsers } from "../services/redux/slices/userSlice";
 import RowSkeleton from "../components/loading components/RowSkeleton";
 import { getToken } from "../services/redux/slices/authSlice";
+import { UserEntities } from "./../services/entities/User";
 
 export default function AccAdmins() {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const { users, usersLoading } = useSelector((state) => state.user);
+  const users = useSelector(UserEntities);
+  const { usersLoading } = useSelector((state) => state.user);
   const [navPage, setNavPage] = useState({});
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
@@ -42,7 +44,11 @@ export default function AccAdmins() {
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 
   return (
-    <CRUDformat addModal={<CreateUser />} setPage={setPage} label="User">
+    <CRUDformat
+      addModal={<CreateUser />}
+      modalName="createUser"
+      setPage={setPage}
+      label="User">
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <Table>
           <TableHead
@@ -50,21 +56,24 @@ export default function AccAdmins() {
           />
           <tbody>
             {!usersLoading &&
-              users?.map((account) => (
+              users.map((account) => (
                 <ProductRow
                   key={account.id}
                   data={[
                     <div className="flex items-center mr-3">
                       <img
-                        src={"http://localhost:8000/storage/" + account.pfp}
+                        src={account.imgURL()}
                         alt="user"
                         className="h-8 rounded-lg w-auto mr-3"
                       />
-                      {account.first_name} {account.last_name}
+                      {account.fullName}
                     </div>,
                     account.email,
                     "05/12/2025",
-                    <CustomBadge text="Active" color="green" />,
+                    <CustomBadge
+                      text={account.getStatus.text}
+                      color={account.getStatus.color}
+                    />,
                     <div className="flex items-center space-x-4">
                       <Link to="/admin/profile">
                         <CustomBttn
@@ -88,7 +97,7 @@ export default function AccAdmins() {
             {usersLoading && <RowSkeleton num={8} count={5} />}
           </tbody>
         </Table>
-        {users?.length === 0 && !usersLoading ? <EmptyRows /> : ""}
+        {users?.length === 0 && !usersLoading && <EmptyRows />}
       </div>
     </CRUDformat>
   );

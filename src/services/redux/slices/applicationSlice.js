@@ -55,6 +55,7 @@ const applicationSlice = createSlice({
         state.applications.forEach((app, i) => {
           state.applications[i] = {
             ...app,
+            fullName: applyRepository.fullName(app.first_name, app.last_name),
             imgURL: ApplicationAPI.imgPath(app.id_pic),
             isNew: applyRepository.isThisWeek(app.created_at),
             applied_at: applyRepository.dateConvert(app.created_at),

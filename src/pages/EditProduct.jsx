@@ -97,7 +97,7 @@ export default function EditProduct() {
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(setLoading({ isActive: false }));
       if (response.type === "success") {
-        dispatch(fetchUnits());
+        dispatch(fetchUnits({ page: 1 }));
         closeModal();
       }
     } catch (error) {
@@ -225,16 +225,16 @@ export default function EditProduct() {
                 </div>
                 <div className="grid gap-4 mb-4 sm:grid-cols-2">
                   <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                  <FormSelect
-                    label="Brand Name"
-                    name="brand"
-                    id="brand"
-                    value={formData.createUnit.brand || ""}
-                    onchange={dispatchInput}>
-                    {brands.map((brand, i) => (
-                      <option key={i}>{brand}</option>
-                    ))}
-                  </FormSelect>
+                    <FormSelect
+                      label="Brand Name"
+                      name="brand"
+                      id="brand"
+                      value={formData.createUnit.brand || ""}
+                      onchange={dispatchInput}>
+                      {brands.map((brand, i) => (
+                        <option key={i}>{brand}</option>
+                      ))}
+                    </FormSelect>
                     <FormInput
                       label="Price"
                       type="number"

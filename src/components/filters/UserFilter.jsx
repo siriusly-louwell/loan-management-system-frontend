@@ -10,15 +10,13 @@ import MenuLink from "../links/MenuLink";
 import ShortInput from "../inputs/ShortInput";
 import CloseBttn from "../buttons/CloseBttn";
 
-export default function ApplicationFilter({ setPage }) {
+export default function UserFilter({ setPage }) {
   const dispatch = useDispatch();
   const { modals, filterType } = useSelector((state) => state.ui);
 
   function setDropdown(filter, type) {
     dispatch(setFilterType(filter));
-    dispatch(
-      toggleModal({ name: "applicantFilter", value: modals?.applicantFilter })
-    );
+    dispatch(toggleModal({ name: "userFilter", value: modals?.userFilter }));
     setPage({
       page: 1,
       type: type,
@@ -45,12 +43,12 @@ export default function ApplicationFilter({ setPage }) {
         toggleMenu={() =>
           dispatch(
             toggleModal({
-              name: "applicantFilter",
-              value: modals?.applicantFilter,
+              name: "userFilter",
+              value: modals?.userFilter,
             })
           )
         }>
-        {modals.applicantFilter && (
+        {modals.userFilter && (
           <DropdownMenu>
             <MenuLink
               pathName="by Date"
@@ -58,14 +56,14 @@ export default function ApplicationFilter({ setPage }) {
             />
             <MenuLink
               pathName="by Status"
-              click={() => setDropdown("apply_status")}
+              click={() => setDropdown("status")}
             />
           </DropdownMenu>
         )}
       </DropdownBttn>
 
       {/* Filter type */}
-      {filterType === "apply_status" && (
+      {filterType === "status" && (
         <DropdownBttn
           text={`Filter by Status`}
           icon={<Filter />}
@@ -81,28 +79,12 @@ export default function ApplicationFilter({ setPage }) {
             <DropdownMenu>
               <MenuLink pathName="All" click={() => setFilter("search", "")} />
               <MenuLink
-                pathName={"Pending"}
-                click={() => setFilter("search", "pending")}
+                pathName={"Active"}
+                click={() => setFilter("search", "active")}
               />
               <MenuLink
-                pathName={"Accepted"}
-                click={() => setFilter("search", "accepted")}
-              />
-              <MenuLink
-                pathName={"Denied"}
-                click={() => setFilter("search", "denied")}
-              />
-              <MenuLink
-                pathName={"Evaluated"}
-                click={() => setFilter("search", "evaluated")}
-              />
-              <MenuLink
-                pathName={"Approved"}
-                click={() => setFilter("search", "approved")}
-              />
-              <MenuLink
-                pathName={"Declined"}
-                click={() => setFilter("search", "declined")}
+                pathName={"Inactive"}
+                click={() => setFilter("search", "inactive")}
               />
             </DropdownMenu>
           )}

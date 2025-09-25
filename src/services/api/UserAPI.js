@@ -8,9 +8,9 @@ const UserAPI = {
     return response.data;
   },
 
-  async paginate(token, page, perPage, params) {
+  async paginate(page, perPage, params) {
     const response = await axios.get(`${API_URL}/api/account`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      // headers: token ? { Authorization: `Bearer ${token}` } : {},
       params: { page, per_page: perPage, ...params },
     });
     return response.data;
@@ -20,6 +20,12 @@ const UserAPI = {
     const response = await axios.get(`${API_URL}/api/user`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    return response.data;
+  },
+
+  async add(data) {
+    const response = await axios.post(`${API_URL}/api/account/`, data);
+
     return response.data;
   },
 

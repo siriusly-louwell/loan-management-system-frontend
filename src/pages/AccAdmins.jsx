@@ -15,10 +15,10 @@ import { fetchUsers } from "../services/redux/slices/userSlice";
 import RowSkeleton from "../components/loading components/RowSkeleton";
 import { getToken } from "../services/redux/slices/authSlice";
 import { UserEntities } from "./../services/entities/User";
+import UserFilter from "../components/filters/UserFilter";
 
 export default function AccAdmins() {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
   const users = useSelector(UserEntities);
   const { usersLoading } = useSelector((state) => state.user);
   const [navPage, setNavPage] = useState({});
@@ -30,7 +30,6 @@ export default function AccAdmins() {
     dispatch(getToken());
     dispatch(
       fetchUsers({
-        token: token,
         page: navPage.page,
         type: navPage.type,
         search: search,
@@ -39,14 +38,16 @@ export default function AccAdmins() {
         max: max,
       })
     );
-  }, [dispatch, navPage.page, navPage.type, max, min, search, token]);
+  }, [dispatch, navPage.page, navPage.type, max, min, search]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 
   return (
     <CRUDformat
-      addModal={<CreateUser />}
+      addModal={<CreateUser userType="staff" />}
+      filterComponent={<UserFilter setPage={setPage} />}
       modalName="createUser"
+      title="Staff"
       setPage={setPage}
       label="User">
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
@@ -63,8 +64,8 @@ export default function AccAdmins() {
                     <div className="flex items-center mr-3">
                       <img
                         src={account.imgURL()}
-                        alt="user"
-                        className="h-8 rounded-lg w-auto mr-3"
+                        alt="staff"
+                        className="h-10 w-10 mr-3 rounded-3xl object-cover"
                       />
                       {account.fullName}
                     </div>,
@@ -85,11 +86,7 @@ export default function AccAdmins() {
                       <CustomBttn
                         text="Deactivate"
                         classname="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                        onclick={() =>
-                          (document.getElementById(
-                            "delete_product"
-                          ).style.display = "block")
-                        }></CustomBttn>
+                      />
                     </div>,
                   ]}
                 />

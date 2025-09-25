@@ -57,7 +57,7 @@ export default function CreateProduct() {
         dispatch(resetInput());
         setFiles([]);
         setAngle([]);
-        dispatch(fetchUnits());
+        dispatch(fetchUnits({ page: 1 }));
       }
     } catch (error) {
       console.error("Error: ", error);

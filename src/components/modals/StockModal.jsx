@@ -41,7 +41,7 @@ export default function StockModal() {
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(setLoading({ isActive: false }));
       dispatch(toggleModal({ name: "unitStock", value: modals?.unitStock }));
-      dispatch(fetchUnits());
+      dispatch(fetchUnits({ page: 1 }));
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -98,7 +98,11 @@ export default function StockModal() {
                     <div className="mt-5">
                       <ColorLabel style={color.color} size={7} />
                     </div>
-                    <QuantityInput max={200} index={i} initial={color.quantity} />
+                    <QuantityInput
+                      max={200}
+                      index={i}
+                      initial={color.quantity}
+                    />
                   </div>
                 ))}
               </div>

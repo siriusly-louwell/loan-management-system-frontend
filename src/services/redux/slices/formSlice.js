@@ -24,6 +24,7 @@ const formSlice = createSlice({
       unit: {},
       applicant: {},
       address: {},
+      createUser: { password: "password", status: "active" },
     },
     formType: "createUnit",
     formLoading: true,
@@ -84,6 +85,7 @@ const formSlice = createSlice({
         unit: {},
         applicant: {},
         address: {},
+        createUser: { password: "password", status: "active" },
       };
       state.colors = [];
       formRepository.clearForm();

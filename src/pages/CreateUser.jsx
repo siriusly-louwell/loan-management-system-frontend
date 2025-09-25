@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import Button from "../components/buttons/Button";
@@ -9,90 +8,76 @@ import FileInput from "../components/inputs/FileInput";
 import Alert from "../components/Alert";
 import PopAnimate from "../components/animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
+import {
+  handleChange,
+  initialForm,
+  resetInput,
+  setType,
+} from "../services/redux/slices/formSlice";
+import { addUser, fetchUsers } from "../services/redux/slices/userSlice";
 
-export default function CreateUser() {
-  const location = useLocation();
+export default function CreateUser({ userType }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
+  const { formData } = useSelector((state) => state.form);
   const [pfp, setPfp] = useState({});
-  const submitData = new FormData();
-  const [alert, setAlert] = useState({});
-  const [user, setUser] = useState({
-    middle_name: "",
-    contact: "",
-    role: location.pathname === "/admin/accounts/cis" ? "ci" : "staff",
-    status: "active",
-    password: "password",
-  });
+
+  useEffect(() => {
+    dispatch(setType("createUser"));
+    dispatch(
+      initialForm({ role: userType, password: "password", status: "active" })
+    );
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    for (let key in user) {
-      submitData.append(`${key}`, user[key]);
-    }
-    submitData.append("pfp", pfp);
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/account", {
-        method: "POST",
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     'Accept': 'application/json'
-        // },
-        body: submitData,
-        // body: JSON.stringify(user)
-      });
+      const form = formData.createUser;
+      const response = await dispatch(addUser({ form, pfp })).unwrap();
 
-      const result = await response.json();
-      console.log("Success: ", result);
-      if (!response.ok) throw new Error("Update failed");
-      setAlert({
-        text: "User added succcessfully!",
-        icon: "done",
-        email: user.email,
-        name: user.first_name,
-      });
-      resetInput();
-      document.getElementById("alertUser").style.display = "block";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      if (response.type === "success") {
+        dispatch(resetInput());
+        setPfp({});
+        dispatch(fetchUsers({ page: 1, role: userType }));
+      }
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Failed to save data",
-        icon: "warn",
-      });
-      document.getElementById("saving_data").style.display = "none";
-      document.getElementById("alertUser").style.display = "block";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
-  }
-
-  function resetInput() {
-    setUser({
-      middle_name: "",
-      contact: "",
-      role: location.pathname === "/admin/accounts/cis" ? "ci" : "staff",
-      status: "active",
-      password: "password",
-    });
-    setPfp({});
-    document.getElementById("saving_data").style.display = "none";
   }
 
   function pfpChange(event) {
     setPfp(event.target.files[0]);
   }
 
-  function handleChange(event) {
-    setUser({
-      ...user,
-      [event.target.name]: event.target.value,
-    });
+  function dispatchInput(event) {
+    dispatch(
+      handleChange({
+        name: event.target.name,
+        value: event.target.value,
+        formType: "createUser",
+      })
+    );
   }
 
   return (
     modals.createUser && (
-      <div className="flex items-center justify-center fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-50 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+      <div className="flex items-center justify-center fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 top-0 right-0 left-0 z-40 justify-items-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
         <PopAnimate>
           <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
@@ -116,8 +101,8 @@ export default function CreateUser() {
                   <FormInput
                     label="First name"
                     type="text"
-                    value={user.first_name || ""}
-                    onchange={handleChange}
+                    value={formData.createUser.first_name || ""}
+                    onchange={dispatchInput}
                     name="first_name"
                     id="name"
                     placeholder="Type first name"
@@ -128,8 +113,8 @@ export default function CreateUser() {
                     type="text"
                     name="middle_name"
                     id="mname"
-                    value={user.middle_name || ""}
-                    onchange={handleChange}
+                    value={formData.createUser.middle_name || ""}
+                    onchange={dispatchInput}
                     placeholder="Type middle name"
                   />
                   <FormInput
@@ -137,8 +122,8 @@ export default function CreateUser() {
                     type="text"
                     name="last_name"
                     id="lname"
-                    value={user.last_name || ""}
-                    onchange={handleChange}
+                    value={formData.createUser.last_name || ""}
+                    onchange={dispatchInput}
                     placeholder="Type last name"
                     require={true}
                   />
@@ -147,8 +132,8 @@ export default function CreateUser() {
                     type="text"
                     name="email"
                     id="email"
-                    value={user.email || ""}
-                    onchange={handleChange}
+                    value={formData.createUser.email || ""}
+                    onchange={dispatchInput}
                     placeholder="john@gmail.com"
                     require={true}
                   />
@@ -157,16 +142,16 @@ export default function CreateUser() {
                     type="number"
                     name="contact"
                     id="number"
-                    value={user.contact || ""}
-                    onchange={handleChange}
+                    value={formData.createUser.contact || ""}
+                    onchange={dispatchInput}
                     placeholder="Phone number here"
                   />
                   <FormSelect
                     name="gender"
                     id="gender"
                     label="Gender"
-                    value={user.gender || ""}
-                    onchange={handleChange}
+                    value={formData.createUser.gender || ""}
+                    onchange={dispatchInput}
                     require={true}>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -183,10 +168,10 @@ export default function CreateUser() {
                   <Button
                     text="Add user"
                     type="submit"
-                    onclick={() =>
-                      (document.getElementById("saving_data").style.display =
-                        "flex")
-                    }
+                    // onclick={() =>
+                    //   (document.getElementById("saving_data").style.display =
+                    //     "flex")
+                    // }
                   />
                 </div>
               </form>

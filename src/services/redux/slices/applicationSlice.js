@@ -15,10 +15,24 @@ export const fetchApplicants = createAsyncThunk(
   }
 );
 
+export const fetchCustomers = createAsyncThunk(
+  "application/fetchCustomers",
+  async (page, thunkAPI) => {
+    try {
+      return await applyRepository.fetchPage(page);
+      //  await applyRepository.fetchAll();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const applicationSlice = createSlice({
   name: "application",
   initialState: {
     applications: [],
+    customers: [],
+    customLoading: false,
     appsLoading: false,
     pagination: {
       from: 1,
@@ -65,6 +79,44 @@ const applicationSlice = createSlice({
       })
       .addCase(fetchApplicants.rejected, (state, action) => {
         state.appsLoading = false;
+        state.error = action.payload;
+      })
+
+      // ? fetch all customers
+      .addCase(fetchCustomers.pending, (state) => {
+        state.customLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCustomers.fulfilled, (state, action) => {
+        state.customLoading = false;
+        state.pagination = {
+          from: action.payload.from,
+          to: action.payload.to,
+          currentPage: action.payload.current_page,
+          lastPage: action.payload.last_page,
+          total: action.payload.total,
+        };
+
+        state.customers =
+          action.meta.arg.mode === "append"
+            ? [...state.customers, ...action.payload.data]
+            : action.payload.data;
+
+        const filtered = state.customers
+          .filter((f) => f.user && f.user.id)
+          .map((app) => ({
+            id: app.user.id,
+            fullName: applyRepository.fullName(app.first_name, app.last_name),
+            imgURL: ApplicationAPI.imgPath(app.id_pic),
+            email: app.user.email,
+            record_id: app.record_id,
+            last_log: applyRepository.dateConvert(app.user.created_at),
+          }));
+
+        state.customers = filtered;
+      })
+      .addCase(fetchCustomers.rejected, (state, action) => {
+        state.customLoading = false;
         state.error = action.payload;
       });
   },

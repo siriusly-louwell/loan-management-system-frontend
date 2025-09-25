@@ -1,5 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userRepository } from "../../repositories/userRepository";
+import { addUserUseCase } from "../../usecases/user/addUserUseCase";
+
+export const addUser = createAsyncThunk(
+  "user/addUser",
+  async (unit, thunkAPI) => {
+    try {
+      return await addUserUseCase(unit);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",

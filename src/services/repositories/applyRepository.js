@@ -14,6 +14,19 @@ export const applyRepository = {
     return await response;
   },
 
+  async fetchApplication(data) {
+    const response = await ApplicationAPI.fetchApplication(data);
+
+    if (!response) {
+      return {
+        message: "Failed to fetch application",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
+
   async fetchPage({ page = 1, perPage = 8, ...params }) {
     const response = await ApplicationAPI.paginate(page, perPage, params);
 

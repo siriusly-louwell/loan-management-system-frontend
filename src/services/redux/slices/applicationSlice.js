@@ -6,8 +6,7 @@ export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
   async (page, thunkAPI) => {
     try {
-      return  await applyRepository.fetchPage(page)
-        // : await applyRepository.fetchAll();
+      return await applyRepository.fetchPage(page);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -19,7 +18,17 @@ export const fetchCustomers = createAsyncThunk(
   async (page, thunkAPI) => {
     try {
       return await applyRepository.fetchPage(page);
-      //  await applyRepository.fetchAll();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchLoan = createAsyncThunk(
+  "application/fetchLoan",
+  async (loan, thunkAPI) => {
+    try {
+      return await applyRepository.fetchApplication(loan);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -31,6 +40,8 @@ const applicationSlice = createSlice({
   initialState: {
     applications: [],
     customers: [],
+    loan: {},
+    loanLoading: true,
     customLoading: false,
     appsLoading: false,
     pagination: {
@@ -116,6 +127,20 @@ const applicationSlice = createSlice({
       })
       .addCase(fetchCustomers.rejected, (state, action) => {
         state.customLoading = false;
+        state.error = action.payload;
+      })
+
+      // ? Fetch a loan
+      .addCase(fetchLoan.pending, (state) => {
+        state.loanLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchLoan.fulfilled, (state, action) => {
+        state.loanLoading = false;
+        state.loan = action.payload;
+      })
+      .addCase(fetchLoan.rejected, (state, action) => {
+        state.loanLoading = false;
         state.error = action.payload;
       });
   },

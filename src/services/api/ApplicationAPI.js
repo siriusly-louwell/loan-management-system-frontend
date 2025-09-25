@@ -15,10 +15,12 @@ const ApplicationAPI = {
     return response.data;
   },
 
-  //   async fetchApplication(id) {
-  //     const response = await axios.get(`${API_URL}/api/motorcycle/${id}`);
-  //     return response.data;
-  //   },
+  async fetchApplication({ id, by }) {
+    const response = await axios.get(`${API_URL}/api/application/${id}`, {
+      params: { by: by },
+    });
+    return response.data;
+  },
 
   async apply(data) {
     const response = await axios.post(`${API_URL}/api/application`, data);

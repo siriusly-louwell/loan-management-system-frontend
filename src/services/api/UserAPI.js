@@ -10,7 +10,6 @@ const UserAPI = {
 
   async paginate(page, perPage, params) {
     const response = await axios.get(`${API_URL}/api/account`, {
-      // headers: token ? { Authorization: `Bearer ${token}` } : {},
       params: { page, per_page: perPage, ...params },
     });
     return response.data;

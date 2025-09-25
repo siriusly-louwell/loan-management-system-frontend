@@ -181,7 +181,6 @@ function App() {
             element={
               <ProtectedRoute type="customer">
                 <InvoiceList
-                  id={user?.id}
                   headText="Loan Applications"
                   path="/customer/loan"
                   record={`/${user?.id}?by=user_id`}
@@ -246,58 +245,13 @@ function App() {
           </Route>
         </Route>
 
-        {/* <Route
-          path="/comaker"
-          element={<PageLayout links={<CoMakerNav />} path="/comaker" />}>
-          <Route
-            index
-            element={
-              <InvoiceList
-                id={user.id}
-                headText="Liable Applications"
-                path="/comaker/comakeform"
-                bttnText="Oblige Loan"
-              />
-            }
-          />
-          <Route
-            path="obligeloans"
-            element={
-              <InvoiceList
-                id={user.id}
-                headText="Liable Applications"
-                path="/comaker/comakeform"
-                bttnText="Oblige Loan"
-              />
-            }
-          />
-          <Route
-            path="cosigned"
-            element={
-              <InvoiceList
-                id={user.id}
-                headText="Co-Signed Loans"
-                path="/comaker/ciloan"
-              />
-            }
-          />
-          <Route path="alerts" element={<Notifications />} />
-          <Route path="ciloan" element={<CILoanInfo />} />
-          <Route path="comakeform" element={<CoMakerForm />} />
-          <Route path="profile" element={<Profile />} />
-        </Route> */}
-
         {/* CI Routes */}
         <Route path="/ci" element={<PageLayout links={<CINav />} path="/ci" />}>
           <Route
             index
             element={
               <ProtectedRoute type="ci">
-                <InvoiceList
-                  id={user?.id}
-                  headText="Loan Applications"
-                  path="/ci/ciloan"
-                />
+                <InvoiceList headText="Loan Applications" path="/ci/ciloan" />
               </ProtectedRoute>
             }
           />
@@ -305,11 +259,7 @@ function App() {
             path="loan"
             element={
               <ProtectedRoute type="ci">
-                <InvoiceList
-                  id={user?.id}
-                  headText="Loan Applications"
-                  path="/ci/ciloan"
-                />
+                <InvoiceList headText="Loan Applications" path="/ci/ciloan" />
               </ProtectedRoute>
             }
           />
@@ -318,7 +268,6 @@ function App() {
             element={
               <ProtectedRoute type="ci">
                 <InvoiceList
-                  id={user?.id}
                   headText="Loans Evaluation"
                   path="/ci/cireport"
                   bttnText="Evaluate"
@@ -435,11 +384,7 @@ function App() {
             path="loans"
             element={
               <ProtectedRoute type="staff">
-                <InvoiceList
-                  id={user?.id}
-                  headText="Loan Applications"
-                  path="/staff/loan"
-                />
+                <InvoiceList headText="Loan Applications" path="/staff/loan" />
               </ProtectedRoute>
             }
           />
@@ -557,11 +502,7 @@ function App() {
             path="loans"
             element={
               <ProtectedRoute type="admin">
-                <InvoiceList
-                  id={user?.id}
-                  headText="Loan Applications"
-                  path="/admin/loan"
-                />
+                <InvoiceList headText="Loan Applications" path="/admin/loan" />
               </ProtectedRoute>
             }
           />
@@ -682,7 +623,7 @@ function App() {
               element={
                 <ProtectedRoute type="admin">
                   <InvoiceList
-                    id={user?.id}
+                    // id={user?.id}
                     headText="Invoices"
                     path="/admin/invoice"
                   />

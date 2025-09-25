@@ -171,88 +171,88 @@ export default function LoanInfo({children, url}) {
     }
     
     return (
-        <section class="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
-            <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <section className="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
+            <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
                 <div className="flex justify-between w-full">
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan {loan.record_id}</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Track the loan {loan.record_id}</h2>
                     {/* <CustomBttn text="Payment History" onclick={() => navigate(location.pathname === '/admin/loan' ? '/admin/history' : '/staff/loan_his', {state: {id: loan.id}})} classname="flex items-center justify-center bg-blue-200 text-blue-600 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900" /> */}
                 </div>
 
-                <div class="mt-6 sm:mt-8 lg:flex lg:gap-8">
+                <div className="mt-6 sm:mt-8 lg:flex lg:gap-8">
                     {loanLoad ? (
-                        <div class="w-full h-fit bg-gray-100 dark:bg-gray-700 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
+                        <div className="w-full h-fit bg-gray-100 dark:bg-gray-700 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
                             <LoanList load={loanLoad} />
                             <LoanList load={loanLoad} />
                             <LoanList load={loanLoad} />
-                            <div class="space-y-4 bg-white p-6 dark:bg-gray-700">
-                                <div class="space-y-2">
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Res. Certificate number</dt>
+                            <div className="space-y-4 bg-white p-6 dark:bg-gray-700">
+                                <div className="space-y-2">
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Res. Certificate number</dt>
                                         <SmallSpin size={20} />
                                     </dl>
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Issued at</dt>
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Issued at</dt>
                                         <SmallSpin size={20} />
                                     </dl>
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Issued on</dt>
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Issued on</dt>
                                         <SmallSpin size={20} />
                                     </dl>
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Amount Paid (Total Downpayment)</dt>
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Amount Paid (Total Downpayment)</dt>
                                         <SmallSpin size={20} />
                                     </dl>
                                 </div>
     
-                                <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-600">
-                                    <dt class="text-lg font-bold text-gray-900 dark:text-white">Overall price</dt>
-                                    <dd class="w-10 h-5 rounded-lg bg-gray-200 dark:bg-gray-600 animate-pulse"></dd>
+                                <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-600">
+                                    <dt className="text-lg font-bold text-gray-900 dark:text-white">Overall price</dt>
+                                    <dd className="w-10 h-5 rounded-lg bg-gray-200 dark:bg-gray-600 animate-pulse"></dd>
                                 </dl>
                             </div>
                         </div>
                     ) : (
-                        <div class="w-full h-fit bg-gray-100 dark:bg-gray-700 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
+                        <div className="w-full h-fit bg-gray-100 dark:bg-gray-700 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
                             {loan.transactions.map(trans => (
                                 <LoanList key={trans.id} downpayment={trans.downpayment} color={trans.color}
                                 price={trans.motorcycle.price} units={trans.quantity} img={trans.motorcycle.file_path} name={trans.motorcycle.name} />
                             ))}
     
-                            <div class="space-y-4 bg-white p-6 dark:bg-gray-700">
-                                <div class="space-y-2">
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Res. Certificate number</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-white">- - -</dd>
+                            <div className="space-y-4 bg-white p-6 dark:bg-gray-700">
+                                <div className="space-y-2">
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Res. Certificate number</dt>
+                                        <dd className="font-medium text-gray-900 dark:text-white">- - -</dd>
                                     </dl>
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Issued at</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-white">- - -</dd>
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Issued at</dt>
+                                        <dd className="font-medium text-gray-900 dark:text-white">- - -</dd>
                                     </dl>
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Issued on</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-white">- - -</dd>
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Issued on</dt>
+                                        <dd className="font-medium text-gray-900 dark:text-white">- - -</dd>
                                     </dl>
-                                    <dl class="flex items-center justify-between gap-4">
-                                        <dt class="font-normal text-gray-500 dark:text-gray-300">Amount Paid (Total Downpayment)</dt>
-                                        <dd class="font-medium text-green-500 dark:text-green-500">₱{parseFloat(totals.downpayment).toLocaleString()}</dd>
+                                    <dl className="flex items-center justify-between gap-4">
+                                        <dt className="font-normal text-gray-500 dark:text-gray-300">Amount Paid (Total Downpayment)</dt>
+                                        <dd className="font-medium text-green-500 dark:text-green-500">₱{parseFloat(totals.downpayment).toLocaleString()}</dd>
                                     </dl>
                                 </div>
     
-                                <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-600">
-                                    <dt class="text-lg font-bold text-gray-900 dark:text-white">Overall price</dt>
-                                    <dd class="text-lg font-bold text-gray-900 dark:text-white">₱{parseFloat(totals.price).toLocaleString()}</dd>
+                                <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-600">
+                                    <dt className="text-lg font-bold text-gray-900 dark:text-white">Overall price</dt>
+                                    <dd className="text-lg font-bold text-gray-900 dark:text-white">₱{parseFloat(totals.price).toLocaleString()}</dd>
                                 </dl>
                             </div>
                         </div>
                     )}
 
-                    <div class="mt-6 grow sm:mt-8 lg:mt-0">
-                        <div class="space-y-6 rounded-lg border border-gray-200 bg-white p-6 sm:sticky top-0 shadow-sm dark:border-gray-700 dark:bg-gray-700">
+                    <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                        <div className="space-y-6 rounded-lg border border-gray-200 bg-white p-6 sm:sticky top-0 shadow-sm dark:border-gray-700 dark:bg-gray-700">
                             <div className="flex justify-between space-x-5">
-                                <h3 class="text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Loan history</h3>
+                                <h3 className="text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Loan history</h3>
                                 {/* <CustomBttn text="Eligibity Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" /> */}
                             </div>
 
-                            <ol class="relative ms-3 border-s border-gray-200 dark:border-gray-600">
+                            <ol className="relative ms-3 border-s border-gray-200 dark:border-gray-600">
                                 <TrackList label="Loan Submission" sublabel="Loan application was successful" isDone="done" />
                                 <TrackList label={statusLabel('deny', 0)} sublabel={statusLabel('deny', 1)} isDone={trackCond('accept')} />
                                 <TrackList label="Credit Investigation" sublabel="Applicant has been interviewed by the assigned Credit Investigator" isDone={trackCond('investigation')} />
@@ -261,7 +261,7 @@ export default function LoanInfo({children, url}) {
                                 <TrackList label="Paid!" sublabel="The loan has been fully paid" isDone="pend" />
                             </ol>
 
-                            <div class="gap-4 grid grid-cols-1">
+                            <div className="gap-4 grid grid-cols-1">
                                 {children}
                                 <Button text="View Results" bttnType="button" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} />
                                 {loan.apply_status === 'evaluated' || loan.apply_status === 'approved' || loan.apply_status === 'declined' ? (

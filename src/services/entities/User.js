@@ -7,7 +7,7 @@ export class User {
     middle_name,
     last_name,
     email,
-    role,
+    role = "guest",
     contact,
     gender,
     status,

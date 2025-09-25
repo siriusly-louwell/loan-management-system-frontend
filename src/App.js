@@ -540,17 +540,17 @@ function App() {
           <Route
             path=""
             element={
-              <Inventory />
-              // <ProtectedRoute type="admin">
-              // </ProtectedRoute>
+              <ProtectedRoute type="admin">
+                <Inventory />
+              </ProtectedRoute>
             }
           />
           <Route
             path="inventory"
             element={
-              <Inventory />
-              // <ProtectedRoute type="admin">
-              // </ProtectedRoute>
+              <ProtectedRoute type="admin">
+                <Inventory />
+              </ProtectedRoute>
             }
           />
           <Route
@@ -694,48 +694,48 @@ function App() {
           <Route
             path="accounts"
             element={
+              <ProtectedRoute type="admin">
                 <Accounts />
-              // <ProtectedRoute type="admin">
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }>
             <Route
               index
               element={
+                <ProtectedRoute type="admin">
                   <AccApplicants />
-                // <ProtectedRoute type="admin">
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="applicants"
               element={
+                <ProtectedRoute type="admin">
                   <AccApplicants />
-                // <ProtectedRoute type="admin">
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="cis"
               element={
+                <ProtectedRoute type="admin">
                   <AccCI />
-                // <ProtectedRoute type="admin">
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="staffs"
               element={
+                <ProtectedRoute type="admin">
                   <AccAdmins />
-                // <ProtectedRoute type="admin">
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
             <Route
               path="customers"
               element={
+                <ProtectedRoute type="admin">
                   <AccComakers />
-                // <ProtectedRoute type="admin">
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
           </Route>

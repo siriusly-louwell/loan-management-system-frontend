@@ -18,10 +18,11 @@ export default function CRUDformat({
   label,
   setPage,
   filterComponent,
+  pagination
 }) {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { pagination } = useSelector((state) => state.unit);
+  // const { pagination } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
 
   return (

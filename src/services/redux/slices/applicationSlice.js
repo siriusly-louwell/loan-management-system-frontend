@@ -6,9 +6,8 @@ export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
   async (page, thunkAPI) => {
     try {
-      return page?.page || page?.min
-        ? await applyRepository.fetchPage(page)
-        : await applyRepository.fetchAll();
+      return  await applyRepository.fetchPage(page)
+        // : await applyRepository.fetchAll();
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

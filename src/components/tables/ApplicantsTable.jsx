@@ -31,7 +31,7 @@ export default function ApplicantsTable() {
                     <img
                       src={user.imgURL}
                       alt="applicant id"
-                      className="h-8 rounded-full w-auto mr-3"
+                      className="h-10 w-10 mr-3 rounded-3xl object-cover"
                     />
                     {user.fullName}
                     {user.isNew && <CustomBadge text="new" color="red" />}

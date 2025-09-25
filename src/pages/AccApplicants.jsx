@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import CRUDformat from "../components/CRUDformat";
 import ApplicantsTable from "../components/tables/ApplicantsTable";
 import { fetchApplicants } from "../services/redux/slices/applicationSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useDebounce from "../hooks/useDebounce";
 import ApplicationFilter from "../components/filters/ApplicationFilter";
 
 export default function AccApplicants() {
   const dispatch = useDispatch();
   const [navPage, setNavPage] = useState({});
+  const { pagination } = useSelector((state) => state.application);
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
   const max = useDebounce(navPage.max, 500);
@@ -32,6 +33,7 @@ export default function AccApplicants() {
       title="Applications"
       label="User"
       setPage={setPage}
+      pagination={pagination}
       filterComponent={<ApplicationFilter setPage={setPage} />}>
       <ApplicantsTable />
     </CRUDformat>

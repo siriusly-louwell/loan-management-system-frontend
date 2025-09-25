@@ -5,10 +5,10 @@ import { UserEntity } from "../services/entities/User";
 import { useEffect } from "react";
 
 export default function ProtectedRoute({ children, type }) {
-  const { loading, loggedOut } = useSelector((state) => state.auth);
+  const { authLoading, loggedOut } = useSelector((state) => state.auth);
   const user = useSelector(UserEntity);
   const dispatch = useDispatch();
-  let isUnauthorized = !loading && !loggedOut && !user?.isAuthorized(type);
+  let isUnauthorized = !authLoading && !loggedOut && !user?.isAuthorized(type);
 
   useEffect(() => {
     if (isUnauthorized)
@@ -16,13 +16,14 @@ export default function ProtectedRoute({ children, type }) {
   }, [isUnauthorized, dispatch]);
 
   useEffect(() => {
-    if (loading) dispatch(setLoading({ isActive: true, text: "Loading..." }));
+    if (authLoading)
+      dispatch(setLoading({ isActive: true, text: "Loading..." }));
     else dispatch(setLoading({ isActive: false }));
-  }, [loading, dispatch]);
+  }, [authLoading, dispatch]);
 
-  if (loading) return <div></div>;
-
-  if (isUnauthorized || loggedOut) return <Navigate to="/unauthorized" replace />;
+  if (authLoading) return <div></div>;
+  if (loggedOut) return <Navigate to="/login" replace />;
+  if (isUnauthorized) return <Navigate to="/unauthorized" replace />;
 
   return children;
 }

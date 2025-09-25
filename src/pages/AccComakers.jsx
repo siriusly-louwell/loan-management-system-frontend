@@ -16,7 +16,7 @@ import RowSkeleton from "../components/loading components/RowSkeleton";
 
 export default function AccComakers() {
   const dispatch = useDispatch();
-  const { customers, customLoading } = useSelector(
+  const { customers, customLoading, pagination } = useSelector(
     (state) => state.application
   );
   const [navPage, setNavPage] = useState({});
@@ -29,7 +29,7 @@ export default function AccComakers() {
     dispatch(
       fetchCustomers({
         page: navPage.page,
-        isApproved: true,
+        statuses: ["approved"],
         type: navPage.type,
         search: search,
         min: min,
@@ -79,8 +79,9 @@ export default function AccComakers() {
   return (
     <CRUDformat
       filterComponent={<UserFilter setPage={setPage} />}
-      title="Staff"
+      title="Registered Customers"
       setPage={setPage}
+      pagination={pagination}
       label="User">
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <Table>

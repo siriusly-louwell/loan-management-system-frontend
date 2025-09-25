@@ -20,7 +20,7 @@ import UserFilter from "../components/filters/UserFilter";
 export default function AccAdmins() {
   const dispatch = useDispatch();
   const users = useSelector(UserEntities);
-  const { usersLoading } = useSelector((state) => state.user);
+  const { usersLoading, pagination } = useSelector((state) => state.user);
   const [navPage, setNavPage] = useState({});
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
@@ -49,6 +49,7 @@ export default function AccAdmins() {
       modalName="createUser"
       title="Staff"
       setPage={setPage}
+      pagination={pagination}
       label="User">
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <Table>

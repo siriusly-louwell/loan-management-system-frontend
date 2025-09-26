@@ -2,12 +2,24 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUseCase } from "../../usecases/auth/loginUseCase";
 import { authRepository } from "./../../repositories/authRepository";
 import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
+import { userRepository } from "../../repositories/userRepository";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, thunkAPI) => {
     try {
       return await loginUseCase(credentials);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAccount = createAsyncThunk(
+  "auth/fetchAccount",
+  async (id, thunkAPI) => {
+    try {
+      return await userRepository.fetchAccount(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -29,6 +41,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {},
+    profile: {},
     token: null,
     isAuthenticated: false,
     authorized: false,
@@ -90,6 +103,20 @@ const authSlice = createSlice({
         state.authLoading = false;
         state.error = action.payload;
         state.initialized = true;
+      })
+
+      // ? Fetch an account
+      .addCase(fetchAccount.pending, (state) => {
+        state.authLoading = { isActive: true, text: "Loading..." };
+        state.error = null;
+      })
+      .addCase(fetchAccount.fulfilled, (state, action) => {
+        state.authLoading = false;
+        state.profile = action.payload;
+      })
+      .addCase(fetchAccount.rejected, (state, action) => {
+        state.authLoading = false;
+        state.error = action.payload;
       });
   },
 });

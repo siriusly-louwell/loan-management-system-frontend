@@ -22,6 +22,11 @@ const UserAPI = {
     return response.data;
   },
 
+  async fetchAccount(id) {
+    const response = await axios.get(`${API_URL}/api/account/${id}`);
+    return response.data;
+  },
+
   async add(data) {
     const response = await axios.post(`${API_URL}/api/account/`, data);
 

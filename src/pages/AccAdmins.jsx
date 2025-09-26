@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CreateUser from "./CreateUser";
 import CRUDformat from "../components/CRUDformat";
 import ProductRow from "../components/tables/ProductRow";
@@ -13,12 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import useDebounce from "../hooks/useDebounce";
 import { fetchUsers } from "../services/redux/slices/userSlice";
 import RowSkeleton from "../components/loading components/RowSkeleton";
-import { getToken } from "../services/redux/slices/authSlice";
+import { fetchAccount, getToken } from "../services/redux/slices/authSlice";
 import { UserEntities } from "./../services/entities/User";
 import UserFilter from "../components/filters/UserFilter";
 
 export default function AccAdmins() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const users = useSelector(UserEntities);
   const { usersLoading, pagination } = useSelector((state) => state.user);
   const [navPage, setNavPage] = useState({});
@@ -41,6 +42,10 @@ export default function AccAdmins() {
   }, [dispatch, navPage.page, navPage.type, max, min, search]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
+  const viewAccount = (id) => {
+    dispatch(fetchAccount(id));
+    navigate("/admin/profile");
+  };
 
   return (
     <CRUDformat
@@ -77,13 +82,12 @@ export default function AccAdmins() {
                       color={account.getStatus.color}
                     />,
                     <div className="flex items-center space-x-4">
-                      <Link to="/admin/profile">
-                        <CustomBttn
-                          text="View"
-                          classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                          <Eye />
-                        </CustomBttn>
-                      </Link>
+                      <CustomBttn
+                        onclick={() => viewAccount(account.id)}
+                        text="View"
+                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        <Eye />
+                      </CustomBttn>
                       <CustomBttn
                         text="Deactivate"
                         classname="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"

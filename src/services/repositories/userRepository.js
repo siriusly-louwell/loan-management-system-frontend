@@ -27,6 +27,19 @@ export const userRepository = {
     return await response;
   },
 
+  async fetchAccount(id) {
+    const response = await UserAPI.fetchAccount(id);
+
+    if (!response) {
+      return {
+        message: "Failed to fetch account",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
+
   async add(data) {
     const response = await UserAPI.add(data);
 

@@ -120,6 +120,7 @@ const applicationSlice = createSlice({
         const filtered = state.customers
           .filter((f) => f.user && f.user.id)
           .map((app) => ({
+            app_id: app.id,
             id: app.user.id,
             fullName: applyRepository.fullName(app.first_name, app.last_name),
             imgURL: ApplicationAPI.imgPath(app.id_pic),

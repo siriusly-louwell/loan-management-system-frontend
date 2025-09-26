@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CRUDformat from "../components/CRUDformat";
 import ProductRow from "../components/tables/ProductRow";
 import TableHead from "../components/tables/TableHead";
@@ -11,11 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import useDebounce from "../hooks/useDebounce";
 import { getToken } from "../services/redux/slices/authSlice";
 import UserFilter from "../components/filters/UserFilter";
-import { fetchCustomers } from "../services/redux/slices/applicationSlice";
+import {
+  fetchCustomers,
+  fetchLoan,
+} from "../services/redux/slices/applicationSlice";
 import RowSkeleton from "../components/loading components/RowSkeleton";
 
 export default function AccComakers() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { customers, customLoading, pagination } = useSelector(
     (state) => state.application
   );
@@ -39,6 +43,10 @@ export default function AccComakers() {
   }, [dispatch, navPage.page, navPage.type, max, min, search]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
+  const viewAccount = (id) => {
+    dispatch(fetchLoan({ id, by: "id" }));
+    navigate("/admin/overview");
+  };
 
   function displayRow(custom) {
     return (
@@ -49,7 +57,7 @@ export default function AccComakers() {
             <img
               src={custom.imgURL}
               alt="customer"
-              className="h-8 rounded-full w-auto mr-3"
+              className="h-10 w-10 mr-3 rounded-3xl object-cover"
             />
             {custom.fullName}
           </div>,
@@ -59,13 +67,12 @@ export default function AccComakers() {
           custom.email,
           custom.last_log,
           <div className="flex items-center space-x-4">
-            <Link to="/admin/profile">
-              <CustomBttn
-                text="View"
-                classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                <Eye />
-              </CustomBttn>
-            </Link>
+            <CustomBttn
+              onclick={() => viewAccount(custom.app_id)}
+              text="View"
+              classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+              <Eye />
+            </CustomBttn>
             <CustomBttn
               text="Deactivate"
               classname="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"

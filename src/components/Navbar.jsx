@@ -8,7 +8,11 @@ import MenuLink from "./links/MenuLink";
 import Button from "./buttons/Button";
 import RMCI from "../assets/images/RMCI.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
 import { clearAuth, logout } from "../services/redux/slices/authSlice";
 import { clearID } from "../services/redux/slices/unitSlice";
 import { UserEntity } from "../services/entities/User";
@@ -20,6 +24,7 @@ export default function Navbar({ links, path }) {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector(UserEntity);
+  const { modals } = useSelector((state) => state.ui);
   const apply = [
     "/customer/apply",
     "/customer/apply/personalinfo",
@@ -29,8 +34,7 @@ export default function Navbar({ links, path }) {
     "/customer/apply/comakerform",
   ];
 
-  // Toggle dropdown visibility
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  // const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   function toggleLogout() {
     dispatch(setLoading({ isActive: true, text: "Logging out..." }));
@@ -73,7 +77,7 @@ export default function Navbar({ links, path }) {
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a
-            href="https://flowbite.com/"
+            href="http://localhost:3000"
             className="flex items-center space-x-3 rtl:space-x-reverse">
             <img src={RMCI} className="h-8" alt="Rhean Motor Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
@@ -81,34 +85,51 @@ export default function Navbar({ links, path }) {
             </span>
           </a>
           <div className="justify-items-center flex space-x-4 md:order-2 sm:space-y-4 rtl:space-x-reverse">
-            {location.pathname === "/" ||
-            location.pathname === "/about" ||
-            location.pathname === "/find" ||
-            location.pathname === "/application" ||
-            location.pathname === "/unit" ||
-            location.pathname === "/services" ||
-            location.pathname === "/prodlist" ? (
+            {user?.role === "guest" ? (
               <Button text="Login" onclick={() => navigate("/login")} />
             ) : (
               <div>
-                <AvatarBttn dropMenu={toggleDropdown} pfp={user?.imgURL()} />
-                <DropdownMenu
-                  ref={dropdownRef}
-                  classStyle={isOpen ? "block" : "hidden"}>
-                  {user && (
-                    <div className="px-4 py-3">
-                      <span className="block text-sm text-gray-900 dark:text-white">
-                        {user?.fullName}
-                      </span>
-                      <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                        {user?.email}
-                      </span>
-                    </div>
-                  )}
-                  <MenuLink pathName="Profile" path={path + "/profile"} />
-                  <MenuLink pathName="Settings" path="" />
-                  <MenuLink pathName="Log out" click={toggleLogout} />
-                </DropdownMenu>
+                <AvatarBttn
+                  pfp={user?.imgURL()}
+                  dropMenu={() =>
+                    dispatch(
+                      toggleModal({
+                        name: "profile",
+                        value: modals.profile,
+                      })
+                    )
+                  }
+                />
+                {modals.profile && (
+                  <DropdownMenu>
+                    {user && (
+                      <div className="px-4 py-3">
+                        <span className="block text-sm text-gray-900 dark:text-white">
+                          {user?.fullName}
+                        </span>
+                        <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                          {user?.email}
+                        </span>
+                      </div>
+                    )}
+                    <MenuLink
+                      pathName="Profile"
+                      path={`${path}/profile`}
+                      click={() =>
+                        dispatch(
+                          toggleModal({
+                            name: "profile",
+                            value: modals.profile,
+                          })
+                        )
+                      }
+                    />
+                    {!user?.isAdmin() && (
+                      <MenuLink pathName="Settings" path="" />
+                    )}
+                    <MenuLink pathName="Log out" click={toggleLogout} />
+                  </DropdownMenu>
+                )}
               </div>
             )}
             <HamburgerMenu />

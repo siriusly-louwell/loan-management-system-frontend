@@ -50,6 +50,7 @@ import GlobalLoading from "./components/loading components/GlobalLoading";
 import { UserEntity } from "./services/entities/User";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import UnitList from "./pages/UnitList";
+import AccOverview from "./pages/AccOverview";
 
 function App() {
   const dispatch = useDispatch();
@@ -534,6 +535,14 @@ function App() {
           />
           <Route
             path="profile"
+            element={
+              <ProtectedRoute type="admin">
+                <AccOverview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="overview"
             element={
               <ProtectedRoute type="admin">
                 <Profile />

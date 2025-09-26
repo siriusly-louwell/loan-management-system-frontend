@@ -81,8 +81,12 @@ export class User {
 
 // ? selector
 const selectUserDto = (state) => state.auth.user;
-
 export const UserEntity = createSelector([selectUserDto], (userDto) =>
+  userDto ? new User(userDto) : { role: "guest" }
+);
+
+const selectProfileDto = (state) => state.auth.profile;
+export const ProfileEntity = createSelector([selectProfileDto], (userDto) =>
   userDto ? new User(userDto) : null
 );
 

@@ -12,7 +12,7 @@ export default function Alert({ id, text, children, icon }) {
       tabIndex="-1"
       className={`fixed ${
         id !== "stock_adjust" ? "hidden" : ""
-      } top-0 left-0 right-0 z-50 p-20 bg-gray-500 bg-opacity-30 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
+      } top-0 left-0 right-0 z-50 p-20 bg-gray-500 bg-opacity-30 dark:bg-gray-800 dark:bg-opacity-60 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
       <div className="relative w-full h-auto max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 border dark:border-gray-500">
           {location.pathname !== "/customer/apply/comakerform" ? (

@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "../components/inputs/SearchInput";
-import Search from "../assets/icons/Search";
 import EmptySearch from "../components/empty states/EmptySearch";
-import InvoiceList from "./InvoiceList";
 import ApplicationFilter from "../components/filters/ApplicationFilter";
 import { useDispatch, useSelector } from "react-redux";
 import useDebounce from "../hooks/useDebounce";
@@ -14,7 +12,6 @@ import CustomBadge from "../components/badges/CustomBadge";
 import PageNav from "../components/PageNav";
 
 export default function SearchPage() {
-  //   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const { applications, appsLoading, pagination } = useSelector(
     (state) => state.application

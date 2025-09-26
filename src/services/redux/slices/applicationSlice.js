@@ -52,14 +52,19 @@ const applicationSlice = createSlice({
       total: 0,
       nextPage: 2,
     },
+    applyError: null,
   },
-  reducers: {},
+  reducers: {
+    setLoading: (state, action) => {
+      state.loanLoading = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // ? Fetch all applications
       .addCase(fetchApplicants.pending, (state) => {
         state.appsLoading = true;
-        state.error = null;
+        state.applyError = null;
       })
       .addCase(fetchApplicants.fulfilled, (state, action) => {
         state.appsLoading = false;
@@ -89,13 +94,13 @@ const applicationSlice = createSlice({
       })
       .addCase(fetchApplicants.rejected, (state, action) => {
         state.appsLoading = false;
-        state.error = action.payload;
+        state.applyError = action.payload;
       })
 
       // ? fetch all customers
       .addCase(fetchCustomers.pending, (state) => {
         state.customLoading = true;
-        state.error = null;
+        state.applyError = null;
       })
       .addCase(fetchCustomers.fulfilled, (state, action) => {
         state.customLoading = false;
@@ -127,24 +132,35 @@ const applicationSlice = createSlice({
       })
       .addCase(fetchCustomers.rejected, (state, action) => {
         state.customLoading = false;
-        state.error = action.payload;
+        state.applyError = action.payload;
       })
 
       // ? Fetch a loan
       .addCase(fetchLoan.pending, (state) => {
         state.loanLoading = true;
-        state.error = null;
+        state.applyError = null;
       })
       .addCase(fetchLoan.fulfilled, (state, action) => {
         state.loanLoading = false;
-        state.loan = action.payload;
+        const data = action.payload;
+
+        if (Object.keys(data).length > 0)
+          state.loan = {
+            ...data,
+            fullName: applyRepository.fullName(data.first_name, data.last_name),
+            imgURL: ApplicationAPI.imgPath(data.id_pic),
+            status: applyRepository.statusBadge(data.apply_status),
+            parsedSalary: `₱${parseFloat(data.salary).toLocaleString()}`,
+          };
+        else state.loan = {};
       })
       .addCase(fetchLoan.rejected, (state, action) => {
         state.loanLoading = false;
-        state.error = action.payload;
+        state.load = {};
+        state.applyError = action.payload;
       });
   },
 });
 
-// export const {} = applicationSlice.actions;
+export const { setLoading } = applicationSlice.actions;
 export default applicationSlice.reducer;

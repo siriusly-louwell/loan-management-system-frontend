@@ -15,9 +15,9 @@ const ApplicationAPI = {
     return response.data;
   },
 
-  async fetchApplication({ id, by }) {
+  async fetchApplication({ id, ...params }) {
     const response = await axios.get(`${API_URL}/api/application/${id}`, {
-      params: { by: by },
+      params: { ...params },
     });
     return response.data;
   },

@@ -83,7 +83,7 @@ export default function UnitsTable() {
           {unitsLoading && <RowSkeleton num={8} count={9} />}
         </tbody>
       </Table>
-      {motors.length === 0 && !unitsLoading && <EmptyFolder />}
+      {motors.length === 0 && !unitsLoading && <EmptyFolder showBttn={false} />}
     </div>
   );
 }

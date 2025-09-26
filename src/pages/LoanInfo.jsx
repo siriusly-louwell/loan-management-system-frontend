@@ -18,6 +18,7 @@ import Eligibity from "../components/modals/Eligibility";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoan } from "../services/redux/slices/applicationSlice";
+import { toggleModal } from "../services/redux/slices/uiSlice";
 
 export default function LoanInfo({ children, url }) {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function LoanInfo({ children, url }) {
   const [alert, setAlert] = useState({});
   const [recommend, setRecommend] = useState([]);
   const [recoLoad, setRecoLoad] = useState(true);
+  const { modals } = useSelector((state) => state.ui);
   const { loan, loanLoading } = useSelector((state) => state.application);
 
   useEffect(() => {
@@ -392,8 +394,12 @@ export default function LoanInfo({ children, url }) {
                   text="View Results"
                   bttnType="button"
                   onclick={() =>
-                    (document.getElementById("eligibleModal").style.display =
-                      "flex")
+                    dispatch(
+                      toggleModal({
+                        name: "eligibility",
+                        value: modals.eligibility,
+                      })
+                    )
                   }
                 />
                 {loan.apply_status === "evaluated" ||

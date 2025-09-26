@@ -38,8 +38,9 @@ export default function AppNotifications() {
                 <SmallSpin size={50} />
               </div>
             ) : (
-              payment.map((pay) => (
+              payment.map((pay, i) => (
                 <LogRow
+                  key={i}
                   id={pay.cert_num}
                   date="2025.07.23"
                   name="John Doe"

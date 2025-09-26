@@ -3,7 +3,7 @@ import Button from "../buttons/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
 
-export default function EmptyFolder() {
+export default function EmptyFolder({ showBttn = true }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
 
@@ -124,22 +124,26 @@ export default function EmptyFolder() {
           <h2 className="text-center text-gray-500 text-base font-semibold leading-relaxed pb-1">
             It's a bit empty here
           </h2>
-          <p className="text-center text-gray-500 text-sm font-normal leading-snug pb-4">
-            Try adding a unit to <br />
-            see motorcycles{" "}
-          </p>
+          {showBttn && (
+            <p className="text-center text-gray-500 text-sm font-normal leading-snug pb-4">
+              Try adding a unit to <br />
+              see motorcycles here
+            </p>
+          )}
           <div className="flex gap-3">
-            <Button
-              text="Add a Unit"
-              onclick={() => {
-                dispatch(
-                  toggleModal({
-                    name: "createUnit",
-                    value: modals?.createUnit,
-                  })
-                );
-              }}
-            />
+            {showBttn && (
+              <Button
+                text="Add a Unit"
+                onclick={() => {
+                  dispatch(
+                    toggleModal({
+                      name: "createUnit",
+                      value: modals?.createUnit,
+                    })
+                  );
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

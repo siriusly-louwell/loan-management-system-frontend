@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/buttons/Button";
@@ -27,6 +27,7 @@ import {
 import Dialog from "../components/modals/Dialog";
 import Check from "../assets/icons/Check";
 import SaveButton from "../components/buttons/SaveButton";
+import { UserEntity } from "../services/entities/User";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function ApplicationForm() {
   const { toggled, pageRoute, pageNum, stepIndex, modals } = useSelector(
     (state) => state.ui
   );
+  const user = useSelector(UserEntity);
   const [applicant, setApplicant] = useState({});
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
@@ -471,7 +473,11 @@ export default function ApplicationForm() {
               <Button
                 text="Finish"
                 type="button"
-                onclick={() => navigate("/")}
+                onclick={() =>
+                  user?.role === "staff"
+                    ? navigate("/staff/units")
+                    : navigate("/")
+                }
               />
             </Dialog>
           ) : (

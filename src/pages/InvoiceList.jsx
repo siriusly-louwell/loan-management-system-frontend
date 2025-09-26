@@ -147,9 +147,6 @@ export default function InvoiceList({
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
               {headText}
             </h2>
-
-            {/* {location.pathname !== "/find" && ( */}
-            {user.role !== "guest" && (
               <div className="sm:flex space-x-2 sm:justify-between">
                 <section className="flex space-x-2">
                   <ApplicationFilter setPage={setPage} />
@@ -163,7 +160,6 @@ export default function InvoiceList({
                   />
                 </div>
               </div>
-            )}
           </div>
 
           <LogList>

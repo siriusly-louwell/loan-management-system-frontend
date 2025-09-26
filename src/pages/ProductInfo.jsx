@@ -27,21 +27,6 @@ export default function ProductInfo({ staff = false }) {
   const { unitId, unitLoading, images } = useSelector((state) => state.unit);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
-  const { state } = useLocation();
-  const [id, setId] = useState(staff ? 1 : state?.id);
-  const [addUnit, setUnits] = useState([]);
-
-  // function selectUnits(unit) {
-  //   const newSelected = selected.includes(unit)
-  //     ? selected.filter((select) => select !== unit)
-  //     : [...selected, unit];
-
-  //   setSelected(newSelected);
-  // }
-
-  // useEffect(() => {
-  //   dispatch(getID());
-  // }, []);
 
   useEffect(() => {
     dispatch(fetchUnit());
@@ -64,35 +49,16 @@ export default function ProductInfo({ staff = false }) {
                         <ImageSkeleton />
                       </div>
                     ) : (
-                      <>
-                        {staff && (
-                          <FormSelect
-                            name="motor"
-                            id="motor"
-                            value={`${unit.brand}: ${unit.name} - ₱${parseFloat(
-                              unit.price
-                            ).toLocaleString()}`}
-                            label="Select Unit"
-                            onchange={(e) => setId(e.target.value)}>
-                            {addUnit.map((motor) => (
-                              <option value={motor.id}>
-                                {motor.brand}: {motor.name} - ₱
-                                {parseFloat(motor.price).toLocaleString()}
-                              </option>
-                            ))}
-                          </FormSelect>
-                        )}
-                        {images
-                          .filter((f) => f.type === "color")
-                          .map((src, i) => (
-                            <img
-                              key={i}
-                              src={src.url}
-                              alt={`Slide ${i + 1}`}
-                              className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
-                            />
-                          ))}
-                      </>
+                      images
+                        .filter((f) => f.type === "color")
+                        .map((src, i) => (
+                          <img
+                            key={i}
+                            src={src.url}
+                            alt={`Slide ${i + 1}`}
+                            className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
+                          />
+                        ))
                     )}
                   </BasicCarousel>
                 </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import CustomBttn from "../components/buttons/CustomBttn";
 import Plus from "../assets/icons/Plus";
 import DropdownBttn from "../components/buttons/DropdownBttn";
@@ -18,11 +17,9 @@ export default function CRUDformat({
   label,
   setPage,
   filterComponent,
-  pagination
+  pagination,
 }) {
   const dispatch = useDispatch();
-  const location = useLocation();
-  // const { pagination } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
 
   return (
@@ -48,23 +45,21 @@ export default function CRUDformat({
                 </form>
               </div>
               <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                {location.pathname !== "/admin/accounts/applicants" &&
-                  location.pathname !== "/admin/accounts/customers" &&
-                  location.pathname !== "/admin/accounts" && (
-                    <CustomBttn
-                      text={`Add ${label}`}
-                      classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                      onclick={() =>
-                        dispatch(
-                          toggleModal({
-                            name: modalName,
-                            value: modals[modalName],
-                          })
-                        )
-                      }>
-                      <Plus />
-                    </CustomBttn>
-                  )}
+                {addModal && (
+                  <CustomBttn
+                    text={`Add ${label}`}
+                    classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                    onclick={() =>
+                      dispatch(
+                        toggleModal({
+                          name: modalName,
+                          value: modals[modalName],
+                        })
+                      )
+                    }>
+                    <Plus />
+                  </CustomBttn>
+                )}
 
                 {filterComponent}
 

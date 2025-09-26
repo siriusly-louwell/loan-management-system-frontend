@@ -49,6 +49,7 @@ import Alert from "./components/modals/Alert";
 import GlobalLoading from "./components/loading components/GlobalLoading";
 import { UserEntity } from "./services/entities/User";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import UnitList from "./pages/UnitList";
 
 function App() {
   const dispatch = useDispatch();
@@ -397,7 +398,16 @@ function App() {
             }
           />
           <Route
-            path="product"
+            path="units"
+            element={
+              <ProtectedRoute type="staff">
+                <UnitList />
+                {/* <ProductInfo staff={true} /> */}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="unit"
             element={
               <ProtectedRoute type="staff">
                 <ProductInfo staff={true} />

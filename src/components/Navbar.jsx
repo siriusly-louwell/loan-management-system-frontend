@@ -98,12 +98,10 @@ export default function Navbar({ links, path }) {
                   {user && (
                     <div className="px-4 py-3">
                       <span className="block text-sm text-gray-900 dark:text-white">
-                        Bonnie Green 
-                        {/* {user?.fullName()} */}
+                        {user?.fullName}
                       </span>
                       <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                        name@flowbite.com
-                        {/* {user?.email} */}
+                        {user?.email}
                       </span>
                     </div>
                   )}

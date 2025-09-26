@@ -33,6 +33,29 @@ export class User {
     return `${this.first_name} ${this.last_name}`;
   }
 
+  get roleName() {
+    switch (this.role) {
+      case "admin":
+        return "Administrator";
+      case "staff":
+        return "Staff";
+      case "ci":
+        return "Credit Investigator";
+      case "customer":
+        return "Customer";
+      default:
+        return "Guest";
+    }
+  }
+
+  get statusName() {
+    return this.status.charAt(0).toUpperCase() + this.status.slice(1);
+  }
+
+  get genderType() {
+    return this.gender.charAt(0).toUpperCase() + this.gender.slice(1);
+  }
+
   imgURL() {
     return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
   }

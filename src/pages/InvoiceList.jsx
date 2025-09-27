@@ -7,7 +7,10 @@ import CustomBadge from "../components/badges/CustomBadge";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useDispatch, useSelector } from "react-redux";
 import useDebounce from "../hooks/useDebounce";
-import { fetchApplicants } from "../services/redux/slices/applicationSlice";
+import {
+  fetchApplicants,
+  saveLoan,
+} from "../services/redux/slices/applicationSlice";
 import InvoiceRowSkeleton from "../components/loading components/InvoiceRowSkeleton";
 import { UserEntity } from "../services/entities/User";
 import ApplicationFilter from "../components/filters/ApplicationFilter";
@@ -147,19 +150,19 @@ export default function InvoiceList({
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
               {headText}
             </h2>
-              <div className="sm:flex space-x-2 sm:justify-between">
-                <section className="flex space-x-2">
-                  <ApplicationFilter setPage={setPage} />
-                </section>
-                <div className="mt-6 gap-x-6 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
-                  <SearchInput
-                    id="invoice_search"
-                    name="log_search"
-                    placeholder="Search ID, name..."
-                    change={setPage}
-                  />
-                </div>
+            <div className="sm:flex space-x-2 sm:justify-between">
+              <section className="flex space-x-2">
+                <ApplicationFilter setPage={setPage} />
+              </section>
+              <div className="mt-6 gap-x-6 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+                <SearchInput
+                  id="invoice_search"
+                  name="log_search"
+                  placeholder="Search ID, name..."
+                  change={setPage}
+                />
               </div>
+            </div>
           </div>
 
           <LogList>
@@ -169,6 +172,7 @@ export default function InvoiceList({
               applications.map((loan) => (
                 <LogRow
                   key={loan.id}
+                  click={() => dispatch(saveLoan(loan.id))}
                   id={loan.record_id}
                   name={loan.fullName}
                   date={loan.applied_at}

@@ -72,3 +72,66 @@ export const ADDRESS_NAMES = [
   ],
   [],
 ];
+
+export const FORM_LABELS = {
+  personal_info: {
+    civil_stat: "Marital Status",
+    birthDate: "Date of Birth",
+    birth_place: "Place of Birth",
+    getEducAttain: "Educational Attainment",
+    getResidence: "Residential Status",
+    getAmortization: "Amortization Monthly",
+    getRent: "Rent Monthly",
+    sss: "SSS/GSIS #",
+    tin: "TIN #",
+  },
+  employment_info: {
+    A: {
+      getIncome: "Source of Income",
+      superior: "Immediate Superior",
+      employment_status: "Employment Status",
+      yrs_in_service: "Years in Service",
+      getRate: "Monthly/Daily Rate",
+      employer: "Employer",
+      employer_address: "Employer Address",
+    },
+    B: {
+      getSalary: "Salary",
+      business: "Business",
+    },
+    C: {
+      getLivingExp: "Living",
+      getRentalExp: "Rental",
+      getEducationExp: "Education",
+      getTransportation: "Transportation",
+      getInsurance: "Insurance",
+      getBills: "Electric/Water Bill",
+    },
+  },
+  family_info: {
+    spouse_name: "Spouse Name",
+    birthDate: "Date of Birth",
+    spouse_work: "Spouse Working?",
+    children_num: "Number of Children",
+    children_dep: "Dep. Children",
+    school: "Schooling Children",
+  },
+  address: {
+    personal_pres: "Present Address",
+    personal_prev: "Previous Address",
+    parent_pres: "Parent's Present Address",
+    parent_prev: "Parent's Previous Address",
+    spouse_pres: "Spouse's Present Address",
+    spouse_prev: "Spouse's Previous Address",
+  },
+  other: {
+    comm_standing: "Community Standing",
+    home_description: "Home Description",
+    father_first: "First name",
+    father_middle: "Middle name",
+    father_last: "Last name",
+    mother_first: "First name",
+    mother_middle: "Middle name",
+    mother_last: "Last name",
+  },
+};

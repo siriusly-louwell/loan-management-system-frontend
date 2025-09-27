@@ -110,4 +110,16 @@ export const applyRepository = {
         return { text: "Pending", color: "blue" };
     }
   },
+
+  saveId(id) {
+    localStorage.setItem("loan-id", id);
+  },
+
+  getId() {
+    return localStorage.getItem("loan-id") || false;
+  },
+
+  clearId() {
+    localStorage.removeItem("loan-id");
+  },
 };

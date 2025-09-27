@@ -41,6 +41,7 @@ const applicationSlice = createSlice({
     applications: [],
     customers: [],
     loan: {},
+    loanID: null,
     loanLoading: true,
     customLoading: false,
     appsLoading: false,
@@ -58,6 +59,14 @@ const applicationSlice = createSlice({
     setLoading: (state, action) => {
       state.loanLoading = action.payload;
     },
+
+    saveLoan: (state, action) => {
+      applyRepository.saveId(action.payload);
+    },
+
+    getLoanId: (state, action) => {
+      state.loanID = applyRepository.getId();
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -148,6 +157,7 @@ const applicationSlice = createSlice({
         if (Object.keys(data).length > 0)
           state.loan = {
             ...data,
+            civil_stat: data.status,
             fullName: applyRepository.fullName(data.first_name, data.last_name),
             imgURL: ApplicationAPI.imgPath(data.id_pic),
             status: applyRepository.statusBadge(data.apply_status),
@@ -163,5 +173,5 @@ const applicationSlice = createSlice({
   },
 });
 
-export const { setLoading } = applicationSlice.actions;
+export const { setLoading, saveLoan } = applicationSlice.actions;
 export default applicationSlice.reducer;

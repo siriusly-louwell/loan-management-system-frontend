@@ -9,6 +9,7 @@ export default function LogRow({
   name,
   path,
   bttnText,
+  click,
   state,
   amount,
 }) {
@@ -64,6 +65,7 @@ export default function LogRow({
       <Link
         to={path}
         state={{ id: state }}
+        onClick={click}
         className="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
         <BasicButton text={bttnText} />
       </Link>

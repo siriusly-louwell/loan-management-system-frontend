@@ -172,7 +172,7 @@ export default function FamilyInfoForm() {
         </div>
         {urlBool && (
           <div className="grid pt-4 sm:cols-span-3">
-            <BttnwithIcon text="Add row">
+            <BttnwithIcon text="Add row" type="button">
               <Plus />
             </BttnwithIcon>
           </div>
@@ -798,7 +798,7 @@ export default function FamilyInfoForm() {
           </table>
           {urlBool && (
             <div className="grid pt-4 sm:cols-span-1">
-              <BttnwithIcon text="Add row">
+              <BttnwithIcon text="Add row" type="button">
                 <Plus />
               </BttnwithIcon>
             </div>
@@ -829,7 +829,7 @@ export default function FamilyInfoForm() {
           </table>
           {urlBool && (
             <div className="grid pt-4 sm:cols-span-1">
-              <BttnwithIcon text="Add row">
+              <BttnwithIcon text="Add row" type="button">
                 <Plus />
               </BttnwithIcon>
             </div>

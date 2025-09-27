@@ -10,7 +10,7 @@ export class Application {
     email,
     contact_num,
     gender,
-    status,
+    civil_stat,
     apply_status,
     educ_attain,
     residence,
@@ -22,6 +22,7 @@ export class Application {
     birth_place,
     comm_standing,
     home_description,
+    id_pic,
     address = [],
   }) {
     this.id = id;
@@ -32,7 +33,7 @@ export class Application {
     this.email = email;
     this.contact_num = contact_num;
     this.gender = gender;
-    this.status = status;
+    this.status = civil_stat;
     this.apply_status = apply_status;
     this.educ_attain = educ_attain;
     this.residence = residence;
@@ -45,6 +46,15 @@ export class Application {
     this.comm_standing = comm_standing;
     this.home_description = home_description;
     this.address = address;
+    this.pfp = id_pic;
+  }
+
+  get fullName() {
+    return `${this.first_name} ${this.last_name}`;
+  }
+
+  imgURL() {
+    return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
   }
 
   get birthDate() {
@@ -79,8 +89,8 @@ export class Application {
   }
 
   get getStatus() {
-    return this.status
-      ? this.status.charAt(0).toUpperCase() + this.status.slice(1)
+    return this.apply_status
+      ? this.apply_status.charAt(0).toUpperCase() + this.apply_status.slice(1)
       : "";
   }
 

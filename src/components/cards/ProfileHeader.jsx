@@ -5,12 +5,21 @@ export default function ProfileHeader({
   address,
   email,
   contact,
+  img,
 }) {
   return (
     <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-4">
       <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
         <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-3xl font-bold text-primary-700 dark:text-white">
-          LJ
+          {img ? (
+            <img
+              src={img}
+              alt="ID"
+              className="w-full h-full object-cover rounded-full"
+            />
+          ) : (
+            "LJ"
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-white truncate">

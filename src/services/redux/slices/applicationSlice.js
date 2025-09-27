@@ -61,10 +61,11 @@ const applicationSlice = createSlice({
     },
 
     saveLoan: (state, action) => {
+      state.loanID = action.payload;
       applyRepository.saveId(action.payload);
     },
 
-    getLoanId: (state, action) => {
+    getLoanId: (state) => {
       state.loanID = applyRepository.getId();
     }
   },
@@ -173,5 +174,5 @@ const applicationSlice = createSlice({
   },
 });
 
-export const { setLoading, saveLoan } = applicationSlice.actions;
+export const { setLoading, saveLoan, getLoanId } = applicationSlice.actions;
 export default applicationSlice.reducer;

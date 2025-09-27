@@ -10,6 +10,7 @@ import { ApplicationEntity } from "../services/entities/Application";
 import { EmploymentEntity } from "../services/entities/EmploymentInfo";
 import { FamilyEntity } from "../services/entities/FamilyInfo";
 import { fetchLoan } from "../services/redux/slices/applicationSlice";
+import ProfileHeader from "../components/cards/ProfileHeader";
 
 export default function AppliedForm({ url }) {
   // const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function AppliedForm({ url }) {
   const application = useSelector(ApplicationEntity);
   const employmentInfo = useSelector(EmploymentEntity);
   const familyInfo = useSelector(FamilyEntity);
-  const { loanId } = useSelector((state) => state.application);
+  const { loanID } = useSelector((state) => state.application);
   // const { pageRoute } = useSelector((state) => state.ui);
   // const routerPaths = useMemo(
   //   () => [
@@ -46,7 +47,7 @@ export default function AppliedForm({ url }) {
   // }, []);
 
   useEffect(() => {
-    dispatch(fetchLoan({ id: loanId, by: "id" }));
+    dispatch(fetchLoan({ id: loanID, by: "id" }));
     // navigate(pageRoute);
 
     // window.scrollTo(0, 0);
@@ -98,43 +99,15 @@ export default function AppliedForm({ url }) {
 
     <div className="w-full bg-gray-100 dark:bg-gray-900">
       <section className="max-w-3xl mx-auto p-4">
-        <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-4">
-          <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-            <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-3xl font-bold text-primary-700 dark:text-white">
-              LJ
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-white truncate">
-                Louwell Jay A. Bernalte
-              </h2>
-              <div className="flex flex-wrap gap-2 items-center mt-1">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Male
-                </span>
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    true
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}>
-                  Status
-                </span>
-              </div>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                Farm 2 Dapco, Panabo City, Davao del Norte
-              </span>
-            </div>
-
-            <div className="flex flex-col gap-4 sm:gap-y-1 text-center sm:text-right">
-              <span className="text-sm text-gray-500 font-medium dark:text-white">
-                bernaltelouwell23@gmail.com
-              </span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                09678575807
-              </span>
-            </div>
-          </div>
-        </section>
+        <ProfileHeader
+          name={application.fullName}
+          gender={application.getGender}
+          status={application.getStatus}
+          email={application.email}
+          contact={application.contact_num}
+          img={application.imgURL()}
+          address={application.address?.personal_pres}
+        />
 
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
           Application Information

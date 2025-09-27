@@ -33,10 +33,12 @@ export default function LoanInfo({ children, url }) {
   const [recommend, setRecommend] = useState([]);
   const [recoLoad, setRecoLoad] = useState(true);
   const { modals } = useSelector((state) => state.ui);
-  const { loan, loanLoading } = useSelector((state) => state.application);
-
+  const { loan, loanID, loanLoading } = useSelector(
+    (state) => state.application
+  );
+  
   useEffect(() => {
-    dispatch(fetchLoan({ id: id, by: "id" }));
+    dispatch(fetchLoan({ id: loanID, by: "id" }));
   }, [id, dispatch]);
 
   //   useEffect(() => {

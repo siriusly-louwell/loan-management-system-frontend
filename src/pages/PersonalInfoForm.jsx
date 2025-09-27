@@ -18,6 +18,7 @@ import {
   copyAddress,
   disableAddress,
 } from "../services/redux/slices/formSlice";
+import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
 
 export default function PersonalInfoForm() {
   const location = useLocation();
@@ -47,6 +48,7 @@ export default function PersonalInfoForm() {
   }
 
   return (
+    // <ApplicationInfoCard info={{}} />
     <>
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Buyer's Personal Infomation:

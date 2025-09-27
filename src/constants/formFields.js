@@ -10,6 +10,7 @@ export const FIELD_NAMES = [
     "birth_place",
     "birth_day",
     "status",
+    "email",
     "contact_num",
     "gender",
     "last_name",

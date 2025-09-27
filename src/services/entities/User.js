@@ -82,7 +82,7 @@ export class User {
 // ? selector
 const selectUserDto = (state) => state.auth.user;
 export const UserEntity = createSelector([selectUserDto], (userDto) =>
-  userDto ? new User(userDto) : { role: "guest" }
+  userDto ? new User(userDto) : { role: "guest", isAuthorized: () => false }
 );
 
 const selectProfileDto = (state) => state.auth.profile;

@@ -21,14 +21,17 @@ import {
 
 export default function PersonalInfoForm() {
   const location = useLocation();
-  const { formData, selectDisable } = useSelector((state) => state.form);
   const dispatch = useDispatch();
+  const { loan } = useSelector((state) => state.application);
+  const { formData, selectDisable } = useSelector((state) => state.form);
   const { dispatchInput, applicant, address, disable, locations } =
     useOutletContext();
   const urlBool =
-    location.pathname !== "/admin/apply" &&
-    location.pathname !== "/staff/apply" &&
-    location.pathname !== "/ci/apply";
+    location.pathname !== "/customer/apply" &&
+    location.pathname !== "/customer/apply/personalinfo";
+  // location.pathname !== "/admin/apply" &&
+  // location.pathname !== "/staff/apply" &&
+  // location.pathname !== "/ci/apply";
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -39,13 +42,18 @@ export default function PersonalInfoForm() {
     dispatch(disableAddress());
   }, [formData, dispatch]);
 
+  function getProp(prop) {
+    return Object.keys(loan).length > 0 ? loan[prop] : formData.applicant[prop];
+  }
+
   return (
     <>
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Buyer's Personal Infomation:
       </h3>
-      {!urlBool && (
+      {urlBool && (
         <img
+          alt="id"
           src={`http://127.0.0.1:8000/storage/${applicant.id_pic}`}
           className="rounded rounded-lg w-20"
         />
@@ -56,7 +64,8 @@ export default function PersonalInfoForm() {
           type="text"
           name="first_name"
           id="first_name"
-          value={formData.applicant.first_name}
+          // value={formData.applicant.first_name}
+          value={getProp("first_name")}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type first name"
           require={true}
@@ -67,7 +76,8 @@ export default function PersonalInfoForm() {
           type="text"
           name="middle_name"
           id="mid_name"
-          value={formData.applicant.middle_name}
+          value={getProp("middle_name")}
+          // value={formData.applicant.middle_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type middle name"
           disable={disable}
@@ -77,7 +87,8 @@ export default function PersonalInfoForm() {
           type="text"
           name="last_name"
           id="last_name"
-          value={formData.applicant.last_name}
+          value={getProp("last_name")}
+          // value={formData.applicant.last_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type last name"
           require={true}
@@ -87,7 +98,8 @@ export default function PersonalInfoForm() {
           name="gender"
           label="Sex"
           id="gender"
-          value={formData.applicant.gender}
+          value={getProp("gender")}
+          // value={formData.applicant.gender}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -101,7 +113,8 @@ export default function PersonalInfoForm() {
           name="contact_num"
           min={99999999999}
           id="contact_num"
-          value={formData.applicant.contact_num}
+          value={getProp("contact_num")}
+          // value={formData.applicant.contact_num}
           onchange={(e) => dispatchInput(e)}
           placeholder="+63 912 3456 789"
           require={true}
@@ -112,7 +125,9 @@ export default function PersonalInfoForm() {
           type="email"
           name="email"
           id="email"
-          value={formData.applicant.email}
+          require={true}
+          value={getProp("email")}
+          // value={formData.applicant.email}
           onchange={(e) => dispatchInput(e)}
           placeholder="doe@gmail.com"
           disable={disable}
@@ -121,7 +136,8 @@ export default function PersonalInfoForm() {
           name="status"
           label="Marital Status"
           id="status"
-          value={formData.applicant.status}
+          value={getProp("status")}
+          // value={formData.applicant.status}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}>
@@ -136,7 +152,8 @@ export default function PersonalInfoForm() {
           type="date"
           name="birth_day"
           id="bday"
-          value={formData.applicant.birth_day}
+          value={getProp("birth_day")}
+          // value={formData.applicant.birth_day}
           onchange={(e) => dispatchInput(e)}
           require={true}
           disable={disable}
@@ -146,7 +163,8 @@ export default function PersonalInfoForm() {
           type="text"
           name="birth_place"
           id="bplace"
-          value={formData.applicant.birth_place}
+          value={getProp("birth_place")}
+          // value={formData.applicant.birth_place}
           onchange={(e) => dispatchInput(e)}
           placeholder="Birth place address"
           require={true}
@@ -160,7 +178,8 @@ export default function PersonalInfoForm() {
             name="educ_attain"
             label="Educ. Attainment"
             id="educ_attain"
-            value={formData.applicant.educ_attain}
+            value={getProp("educ_attain")}
+            // value={formData.applicant.educ_attain}
             onchange={(e) => dispatchInput(e)}
             require={true}
             disable={disable}>
@@ -184,7 +203,8 @@ export default function PersonalInfoForm() {
             name="residence"
             label="Residential Status"
             id="residence"
-            value={formData.applicant.residence}
+            value={getProp("residence")}
+            // value={formData.applicant.residence}
             onchange={(e) => dispatchInput(e)}
             require={true}
             disable={disable}>
@@ -208,7 +228,8 @@ export default function PersonalInfoForm() {
           type="number"
           name="amortization"
           id="amortization"
-          value={formData.applicant.amortization}
+          value={getProp("amortization")}
+          // value={formData.applicant.amortization}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱5,000"
           require={true}
@@ -219,7 +240,8 @@ export default function PersonalInfoForm() {
           type="number"
           name="rent"
           id="rent"
-          value={formData.applicant.rent}
+          value={getProp("rent")}
+          // value={formData.applicant.rent}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500"
           require={true}
@@ -230,7 +252,8 @@ export default function PersonalInfoForm() {
           type="number"
           name="sss"
           id="sss"
-          value={formData.applicant.sss}
+          value={getProp("sss")}
+          // value={formData.applicant.sss}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type SSS/GSIS number"
           disable={disable}
@@ -240,7 +263,8 @@ export default function PersonalInfoForm() {
           type="number"
           name="tin"
           id="tin"
-          value={formData.applicant.tin}
+          value={getProp("tin")}
+          // value={formData.applicant.tin}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type TIN number"
           disable={disable}
@@ -249,9 +273,10 @@ export default function PersonalInfoForm() {
           name="comm_standing"
           id="comm_standing"
           label="Community Standing"
-          value={formData.applicant.comm_standing}
+          value={getProp("comm_standing")}
+          // value={formData.applicant.comm_standing}
           onchange={(e) => dispatchInput(e)}
-          placeholder="Write commuity standing here"
+          placeholder="Write community standing here"
           require={true}
           disable={disable}
         />
@@ -416,7 +441,6 @@ export default function PersonalInfoForm() {
           type="checkbox"
           id="copy_address"
           style="mb-4"
-          // change={() => copyAddress("personal")}
           change={() => dispatch(copyAddress("personal"))}
           icon={copy_icon}
         />
@@ -510,7 +534,8 @@ export default function PersonalInfoForm() {
           name="home_description"
           id="home_description"
           label="Brief description of place of residence and home"
-          value={formData.applicant.home_description}
+          value={getProp("home_description")}
+          // value={formData.applicant.home_description}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write residence description here"
           require={true}
@@ -538,9 +563,9 @@ export default function PersonalInfoForm() {
             </tr>
           </FormTBody>
         </table>
-        {urlBool && (
+        {!urlBool && (
           <div className="grid pt-4 sm:cols-span-1">
-            <BttnwithIcon text="Add row">
+            <BttnwithIcon text="Add row" type="button">
               <Plus />
             </BttnwithIcon>
           </div>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { FORM_ROUTES } from "../../../constants/formRoutes";
+import formRoutes, { FORM_ROUTES } from "../../../constants/formRoutes";
 
 const initialState = {
   alert: {
@@ -103,20 +103,22 @@ const uiSlice = createSlice({
       }
     },
 
-    nextPage: (state) => {
+    nextPage: (state, action) => {
       const nextIndex = state.pageNum + 1;
+      const routes = formRoutes(action.payload);
 
-      if (nextIndex < FORM_ROUTES.length) {
-        state.pageRoute = FORM_ROUTES[nextIndex];
+      if (nextIndex < routes.length) {
+        state.pageRoute = routes[nextIndex];
         state.pageNum = nextIndex;
       }
     },
 
-    prevPage: (state) => {
+    prevPage: (state, action) => {
       const nextIndex = state.pageNum - 1;
+      const routes = formRoutes(action.payload);
 
       if (nextIndex >= 0) {
-        state.pageRoute = FORM_ROUTES[nextIndex];
+        state.pageRoute = routes[nextIndex];
         state.pageNum = nextIndex;
       }
 
@@ -132,10 +134,10 @@ const uiSlice = createSlice({
       state.pageNum = action.payload;
     },
 
-    dateFormat: (state, action) => {
-      const newDate = new Date(action.payload);
-      const formatted = new Intl.DateTimeFormat("en-GB").format(newDate);
-    },
+    // dateFormat: (state, action) => {
+    //   const newDate = new Date(action.payload);
+    //   const formatted = new Intl.DateTimeFormat("en-GB").format(newDate);
+    // },
   },
 });
 

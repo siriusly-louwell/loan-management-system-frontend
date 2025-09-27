@@ -16,7 +16,7 @@ export default function AvatarBttn({ dropMenu, pfp }) {
       id="user-menu-button"
       onClick={dropMenu}>
       <span className="sr-only">Open user menu</span>
-      <img className="w-8 h-8 rounded-full" src={src} alt="user" />
+      <img className="w-8 h-8 rounded-full object-cover" src={src} alt="user" />
     </button>
   );
 }

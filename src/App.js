@@ -80,7 +80,7 @@ function App() {
           </Route>
           <Route path="find" element={<SearchPage />} />
           <Route path="about" element={<About />} />
-          <Route path="unit" element={<ProductInfo />} />
+          <Route path="guest/unit" element={<ProductInfo />} />
           <Route path="application" element={<LoanInfo />} />
         </Route>
 
@@ -572,14 +572,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="personalinfo"
               element={
                 <ProtectedRoute type="admin">
                   <PersonalInfoForm />
                 </ProtectedRoute>
               }
-            />
+            /> */}
             <Route
               path="employinfo"
               element={

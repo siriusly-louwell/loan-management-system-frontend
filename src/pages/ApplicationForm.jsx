@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/buttons/Button";
@@ -44,7 +44,6 @@ export default function ApplicationForm() {
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
   const [modal, setModal] = useState({});
-  const [incomplete, setIncomplete] = useState([]);
   const locations = {
     I: {
       province: ["Ilocos Norte", "Ilocos Sur", "La Union", "Pangasinan"],
@@ -359,9 +358,9 @@ export default function ApplicationForm() {
   }
 
   function stepCheck(index) {
-    if (incomplete.includes(index)) return "incomplete";
-    else
-      return pageNum === index ? "current" : pageNum > index ? "done" : "pend";
+    // if (incomplete.includes(index)) return "incomplete";
+    // else
+    return pageNum === index ? "current" : pageNum > index ? "done" : "pend";
   }
 
   useEffect(() => {
@@ -473,11 +472,18 @@ export default function ApplicationForm() {
               <Button
                 text="Finish"
                 type="button"
-                onclick={() =>
+                onclick={() => {
                   user?.role === "staff"
                     ? navigate("/staff/units")
-                    : navigate("/")
-                }
+                    : navigate("/");
+
+                  dispatch(
+                    toggleModal({
+                      name: "application",
+                      value: modals?.application,
+                    })
+                  );
+                }}
               />
             </Dialog>
           ) : (

@@ -23,6 +23,8 @@ export class Application {
     comm_standing,
     home_description,
     id_pic,
+    valid_id,
+    residence_proof,
     address = [],
   }) {
     this.id = id;
@@ -47,6 +49,8 @@ export class Application {
     this.home_description = home_description;
     this.address = address;
     this.pfp = id_pic;
+    this.valid_id = valid_id;
+    this.residence_proof = residence_proof;
   }
 
   get fullName() {
@@ -55,6 +59,13 @@ export class Application {
 
   imgURL() {
     return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
+  }
+
+  validID() {
+    return `${process.env.REACT_APP_API_URL}/storage/${this.valid_id}`;
+  }
+  residenceImg() {
+    return `${process.env.REACT_APP_API_URL}/storage/${this.residence_proof}`;
   }
 
   get birthDate() {

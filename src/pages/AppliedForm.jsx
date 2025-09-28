@@ -1,102 +1,35 @@
 import React from "react";
-import { useState, useEffect, useMemo } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import Button from "../components/buttons/Button";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nextPage, prevPage } from "../services/redux/slices/uiSlice";
 import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
 import { FORM_LABELS } from "../constants/formFields";
 import { ApplicationEntity } from "../services/entities/Application";
 import { EmploymentEntity } from "../services/entities/EmploymentInfo";
 import { FamilyEntity } from "../services/entities/FamilyInfo";
-import { fetchLoan } from "../services/redux/slices/applicationSlice";
+import {
+  fetchLoan,
+  getLoanId,
+} from "../services/redux/slices/applicationSlice";
 import ProfileHeader from "../components/cards/ProfileHeader";
+import LeafletMap from "../components/maps/LeafletMap";
+import FileButton from "../components/buttons/FileButton";
 
 export default function AppliedForm({ url }) {
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { state } = useLocation();
-  // const location = useLocation();
-  // const id = state?.id;
-  //   const [currentIndex, setCurrentIndex] = useState(0);
   const application = useSelector(ApplicationEntity);
   const employmentInfo = useSelector(EmploymentEntity);
   const familyInfo = useSelector(FamilyEntity);
-  const { loanID } = useSelector((state) => state.application);
-  // const { pageRoute } = useSelector((state) => state.ui);
-  // const routerPaths = useMemo(
-  //   () => [
-  //     `${url}/apply`,
-  //     `${url}/apply/employinfo`,
-  //     `${url}/apply/familyinfo`,
-  //     `${url}/apply/requirements`,
-  //   ],
-  //   []
-  // );
-  // const [applicant, setApplicant] = useState({ view: true });
-
-  // useEffect(() => {
-  //   fetch(`http://127.0.0.1:8000/api/application/${id}?by=id`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setApplicant({ ...applicant, ...data });
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data: ", error);
-  //     });
-  // }, []);
+  const { loanID, loanLoading } = useSelector((state) => state.application);
 
   useEffect(() => {
-    dispatch(fetchLoan({ id: loanID, by: "id" }));
-    // navigate(pageRoute);
-
-    // window.scrollTo(0, 0);
+    dispatch(getLoanId());
   }, []);
 
-  // const address = applicant.address;
-  // const disable = true;
+  useEffect(() => {
+    if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
+  }, [loanID, dispatch]);
 
   return (
-    // <div className="overflow-y-auto overflow-x-hidden sm:flex justify-center fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
-    //   <div className="relative p-4 w-full max-w-5xl h-full md:h-auto">
-    //     <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
-    //       <div className="flex justify-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-    //         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-    //           APPLICATION FORM
-    //         </h3>
-    //       </div>
-    //       <form>
-    //         {address && <Outlet context={{ applicant, address, disable }} />}
-
-    //         <div className="space-y-4 sm:flex sm:w-1/3 sm:space-y-0 sm:space-x-4">
-    //           {pageNum > 0 && (
-    //             <Button
-    //               text="Back"
-    //               bttnType="button"
-    //               onclick={() => dispatch(prevPage("admin"))}
-    //             />
-    //           )}
-    //           {pageNum < routerPaths.length - 1 ? (
-    //             <Button
-    //               text="Next"
-    //               bttnType="button"
-    //               onclick={() => dispatch(nextPage("admin"))}
-    //             />
-    //           ) : (
-    //             <Button
-    //               text="Done"
-    //               bttnType="button"
-    //               onclick={() =>
-    //                 navigate(`${url}/loan`, { state: { id: applicant.id } })
-    //               }
-    //             />
-    //           )}
-    //         </div>
-    //       </form>
-    //     </div>
-    //   </div>
-    // </div>
-
     <div className="w-full bg-gray-100 dark:bg-gray-900">
       <section className="max-w-3xl mx-auto p-4">
         <ProfileHeader
@@ -106,8 +39,25 @@ export default function AppliedForm({ url }) {
           email={application.email}
           contact={application.contact_num}
           img={application.imgURL()}
-          address={application.address?.personal_pres}
-        />
+          loading={loanLoading}
+          address={application.address?.personal_pres}>
+          {loanLoading ? (
+            <div className="flex space-x-3">
+              <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+              <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+              <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+            </div>
+          ) : (
+            <>
+              <FileButton name="Valid ID" link={application.validID()} />
+              <FileButton name="ID Picture" link={application.imgURL()} />
+              <FileButton
+                name="Proof of Residence"
+                link={application.residenceImg()}
+              />
+            </>
+          )}
+        </ProfileHeader>
 
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
           Application Information
@@ -121,9 +71,13 @@ export default function AppliedForm({ url }) {
                   <div className="text-xs text-gray-500 dark:text-gray-400">
                     {label}
                   </div>
-                  <div className="font-medium text-gray-900 dark:text-white">
-                    {application[key]}
-                  </div>
+                  {loanLoading ? (
+                    <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  ) : (
+                    <div className="font-medium text-gray-900 dark:text-white">
+                      {application[key]}
+                    </div>
+                  )}
                 </div>
               )
             )}
@@ -134,9 +88,13 @@ export default function AppliedForm({ url }) {
               <div className="text-xs text-gray-500 dark:text-gray-400">
                 {FORM_LABELS.other[val]}
               </div>
-              <div className="font-medium text-gray-900 dark:text-white whitespace-pre-line">
-                {application[val]}
-              </div>
+              {loanLoading ? (
+                <div className="w-80 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+              ) : (
+                <div className="font-medium text-gray-900 dark:text-white whitespace-pre-line">
+                  {application[val]}
+                </div>
+              )}
             </div>
           ))}
 
@@ -145,11 +103,17 @@ export default function AppliedForm({ url }) {
               <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
                 {FORM_LABELS.address[val]}
               </h3>
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {application.address[val] || ""}
-              </span>
+              {loanLoading ? (
+                <div className="w-80 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+              ) : (
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {application.address[val] || ""}
+                </span>
+              )}
             </div>
           ))}
+
+          <LeafletMap />
         </ApplicationInfoCard>
 
         <ApplicationInfoCard title="Employment Information">
@@ -160,9 +124,13 @@ export default function AppliedForm({ url }) {
                   <div className="text-xs text-gray-500 dark:text-gray-400">
                     {label}
                   </div>
-                  <div className="font-medium text-gray-900 dark:text-white">
-                    {employmentInfo[key]}
-                  </div>
+                  {loanLoading ? (
+                    <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  ) : (
+                    <div className="font-medium text-gray-900 dark:text-white">
+                      {employmentInfo[key]}
+                    </div>
+                  )}
                 </div>
               )
             )}
@@ -179,9 +147,13 @@ export default function AppliedForm({ url }) {
                     <div className="text-xs text-gray-500 dark:text-gray-400">
                       {label}
                     </div>
-                    <div className="font-medium text-gray-900 dark:text-white">
-                      {employmentInfo[key]}
-                    </div>
+                    {loanLoading ? (
+                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                    ) : (
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {employmentInfo[key]}
+                      </div>
+                    )}
                   </div>
                 )
               )}
@@ -199,9 +171,13 @@ export default function AppliedForm({ url }) {
                     <div className="text-xs text-gray-500 dark:text-gray-400">
                       {label}
                     </div>
-                    <div className="font-medium text-gray-900 dark:text-white">
-                      {employmentInfo[key]}
-                    </div>
+                    {loanLoading ? (
+                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                    ) : (
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {employmentInfo[key]}
+                      </div>
+                    )}
                   </div>
                 )
               )}
@@ -216,9 +192,13 @@ export default function AppliedForm({ url }) {
                 <div className="text-xs text-gray-500 dark:text-gray-400">
                   {label}
                 </div>
-                <div className="font-medium text-gray-900 dark:text-white">
-                  {familyInfo[key]}
-                </div>
+                {loanLoading ? (
+                  <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                ) : (
+                  <div className="font-medium text-gray-900 dark:text-white">
+                    {familyInfo[key]}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -234,9 +214,13 @@ export default function AppliedForm({ url }) {
                     <div className="text-xs text-gray-500 dark:text-gray-400">
                       {FORM_LABELS.other[val]}
                     </div>
-                    <div className="font-medium text-gray-900 dark:text-white">
-                      {familyInfo[val]}
-                    </div>
+                    {loanLoading ? (
+                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                    ) : (
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {familyInfo[val]}
+                      </div>
+                    )}
                   </div>
                 )
               )}
@@ -254,9 +238,13 @@ export default function AppliedForm({ url }) {
                     <div className="text-xs text-gray-500 dark:text-gray-400">
                       {FORM_LABELS.other[val]}
                     </div>
-                    <div className="font-medium text-gray-900 dark:text-white">
-                      {familyInfo[val]}
-                    </div>
+                    {loanLoading ? (
+                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                    ) : (
+                      <div className="font-medium text-gray-900 dark:text-white">
+                        {familyInfo[val]}
+                      </div>
+                    )}
                   </div>
                 )
               )}
@@ -269,9 +257,13 @@ export default function AppliedForm({ url }) {
                 <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
                   {FORM_LABELS.address[val]}
                 </h3>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {application.address[val] || ""}
-                </span>
+                {loanLoading ? (
+                  <div className="w-80 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                ) : (
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {application.address[val] || ""}
+                  </span>
+                )}
               </div>
             )
           )}

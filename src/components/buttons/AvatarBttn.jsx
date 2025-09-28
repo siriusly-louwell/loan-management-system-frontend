@@ -1,13 +1,9 @@
 import React from "react";
-// import { useSelector } from "react-redux";
-// import { UserEntity } from "../../services/entities/User";
+import { useSelector } from "react-redux";
+import { UserEntity } from "../../services/entities/User";
 
 export default function AvatarBttn({ dropMenu, pfp }) {
-  // const user = useSelector(UserEntity);
-  // const API_URL = process.env.REACT_APP_API_URL;
-  const src = pfp
-    ? pfp
-    : "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png";
+  const user = useSelector(UserEntity);
 
   return (
     <button
@@ -16,7 +12,17 @@ export default function AvatarBttn({ dropMenu, pfp }) {
       id="user-menu-button"
       onClick={dropMenu}>
       <span className="sr-only">Open user menu</span>
-      <img className="w-8 h-8 rounded-full object-cover" src={src} alt="user" />
+      {user.imgURL ? (
+        <img
+          className="w-9 h-9 rounded-full object-cover"
+          src={user.imgURL}
+          alt="user"
+        />
+      ) : (
+        <div className="h-9 w-9 dark:text-white flex items-center justify-center text-md font-medium">
+          {user.initials}
+        </div>
+      )}
     </button>
   );
 }

@@ -3,8 +3,8 @@ import { createSelector } from "@reduxjs/toolkit";
 export class User {
   constructor({
     id,
-    first_name,
-    middle_name,
+    first_name = "Guest",
+    middle_name = "Guest",
     last_name,
     email,
     role = "guest",
@@ -56,8 +56,14 @@ export class User {
     return this.gender.charAt(0).toUpperCase() + this.gender.slice(1);
   }
 
-  imgURL() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
+  get initials() {
+    return this.first_name.charAt(0) + this.last_name.charAt(0);
+  }
+
+  get imgURL() {
+    return this.pfp
+      ? `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`
+      : false;
   }
 
   isAdmin() {

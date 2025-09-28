@@ -16,6 +16,7 @@ import RowSkeleton from "../components/loading components/RowSkeleton";
 import { fetchAccount, getToken } from "../services/redux/slices/authSlice";
 import { UserEntities } from "./../services/entities/User";
 import UserFilter from "../components/filters/UserFilter";
+import Initials from "../assets/icons/Initials";
 
 export default function AccAdmins() {
   const dispatch = useDispatch();
@@ -68,11 +69,15 @@ export default function AccAdmins() {
                   key={account.id}
                   data={[
                     <div className="flex items-center mr-3">
-                      <img
-                        src={account.imgURL()}
-                        alt="staff"
-                        className="h-10 w-10 mr-3 rounded-3xl object-cover"
-                      />
+                      {account.imgURL ? (
+                        <img
+                          src={account.imgURL}
+                          alt="staff"
+                          className="h-10 w-10 mr-3 rounded-full object-cover"
+                        />
+                      ) : (
+                        <Initials initials={account.initials} />
+                      )}
                       {account.fullName}
                     </div>,
                     account.email,
@@ -85,7 +90,7 @@ export default function AccAdmins() {
                       <CustomBttn
                         onclick={() => viewAccount(account.id)}
                         text="View"
-                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                         <Eye />
                       </CustomBttn>
                       <CustomBttn

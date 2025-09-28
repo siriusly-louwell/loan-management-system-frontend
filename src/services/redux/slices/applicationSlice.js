@@ -66,8 +66,8 @@ const applicationSlice = createSlice({
     },
 
     getLoanId: (state) => {
-      state.loanID = applyRepository.getId();
-    }
+      state.loanID = Number(applyRepository.getId());
+    },
   },
   extraReducers: (builder) => {
     builder

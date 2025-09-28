@@ -558,53 +558,13 @@ function App() {
             }
           />
           <Route
-            path="apply"
+            path="application"
             element={
               <ProtectedRoute type="admin">
                 <AppliedForm url="/admin" />
               </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="admin">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            {/* <Route
-              path="personalinfo"
-              element={
-                <ProtectedRoute type="admin">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            /> */}
-            <Route
-              path="employinfo"
-              element={
-                <ProtectedRoute type="admin">
-                  <EmploymentInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="familyinfo"
-              element={
-                <ProtectedRoute type="admin">
-                  <FamilyInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="requirements"
-              element={
-                <ProtectedRoute type="admin">
-                  <FormRequirements />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+            }
+          />
 
           <Route
             path="dashboard"

@@ -364,7 +364,7 @@ export default function Eligibity({ loan, url }) {
                   <CustomBttn
                     text="Review"
                     onclick={() =>
-                      navigate(`${url}/apply`, { state: { id: loan.id } })
+                      navigate(`${url}/application`, { state: { id: loan.id } })
                     }
                     classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-white dark:hover:bg-rose-700 dark:focus:ring-rose-600"
                   />

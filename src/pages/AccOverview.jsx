@@ -13,7 +13,7 @@ export default function AccOverview() {
   const [incomeThreshold, setIncomeThreshold] = useState(20000);
   const [dtiThreshold, setDtiThreshold] = useState(40);
   const [emiThreshold, setEmiThreshold] = useState(30);
-  
+
   // Demo handlers
   const handleDarkModeToggle = () => setDarkMode((d) => !d);
   const handleChangePassword = () =>
@@ -27,14 +27,11 @@ export default function AccOverview() {
         <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-4">
           <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
             <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-3xl font-bold text-primary-700 dark:text-white">
-              {authLoading ? (
-                account.fullName
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
+              {authLoading || !account.imgURL ? (
+                account.initials
               ) : (
                 <img
-                  src={account.imgURL()}
+                  src={account.imgURL}
                   alt="account"
                   className="h-full rounded-full border border-gray-500 object-cover"
                 />

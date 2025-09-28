@@ -38,6 +38,7 @@ export default function Navbar({ links, path }) {
 
   function toggleLogout() {
     dispatch(setLoading({ isActive: true, text: "Logging out..." }));
+    dispatch(toggleModal({ name: "profile", value: modals.profile }));
 
     setTimeout(() => {
       dispatch(logout());
@@ -90,7 +91,7 @@ export default function Navbar({ links, path }) {
             ) : (
               <div>
                 <AvatarBttn
-                  pfp={user?.imgURL()}
+                  pfp={user?.imgURL || user?.initials}
                   dropMenu={() =>
                     dispatch(
                       toggleModal({

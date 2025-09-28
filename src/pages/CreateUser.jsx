@@ -157,22 +157,15 @@ export default function CreateUser({ userType }) {
                     <option value="female">Female</option>
                   </FormSelect>
                 </div>
-                <FileInput
+                {/* <FileInput
                   label="Upload Profile picture:"
                   type="img"
                   name="pfp"
                   change={pfpChange}
                   require={true}
-                />
+                /> */}
                 <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                  <Button
-                    text="Add user"
-                    type="submit"
-                    // onclick={() =>
-                    //   (document.getElementById("saving_data").style.display =
-                    //     "flex")
-                    // }
-                  />
+                  <Button text="Add user" type="submit" />
                 </div>
               </form>
               <Spinner id="saving_data" text="Saving data..." />

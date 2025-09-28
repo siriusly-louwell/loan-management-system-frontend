@@ -72,7 +72,7 @@ export default function AppliedForm({ url }) {
                     {label}
                   </div>
                   {loanLoading ? (
-                    <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                    <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                   ) : (
                     <div className="font-medium text-gray-900 dark:text-white">
                       {application[key]}
@@ -89,7 +89,7 @@ export default function AppliedForm({ url }) {
                 {FORM_LABELS.other[val]}
               </div>
               {loanLoading ? (
-                <div className="w-80 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                <div className="w-80 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
               ) : (
                 <div className="font-medium text-gray-900 dark:text-white whitespace-pre-line">
                   {application[val]}
@@ -104,7 +104,7 @@ export default function AppliedForm({ url }) {
                 {FORM_LABELS.address[val]}
               </h3>
               {loanLoading ? (
-                <div className="w-80 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                <div className="w-80 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
               ) : (
                 <span className="text-sm text-gray-500 dark:text-gray-400">
                   {application.address[val] || ""}
@@ -125,7 +125,7 @@ export default function AppliedForm({ url }) {
                     {label}
                   </div>
                   {loanLoading ? (
-                    <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                    <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                   ) : (
                     <div className="font-medium text-gray-900 dark:text-white">
                       {employmentInfo[key]}
@@ -148,7 +148,7 @@ export default function AppliedForm({ url }) {
                       {label}
                     </div>
                     {loanLoading ? (
-                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                      <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                     ) : (
                       <div className="font-medium text-gray-900 dark:text-white">
                         {employmentInfo[key]}
@@ -172,7 +172,7 @@ export default function AppliedForm({ url }) {
                       {label}
                     </div>
                     {loanLoading ? (
-                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                      <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                     ) : (
                       <div className="font-medium text-gray-900 dark:text-white">
                         {employmentInfo[key]}
@@ -193,7 +193,7 @@ export default function AppliedForm({ url }) {
                   {label}
                 </div>
                 {loanLoading ? (
-                  <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                 ) : (
                   <div className="font-medium text-gray-900 dark:text-white">
                     {familyInfo[key]}
@@ -215,7 +215,7 @@ export default function AppliedForm({ url }) {
                       {FORM_LABELS.other[val]}
                     </div>
                     {loanLoading ? (
-                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                      <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                     ) : (
                       <div className="font-medium text-gray-900 dark:text-white">
                         {familyInfo[val]}
@@ -239,7 +239,7 @@ export default function AppliedForm({ url }) {
                       {FORM_LABELS.other[val]}
                     </div>
                     {loanLoading ? (
-                      <div className="w-40 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                      <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                     ) : (
                       <div className="font-medium text-gray-900 dark:text-white">
                         {familyInfo[val]}
@@ -258,7 +258,7 @@ export default function AppliedForm({ url }) {
                   {FORM_LABELS.address[val]}
                 </h3>
                 {loanLoading ? (
-                  <div className="w-80 h-6 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  <div className="w-80 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
                 ) : (
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     {application.address[val] || ""}

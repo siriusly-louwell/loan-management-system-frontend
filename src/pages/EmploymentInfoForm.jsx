@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
@@ -12,16 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setType } from "../services/redux/slices/formSlice";
 
 export default function EmploymentInfoForm() {
-  const { dispatchInput, disable } = useOutletContext();
-  const location = useLocation();
+  const { dispatchInput } = useOutletContext();
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
   const [properties, setProperty] = useState([""]);
   const [references, setReference] = useState([""]);
-  const urlBool =
-    location.pathname !== "/admin/apply/employinfo" &&
-    location.pathname !== "/staff/apply/employinfo" &&
-    location.pathname !== "/ci/apply/employinfo";
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -39,8 +34,7 @@ export default function EmploymentInfoForm() {
           id="income"
           value={formData.applicant.income}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-          disable={disable}>
+          require={true}>
           <option value="employment">Employment</option>
           <option value="business">Business</option>
         </FormSelect>
@@ -52,7 +46,6 @@ export default function EmploymentInfoForm() {
           value={formData.applicant.superior}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type superior name"
-          disable={disable}
         />
         <FormInput
           label="Employment Status"
@@ -62,7 +55,6 @@ export default function EmploymentInfoForm() {
           value={formData.applicant.employment_status}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type status"
-          disable={disable}
         />
         <FormInput
           label="Years in service"
@@ -72,7 +64,6 @@ export default function EmploymentInfoForm() {
           value={formData.applicant.yrs_in_service}
           onchange={(e) => dispatchInput(e)}
           placeholder="Years"
-          disable={disable}
         />
         <FormInput
           label="Monthly/Daily Rate"
@@ -83,7 +74,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="₱1,000"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Employer"
@@ -93,7 +83,6 @@ export default function EmploymentInfoForm() {
           value={formData.applicant.employer}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type employer name"
-          disable={disable}
         />
         <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-1">
           <FormInput
@@ -101,15 +90,9 @@ export default function EmploymentInfoForm() {
             type="text"
             name="employer_address"
             id="name"
-            value={
-              //   applicant.view
-              //     ? address.employer_address
-              //     : formData.applicant.employment_address
-              formData.applicant.employer_address
-            }
+            value={formData.applicant.employer_address}
             onchange={(e) => dispatchInput(e)}
             placeholder="Type employer address"
-            disable={disable}
           />
         </div>
       </div>
@@ -127,7 +110,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="₱15,000 per month"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Business"
@@ -138,7 +120,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="Name your business"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Others"
@@ -146,7 +127,6 @@ export default function EmploymentInfoForm() {
           name="prod_name"
           id="name"
           placeholder="Other income"
-          disable={disable}
           onchange={() => {}}
         />
       </div>
@@ -167,7 +147,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="Living expenses/month"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Rental"
@@ -178,7 +157,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500 per month"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Education"
@@ -189,7 +167,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="Education expenses/month"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Transportation"
@@ -200,7 +177,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="Transport expenses/month"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Insurance"
@@ -211,7 +187,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="Insurance expenses/month"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Electricity/Water Bill"
@@ -222,7 +197,6 @@ export default function EmploymentInfoForm() {
           onchange={(e) => dispatchInput(e)}
           placeholder="Billing expenses/month"
           require={true}
-          disable={disable}
         />
       </div>
 
@@ -262,16 +236,14 @@ export default function EmploymentInfoForm() {
             ))}
           </FormTBody>
         </table>
-        {urlBool && (
-          <div className="grid pt-4 sm:cols-span-1">
-            <BttnwithIcon
-              type="button"
-              click={() => setProperty([...properties, ""])}
-              text="Add row">
-              <Plus />
-            </BttnwithIcon>
-          </div>
-        )}
+        <div className="grid pt-4 sm:cols-span-1">
+          <BttnwithIcon
+            type="button"
+            click={() => setProperty([...properties, ""])}
+            text="Add row">
+            <Plus />
+          </BttnwithIcon>
+        </div>
       </div>
 
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
@@ -305,16 +277,14 @@ export default function EmploymentInfoForm() {
             ))}
           </FormTBody>
         </table>
-        {urlBool && (
-          <div className="grid pt-4 sm:cols-span-1">
-            <BttnwithIcon
-              text="Add row"
-              type="button"
-              click={() => setReference([...references, ""])}>
-              <Plus />
-            </BttnwithIcon>
-          </div>
-        )}
+        <div className="grid pt-4 sm:cols-span-1">
+          <BttnwithIcon
+            text="Add row"
+            type="button"
+            click={() => setReference([...references, ""])}>
+            <Plus />
+          </BttnwithIcon>
+        </div>
       </div>
     </>
   );

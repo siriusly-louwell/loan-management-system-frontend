@@ -14,11 +14,15 @@ import Alert from "../components/Alert";
 import Spinner from "../components/loading components/Spinner";
 import ProductCard from "../components/cards/ProductCard";
 import CardSkeleton from "../components/loading components/CardSkeleton";
-import Eligibity from "../components/modals/Eligibility";
+import Eligibility from "../components/modals/Eligibility";
 import EmptySearch from "../components/empty states/EmptySearch";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLoan } from "../services/redux/slices/applicationSlice";
+import {
+  fetchLoan,
+  getLoanId,
+} from "../services/redux/slices/applicationSlice";
 import { toggleModal } from "../services/redux/slices/uiSlice";
+import { LoanEntity } from "../services/entities/Loan";
 
 export default function LoanInfo({ children, url }) {
   const navigate = useNavigate();
@@ -33,13 +37,16 @@ export default function LoanInfo({ children, url }) {
   const [recommend, setRecommend] = useState([]);
   const [recoLoad, setRecoLoad] = useState(true);
   const { modals } = useSelector((state) => state.ui);
-  const { loan, loanID, loanLoading } = useSelector(
-    (state) => state.application
-  );
-  
+  const loan = useSelector(LoanEntity);
+  const { loanID, loanLoading } = useSelector((state) => state.application);
+
   useEffect(() => {
-    dispatch(fetchLoan({ id: loanID, by: "id" }));
-  }, [id, dispatch]);
+    dispatch(getLoanId());
+  }, []);
+
+  useEffect(() => {
+    if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
+  }, [id, loanID, dispatch]);
 
   //   useEffect(() => {
   //     fetch(`http://localhost:8000/api/application/${id}?by=id`)
@@ -235,7 +242,7 @@ export default function LoanInfo({ children, url }) {
   }
 
   return (
-    <section className="bg-gray-200 py-8 antialiased dark:bg-gray-800 md:py-16">
+    <section className="bg-gray-200 py-8 antialiased dark:bg-gray-900 md:py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <div className="flex justify-between w-full">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -246,11 +253,9 @@ export default function LoanInfo({ children, url }) {
 
         <div className="mt-6 sm:mt-8 lg:flex lg:gap-8">
           {loanLoading ? (
-            <div className="w-full h-fit bg-gray-100 dark:bg-gray-700 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
+            <div className="w-full h-fit bg-gray-100 dark:bg-gray-800 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
               <LoanList load={loanLoading} />
-              <LoanList load={loanLoading} />
-              <LoanList load={loanLoading} />
-              <div className="space-y-4 bg-white p-6 dark:bg-gray-700">
+              <div className="space-y-4 bg-white p-6 dark:bg-gray-800">
                 <div className="space-y-2">
                   <dl className="flex items-center justify-between gap-4">
                     <dt className="font-normal text-gray-500 dark:text-gray-300">
@@ -287,7 +292,7 @@ export default function LoanInfo({ children, url }) {
               </div>
             </div>
           ) : (
-            <div className="w-full h-fit bg-gray-100 dark:bg-gray-700 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
+            <div className="w-full h-fit bg-gray-100 dark:bg-gray-800 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
               {loan.transactions.map((trans) => (
                 <LoanList
                   key={trans.id}
@@ -300,7 +305,7 @@ export default function LoanInfo({ children, url }) {
                 />
               ))}
 
-              <div className="space-y-4 bg-white p-6 dark:bg-gray-700">
+              <div className="space-y-4 bg-white p-6 dark:bg-gray-800">
                 <div className="space-y-2">
                   <dl className="flex items-center justify-between gap-4">
                     <dt className="font-normal text-gray-500 dark:text-gray-300">
@@ -328,10 +333,10 @@ export default function LoanInfo({ children, url }) {
                   </dl>
                   <dl className="flex items-center justify-between gap-4">
                     <dt className="font-normal text-gray-500 dark:text-gray-300">
-                      Amount Paid (Total Downpayment)
+                      Amount Paid (Downpayment)
                     </dt>
                     <dd className="font-medium text-green-500 dark:text-green-500">
-                      ₱{parseFloat(totals.downpayment).toLocaleString()}
+                      ₱{parseFloat(loan.downpayment).toLocaleString()}
                     </dd>
                   </dl>
                 </div>
@@ -341,7 +346,7 @@ export default function LoanInfo({ children, url }) {
                     Overall price
                   </dt>
                   <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                    ₱{parseFloat(totals.price).toLocaleString()}
+                    ₱{parseFloat(loan.price).toLocaleString()}
                   </dd>
                 </dl>
               </div>
@@ -354,7 +359,7 @@ export default function LoanInfo({ children, url }) {
                 <h3 className="text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">
                   Loan history
                 </h3>
-                {/* <CustomBttn text="Eligibity Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" /> */}
+                {/* <CustomBttn text="Eligibility Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" /> */}
               </div>
 
               <ol className="relative ms-3 border-s border-gray-200 dark:border-gray-600">
@@ -404,9 +409,9 @@ export default function LoanInfo({ children, url }) {
                     )
                   }
                 />
-                {loan.apply_status === "evaluated" ||
-                loan.apply_status === "approved" ||
-                loan.apply_status === "declined" ? (
+                {loan.status === "evaluated" ||
+                loan.status === "approved" ||
+                loan.status === "declined" ? (
                   <>
                     <Button
                       text="View Report"
@@ -458,7 +463,7 @@ export default function LoanInfo({ children, url }) {
           </div>
         </div>
       </div>
-      {loan.apply_status === "declined" || loan.apply_status === "denied"
+      {loan.status === "declined" || loan.status === "denied"
         ? displayRecommend()
         : ""}
       {/* <>
@@ -467,16 +472,16 @@ export default function LoanInfo({ children, url }) {
                         {recoLoad ? (<CardSkeleton />) : (<ProductCard key={recommend.id} unit={recommend} url="/unit" />)}
                     </section>
                 </> */}
-      <Eligibity loan={loan} setAlert={setAlert} url={url} />
+      <Eligibility loan={loan} setAlert={setAlert} url={url} />
       <DeclineApplicant
         id={loan.id}
         record={loan.record_id}
-        name={`${loan.first_name} ${loan.last_name}`}
+        name={`${loan.fullName}`}
       />
       <AssignCI
         id={loan.id}
         record={loan.record_id}
-        name={`${loan.first_name} ${loan.last_name}`}
+        name={`${loan.fullName}`}
       />
       <Alert id="approveApp" text={alert.text} icon="warn">
         <CustomBttn

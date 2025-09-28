@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import ProductRow from "./ProductRow";
 import TableHead from "./TableHead";
 import CustomBttn from "../buttons/CustomBttn";
@@ -8,8 +8,11 @@ import Eye from "../../assets/icons/Eye";
 import CustomBadge from "../badges/CustomBadge";
 import EmptyRows from "../empty states/EmptyRows";
 import RowSkeleton from "../loading components/RowSkeleton";
+import { saveLoan } from "../../services/redux/slices/applicationSlice";
 
 export default function ApplicantsTable() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { applications, appsLoading } = useSelector(
     (state) => state.application
   );
@@ -50,13 +53,15 @@ export default function ApplicantsTable() {
                     color={user.status.color}
                   />,
                   <div className="flex items-center space-x-4">
-                    <Link to="/admin/loan" state={{ id: user.id }}>
-                      <CustomBttn
-                        text="View"
-                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <Eye />
-                      </CustomBttn>
-                    </Link>
+                    <CustomBttn
+                      text="View"
+                      onclick={() => {
+                        dispatch(saveLoan(user.id));
+                        navigate(`/admin/application`);
+                      }}
+                      classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                      <Eye />
+                    </CustomBttn>
                     <CustomBttn
                       text="Deactivate"
                       classname="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"

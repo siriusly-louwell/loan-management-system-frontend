@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import EMICalculator from "./EMICalculator";
 import ColorLabel from "../components/ColorLabel";
 import SmallLabel from "../components/texts/SmallLabel";
-import FormSelect from "../components/inputs/FormSelect";
 import SmallSpin from "../components/loading components/SmallSpin";
 import ImageSkeleton from "../components/loading components/ImageSkeleton";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +29,7 @@ export default function ProductInfo({ staff = false }) {
   useEffect(() => {
     dispatch(fetchUnit());
   }, [unitId, dispatch]);
+  console.log(images);
 
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">

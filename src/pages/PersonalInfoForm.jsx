@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
@@ -18,21 +18,11 @@ import {
   copyAddress,
   disableAddress,
 } from "../services/redux/slices/formSlice";
-import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
 
 export default function PersonalInfoForm() {
-  const location = useLocation();
   const dispatch = useDispatch();
-  const { loan } = useSelector((state) => state.application);
   const { formData, selectDisable } = useSelector((state) => state.form);
-  const { dispatchInput, applicant, address, disable, locations } =
-    useOutletContext();
-  const urlBool =
-    location.pathname !== "/customer/apply" &&
-    location.pathname !== "/customer/apply/personalinfo";
-  // location.pathname !== "/admin/apply" &&
-  // location.pathname !== "/staff/apply" &&
-  // location.pathname !== "/ci/apply";
+  const { dispatchInput, locations } = useOutletContext();
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -43,68 +33,48 @@ export default function PersonalInfoForm() {
     dispatch(disableAddress());
   }, [formData, dispatch]);
 
-  function getProp(prop) {
-    return Object.keys(loan).length > 0 ? loan[prop] : formData.applicant[prop];
-  }
-
   return (
-    // <ApplicationInfoCard info={{}} />
     <>
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Buyer's Personal Infomation:
       </h3>
-      {urlBool && (
-        <img
-          alt="id"
-          src={`http://127.0.0.1:8000/storage/${applicant.id_pic}`}
-          className="rounded rounded-lg w-20"
-        />
-      )}
       <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
         <FormInput
           label="First Name"
           type="text"
           name="first_name"
           id="first_name"
-          // value={formData.applicant.first_name}
-          value={getProp("first_name")}
+          value={formData.applicant.first_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type first name"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Middle Name"
           type="text"
           name="middle_name"
           id="mid_name"
-          value={getProp("middle_name")}
-          // value={formData.applicant.middle_name}
+          value={formData.applicant.middle_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type middle name"
-          disable={disable}
         />
         <FormInput
           label="Last Name"
           type="text"
           name="last_name"
           id="last_name"
-          value={getProp("last_name")}
-          // value={formData.applicant.last_name}
+          value={formData.applicant.last_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type last name"
           require={true}
-          disable={disable}
         />
         <FormSelect
           name="gender"
           label="Sex"
           id="gender"
-          value={getProp("gender")}
-          // value={formData.applicant.gender}
+          value={formData.applicant.gender}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-          disable={disable}>
+          require={true}>
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="other">Prefer not to say</option>
@@ -115,12 +85,10 @@ export default function PersonalInfoForm() {
           name="contact_num"
           min={99999999999}
           id="contact_num"
-          value={getProp("contact_num")}
-          // value={formData.applicant.contact_num}
+          value={formData.applicant.contact_num}
           onchange={(e) => dispatchInput(e)}
           placeholder="+63 912 3456 789"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Email Address"
@@ -128,21 +96,17 @@ export default function PersonalInfoForm() {
           name="email"
           id="email"
           require={true}
-          value={getProp("email")}
-          // value={formData.applicant.email}
+          value={formData.applicant.email}
           onchange={(e) => dispatchInput(e)}
           placeholder="doe@gmail.com"
-          disable={disable}
         />
         <FormSelect
           name="status"
           label="Marital Status"
           id="status"
-          value={getProp("status")}
-          // value={formData.applicant.status}
+          value={formData.applicant.status}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-          disable={disable}>
+          require={true}>
           <option value="single">Single</option>
           <option value="relationship">In a relationship</option>
           <option value="married">Married</option>
@@ -154,23 +118,19 @@ export default function PersonalInfoForm() {
           type="date"
           name="birth_day"
           id="bday"
-          value={getProp("birth_day")}
-          // value={formData.applicant.birth_day}
+          value={formData.applicant.birth_day}
           onchange={(e) => dispatchInput(e)}
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Place of Birth"
           type="text"
           name="birth_place"
           id="bplace"
-          value={getProp("birth_place")}
-          // value={formData.applicant.birth_place}
+          value={formData.applicant.birth_place}
           onchange={(e) => dispatchInput(e)}
           placeholder="Birth place address"
           require={true}
-          disable={disable}
         />
       </div>
 
@@ -180,11 +140,9 @@ export default function PersonalInfoForm() {
             name="educ_attain"
             label="Educ. Attainment"
             id="educ_attain"
-            value={getProp("educ_attain")}
-            // value={formData.applicant.educ_attain}
+            value={formData.applicant.educ_attain}
             onchange={(e) => dispatchInput(e)}
-            require={true}
-            disable={disable}>
+            require={true}>
             <option value="highschool">High School</option>
             <option value="college">College Level</option>
             <option value="graduate">College Graduate</option>
@@ -196,7 +154,6 @@ export default function PersonalInfoForm() {
             name="prod_name"
             id="name"
             placeholder="Others"
-            disable={disable}
             onchange={() => {}}
           />
         </div>
@@ -205,11 +162,9 @@ export default function PersonalInfoForm() {
             name="residence"
             label="Residential Status"
             id="residence"
-            value={getProp("residence")}
-            // value={formData.applicant.residence}
+            value={formData.applicant.residence}
             onchange={(e) => dispatchInput(e)}
-            require={true}
-            disable={disable}>
+            require={true}>
             <option value="owned">Owned</option>
             <option value="mortgaged">Owned(Mortgaged)</option>
             <option value="rented">Rented</option>
@@ -222,7 +177,6 @@ export default function PersonalInfoForm() {
             id="name"
             onchange={() => {}}
             placeholder="Other reason"
-            disable={disable}
           />
         </div>
         <FormInput
@@ -230,305 +184,254 @@ export default function PersonalInfoForm() {
           type="number"
           name="amortization"
           id="amortization"
-          value={getProp("amortization")}
-          // value={formData.applicant.amortization}
+          value={formData.applicant.amortization}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱5,000"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="Rent Monthly"
           type="number"
           name="rent"
           id="rent"
-          value={getProp("rent")}
-          // value={formData.applicant.rent}
+          value={formData.applicant.rent}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500"
           require={true}
-          disable={disable}
         />
         <FormInput
           label="SSS/GSIS #"
           type="number"
           name="sss"
           id="sss"
-          value={getProp("sss")}
-          // value={formData.applicant.sss}
+          value={formData.applicant.sss}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type SSS/GSIS number"
-          disable={disable}
         />
         <FormInput
           label="TIN #"
           type="number"
           name="tin"
           id="tin"
-          value={getProp("tin")}
-          // value={formData.applicant.tin}
+          value={formData.applicant.tin}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type TIN number"
-          disable={disable}
         />
         <FormTextarea
           name="comm_standing"
           id="comm_standing"
           label="Community Standing"
-          value={getProp("comm_standing")}
-          // value={formData.applicant.comm_standing}
+          value={formData.applicant.comm_standing}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write community standing here"
           require={true}
-          disable={disable}
         />
       </div>
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Present Address:
       </h3>
-      <div
-        className={
-          "grid gap-4 mb-4 pb-2 " +
-          (applicant.view ? "flex w-full" : "sm:grid-cols-3")
-        }>
-        {applicant.view ? (
-          <FormInput
-            type="text"
-            placeholder="Present Address"
-            value={address.personal_pres}
-            disable={disable}
-          />
-        ) : (
-          <>
-            <FormSelect
-              name="region"
-              label="Region"
-              id="region"
-              value={formData.address.region}
-              onchange={(e) => dispatchInput(e, "address")}
-              require={true}
-              disable={disable}>
-              <option>Region I</option>
-              <option>Region II</option>
-              <option>Region III</option>
-              <option>Region IV</option>
-              <option>Region V</option>
-              <option>Region VI</option>
-              <option>Region VII</option>
-              <option>Region VIII</option>
-              <option>Region IX</option>
-              <option>Region X</option>
-              <option>Region XI</option>
-              <option>Region XII</option>
-              <option>Region XIII</option>
-              <option>Region XIV</option>
-              <option>Region XV</option>
-            </FormSelect>
-            <FormSelect
-              name="province"
-              label="Province"
-              id="province"
-              value={formData.address.province}
-              onchange={(e) => dispatchInput(e, "address")}
-              require={true}
-              disable={selectDisable.personal}>
-              {formData.address.region !== undefined &&
-              formData.address.region !== "__EMPTY__"
-                ? locations[
-                    formData.address.region.substring(
-                      7,
-                      formData.address.region.length
-                    )
-                  ].province.map((val, i) => <option key={i}>{val}</option>)
-                : ""}
-            </FormSelect>
-            <FormSelect
-              name="city"
-              label="Municipality/City"
-              id="city"
-              value={formData.address.city}
-              onchange={(e) => dispatchInput(e, "address")}
-              require={true}
-              disable={selectDisable.personal}>
-              {formData.address.region !== undefined &&
-              formData.address.region !== "__EMPTY__"
-                ? locations[
-                    formData.address.region.substring(
-                      7,
-                      formData.address.region.length
-                    )
-                  ].city.map((val, i) => <option key={i}>{val}</option>)
-                : ""}
-            </FormSelect>
-            <FormSelect
-              name="brgy"
-              label="Barangay"
-              id="brgy"
-              value={formData.address.brgy}
-              onchange={(e) => dispatchInput(e, "address")}
-              require={true}
-              disable={selectDisable.personal}>
-              <option>A. O. Floriendo</option>
-              <option>Buenavista</option>
-              <option>Cacao</option>
-              <option>Cagangohan</option>
-              <option>Consolacion</option>
-              <option>Dapco</option>
-              <option>Datu Abdul Dadia</option>
-              <option>Gredu</option>
-              <option>J. P. Laurel</option>
-              <option>Kasilak</option>
-              <option>Katipunan</option>
-              <option>Katualan</option>
-              <option>Kiotoy</option>
-              <option>Little Panay</option>
-              <option>Lower Panaga</option>
-              <option>Mabunao</option>
-              <option>Maduao</option>
-              <option>Malativas</option>
-              <option>Manay</option>
-              <option>Nanyo</option>
-              <option>New Malaga</option>
-              <option>New Malitbog</option>
-              <option>New Pandan</option>
-              <option>New Visayas</option>
-              <option>Quezon</option>
-              <option>Salvacion</option>
-              <option>San Francisco</option>
-              <option>San Nicolas</option>
-              <option>San Pedro</option>
-              <option>San Roque</option>
-              <option>San Vicente</option>
-              <option>Santa Cruz</option>
-              <option>Santo Nino</option>
-              <option>Sindaton</option>
-              <option>Southern DAvao</option>
-              <option>Tagpore</option>
-              <option>Tibungol</option>
-              <option>Upper Licanan</option>
-              <option>Waterfall</option>
-            </FormSelect>
-            <FormInput
-              label="Purok"
-              type="text"
-              name="purok"
-              id="purok"
-              value={formData.address.purok}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type purok number here"
-              require={true}
-              disable={disable}
-            />
-            <FormInput
-              label="Lot/House Number"
-              type="text"
-              name="lot_num"
-              id="lot_num"
-              value={formData.address.lot_num}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type House number here"
-              require={true}
-              disable={disable}
-            />
-          </>
-        )}
+      <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+        <FormSelect
+          name="region"
+          label="Region"
+          id="region"
+          value={formData.address.region}
+          onchange={(e) => dispatchInput(e, "address")}
+          require={true}>
+          <option>Region I</option>
+          <option>Region II</option>
+          <option>Region III</option>
+          <option>Region IV</option>
+          <option>Region V</option>
+          <option>Region VI</option>
+          <option>Region VII</option>
+          <option>Region VIII</option>
+          <option>Region IX</option>
+          <option>Region X</option>
+          <option>Region XI</option>
+          <option>Region XII</option>
+          <option>Region XIII</option>
+          <option>Region XIV</option>
+          <option>Region XV</option>
+        </FormSelect>
+        <FormSelect
+          name="province"
+          label="Province"
+          id="province"
+          value={formData.address.province}
+          onchange={(e) => dispatchInput(e, "address")}
+          require={true}
+          disable={selectDisable.personal}>
+          {formData.address.region !== undefined &&
+          formData.address.region !== "__EMPTY__"
+            ? locations[
+                formData.address.region.substring(
+                  7,
+                  formData.address.region.length
+                )
+              ].province.map((val, i) => <option key={i}>{val}</option>)
+            : ""}
+        </FormSelect>
+        <FormSelect
+          name="city"
+          label="Municipality/City"
+          id="city"
+          value={formData.address.city}
+          onchange={(e) => dispatchInput(e, "address")}
+          require={true}
+          disable={selectDisable.personal}>
+          {formData.address.region !== undefined &&
+          formData.address.region !== "__EMPTY__"
+            ? locations[
+                formData.address.region.substring(
+                  7,
+                  formData.address.region.length
+                )
+              ].city.map((val, i) => <option key={i}>{val}</option>)
+            : ""}
+        </FormSelect>
+        <FormSelect
+          name="brgy"
+          label="Barangay"
+          id="brgy"
+          value={formData.address.brgy}
+          onchange={(e) => dispatchInput(e, "address")}
+          require={true}
+          disable={selectDisable.personal}>
+          <option>A. O. Floriendo</option>
+          <option>Buenavista</option>
+          <option>Cacao</option>
+          <option>Cagangohan</option>
+          <option>Consolacion</option>
+          <option>Dapco</option>
+          <option>Datu Abdul Dadia</option>
+          <option>Gredu</option>
+          <option>J. P. Laurel</option>
+          <option>Kasilak</option>
+          <option>Katipunan</option>
+          <option>Katualan</option>
+          <option>Kiotoy</option>
+          <option>Little Panay</option>
+          <option>Lower Panaga</option>
+          <option>Mabunao</option>
+          <option>Maduao</option>
+          <option>Malativas</option>
+          <option>Manay</option>
+          <option>Nanyo</option>
+          <option>New Malaga</option>
+          <option>New Malitbog</option>
+          <option>New Pandan</option>
+          <option>New Visayas</option>
+          <option>Quezon</option>
+          <option>Salvacion</option>
+          <option>San Francisco</option>
+          <option>San Nicolas</option>
+          <option>San Pedro</option>
+          <option>San Roque</option>
+          <option>San Vicente</option>
+          <option>Santa Cruz</option>
+          <option>Santo Nino</option>
+          <option>Sindaton</option>
+          <option>Southern DAvao</option>
+          <option>Tagpore</option>
+          <option>Tibungol</option>
+          <option>Upper Licanan</option>
+          <option>Waterfall</option>
+        </FormSelect>
+        <FormInput
+          label="Purok"
+          type="text"
+          name="purok"
+          id="purok"
+          value={formData.address.purok}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type purok number here"
+          require={true}
+        />
+        <FormInput
+          label="Lot/House Number"
+          type="text"
+          name="lot_num"
+          id="lot_num"
+          value={formData.address.lot_num}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type House number here"
+          require={true}
+        />
       </div>
 
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Previous Address:
       </h3>
-      {!disable && (
-        <FormCheck
-          label="Copy Present Address"
-          type="checkbox"
-          id="copy_address"
-          style="mb-4"
-          change={() => dispatch(copyAddress("personal"))}
-          icon={copy_icon}
+      <FormCheck
+        label="Copy Present Address"
+        type="checkbox"
+        id="copy_address"
+        style="mb-4"
+        change={() => dispatch(copyAddress("personal"))}
+        icon={copy_icon}
+      />
+      <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+        <FormInput
+          label="Region"
+          type="text"
+          name="prev_region"
+          id="region"
+          value={formData.address.prev_region}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type region here"
+          require={true}
         />
-      )}
-      <div
-        className={
-          "grid gap-4 mb-4 pb-2 " +
-          (applicant.view ? "flex w-full" : "sm:grid-cols-3")
-        }>
-        {applicant.view ? (
-          <FormInput
-            type="text"
-            placeholder="Present Address"
-            value={address.personal_pres}
-            disable={disable}
-          />
-        ) : (
-          <>
-            <FormInput
-              label="Region"
-              type="text"
-              name="prev_region"
-              id="region"
-              value={formData.address.prev_region}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type region here"
-              require={true}
-              disable={disable}
-            />
-            <FormInput
-              label="Province"
-              type="text"
-              name="prev_province"
-              id="province"
-              value={formData.address.prev_province}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type province here"
-              require={true}
-              disable={disable}
-            />
-            <FormInput
-              label="City/Municipality"
-              type="text"
-              name="prev_city"
-              id="city"
-              value={formData.address.prev_city}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type city here"
-              require={true}
-              disable={disable}
-            />
-            <FormInput
-              label="Barangay"
-              type="text"
-              name="prev_brgy"
-              id="brgy"
-              value={formData.address.prev_brgy}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type barangay here"
-              require={true}
-              disable={disable}
-            />
-            <FormInput
-              label="Purok"
-              type="text"
-              name="prev_purok"
-              id="purok"
-              value={formData.address.prev_purok}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type House number here"
-              require={true}
-              disable={disable}
-            />
-            <FormInput
-              label="Lot/House Number"
-              type="text"
-              name="prev_lot_num"
-              id="prev_lot_num"
-              value={formData.address.prev_lot_num}
-              onchange={(e) => dispatchInput(e, "address")}
-              placeholder="Type House number here"
-              require={true}
-              disable={disable}
-            />
-          </>
-        )}
+        <FormInput
+          label="Province"
+          type="text"
+          name="prev_province"
+          id="province"
+          value={formData.address.prev_province}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type province here"
+          require={true}
+        />
+        <FormInput
+          label="City/Municipality"
+          type="text"
+          name="prev_city"
+          id="city"
+          value={formData.address.prev_city}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type city here"
+          require={true}
+        />
+        <FormInput
+          label="Barangay"
+          type="text"
+          name="prev_brgy"
+          id="brgy"
+          value={formData.address.prev_brgy}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type barangay here"
+          require={true}
+        />
+        <FormInput
+          label="Purok"
+          type="text"
+          name="prev_purok"
+          id="purok"
+          value={formData.address.prev_purok}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type House number here"
+          require={true}
+        />
+        <FormInput
+          label="Lot/House Number"
+          type="text"
+          name="prev_lot_num"
+          id="prev_lot_num"
+          value={formData.address.prev_lot_num}
+          onchange={(e) => dispatchInput(e, "address")}
+          placeholder="Type House number here"
+          require={true}
+        />
       </div>
 
       <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-1">
@@ -536,12 +439,10 @@ export default function PersonalInfoForm() {
           name="home_description"
           id="home_description"
           label="Brief description of place of residence and home"
-          value={getProp("home_description")}
-          // value={formData.applicant.home_description}
+          value={formData.applicant.home_description}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write residence description here"
           require={true}
-          disable={disable}
         />
       </div>
 
@@ -565,13 +466,11 @@ export default function PersonalInfoForm() {
             </tr>
           </FormTBody>
         </table>
-        {!urlBool && (
-          <div className="grid pt-4 sm:cols-span-1">
-            <BttnwithIcon text="Add row" type="button">
-              <Plus />
-            </BttnwithIcon>
-          </div>
-        )}
+        <div className="grid pt-4 sm:cols-span-1">
+          <BttnwithIcon text="Add row" type="button">
+            <Plus />
+          </BttnwithIcon>
+        </div>
       </div>
     </>
   );

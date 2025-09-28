@@ -1,5 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-
 export class Application {
   constructor({
     id,
@@ -110,10 +109,6 @@ export class Application {
       ? this.gender.charAt(0).toUpperCase() + this.gender.slice(1)
       : "";
   }
-
-  imgURL() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
-  }
 }
 
 // ? selector
@@ -125,12 +120,6 @@ export const ApplicationEntity = createSelector([selectUserDto], (userDto) =>
 );
 
 export const ApplicationEntities = createSelector(
-  (state) => state.user.users || [],
-  (users) => users.map((u) => new Application(u))
+  (state) => state.application.applications || [],
+  (applications) => applications.map((u) => new Application(u))
 );
-
-// ? permission check
-export function isAuthorized(user, requiredRole) {
-  if (!user) return false;
-  return user.role === requiredRole;
-}

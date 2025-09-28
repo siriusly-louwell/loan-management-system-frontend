@@ -9,13 +9,13 @@ import PopAnimate from "../animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
 
-export default function Eligibity({ loan, url }) {
+export default function Eligibility({ loan, url }) {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const loans =
-    Object.keys(loan).length > 0
+    Object.keys(loan).length > 0 && loan.transactions
       ? loan.transactions.reduce((sum, item) => {
           const tenure = item.tenure * 12;
           const loanAmount =

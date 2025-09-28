@@ -8,11 +8,22 @@ import Alert from "../Alert";
 import PopAnimate from "../animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
+import { LoanEntity } from "../../services/entities/Loan";
+import { useEffect } from "react";
+import {
+  assessDecision,
+  assessResult,
+  calculateStability,
+} from "../../services/redux/slices/applicationSlice";
 
-export default function Eligibility({ loan, url }) {
+export default function Eligibility({ url }) {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const loan = useSelector(LoanEntity);
+  const { stability, loanDecision, loanResult } = useSelector(
+    (state) => state.application
+  );
   const { modals } = useSelector((state) => state.ui);
   const loans =
     Object.keys(loan).length > 0 && loan.transactions
@@ -45,6 +56,18 @@ export default function Eligibility({ loan, url }) {
       parseFloat(loan.rate)) *
     100;
 
+  useEffect(() => {
+    if (loan.id) {
+      dispatch(
+        calculateStability({ dti: loan.dti, ndi: loan.ndi, emi: loan.emi })
+      );
+      dispatch(assessDecision());
+      dispatch(assessResult());
+    }
+  }, [modals.eligibility]);
+
+  console.log(loanResult);
+
   function empStability() {
     const inc = parseFloat(loan.rate) >= 15000;
     const year = loan.yrs_in_service >= 1;
@@ -73,28 +96,27 @@ export default function Eligibility({ loan, url }) {
   const debtBool = debtStability();
   const ndiBool = ndiStability();
 
-  function assessDecision() {
-    const counts = { green: 0, red: 0, yellow: 0 };
+  // function assessDecision() {
+  //   const counts = { green: 0, red: 0, yellow: 0 };
 
-    for (let val of [empBool, debtBool, ndiBool]) {
-      counts[val]++;
-    }
+  //   for (let val of [empBool, debtBool, ndiBool]) {
+  //     counts[val]++;
+  //   }
 
-    const { green, red, yellow } = counts;
+  //   const { green, red, yellow } = counts;
 
-    if (green === 3) return "eligible";
-    if (green === 2 && yellow === 1) return "passed";
-    if (green === 1 && yellow === 2) return "passed";
-    if (yellow === 3) return "review";
-    if (red === 1 && yellow === 2) return "not_eligible";
-    if (red === 2 && yellow === 1) return "not_eligible";
-    if (red === 3) return "reject";
-    else return "review";
-  }
+  //   if (green === 3) return "eligible";
+  //   if (green === 2 && yellow === 1) return "passed";
+  //   if (green === 1 && yellow === 2) return "passed";
+  //   if (yellow === 3) return "review";
+  //   if (red === 1 && yellow === 2) return "not_eligible";
+  //   if (red === 2 && yellow === 1) return "not_eligible";
+  //   if (red === 3) return "reject";
+  //   else return "review";
+  // }
 
   function cateResult(category) {
     switch (category) {
-      // case 'emp':
       default:
         return empBool === "green"
           ? "Income is stable and capable to take a loan"
@@ -117,7 +139,7 @@ export default function Eligibility({ loan, url }) {
   }
 
   function decideAction() {
-    const results = assessDecision();
+    const results = loanDecision;
     const decision =
       results === "eligible" || results === "passed"
         ? "accepted"
@@ -208,17 +230,17 @@ export default function Eligibility({ loan, url }) {
                           <span className="text-sm text-gray-600 dark:text-gray-300">
                             Monthly Income:
                           </span>
-                          <span className="font-semibold text-md text-rose-700">
+                          <span className="font-semibold text-md text-rose-700 dark:text-rose-500">
                             ₱{parseFloat(loan.rate).toLocaleString()}
                           </span>
                         </div>
                       </td>
                       <td className="py-4 flex justify-center">
                         <div className="flex flex-col space-y-3 mr-4">
-                          <span className="font-semibold text-rose-700 whitespace-nowrap">
+                          <span className="font-semibold text-rose-700 dark:text-rose-500 whitespace-nowrap">
                             Income &ge; ₱15,000.00
                           </span>
-                          <span className="font-semibold text-rose-700 whitespace-nowrap">
+                          <span className="font-semibold text-rose-700 dark:text-rose-500 whitespace-nowrap">
                             &ge;1 year in job/business
                           </span>
                         </div>
@@ -259,13 +281,13 @@ export default function Eligibility({ loan, url }) {
                           <span className="text-md font-bold mt-2 text-gray-600 dark:text-white">
                             DTI Ratio:
                           </span>
-                          <span className="text-rose-700 font-bold mt-2">
+                          <span className="text-rose-700 dark:text-rose-500 font-bold mt-2">
                             {dti.toFixed(2)}%
                           </span>
                         </div>
                       </td>
                       <td className="py-4 flex justify-center">
-                        <span className="font-semibold text-rose-700 whitespace-nowrap">
+                        <span className="font-semibold text-rose-700 dark:text-rose-500 whitespace-nowrap">
                           DTI &le; 35%
                         </span>
                       </td>
@@ -287,19 +309,19 @@ export default function Eligibility({ loan, url }) {
                           <span className="text-sm text-gray-600 whitespace-nowrap dark:text-gray-300">
                             Net Income:
                           </span>
-                          <span className="font-semibold text-md text-gray-700">
+                          <span className="font-semibold text-md text-gray-700 dark:text-white">
                             ₱{parseFloat(loan.rate).toLocaleString()}
                           </span>
                           <span className="text-md font-bold mt-2 text-gray-600 dark:text-white">
                             NDI:
                           </span>
-                          <span className="text-rose-700 font-bold mt-2">
+                          <span className="text-rose-700 dark:text-rose-500 font-bold mt-2">
                             ₱{ndi.toLocaleString()}
                           </span>
                         </div>
                       </td>
                       <td className="py-4 justify-items-center flex justify-center">
-                        <span className="font-semibold text-rose-700 whitespace-nowrap">
+                        <span className="font-semibold text-rose-700 dark:text-rose-500 whitespace-nowrap">
                           Total EMI &le; 30% of NDI
                         </span>
                       </td>
@@ -331,7 +353,7 @@ export default function Eligibility({ loan, url }) {
                     </span>
                   </span>
                 </div>
-                <LargeBadge type={assessDecision()} />
+                <LargeBadge type={loanDecision} />
                 <div
                   className={`grid grid-cols-${
                     location.pathname === "/staff/loan" ? "3" : "2"

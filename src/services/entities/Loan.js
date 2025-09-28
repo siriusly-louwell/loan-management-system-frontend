@@ -1,5 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { STATUS_MAP } from "../../constants/loanStatus";
+import {
+  STATUS_GROUPS,
+  STATUS_MAP,
+  STATUS_TEXT,
+} from "../../constants/loanStatus";
 
 export class Loan {
   constructor({
@@ -53,7 +57,9 @@ export class Loan {
   }
 
   get price() {
-    return `₱${parseFloat(this.transactions[0].price).toLocaleString()}`;
+    return `₱${parseFloat(
+      this.transactions[0].motorcycle.price
+    ).toLocaleString()}`;
   }
 
   get emi() {
@@ -95,9 +101,20 @@ export class Loan {
 
   trackStatus(stage) {
     const stageConfig = STATUS_MAP[stage];
-    if (!stageConfig) return;
+    if (!stageConfig[this.status]) return stageConfig.default;
 
     return stageConfig[this.status] || stageConfig.default;
+  }
+
+  statusLabel(type, index) {
+    const status =
+      this.status === STATUS_GROUPS[type].negative
+        ? STATUS_GROUPS[type].negative
+        : STATUS_GROUPS[type].positive;
+
+    return index === 0
+      ? STATUS_TEXT[status].label
+      : STATUS_TEXT[status].description;
   }
 }
 

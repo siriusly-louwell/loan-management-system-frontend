@@ -132,60 +132,60 @@ export default function LoanInfo({ children, url }) {
     }
   }
 
-  function trackCond(stage) {
-    switch (stage) {
-      case "accept":
-        if (loan.apply_status === "denied") return "deny";
-        else if (
-          loan.apply_status === "accepted" ||
-          loan.apply_status === "evaluated" ||
-          loan.apply_status === "approved" ||
-          loan.apply_status === "declined" ||
-          loan.apply_status === "payment"
-        )
-          return "done";
-        else return loan.apply_status === "pending" ? "current" : "pend";
-      case "investigation":
-        if (
-          loan.apply_status === "evaluated" ||
-          loan.apply_status === "approved" ||
-          loan.apply_status === "declined" ||
-          loan.apply_status === "payment"
-        )
-          return "done";
-        else return loan.apply_status === "accepted" ? "current" : "pend";
-      case "approve":
-        if (loan.apply_status === "declined") return "deny";
-        else if (
-          loan.apply_status === "approved" ||
-          loan.apply_status === "payment"
-        )
-          return "done";
-        else return loan.apply_status === "evaluated" ? "current" : "pend";
-      case "payment":
-        if (loan.apply_status === "payment") return "done";
-        else return loan.apply_status === "approved" ? "current" : "pend";
-      default:
-    }
-  }
+  // function trackCond(stage) {
+  //   switch (stage) {
+  //     case "accept":
+  //       if (loan.apply_status === "denied") return "deny";
+  //       else if (
+  //         loan.apply_status === "accepted" ||
+  //         loan.apply_status === "evaluated" ||
+  //         loan.apply_status === "approved" ||
+  //         loan.apply_status === "declined" ||
+  //         loan.apply_status === "payment"
+  //       )
+  //         return "done";
+  //       else return loan.apply_status === "pending" ? "current" : "pend";
+  //     case "investigation":
+  //       if (
+  //         loan.apply_status === "evaluated" ||
+  //         loan.apply_status === "approved" ||
+  //         loan.apply_status === "declined" ||
+  //         loan.apply_status === "payment"
+  //       )
+  //         return "done";
+  //       else return loan.apply_status === "accepted" ? "current" : "pend";
+  //     case "approve":
+  //       if (loan.apply_status === "declined") return "deny";
+  //       else if (
+  //         loan.apply_status === "approved" ||
+  //         loan.apply_status === "payment"
+  //       )
+  //         return "done";
+  //       else return loan.apply_status === "evaluated" ? "current" : "pend";
+  //     case "payment":
+  //       if (loan.apply_status === "payment") return "done";
+  //       else return loan.apply_status === "approved" ? "current" : "pend";
+  //     default:
+  //   }
+  // }
 
-  function statusLabel(type, num) {
-    let turn = [];
+  // function statusLabel(type, num) {
+  //   let turn = [];
 
-    if (type === "deny") {
-      turn =
-        loan.apply_status === "denied"
-          ? ["Denied", "The application is not viable to apply for a loan"]
-          : ["Accepted", "The application is viable to apply for a loan"];
-    } else {
-      turn =
-        loan.apply_status === "declined"
-          ? ["Declined", "The application did not passed the investigation"]
-          : ["Approved", "The application has passed the investigation"];
-    }
+  //   if (type === "deny") {
+  //     turn =
+  //       loan.apply_status === "denied"
+  //         ? ["Denied", "The application is not viable to apply for a loan"]
+  //         : ["Accepted", "The application is viable to apply for a loan"];
+  //   } else {
+  //     turn =
+  //       loan.apply_status === "declined"
+  //         ? ["Declined", "The application did not passed the investigation"]
+  //         : ["Approved", "The application has passed the investigation"];
+  //   }
 
-    return turn[num];
-  }
+  //   return turn[num];
+  // }
 
   function affordableLoan(motor) {
     const tenure = motor.tenure * 12;
@@ -336,7 +336,7 @@ export default function LoanInfo({ children, url }) {
                       Amount Paid (Downpayment)
                     </dt>
                     <dd className="font-medium text-green-500 dark:text-green-500">
-                      ₱{parseFloat(loan.downpayment).toLocaleString()}
+                      {loan.downpayment}
                     </dd>
                   </dl>
                 </div>
@@ -346,7 +346,7 @@ export default function LoanInfo({ children, url }) {
                     Overall price
                   </dt>
                   <dd className="text-lg font-bold text-gray-900 dark:text-white">
-                    ₱{parseFloat(loan.price).toLocaleString()}
+                    {loan.price}
                   </dd>
                 </dl>
               </div>
@@ -366,32 +366,32 @@ export default function LoanInfo({ children, url }) {
                 <TrackList
                   label="Loan Submission"
                   sublabel="Loan application was successful"
-                  isDone="done"
+                  status={loan.trackStatus("submit")}
                 />
                 <TrackList
-                  label={statusLabel("deny", 0)}
-                  sublabel={statusLabel("deny", 1)}
-                  isDone={trackCond("accept")}
+                  label={loan.statusLabel("acceptance", 0)}
+                  sublabel={loan.statusLabel("acceptance", 1)}
+                  status={loan.trackStatus("accept")}
                 />
                 <TrackList
                   label="Credit Investigation"
                   sublabel="Applicant has been interviewed by the assigned Credit Investigator"
-                  isDone={trackCond("investigation")}
+                  status={loan.trackStatus("investigation")}
                 />
                 <TrackList
-                  label={statusLabel("decline", 0)}
-                  sublabel={statusLabel("decline", 1)}
-                  isDone={trackCond("approve")}
+                  label={loan.statusLabel("approval", 0)}
+                  sublabel={loan.statusLabel("approval", 1)}
+                  status={loan.trackStatus("approve")}
                 />
                 <TrackList
                   label="Initial Payment"
                   sublabel="The loan application has been successful"
-                  isDone="pend"
+                  status={loan.trackStatus("payment")}
                 />
                 <TrackList
                   label="Paid!"
                   sublabel="The loan has been fully paid"
-                  isDone="pend"
+                  status={loan.trackStatus("paid")}
                 />
               </ol>
 

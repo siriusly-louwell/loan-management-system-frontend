@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { applyRepository } from "../../repositories/applyRepository";
 import ApplicationAPI from "../../api/ApplicationAPI";
+import { empStabilityUseCase } from "../../usecases/application/empStabilityUseCase";
+import { debtStabilityUseCase } from "../../usecases/application/debtStabilityUseCase";
+import { ndiStabilityUseCase } from "../../usecases/application/ndiStabilityUseCase";
+import { calculateViability } from "../../usecases/application/calculateViability";
+import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
@@ -53,6 +58,17 @@ const applicationSlice = createSlice({
       total: 0,
       nextPage: 2,
     },
+    stability: {
+      employment: null,
+      debt: null,
+      ndi: null,
+    },
+    loanResult: {
+      employment: {},
+      debt: {},
+      ndi: {},
+    },
+    loanDecision: "review",
     applyError: null,
   },
   reducers: {
@@ -67,6 +83,44 @@ const applicationSlice = createSlice({
 
     getLoanId: (state) => {
       state.loanID = Number(applyRepository.getId());
+    },
+
+    calculateStability: (state, action) => {
+      const data = action.payload;
+
+      state.stability.debt = debtStabilityUseCase(data.dti);
+      state.stability.ndi = ndiStabilityUseCase(data.ndi, data.emi);
+      state.stability.employment = empStabilityUseCase(
+        state.loan.rate,
+        state.loan.yrs_in_service
+      );
+    },
+
+    assessDecision: (state) => {
+      const stability = state.stability;
+      const counts = { green: 0, red: 0, yellow: 0 };
+
+      for (let val of [stability.employment, stability.debt, stability.ndi]) {
+        counts[val]++;
+      }
+
+      state.loanResult = calculateViability(counts);
+    },
+
+    assessResult: (state) => {
+      ["employment", "debt", "ndi"].forEach((category) => {
+        const color = state.stability[category];
+
+        if (!color || !CATEGORY_RESULTS[category])
+          state.loanResult[category] = {};
+
+        state.loanResult[category] = CATEGORY_RESULTS[category][color];
+        // state.loanResult[category] = {
+        //   label: result.label,
+        //   description: result.description,
+        //   suggestion: result.suggestion,
+        // };
+      });
     },
   },
   extraReducers: (builder) => {
@@ -174,5 +228,12 @@ const applicationSlice = createSlice({
   },
 });
 
-export const { setLoading, saveLoan, getLoanId } = applicationSlice.actions;
+export const {
+  setLoading,
+  saveLoan,
+  getLoanId,
+  calculateStability,
+  assessDecision,
+  assessResult,
+} = applicationSlice.actions;
 export default applicationSlice.reducer;

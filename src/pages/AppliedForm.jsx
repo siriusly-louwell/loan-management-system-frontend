@@ -14,7 +14,7 @@ import ProfileHeader from "../components/cards/ProfileHeader";
 import LeafletMap from "../components/maps/LeafletMap";
 import FileButton from "../components/buttons/FileButton";
 
-export default function AppliedForm({ url }) {
+export default function AppliedForm() {
   const dispatch = useDispatch();
   const application = useSelector(ApplicationEntity);
   const employmentInfo = useSelector(EmploymentEntity);

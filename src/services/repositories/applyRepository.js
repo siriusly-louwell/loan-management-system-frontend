@@ -54,6 +54,19 @@ export const applyRepository = {
     return await response;
   },
 
+  async patch(data, id) {
+    const response = await ApplicationAPI.patch(data, id);
+
+    if (!response) {
+      return {
+        message: "Failed to accept loan",
+        type: "error",
+      };
+    }
+
+    return await response;
+  },
+
   appendData(data) {
     const submitData = new FormData();
     const form = data.applicant;

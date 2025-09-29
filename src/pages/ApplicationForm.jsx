@@ -448,47 +448,48 @@ export default function ApplicationForm() {
               )}
             </div>
           </form>
-          {modals.application ? (
-            <Dialog
-              text={modal.text}
-              icon={
-                <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
-                  <Check color="green" size={7} />
-                </div>
-              }>
-              <h2 className="text-gray-600 dark:text-white">
-                Your Record ID:{" "}
-                <strong className="text-rose-500">{modal.id}</strong>
-              </h2>
-              <p className="text-rose-500 mb-2">
-                Please save or take a photo of your record ID.
-              </p>
-              <p className="text-gray-600 dark:text-white mb-5">
-                Your application is under review, we will notify you once it is
-                done. A notification will be sent to you via SMS on{" "}
-                <strong className="text-rose-500">{modal.contact}</strong>.
-                Please check for more detailed information.
-              </p>
-              <Button
-                text="Finish"
-                type="button"
-                onclick={() => {
-                  user?.role === "staff"
-                    ? navigate("/staff/units")
-                    : navigate("/");
+          <Dialog
+            text={modal.text}
+            modalName="application"
+            icon={
+              <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
+                <Check color="green" size={7} />
+              </div>
+            }>
+            <h2 className="text-gray-600 dark:text-white">
+              Your Record ID:{" "}
+              <strong className="text-rose-500">{modal.id}</strong>
+            </h2>
+            <p className="text-rose-500 mb-2">
+              Please save or take a photo of your record ID.
+            </p>
+            <p className="text-gray-600 dark:text-white mb-5">
+              Your application is under review, we will notify you once it is
+              done. A notification will be sent to you via SMS on{" "}
+              <strong className="text-rose-500">{modal.contact}</strong>. Please
+              check for more detailed information.
+            </p>
+            <Button
+              text="Finish"
+              type="button"
+              onclick={() => {
+                user?.role === "staff"
+                  ? navigate("/staff/units")
+                  : navigate("/");
 
-                  dispatch(
-                    toggleModal({
-                      name: "application",
-                      value: modals?.application,
-                    })
-                  );
-                }}
-              />
-            </Dialog>
+                dispatch(
+                  toggleModal({
+                    name: "application",
+                    value: modals?.application,
+                  })
+                );
+              }}
+            />
+          </Dialog>
+          {/* {modals.application ? (
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </div>
     </div>

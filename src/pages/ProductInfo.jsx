@@ -29,7 +29,6 @@ export default function ProductInfo({ staff = false }) {
   useEffect(() => {
     dispatch(fetchUnit());
   }, [unitId, dispatch]);
-  console.log(images);
 
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">

@@ -6,6 +6,7 @@ import { debtStabilityUseCase } from "../../usecases/application/debtStabilityUs
 import { ndiStabilityUseCase } from "../../usecases/application/ndiStabilityUseCase";
 import { calculateViability } from "../../usecases/application/calculateViability";
 import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
+import { assignCIUseCase } from "../../usecases/application/assignCIUseCase";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
@@ -34,6 +35,17 @@ export const fetchLoan = createAsyncThunk(
   async (loan, thunkAPI) => {
     try {
       return await applyRepository.fetchApplication(loan);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const assignCI = createAsyncThunk(
+  "application/assignCI",
+  async (data, thunkAPI) => {
+    try {
+      return await assignCIUseCase(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

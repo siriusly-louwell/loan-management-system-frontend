@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LoanList from "../components/LoanList";
 import TrackList from "../components/TrackList";
 import CustomBttn from "../components/buttons/CustomBttn";
-import ProfileCard from "../components/cards/ProfileCard";
-import SmallUpArrow from "../assets/icons/SmallUpArrow";
 import Button from "../components/buttons/Button";
 import BasicBttn from "../components/buttons/BasicBttn";
 import SmallSpin from "../components/loading components/SmallSpin";
@@ -26,20 +24,20 @@ import { LoanEntity } from "../services/entities/Loan";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 import { UnitEntities } from "../services/entities/Unit";
 
-export default function LoanInfo({ children, url }) {
+export default function LoanInfo({ children }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const { state } = useLocation();
   const id = state?.id;
   //   const [loan, setLoan] = useState({});
   //   const [loanLoad, setLoanLoad] = useState(true);
-  const [totals, setTotal] = useState({});
+  // const [totals, setTotal] = useState({});
   const [alert, setAlert] = useState({});
-  const [recommend, setRecommend] = useState([]);
-  const [recoLoad, setRecoLoad] = useState(true);
+  // const [recommend, setRecommend] = useState([]);
+  // const [recoLoad, setRecoLoad] = useState(true);
   const units = useSelector(UnitEntities);
   const loan = useSelector(LoanEntity);
+  const { role } = useSelector((state) => state.auth.user);
   const { unitsLoading } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
   const { loanID, loanLoading } = useSelector((state) => state.application);
@@ -69,40 +67,40 @@ export default function LoanInfo({ children, url }) {
   //       });
   //   }, [id]);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/motorcycle")
-      .then((response) => response.json())
-      .then((data) => {
-        setRecommend(data.data);
-        setRecoLoad(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://127.0.0.1:8000/api/motorcycle")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setRecommend(data.data);
+  //       setRecoLoad(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data: ", error);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    if (!loanLoading) {
-      const down = loan.transactions.reduce(
-        (sum, obj) => sum + Number(obj.downpayment),
-        0
-      );
-      const price = loan.transactions.reduce(
-        (sum, obj) => sum + Number(obj.motorcycle.price),
-        0
-      );
-      const ndi =
-        parseFloat(loan.rate) -
-        (parseFloat(loan.rent) +
-          parseFloat(loan.amortization) +
-          parseFloat(loan.bills) +
-          parseFloat(loan.living_exp) +
-          parseFloat(loan.education_exp) +
-          parseFloat(loan.transportation));
+  // useEffect(() => {
+  //   if (!loanLoading) {
+  //     const down = loan.transactions.reduce(
+  //       (sum, obj) => sum + Number(obj.downpayment),
+  //       0
+  //     );
+  //     const price = loan.transactions.reduce(
+  //       (sum, obj) => sum + Number(obj.motorcycle.price),
+  //       0
+  //     );
+  //     const ndi =
+  //       parseFloat(loan.rate) -
+  //       (parseFloat(loan.rent) +
+  //         parseFloat(loan.amortization) +
+  //         parseFloat(loan.bills) +
+  //         parseFloat(loan.living_exp) +
+  //         parseFloat(loan.education_exp) +
+  //         parseFloat(loan.transportation));
 
-      setTotal({ price: down, downpayment: price, ndi: ndi });
-    }
-  }, [loan, loanLoading, recommend]);
+  //     setTotal({ price: down, downpayment: price, ndi: ndi });
+  //   }
+  // }, [loan, loanLoading, recommend]);
 
   async function approveApplicant() {
     document.getElementById("approve_app").style.display = "flex";
@@ -402,9 +400,9 @@ export default function LoanInfo({ children, url }) {
                     )
                   }
                 />
-                {loan.status === "evaluated" ||
-                loan.status === "approved" ||
-                loan.status === "declined" ? (
+                {(loan.status === "evaluated" ||
+                  loan.status === "approved" ||
+                  loan.status === "declined") && (
                   <>
                     <Button
                       text="View Report"
@@ -415,7 +413,7 @@ export default function LoanInfo({ children, url }) {
                         })
                       }
                     />
-                    {location.pathname === "/admin/loan" ? (
+                    {role === "admin" && (
                       <>
                         <CustomBttn
                           text="Approve Application"
@@ -444,12 +442,8 @@ export default function LoanInfo({ children, url }) {
                           classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
                         />
                       </>
-                    ) : (
-                      ""
                     )}
                   </>
-                ) : (
-                  ""
                 )}
               </div>
             </div>
@@ -459,17 +453,15 @@ export default function LoanInfo({ children, url }) {
       {(loan.status === "declined" || loan.status === "denied") &&
         displayRecommend()}
 
-      <Eligibility loan={loan} setAlert={setAlert} url={url} />
+      <Eligibility loan={loan} setAlert={setAlert} />
       <DeclineApplicant
         id={loan.id}
         record={loan.record_id}
         name={`${loan.fullName}`}
       />
-      <AssignCI
-        id={loan.id}
-        record={loan.record_id}
-        name={`${loan.fullName}`}
-      />
+
+      <AssignCI id={loan.id} />
+
       <Alert id="approveApp" text={alert.text} icon="warn">
         <CustomBttn
           text="Yes"

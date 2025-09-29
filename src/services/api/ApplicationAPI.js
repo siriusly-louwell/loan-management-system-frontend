@@ -27,6 +27,11 @@ const ApplicationAPI = {
     return response.data;
   },
 
+  async patch(data, id) {
+    const response = await axios.patch(`${API_URL}/api/application/${id}`, data);
+    return response.data;
+  },
+
   imgPath(image) {
     return `${API_URL}/storage/${image}`;
   },

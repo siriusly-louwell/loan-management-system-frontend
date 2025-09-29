@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CloseBttn from "../buttons/CloseBttn";
 import ColorLabel from "../ColorLabel";
 import CustomBttn from "../buttons/CustomBttn";
@@ -15,11 +15,12 @@ import {
   assessResult,
   calculateStability,
 } from "../../services/redux/slices/applicationSlice";
+import Dialog from "./Dialog";
 
 export default function Eligibility({ url }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
+  const { role } = useSelector((state) => state.auth.user);
   const loan = useSelector(LoanEntity);
   const { stability, loanDecision, loanResult } = useSelector(
     (state) => state.application
@@ -153,9 +154,12 @@ export default function Eligibility({ url }) {
   }
 
   function staffAction(string) {
-    document.getElementById("eligibleModal").style.display = "none";
-    document.getElementById("decideAppModal").style.display = "none";
-    document.getElementById(string).style.display = "flex";
+    dispatch(toggleModal({ name: "eligibility", value: modals.eligibility }));
+    dispatch(
+      toggleModal({ name: "decideAppModal", value: modals.decideAppModal })
+    );
+    dispatch(toggleModal({ name: string, value: modals[string] }));
+    // document.getElementById(string).style.display = "flex";
   }
 
   // function statusBadge(status) {
@@ -266,14 +270,12 @@ export default function Eligibility({ url }) {
                             Monthly Rent:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            {/* ₱{parseFloat(loan.rent).toLocaleString()} */}
                             {loan.getRent}
                           </span>
                           <span className="text-sm text-gray-600 whitespace-nowrap dark:text-gray-300">
                             Amortization:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            {/* ₱{parseFloat(loan.amortization).toLocaleString()} */}
                             {loan.getAmortization}
                           </span>
                           <span className="text-sm text-gray-600 whitespace-nowrap dark:text-gray-300">
@@ -316,7 +318,6 @@ export default function Eligibility({ url }) {
                             Net Income:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            {/* ₱{parseFloat(loan.rate).toLocaleString()} */}
                             {loan.getRate}
                           </span>
                           <span className="text-md font-bold mt-2 text-gray-600 dark:text-white">
@@ -364,9 +365,9 @@ export default function Eligibility({ url }) {
                 <LargeBadge type={loanDecision} />
                 <div
                   className={`grid grid-cols-${
-                    location.pathname === "/staff/loan" ? "3" : "2"
+                    role === "staff" ? "3" : "2"
                   } gap-3`}>
-                  {location.pathname === "/staff/loan" ? (
+                  {role === "staff" ? (
                     <>
                       <CustomBttn
                         text="Accept System Verdict"
@@ -375,11 +376,14 @@ export default function Eligibility({ url }) {
                       />
                       <CustomBttn
                         text="Decide Verdict"
-                        onclick={() => {
-                          document.getElementById(
-                            "decideAppModal"
-                          ).style.display = "block";
-                        }}
+                        onclick={() =>
+                          dispatch(
+                            toggleModal({
+                              name: "decideAppModal",
+                              value: modals?.decideAppModal,
+                            })
+                          )
+                        }
                         classname="flex items-center w-full justify-center text-yellow-600 hover:text-white border border-yellow-600 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-800 dark:focus:ring-yellow-900"
                       />
                     </>
@@ -397,7 +401,9 @@ export default function Eligibility({ url }) {
                   <CustomBttn
                     text="Review"
                     onclick={() =>
-                      navigate(`${url}/application`, { state: { id: loan.id } })
+                      navigate(`/${role}/application`, {
+                        state: { id: loan.id },
+                      })
                     }
                     classname="inline-flex justify-center w-full sm:w-auto items-center text-white bg-rose-600 hover:text-white border border-rose-700 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-white dark:hover:bg-rose-700 dark:focus:ring-rose-600"
                   />
@@ -406,18 +412,21 @@ export default function Eligibility({ url }) {
             </div>
           </div>
         </PopAnimate>
-        <Alert id="decideAppModal" text="Choose Decision" icon="none">
-          <CustomBttn
-            text="Accept Application"
-            onclick={() => staffAction("addCI")}
-            classname="flex items-center w-full mb-4 justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900"
-          />
-          <CustomBttn
-            text="Deny Application"
-            onclick={() => staffAction("declineApp")}
-            classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
-          />
-        </Alert>
+
+        <Dialog text="Choose Decision" modalName="decideAppModal">
+          <section className="flex space-x-4 items-center justify-center">
+            <CustomBttn
+              text="Accept Application"
+              onclick={() => staffAction("addCI")}
+              classname="flex items-center w-full whitespace-nowrap justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900"
+            />
+            <CustomBttn
+              text="Deny Application"
+              onclick={() => staffAction("declineApp")}
+              classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
+            />
+          </section>
+        </Dialog>
       </div>
     )
   );

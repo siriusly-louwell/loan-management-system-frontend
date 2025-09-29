@@ -61,9 +61,9 @@ export default function CreateUser({ userType }) {
     }
   }
 
-  function pfpChange(event) {
-    setPfp(event.target.files[0]);
-  }
+  // function pfpChange(event) {
+  //   setPfp(event.target.files[0]);
+  // }
 
   function dispatchInput(event) {
     dispatch(

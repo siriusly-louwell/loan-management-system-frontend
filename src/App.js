@@ -439,54 +439,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
-            path="apply"
+            path="application"
             element={
               <ProtectedRoute type="staff">
-                <AppliedForm url="/staff" />
+                <AppliedForm />
               </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="staff">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="personalinfo"
-              element={
-                <ProtectedRoute type="staff">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="employinfo"
-              element={
-                <ProtectedRoute type="staff">
-                  <EmploymentInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="familyinfo"
-              element={
-                <ProtectedRoute type="staff">
-                  <FamilyInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="requirements"
-              element={
-                <ProtectedRoute type="staff">
-                  <FormRequirements />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+            }
+          />
         </Route>
 
         {/* Admin Routes */}
@@ -529,7 +490,7 @@ function App() {
             path="loan"
             element={
               <ProtectedRoute type="admin">
-                <LoanInfo url="/admin" />
+                <LoanInfo />
               </ProtectedRoute>
             }
           />
@@ -561,7 +522,7 @@ function App() {
             path="application"
             element={
               <ProtectedRoute type="admin">
-                <AppliedForm url="/admin" />
+                <AppliedForm />
               </ProtectedRoute>
             }
           />

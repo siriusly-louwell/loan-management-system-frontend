@@ -59,7 +59,7 @@ export const applyRepository = {
 
     if (!response) {
       return {
-        message: "Failed to accept loan",
+        message: "Failed to update application",
         type: "error",
       };
     }

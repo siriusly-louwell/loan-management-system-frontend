@@ -51,15 +51,15 @@ export class Loan {
   }
 
   get getRate() {
-    return `₱${this.rate}`;
+    return `₱${parseFloat(this.rate).toLocaleString()}`;
   }
 
   get getAmortization() {
-    return `₱${this.amortization}`;
+    return `₱${parseFloat(this.amortization).toLocaleString()}`;
   }
 
   get getRent() {
-    return `₱${this.rent}`;
+    return `₱${parseFloat(this.rent).toLocaleString()}`;
   }
 
   get downpayment() {

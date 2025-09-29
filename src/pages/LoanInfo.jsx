@@ -460,7 +460,7 @@ export default function LoanInfo({ children }) {
         name={`${loan.fullName}`}
       />
 
-      <AssignCI id={loan.id} />
+      <AssignCI />
 
       <Alert id="approveApp" text={alert.text} icon="warn">
         <CustomBttn

@@ -3,7 +3,6 @@ import FormSelect from "./inputs/FormSelect";
 import Button from "./buttons/Button";
 import CloseBttn from "./buttons/CloseBttn";
 import FormTextarea from "./inputs/FormTextarea";
-import Spinner from "./loading components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import PopAnimate from "./animations/popAnimate";
 import {
@@ -14,9 +13,12 @@ import {
 import { fetchUsers } from "../services/redux/slices/userSlice";
 import { UserEntities } from "../services/entities/User";
 import { LoanEntity } from "../services/entities/Loan";
-import { assignCI } from "../services/redux/slices/applicationSlice";
+import {
+  fetchLoan,
+  updateStatus,
+} from "../services/redux/slices/applicationSlice";
 
-export default function AssignCI({ id }) {
+export default function AssignCI() {
   const dispatch = useDispatch();
   const [applicant, setApplicant] = useState({ apply_status: "accepted" });
   const ci = useSelector(UserEntities);
@@ -37,20 +39,21 @@ export default function AssignCI({ id }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
       const response = await dispatch(
-        assignCI({ ...applicant, id: loan.id })
+        updateStatus({ ...applicant, id: loan.id })
       ).unwrap();
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
 
       if (response.noCI) setApplicant({ ...applicant, ci_id: "__EMPTY__" });
-      if (response.type === "success")
+      if (response.type === "success") {
         dispatch(toggleModal({ name: "addCI", value: modals.addCI }));
+        dispatch(fetchLoan({ id: loan.id, by: "id" }));
+      }
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -109,7 +112,6 @@ export default function AssignCI({ id }) {
                   <Button text="Finish Assignment" type="submit" />
                 </div>
               </form>
-              <Spinner id="add_ci" />
             </div>
           </div>
         </PopAnimate>

@@ -41,11 +41,13 @@ export const fetchLoan = createAsyncThunk(
   }
 );
 
-export const assignCI = createAsyncThunk(
-  "application/assignCI",
+export const updateStatus = createAsyncThunk(
+  "application/updateStatus",
   async (data, thunkAPI) => {
     try {
-      return await assignCIUseCase(data);
+      return data.apply_status === "accepted"
+        ? await assignCIUseCase(data)
+        : await applyRepository.patch(data, data.id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

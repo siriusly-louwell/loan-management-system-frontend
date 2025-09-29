@@ -1,7 +1,7 @@
 const STATUS_STYLES = {
   done: {
     type: "done",
-    check: "text-green-100 dark:text-green-900",
+    check: "text-green-100 dark:text-green-100",
     label: "text-green-600 dark:text-green-500",
     span: "text-green-600 dark:text-green-600",
     bg: "bg-green-500 dark:bg-green-600",
@@ -15,8 +15,8 @@ const STATUS_STYLES = {
   },
   deny: {
     type: "deny",
-    check: "text-red-600 dark:text-red-400",
-    label: "text-red-500 dark:text-white",
+    check: "text-red-600 dark:text-red-200",
+    label: "text-red-500 dark:text-red-500",
     span: "text-red-500 dark:text-red-400",
     bg: "bg-red-100 dark:bg-red-700",
   },

@@ -1,8 +1,8 @@
 import UnitAPI from "../api/UnitAPI";
 
 export const unitRepository = {
-  async fetchAll() {
-    const response = await UnitAPI.fetchAll();
+  async fetchAll(data) {
+    const response = await UnitAPI.fetchAll(data);
 
     if (!response) {
       return {

@@ -3,8 +3,10 @@ import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const UnitAPI = {
-  async fetchAll() {
-    const response = await axios.get(`${API_URL}/api/motorcycle`);
+  async fetchAll(data) {
+    const response = await axios.get(`${API_URL}/api/motorcycle`, {
+      params: { ...data },
+    });
     return response.data;
   },
 

@@ -44,6 +44,16 @@ export class Loan {
     return `${this.first_name} ${this.last_name}`;
   }
 
+  get getIncome() {
+    return (
+      this.income && this.income.charAt(0).toUpperCase() + this.income.slice(1)
+    );
+  }
+
+  get getRate() {
+    return `₱${this.rate}`;
+  }
+
   get getAmortization() {
     return `₱${this.amortization}`;
   }
@@ -115,6 +125,14 @@ export class Loan {
     return index === 0
       ? STATUS_TEXT[status].label
       : STATUS_TEXT[status].description;
+  }
+
+  get statusBadge() {
+    return this.status === "denied"
+      ? { label: "Failed", color: "red" }
+      : this.status === "pending"
+      ? { label: "Pending", color: "blue" }
+      : { label: "Passed", color: "green" };
   }
 }
 

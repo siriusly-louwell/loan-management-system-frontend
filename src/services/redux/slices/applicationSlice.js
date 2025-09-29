@@ -104,7 +104,7 @@ const applicationSlice = createSlice({
         counts[val]++;
       }
 
-      state.loanResult = calculateViability(counts);
+      state.loanDecision = calculateViability(counts);
     },
 
     assessResult: (state) => {
@@ -115,11 +115,6 @@ const applicationSlice = createSlice({
           state.loanResult[category] = {};
 
         state.loanResult[category] = CATEGORY_RESULTS[category][color];
-        // state.loanResult[category] = {
-        //   label: result.label,
-        //   description: result.description,
-        //   suggestion: result.suggestion,
-        // };
       });
     },
   },

@@ -23,6 +23,8 @@ import {
 } from "../services/redux/slices/applicationSlice";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import { LoanEntity } from "../services/entities/Loan";
+import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { UnitEntities } from "../services/entities/Unit";
 
 export default function LoanInfo({ children, url }) {
   const navigate = useNavigate();
@@ -36,8 +38,10 @@ export default function LoanInfo({ children, url }) {
   const [alert, setAlert] = useState({});
   const [recommend, setRecommend] = useState([]);
   const [recoLoad, setRecoLoad] = useState(true);
-  const { modals } = useSelector((state) => state.ui);
+  const units = useSelector(UnitEntities);
   const loan = useSelector(LoanEntity);
+  const { unitsLoading } = useSelector((state) => state.unit);
+  const { modals } = useSelector((state) => state.ui);
   const { loanID, loanLoading } = useSelector((state) => state.application);
 
   useEffect(() => {
@@ -47,6 +51,11 @@ export default function LoanInfo({ children, url }) {
   useEffect(() => {
     if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
   }, [id, loanID, dispatch]);
+
+  useEffect(() => {
+    if (loan.ndi && (loan.status === "denied" || loan.status === "declined"))
+      dispatch(fetchUnits({ ndi: loan.ndi }));
+  }, [loan.ndi, loan.status, dispatch]);
 
   //   useEffect(() => {
   //     fetch(`http://localhost:8000/api/application/${id}?by=id`)
@@ -64,7 +73,7 @@ export default function LoanInfo({ children, url }) {
     fetch("http://127.0.0.1:8000/api/motorcycle")
       .then((response) => response.json())
       .then((data) => {
-        setRecommend(data);
+        setRecommend(data.data);
         setRecoLoad(false);
       })
       .catch((error) => {
@@ -187,58 +196,42 @@ export default function LoanInfo({ children, url }) {
   //   return turn[num];
   // }
 
-  function affordableLoan(motor) {
-    const tenure = motor.tenure * 12;
-    const loanAmount =
-      parseFloat(motor.price || 0) - parseFloat(motor.downpayment || 0);
-    const monthlyRate = motor.interest / 12 / 100;
-    const emi =
-      monthlyRate === 0
-        ? loanAmount / tenure
-        : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
-          (Math.pow(1 + monthlyRate, tenure) - 1);
-    const bool = Math.round(emi * 100) / 100 / totals.ndi;
+  // function affordableLoan(motor) {
+  //   const tenure = motor.tenure * 12;
+  //   const loanAmount =
+  //     parseFloat(motor.price || 0) - parseFloat(motor.downpayment || 0);
+  //   const monthlyRate = motor.interest / 12 / 100;
+  //   const emi =
+  //     monthlyRate === 0
+  //       ? loanAmount / tenure
+  //       : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
+  //         (Math.pow(1 + monthlyRate, tenure) - 1);
+  //   const bool = Math.round(emi * 100) / 100 / totals.ndi;
 
-    return bool <= 0.3 ? true : false;
-  }
+  //   return bool <= 0.3 ? true : false;
+  // }
 
   function displayRecommend() {
-    if (recoLoad)
-      return (
-        <>
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-        </>
-      );
-
-    if (totals.ndi > 0) {
-      return (
-        <div className="bg-gray-100 px-3 py-1 mx-5 mt-3 rounded-lg">
-          <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-            Recommendations
-          </h2>
-          <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-4 xl:grid-cols-4">
-            {recommend.map((motor) => {
-              if (affordableLoan(motor))
-                return <ProductCard key={motor.id} unit={motor} url="/unit" />;
-            })}
-          </section>
-        </div>
-      );
-    } else
-      return (
-        <section className="bg-gray-100 px-3 py-1 mx-5 mt-3 rounded-lg">
-          <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-            No Recommendations
-          </h2>
+    return (
+      <div className="bg-gray-100 dark:bg-gray-900 px-3 py-1 mx-5 mt-3 rounded-lg">
+        <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
+          {units.length > 0 ? "Recommendations" : "No Recommendations"}
+        </h2>
+        <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-4 xl:grid-cols-4">
+          {unitsLoading ? (
+            <CardSkeleton />
+          ) : (
+            units.map((motor) => <ProductCard key={motor.id} unit={motor} />)
+          )}
+        </section>
+        {!unitsLoading && units.length === 0 && (
           <EmptySearch
             label="No affordable units"
-            context="Applicant is not elligible to take any loan"
+            context="Applicant is not eligible to take any loan"
           />
-        </section>
-      );
+        )}
+      </div>
+    );
   }
 
   return (
@@ -463,15 +456,9 @@ export default function LoanInfo({ children, url }) {
           </div>
         </div>
       </div>
-      {loan.status === "declined" || loan.status === "denied"
-        ? displayRecommend()
-        : ""}
-      {/* <>
-                    <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Recommendations</h2>
-                    <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-                        {recoLoad ? (<CardSkeleton />) : (<ProductCard key={recommend.id} unit={recommend} url="/unit" />)}
-                    </section>
-                </> */}
+      {(loan.status === "declined" || loan.status === "denied") &&
+        displayRecommend()}
+
       <Eligibility loan={loan} setAlert={setAlert} url={url} />
       <DeclineApplicant
         id={loan.id}

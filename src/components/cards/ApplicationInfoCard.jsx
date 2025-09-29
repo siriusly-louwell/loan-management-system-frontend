@@ -19,7 +19,7 @@ export default function ApplicationInfoCard({ title, children }) {
                 <div className="text-xs text-gray-500 dark:text-gray-400">
                   {key.replace(/_/g, " ")}
                 </div>
-                <div className="font-medium text-gray-900 dark:text-white">
+              <div className="font-medium text-gray-900 dark:text-white">
                   {value}
                 </div>
               </div>

@@ -33,7 +33,7 @@ export const fetchUnits = createAsyncThunk(
     try {
       return page?.page || page?.min
         ? await unitRepository.fetchPage(page)
-        : await unitRepository.fetchAll();
+        : await unitRepository.fetchAll(page);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -129,10 +129,11 @@ const UnitSlice = createSlice({
           total: action.payload.total,
         };
 
-        state.units =
-          action.meta.arg.mode === "append"
-            ? [...state.units, ...action.payload.data]
-            : action.payload.data;
+        state.units = action.meta.arg.ndi
+          ? action.payload
+          : action.meta.arg.mode === "append"
+          ? [...state.units, ...action.payload.data]
+          : action.payload.data;
       })
       .addCase(fetchUnits.rejected, (state, action) => {
         state.unitsLoading = false;

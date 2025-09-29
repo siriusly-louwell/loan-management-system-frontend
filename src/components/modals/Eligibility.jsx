@@ -25,36 +25,36 @@ export default function Eligibility({ url }) {
     (state) => state.application
   );
   const { modals } = useSelector((state) => state.ui);
-  const loans =
-    Object.keys(loan).length > 0 && loan.transactions
-      ? loan.transactions.reduce((sum, item) => {
-          const tenure = item.tenure * 12;
-          const loanAmount =
-            parseFloat(item.motorcycle?.price || 0) -
-            parseFloat(item.downpayment || 0);
-          const monthlyRate = item.motorcycle.interest / 12 / 100;
-          const emi =
-            monthlyRate === 0
-              ? loanAmount / tenure
-              : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
-                (Math.pow(1 + monthlyRate, tenure) - 1);
+  // const loans =
+  //   Object.keys(loan).length > 0 && loan.transactions
+  //     ? loan.transactions.reduce((sum, item) => {
+  //         const tenure = item.tenure * 12;
+  //         const loanAmount =
+  //           parseFloat(item.motorcycle?.price || 0) -
+  //           parseFloat(item.downpayment || 0);
+  //         const monthlyRate = item.motorcycle.interest / 12 / 100;
+  //         const emi =
+  //           monthlyRate === 0
+  //             ? loanAmount / tenure
+  //             : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
+  //               (Math.pow(1 + monthlyRate, tenure) - 1);
 
-          return sum + Math.round(emi * 100) / 100;
-        }, 0)
-      : 0;
+  //         return sum + Math.round(emi * 100) / 100;
+  //       }, 0)
+  //     : 0;
 
-  const ndi =
-    parseFloat(loan.rate) -
-    (parseFloat(loan.rent) +
-      parseFloat(loan.amortization) +
-      parseFloat(loan.bills) +
-      parseFloat(loan.living_exp) +
-      parseFloat(loan.education_exp) +
-      parseFloat(loan.transportation));
-  const dti =
-    ((parseFloat(loan.rent) + parseFloat(loan.amortization) + loans) /
-      parseFloat(loan.rate)) *
-    100;
+  // const ndi =
+  //   parseFloat(loan.rate) -
+  //   (parseFloat(loan.rent) +
+  //     parseFloat(loan.amortization) +
+  //     parseFloat(loan.bills) +
+  //     parseFloat(loan.living_exp) +
+  //     parseFloat(loan.education_exp) +
+  //     parseFloat(loan.transportation));
+  // const dti =
+  //   ((parseFloat(loan.rent) + parseFloat(loan.amortization) + loans) /
+  //     parseFloat(loan.rate)) *
+  //   100;
 
   useEffect(() => {
     if (loan.id) {
@@ -66,35 +66,33 @@ export default function Eligibility({ url }) {
     }
   }, [modals.eligibility]);
 
-  console.log(loanResult);
+  // function empStability() {
+  //   const inc = parseFloat(loan.rate) >= 15000;
+  //   const year = loan.yrs_in_service >= 1;
 
-  function empStability() {
-    const inc = parseFloat(loan.rate) >= 15000;
-    const year = loan.yrs_in_service >= 1;
+  //   return inc && year ? "green" : inc || year ? "yellow" : "red";
+  // }
 
-    return inc && year ? "green" : inc || year ? "yellow" : "red";
-  }
+  // function debtStability() {
+  //   if (dti <= 35) return "green";
+  //   else if (dti > 35 && dti < 46) return "yellow";
+  //   else return "red";
+  // }
 
-  function debtStability() {
-    if (dti <= 35) return "green";
-    else if (dti > 35 && dti < 46) return "yellow";
-    else return "red";
-  }
+  // function ndiStability() {
+  //   if (ndi < 0) return "red";
+  //   else {
+  //     const bool = loans / ndi;
 
-  function ndiStability() {
-    if (ndi < 0) return "red";
-    else {
-      const bool = loans / ndi;
+  //     if (bool <= 0.3) return "green";
+  //     else if (bool > 0.3 && bool < 0.41) return "yellow";
+  //     else return "red";
+  //   }
+  // }
 
-      if (bool <= 0.3) return "green";
-      else if (bool > 0.3 && bool < 0.41) return "yellow";
-      else return "red";
-    }
-  }
-
-  const empBool = empStability();
-  const debtBool = debtStability();
-  const ndiBool = ndiStability();
+  // const empBool = empStability();
+  // const debtBool = debtStability();
+  // const ndiBool = ndiStability();
 
   // function assessDecision() {
   //   const counts = { green: 0, red: 0, yellow: 0 };
@@ -115,28 +113,28 @@ export default function Eligibility({ url }) {
   //   else return "review";
   // }
 
-  function cateResult(category) {
-    switch (category) {
-      default:
-        return empBool === "green"
-          ? "Income is stable and capable to take a loan"
-          : empBool === "yellow"
-          ? "Income is unstable/Not suitable for loan application"
-          : "Income did not meet the minimum requirement";
-      case "deb":
-        return debtBool === "green"
-          ? "Low Risk (Qualified to take loan)"
-          : debtBool === "yellow"
-          ? "Medium Risk (Might not qualify to loan)"
-          : "High Risk (Not Qualified to loan)";
-      case "net":
-        return ndiBool === "green"
-          ? "Has excess money (Able to afford a loan)"
-          : ndiBool === "yellow"
-          ? "Not enough money (Might not able to afford loan)"
-          : "Little to no money (Unable to afford a loan)";
-    }
-  }
+  // function cateResult(category) {
+  //   switch (category) {
+  //     default:
+  //       return empBool === "green"
+  //         ? "Income is stable and capable to take a loan"
+  //         : empBool === "yellow"
+  //         ? "Income is unstable/Not suitable for loan application"
+  //         : "Income did not meet the minimum requirement";
+  //     case "deb":
+  //       return debtBool === "green"
+  //         ? "Low Risk (Qualified to take loan)"
+  //         : debtBool === "yellow"
+  //         ? "Medium Risk (Might not qualify to loan)"
+  //         : "High Risk (Not Qualified to loan)";
+  //     case "net":
+  //       return ndiBool === "green"
+  //         ? "Has excess money (Able to afford a loan)"
+  //         : ndiBool === "yellow"
+  //         ? "Not enough money (Might not able to afford loan)"
+  //         : "Little to no money (Unable to afford a loan)";
+  //   }
+  // }
 
   function decideAction() {
     const results = loanDecision;
@@ -160,16 +158,16 @@ export default function Eligibility({ url }) {
     document.getElementById(string).style.display = "flex";
   }
 
-  function statusBadge(status) {
-    let type =
-      status === "denied"
-        ? ["Failed", "red"]
-        : status === "pending"
-        ? ["Pending", "blue"]
-        : ["Passed", "green"];
+  // function statusBadge(status) {
+  //   let type =
+  //     status === "denied"
+  //       ? ["Failed", "red"]
+  //       : status === "pending"
+  //       ? ["Pending", "blue"]
+  //       : ["Passed", "green"];
 
-    return <CustomBadge text={type[0]} color={type[1]} />;
-  }
+  //   return <CustomBadge text={type[0]} color={type[1]} />;
+  // }
 
   return (
     modals.eligibility && (
@@ -205,7 +203,7 @@ export default function Eligibility({ url }) {
                   <tbody>
                     <tr className="border-b border-gray-400">
                       <td className="py-4 flex space-x-3 items-center mr-3">
-                        <ColorLabel style={empBool} />
+                        <ColorLabel style={stability.employment || ""} />
                         <h3 className="text-md font-semibold text-gray-900 dark:text-white">
                           Employment Stability
                         </h3>
@@ -216,10 +214,11 @@ export default function Eligibility({ url }) {
                             Income Source:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            {loan.income
+                            {loan.getIncome}
+                            {/* {loan.income
                               ? loan.income.charAt(0).toUpperCase() +
                                 loan.income.slice(1)
-                              : ""}
+                              : ""} */}
                           </span>
                           <span className="text-sm text-gray-600 dark:text-gray-300">
                             Years in service:
@@ -231,7 +230,8 @@ export default function Eligibility({ url }) {
                             Monthly Income:
                           </span>
                           <span className="font-semibold text-md text-rose-700 dark:text-rose-500">
-                            ₱{parseFloat(loan.rate).toLocaleString()}
+                            {/* ₱{parseFloat(loan.rate).toLocaleString()} */}
+                            {loan.getRent}
                           </span>
                         </div>
                       </td>
@@ -246,14 +246,16 @@ export default function Eligibility({ url }) {
                         </div>
                       </td>
                       <td className="">
-                        <span className={`font-bold text-${empBool}-600`}>
-                          {cateResult("emp")}
+                        <span
+                          className={`font-bold text-${stability.employment}-600`}>
+                          {/* {cateResult("emp")} */}
+                          {loanResult.employment.description}
                         </span>
                       </td>
                     </tr>
                     <tr className="border-b border-gray-400">
                       <td className="py-4 flex space-x-3 items-center mr-3">
-                        <ColorLabel style={debtBool} />
+                        <ColorLabel style={stability.debt || ""} />
                         <h3 className="text-md font-semibold text-gray-900 dark:text-white">
                           Existing Debts and Loans
                         </h3>
@@ -264,25 +266,27 @@ export default function Eligibility({ url }) {
                             Monthly Rent:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            ₱{parseFloat(loan.rent).toLocaleString()}
+                            {/* ₱{parseFloat(loan.rent).toLocaleString()} */}
+                            {loan.getRent}
                           </span>
                           <span className="text-sm text-gray-600 whitespace-nowrap dark:text-gray-300">
                             Amortization:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            ₱{parseFloat(loan.amortization).toLocaleString()}
+                            {/* ₱{parseFloat(loan.amortization).toLocaleString()} */}
+                            {loan.getAmortization}
                           </span>
                           <span className="text-sm text-gray-600 whitespace-nowrap dark:text-gray-300">
                             Total EMI:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            ₱{loans.toLocaleString()}
+                            ₱{loan.emi.toLocaleString()}
                           </span>
                           <span className="text-md font-bold mt-2 text-gray-600 dark:text-white">
                             DTI Ratio:
                           </span>
                           <span className="text-rose-700 dark:text-rose-500 font-bold mt-2">
-                            {dti.toFixed(2)}%
+                            {loan.dti.toFixed(2)}%
                           </span>
                         </div>
                       </td>
@@ -292,14 +296,16 @@ export default function Eligibility({ url }) {
                         </span>
                       </td>
                       <td className="">
-                        <span className={`font-bold text-${debtBool}-600`}>
-                          {cateResult("deb")}
+                        <span
+                          className={`font-bold text-${stability.debt}-600`}>
+                          {/* {cateResult("deb")} */}
+                          {loanResult.debt.description}
                         </span>
                       </td>
                     </tr>
                     <tr className="border-b border-gray-400">
                       <td className="py-4 flex space-x-3 items-center mr-3">
-                        <ColorLabel style={ndiBool} />
+                        <ColorLabel style={stability.ndi || ""} />
                         <h3 className="text-md font-semibold text-gray-900 dark:text-white">
                           Net Disposable Income
                         </h3>
@@ -310,13 +316,14 @@ export default function Eligibility({ url }) {
                             Net Income:
                           </span>
                           <span className="font-semibold text-md text-gray-700 dark:text-white">
-                            ₱{parseFloat(loan.rate).toLocaleString()}
+                            {/* ₱{parseFloat(loan.rate).toLocaleString()} */}
+                            {loan.getRate}
                           </span>
                           <span className="text-md font-bold mt-2 text-gray-600 dark:text-white">
                             NDI:
                           </span>
                           <span className="text-rose-700 dark:text-rose-500 font-bold mt-2">
-                            ₱{ndi.toLocaleString()}
+                            ₱{loan.ndi.toLocaleString()}
                           </span>
                         </div>
                       </td>
@@ -326,8 +333,9 @@ export default function Eligibility({ url }) {
                         </span>
                       </td>
                       <td className="">
-                        <span className={`font-bold text-${ndiBool}-600`}>
-                          {cateResult("net")}
+                        <span className={`font-bold text-${stability.ndi}-600`}>
+                          {/* {cateResult("net")} */}
+                          {loanResult.ndi.description}
                         </span>
                       </td>
                     </tr>
@@ -380,7 +388,10 @@ export default function Eligibility({ url }) {
                       <h3 className="text-md font-semibold text-gray-900 dark:text-white">
                         Staff Verdict:
                       </h3>
-                      {statusBadge(loan.apply_status)}
+                      <CustomBadge
+                        text={loan.statusBadge.label}
+                        color={loan.statusBadge.color}
+                      />
                     </div>
                   )}
                   <CustomBttn

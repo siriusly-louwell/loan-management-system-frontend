@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LoanList from "../components/LoanList";
 import TrackList from "../components/TrackList";
 import CustomBttn from "../components/buttons/CustomBttn";
@@ -18,28 +18,27 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLoan,
   getLoanId,
+  updateStatus,
 } from "../services/redux/slices/applicationSlice";
-import { toggleModal } from "../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
 import { LoanEntity } from "../services/entities/Loan";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 import { UnitEntities } from "../services/entities/Unit";
-import { saveReport } from "../services/redux/slices/reportSlice";
 import Dialog from "../components/modals/Dialog";
+import { BarChart2, CheckCircle2, FileText, XCircle } from "lucide-react";
+import { UserEntity } from "../services/entities/User";
 
 export default function LoanInfo({ children }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { state } = useLocation();
-  const id = state?.id;
-  //   const [loan, setLoan] = useState({});
-  //   const [loanLoad, setLoanLoad] = useState(true);
-  // const [totals, setTotal] = useState({});
-  const [alert, setAlert] = useState({});
-  // const [recommend, setRecommend] = useState([]);
-  // const [recoLoad, setRecoLoad] = useState(true);
+  const [approval, setApproval] = useState();
   const units = useSelector(UnitEntities);
   const loan = useSelector(LoanEntity);
-  const { role } = useSelector((state) => state.auth.user);
+  const { role } = useSelector(UserEntity);
   const { unitsLoading } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
   const { loanID, loanLoading } = useSelector((state) => state.application);
@@ -50,166 +49,38 @@ export default function LoanInfo({ children }) {
 
   useEffect(() => {
     if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
-  }, [id, loanID, dispatch]);
+  }, [loanID, dispatch]);
 
   useEffect(() => {
     if (loan.ndi && (loan.status === "denied" || loan.status === "declined"))
       dispatch(fetchUnits({ ndi: loan.ndi }));
   }, [loan.ndi, loan.status, dispatch]);
 
-  //   useEffect(() => {
-  //     fetch(`http://localhost:8000/api/application/${id}?by=id`)
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setLoan(data);
-  //         setLoanLoad(false);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error fetching data: ", error);
-  //       });
-  //   }, [id]);
-
-  // useEffect(() => {
-  //   fetch("http://127.0.0.1:8000/api/motorcycle")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setRecommend(data.data);
-  //       setRecoLoad(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data: ", error);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!loanLoading) {
-  //     const down = loan.transactions.reduce(
-  //       (sum, obj) => sum + Number(obj.downpayment),
-  //       0
-  //     );
-  //     const price = loan.transactions.reduce(
-  //       (sum, obj) => sum + Number(obj.motorcycle.price),
-  //       0
-  //     );
-  //     const ndi =
-  //       parseFloat(loan.rate) -
-  //       (parseFloat(loan.rent) +
-  //         parseFloat(loan.amortization) +
-  //         parseFloat(loan.bills) +
-  //         parseFloat(loan.living_exp) +
-  //         parseFloat(loan.education_exp) +
-  //         parseFloat(loan.transportation));
-
-  //     setTotal({ price: down, downpayment: price, ndi: ndi });
-  //   }
-  // }, [loan, loanLoading, recommend]);
-
-  async function approveApplicant() {
-    document.getElementById("approve_app").style.display = "flex";
-    document.getElementById("approveApp").style.display = "none";
+  async function approveApplicant(event) {
+    event.preventDefault();
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
+    dispatch(toggleModal({ name: "approvalApp", value: modals.approvalApp }));
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/application/" + loan.id,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({ apply_status: alert.type }),
-        }
-      );
+      const response = await dispatch(
+        updateStatus({ apply_status: approval.text, id: loan.id })
+      ).unwrap();
 
-      const result = await response.json();
-      console.log("Success: ", result);
-      if (!response.ok) throw new Error("Update failed");
-      setAlert({
-        text: `Applicant has been ${alert.type}!`,
-        icon: "done",
-      });
-      document.getElementById("approve-app").style.display = "block";
-      document.getElementById("approve_app").style.display = "none";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      if (response.type === "success")
+        dispatch(fetchLoan({ id: loan.id, by: "id" }));
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Unexpected Error!",
-        icon: "warn",
-      });
-      document.getElementById("approve-app").style.display = "block";
-      document.getElementById("approve_app").style.display = "none";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
   }
-
-  // function trackCond(stage) {
-  //   switch (stage) {
-  //     case "accept":
-  //       if (loan.apply_status === "denied") return "deny";
-  //       else if (
-  //         loan.apply_status === "accepted" ||
-  //         loan.apply_status === "evaluated" ||
-  //         loan.apply_status === "approved" ||
-  //         loan.apply_status === "declined" ||
-  //         loan.apply_status === "payment"
-  //       )
-  //         return "done";
-  //       else return loan.apply_status === "pending" ? "current" : "pend";
-  //     case "investigation":
-  //       if (
-  //         loan.apply_status === "evaluated" ||
-  //         loan.apply_status === "approved" ||
-  //         loan.apply_status === "declined" ||
-  //         loan.apply_status === "payment"
-  //       )
-  //         return "done";
-  //       else return loan.apply_status === "accepted" ? "current" : "pend";
-  //     case "approve":
-  //       if (loan.apply_status === "declined") return "deny";
-  //       else if (
-  //         loan.apply_status === "approved" ||
-  //         loan.apply_status === "payment"
-  //       )
-  //         return "done";
-  //       else return loan.apply_status === "evaluated" ? "current" : "pend";
-  //     case "payment":
-  //       if (loan.apply_status === "payment") return "done";
-  //       else return loan.apply_status === "approved" ? "current" : "pend";
-  //     default:
-  //   }
-  // }
-
-  // function statusLabel(type, num) {
-  //   let turn = [];
-
-  //   if (type === "deny") {
-  //     turn =
-  //       loan.apply_status === "denied"
-  //         ? ["Denied", "The application is not viable to apply for a loan"]
-  //         : ["Accepted", "The application is viable to apply for a loan"];
-  //   } else {
-  //     turn =
-  //       loan.apply_status === "declined"
-  //         ? ["Declined", "The application did not passed the investigation"]
-  //         : ["Approved", "The application has passed the investigation"];
-  //   }
-
-  //   return turn[num];
-  // }
-
-  // function affordableLoan(motor) {
-  //   const tenure = motor.tenure * 12;
-  //   const loanAmount =
-  //     parseFloat(motor.price || 0) - parseFloat(motor.downpayment || 0);
-  //   const monthlyRate = motor.interest / 12 / 100;
-  //   const emi =
-  //     monthlyRate === 0
-  //       ? loanAmount / tenure
-  //       : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
-  //         (Math.pow(1 + monthlyRate, tenure) - 1);
-  //   const bool = Math.round(emi * 100) / 100 / totals.ndi;
-
-  //   return bool <= 0.3 ? true : false;
-  // }
 
   function displayRecommend() {
     return (
@@ -241,7 +112,6 @@ export default function LoanInfo({ children }) {
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
             Track the loan {loan.record_id}
           </h2>
-          {/* <CustomBttn text="Payment History" onclick={() => navigate(location.pathname === '/admin/loan' ? '/admin/history' : '/staff/loan_his', {state: {id: loan.id}})} classname="flex items-center justify-center bg-blue-200 text-blue-600 hover:text-white border border-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-900" /> */}
         </div>
 
         <div className="mt-6 sm:mt-8 lg:flex lg:gap-8">
@@ -352,7 +222,6 @@ export default function LoanInfo({ children }) {
                 <h3 className="text-xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">
                   Loan history
                 </h3>
-                {/* <CustomBttn text="Eligibility Results" onclick={() => document.getElementById('eligibleModal').style.display = 'flex'} classname="flex items-center justify-center text-yellow-500 hover:text-white border border-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-yellow-600 dark:border-yellow-500 dark:text-yellow-200 dark:hover:text-white dark:hover:bg-yellow-600 dark:focus:ring-yellow-900" /> */}
               </div>
 
               <ol className="relative ms-3 border-s border-gray-200 dark:border-gray-600">
@@ -390,8 +259,9 @@ export default function LoanInfo({ children }) {
 
               <div className="gap-4 grid grid-cols-1">
                 {children}
-                <Button
+                <CustomBttn
                   text="View Results"
+                  icon={<BarChart2 className="w-4 h-4 mr-2" />}
                   bttnType="button"
                   onclick={() =>
                     dispatch(
@@ -401,46 +271,56 @@ export default function LoanInfo({ children }) {
                       })
                     )
                   }
+                  classname="flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-700 focus:ring-2 focus:ring-rose-400 transition-colors"
                 />
                 {(loan.status === "evaluated" ||
                   loan.status === "approved" ||
                   loan.status === "declined") && (
                   <>
-                    <Button
+                    <CustomBttn
                       text="View Report"
+                      icon={<FileText className="w-4 h-4 mr-2" />}
                       bttnType="button"
-                      onclick={() => {
-                        navigate(`/${role}/review`);
-                      }}
+                      onclick={() => navigate(`/${role}/review`)}
+                      classname="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 transition-colors"
                     />
                     {role === "admin" && (
-                      <>
+                      <section className="flex space-x-2">
                         <CustomBttn
                           text="Approve Application"
+                          icon={<CheckCircle2 className="w-4 h-4 mr-2" />}
                           onclick={() => {
+                            setApproval({
+                              label: "Do you want to approve this application?",
+                              text: "approved",
+                            });
                             dispatch(
                               toggleModal({
-                                name: "approveApp",
-                                value: modals.approveApp,
+                                name: "approvalApp",
+                                value: modals.approvalApp,
                               })
                             );
                           }}
-                          classname="flex items-center w-full justify-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-green-600 dark:border-green-500 dark:text-green-200 dark:hover:text-white dark:hover:bg-green-800 dark:focus:ring-green-900"
+                          classname="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 focus:ring-2 focus:ring-green-400 transition-colors"
                         />
                         <CustomBttn
                           text="Decline Application"
+                          icon={<XCircle className="w-4 h-4 mr-2" />}
                           onclick={() => {
-                            document.getElementById(
-                              "approveApp"
-                            ).style.display = "block";
-                            setAlert({
-                              text: "Do you want to decline this applicant?",
-                              type: "declined",
+                            setApproval({
+                              label: "Do you want to decline this application?",
+                              text: "declined",
                             });
+                            dispatch(
+                              toggleModal({
+                                name: "approvalApp",
+                                value: modals.approvalApp,
+                              })
+                            );
                           }}
-                          classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
+                          classname="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-400 transition-colors"
                         />
-                      </>
+                      </section>
                     )}
                   </>
                 )}
@@ -463,7 +343,7 @@ export default function LoanInfo({ children }) {
 
       <Dialog
         text="Do you want to approve this application?"
-        modalName="approveApp">
+        modalName="approvalApp">
         <section className="flex space-x-4 items-center justify-center">
           <CustomBttn
             text="Yes"
@@ -474,14 +354,14 @@ export default function LoanInfo({ children }) {
             text="No, cancel"
             click={() =>
               dispatch(
-                toggleModal({ name: "approveApp", value: modals.approveApp })
+                toggleModal({ name: "approvalApp", value: modals.approvalApp })
               )
             }
           />
         </section>
       </Dialog>
 
-      <Alert id="approveApp" text={alert.text} icon="warn">
+      <Alert id="approvalApp" text={alert.text} icon="warn">
         <CustomBttn
           text="Yes"
           onclick={approveApplicant}
@@ -490,7 +370,7 @@ export default function LoanInfo({ children }) {
         <BasicBttn
           text="No, cancel"
           onclick={() =>
-            (document.getElementById("approveApp").style.display = "none")
+            (document.getElementById("approvalApp").style.display = "none")
           }
         />
       </Alert>

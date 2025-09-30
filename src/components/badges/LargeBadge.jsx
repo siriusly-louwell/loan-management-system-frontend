@@ -24,7 +24,7 @@ export default function LargeBadge({ type, subtext = true }) {
 
   return (
     <div
-      className={`flex flex-col space-y-2 items-center justify-center w-full my-5 rounded-lg bg-${color}-100 px-20 py-4 text-2xl text-${color}-700 dark:bg-${color}-600 dark:text-${color}-100`}>
+      className={`flex flex-col space-y-2 items-center justify-center w-full my-5 rounded-lg bg-${color}-100 px-20 py-4 text-2xl text-${color}-700 dark:bg-${color}-600/30 dark:text-${color}-100`}>
       <h3 className="font-bold">
         {type === "review"
           ? "Manual Review"

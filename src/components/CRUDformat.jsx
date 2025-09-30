@@ -28,7 +28,7 @@ export default function CRUDformat({
         <div className="mx-auto px-4 lg:px-4">
           <div className="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-              <h1 className="text-gray-100 font-medium text-2xl">{title}</h1>
+              <h1 className="dark:text-gray-100 font-medium text-2xl">{title}</h1>
             </div>
             <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
               <div className="w-full md:w-1/2">

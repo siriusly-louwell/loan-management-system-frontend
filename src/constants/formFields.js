@@ -139,5 +139,6 @@ export const FORM_LABELS = {
 export const REPORT_LABELS = {
   first_unit: "First Unit Applied",
   delivered: "Delivered?",
+  remarks: "Other Remarks",
   outlet: "Outlet",
 };

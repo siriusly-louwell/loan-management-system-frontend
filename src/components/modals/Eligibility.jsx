@@ -14,11 +14,12 @@ import {
   assessResult,
   calculateStability,
 } from "../../services/redux/slices/applicationSlice";
-import Dialog from "./Dialog";
 import { CheckCircle2, ClipboardCheck, FileSearch } from "lucide-react";
 import { UserEntity } from "../../services/entities/User";
+import CategoryCard from "../cards/CategoryCard";
+import DataRow from "../tables/DataRow";
 
-export default function Eligibility({ url }) {
+export default function Eligibility() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
@@ -45,60 +46,6 @@ export default function Eligibility({ url }) {
       dispatch(toggleModal({ name: "addCI", value: modals.addCI }));
     else dispatch(toggleModal({ name: "declineApp", value: modals.decideApp }));
   }
-
-  function staffAction(string) {
-    dispatch(toggleModal({ name: "eligibility", value: modals.eligibility }));
-    dispatch(
-      toggleModal({ name: "decideAppModal", value: modals.decideAppModal })
-    );
-    dispatch(toggleModal({ name: string, value: modals[string] }));
-  }
-
-  const CategoryCard = ({ title, status, children, result }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-500">
-      <div className="flex items-center gap-3 mb-4">
-        <ColorLabel style={status || ""} />
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-          {title}
-        </h3>
-      </div>
-      <div className="space-y-4">
-        {children}
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-          <h4 className="font-medium text-gray-900 dark:text-white mb-2">
-            Result
-          </h4>
-          <div
-            className={`p-4 rounded-md bg-${status}-50 dark:bg-${status}-600/20`}>
-            <h5
-              className={`font-semibold text-${status}-700 dark:text-${status}-400 mb-1`}>
-              {result.label}
-            </h5>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">
-              {result.description}
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              {result.suggestion}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const DataRow = ({ label, value, highlight }) => (
-    <div className="flex justify-between py-2">
-      <span className="text-gray-600 dark:text-gray-400">{label}</span>
-      <span
-        className={
-          highlight
-            ? "text-rose-600 dark:text-rose-500 font-bold"
-            : "text-gray-900 dark:text-white font-semibold"
-        }>
-        {value}
-      </span>
-    </div>
-  );
 
   return (
     modals.eligibility && (
@@ -252,7 +199,7 @@ export default function Eligibility({ url }) {
                           state: { id: loan.id },
                         })
                       }
-                      classname="inline-flex items-center gap-2 px-4 py-2 font-medium text-white bg-rose-500 border border-rose-600 rounded-lg hover:bg-rose-600 dark:bg-rose-600 dark:border-rose-500 dark:hover:bg-rose-700 transition-colors duration-200"
+                      classname="inline-flex items-center gap-2 px-4 py-2 font-medium text-white bg-rose-600 border border-rose-600 rounded-lg hover:bg-rose-500 dark:bg-rose-600 dark:border-rose-500 dark:hover:bg-rose-700 transition-colors duration-200"
                       icon={<FileSearch size={18} className="text-white" />}
                     />
                   </div>
@@ -261,21 +208,6 @@ export default function Eligibility({ url }) {
             </div>
           </div>
         </PopAnimate>
-
-        <Dialog text="Choose Decision" modalName="decideAppModal">
-          <section className="flex space-x-4 items-center justify-center">
-            <CustomBttn
-              text="Accept Application"
-              onclick={() => staffAction("addCI")}
-              classname="flex items-center w-full whitespace-nowrap justify-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-blue-600 dark:border-blue-500 dark:text-blue-200 dark:hover:text-white dark:hover:bg-blue-800 dark:focus:ring-blue-900"
-            />
-            <CustomBttn
-              text="Deny Application"
-              onclick={() => staffAction("declineApp")}
-              classname="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
-            />
-          </section>
-        </Dialog>
       </div>
     )
   );

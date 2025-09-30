@@ -196,10 +196,10 @@ function App() {
             element={
               <ProtectedRoute type="customer">
                 <LoanInfo>
-                  <CustomBttn
+                  {/* <CustomBttn
                     text="Cancel Application"
                     className="flex items-center w-full justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-red-600 dark:border-red-500 dark:text-red-200 dark:hover:text-white dark:hover:bg-red-800 dark:focus:ring-red-900"
-                  />
+                  /> */}
                 </LoanInfo>
               </ProtectedRoute>
             }

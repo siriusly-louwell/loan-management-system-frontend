@@ -312,53 +312,13 @@ function App() {
             }
           />
           <Route
-            path="apply"
+            path="application"
             element={
               <ProtectedRoute type="ci">
-                <AppliedForm url="/ci" />
+                <AppliedForm />
               </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="ci">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="personalinfo"
-              element={
-                <ProtectedRoute type="ci">
-                  <PersonalInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="employinfo"
-              element={
-                <ProtectedRoute type="ci">
-                  <EmploymentInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="familyinfo"
-              element={
-                <ProtectedRoute type="ci">
-                  <FamilyInfoForm />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="requirements"
-              element={
-                <ProtectedRoute type="ci">
-                  <FormRequirements />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+            }
+          />
         </Route>
 
         {/* Staff Routes */}
@@ -403,7 +363,6 @@ function App() {
             element={
               <ProtectedRoute type="staff">
                 <UnitList />
-                {/* <ProductInfo staff={true} /> */}
               </ProtectedRoute>
             }
           />
@@ -445,6 +404,15 @@ function App() {
             element={
               <ProtectedRoute type="staff">
                 <AppliedForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="review"
+            element={
+              <ProtectedRoute type="staff">
+                <ReportReview />
               </ProtectedRoute>
             }
           />
@@ -523,6 +491,14 @@ function App() {
             element={
               <ProtectedRoute type="admin">
                 <AppliedForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="review"
+            element={
+              <ProtectedRoute type="admin">
+                <ReportReview />
               </ProtectedRoute>
             }
           />

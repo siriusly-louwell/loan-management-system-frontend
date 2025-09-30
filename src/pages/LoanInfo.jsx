@@ -23,6 +23,8 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import { LoanEntity } from "../services/entities/Loan";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 import { UnitEntities } from "../services/entities/Unit";
+import { saveReport } from "../services/redux/slices/reportSlice";
+import Dialog from "../components/modals/Dialog";
 
 export default function LoanInfo({ children }) {
   const navigate = useNavigate();
@@ -407,24 +409,21 @@ export default function LoanInfo({ children }) {
                     <Button
                       text="View Report"
                       bttnType="button"
-                      onclick={() =>
-                        navigate("/ci/review", {
-                          state: { ...loan },
-                        })
-                      }
+                      onclick={() => {
+                        navigate(`/${role}/review`);
+                      }}
                     />
                     {role === "admin" && (
                       <>
                         <CustomBttn
                           text="Approve Application"
                           onclick={() => {
-                            document.getElementById(
-                              "approveApp"
-                            ).style.display = "block";
-                            setAlert({
-                              text: "Do you want to approve this applicant?",
-                              type: "approved",
-                            });
+                            dispatch(
+                              toggleModal({
+                                name: "approveApp",
+                                value: modals.approveApp,
+                              })
+                            );
                           }}
                           classname="flex items-center w-full justify-center text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-green-600 dark:border-green-500 dark:text-green-200 dark:hover:text-white dark:hover:bg-green-800 dark:focus:ring-green-900"
                         />
@@ -461,6 +460,26 @@ export default function LoanInfo({ children }) {
       />
 
       <AssignCI />
+
+      <Dialog
+        text="Do you want to approve this application?"
+        modalName="approveApp">
+        <section className="flex space-x-4 items-center justify-center">
+          <CustomBttn
+            text="Yes"
+            onclick={approveApplicant}
+            classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+          />
+          <BasicBttn
+            text="No, cancel"
+            click={() =>
+              dispatch(
+                toggleModal({ name: "approveApp", value: modals.approveApp })
+              )
+            }
+          />
+        </section>
+      </Dialog>
 
       <Alert id="approveApp" text={alert.text} icon="warn">
         <CustomBttn

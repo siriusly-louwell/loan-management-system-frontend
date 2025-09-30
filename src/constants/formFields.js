@@ -135,3 +135,9 @@ export const FORM_LABELS = {
     mother_last: "Last name",
   },
 };
+
+export const REPORT_LABELS = {
+  first_unit: "First Unit Applied",
+  delivered: "Delivered?",
+  outlet: "Outlet",
+};

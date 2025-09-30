@@ -12,6 +12,17 @@ export const submitReport = createAsyncThunk(
   }
 );
 
+export const fetchReport = createAsyncThunk(
+  "report/fetchReport",
+  async (report, thunkAPI) => {
+    try {
+      return await reportRepository.fetchReport(report);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const reportSlice = createSlice({
   name: "report",
   initialState: {
@@ -19,9 +30,19 @@ const reportSlice = createSlice({
     reportLoading: false,
     reportsLoading: false,
     report: {},
+    reportID: null,
     reportError: null,
   },
-  reducers: {},
+  reducers: {
+    saveReport: (state, action) => {
+      state.loanID = action.payload;
+      reportRepository.saveId(action.payload);
+    },
+
+    getReportId: (state) => {
+      state.reportID = Number(reportRepository.getId());
+    },
+  },
   extraReducers: (builder) => {
     builder
       // ? Report an application
@@ -36,16 +57,23 @@ const reportSlice = createSlice({
       .addCase(submitReport.rejected, (state, action) => {
         state.reportLoading = false;
         state.reportError = action.payload;
+      })
+
+      // ? Fetch a report
+      .addCase(fetchReport.pending, (state) => {
+        state.reportLoading = true;
+        state.reportError = null;
+      })
+      .addCase(fetchReport.fulfilled, (state, action) => {
+        state.reportLoading = false;
+        state.report = action.payload;
+      })
+      .addCase(fetchReport.rejected, (state, action) => {
+        state.reportLoading = false;
+        state.reportError = action.payload;
       });
   },
 });
 
-export const {
-  setLoading,
-  saveLoan,
-  getLoanId,
-  calculateStability,
-  assessDecision,
-  assessResult,
-} = reportSlice.actions;
+export const { saveReport, getReportId } = reportSlice.actions;
 export default reportSlice.reducer;

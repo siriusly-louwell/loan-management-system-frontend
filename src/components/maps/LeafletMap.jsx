@@ -26,7 +26,7 @@ export default function LeafletMap() {
   }
 
   return (
-    <section className="w-full mx-auto p-4">
+    <section className="w-full mx-auto p-4 z-40">
       <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-300">
         <MapContainer
           center={coords}

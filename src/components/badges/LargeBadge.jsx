@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function LargeBadge({ type }) {
+export default function LargeBadge({ type, subtext = true }) {
   let color;
 
   switch (type) {
@@ -8,6 +8,7 @@ export default function LargeBadge({ type }) {
       color = "blue";
       break;
     case "passed":
+    case "approval":
       color = "green";
       break;
     case "review":
@@ -31,13 +32,16 @@ export default function LargeBadge({ type }) {
           ? "Not Eligible"
           : type.charAt(0).toUpperCase() + type.slice(1)}
       </h3>
-      <span className={`text-sm font-small text-${color}-600 dark:text-${color}-200`}>
-        {type === "eligible" || type === "passed"
-          ? "The applicant is eligible to take the loan"
-          : type === "not_eligible" || type === "reject"
-          ? "The applicant is not eligible to take the loan"
-          : "The application needs to be manually reviewed"}
-      </span>
+      {subtext && (
+        <span
+          className={`text-sm font-small text-${color}-600 dark:text-${color}-200`}>
+          {type === "eligible" || type === "passed"
+            ? "The applicant is eligible to take the loan"
+            : type === "not_eligible" || type === "reject"
+            ? "The applicant is not eligible to take the loan"
+            : "The application needs to be manually reviewed"}
+        </span>
+      )}
     </div>
   );
 }

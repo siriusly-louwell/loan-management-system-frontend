@@ -282,7 +282,7 @@ function App() {
             path="ciloan"
             element={
               <ProtectedRoute type="ci">
-                <LoanInfo url="/ci" />
+                <LoanInfo />
               </ProtectedRoute>
             }
           />
@@ -394,7 +394,7 @@ function App() {
             path="loan"
             element={
               <ProtectedRoute type="staff">
-                <LoanInfo url="/staff" />
+                <LoanInfo />
               </ProtectedRoute>
             }
           />

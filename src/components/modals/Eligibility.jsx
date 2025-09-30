@@ -104,7 +104,6 @@ export default function Eligibility({ url }) {
       <div className="fixed inset-0 flex justify-center items-center overflow-y-auto bg-gray-900/50 dark:bg-gray-900/80 z-40 flex items-center justify-center p-4">
         <PopAnimate>
           <div className="w-full max-w-5xl mt-20 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-xl">
-            {/* Header */}
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Loan Eligibility Assessment
@@ -121,10 +120,8 @@ export default function Eligibility({ url }) {
               />
             </div>
 
-            {/* Content */}
             <div className="p-6 space-y-6">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Employment Stability Card */}
                 <CategoryCard
                   title="Employment Stability"
                   status={stability.employment}
@@ -141,7 +138,6 @@ export default function Eligibility({ url }) {
                   </div>
                 </CategoryCard>
 
-                {/* Debt Assessment Card */}
                 <CategoryCard
                   title="Debt Assessment"
                   status={stability.debt}
@@ -159,7 +155,6 @@ export default function Eligibility({ url }) {
                   />
                 </CategoryCard>
 
-                {/* NDI Analysis Card */}
                 <CategoryCard
                   title="Net Disposable Income"
                   status={stability.ndi}
@@ -178,7 +173,6 @@ export default function Eligibility({ url }) {
                 </CategoryCard>
               </div>
 
-              {/* Final Assessment */}
               <div className="mt-6 bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                   Final Assessment
@@ -212,7 +206,7 @@ export default function Eligibility({ url }) {
                         <CustomBttn
                           text="Accept System Verdict"
                           onclick={decideAction}
-                          classname="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 hover:border-blue-400 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/50 transition-colors duration-200"
+                          classname="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 hover:border-blue-400 dark:bg-blue-600/30 dark:border-blue-800 dark:text-blue-300 dark:hover:bg-blue-900/50 transition-colors duration-200"
                           icon={
                             <CheckCircle2
                               size={18}

@@ -9,7 +9,7 @@ export default function StepCard({ num, label, context }) {
         </span>
         <div className="mt-2 w-px h-full md:mt-0 md:ms-2 md:w-full md:h-px md:flex-1 bg-rose-400 group-last:hidden dark:bg-rose-500"></div>
       </div>
-      <div className="grow md:grow-0 md:mt-3 pb-5">
+      <div className="grow md:grow-0 md:mt-3">
         <span className="block text-lg font-medium text-gray-800 dark:text-white">
           {label}
         </span>

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Button from "../components/buttons/Button";
-import FormSelect from "../components/inputs/FormSelect";
 import StepCard from "../components/cards/StepCard";
 import BttnSmall from "../components/buttons/BttnSmall";
 import FormInput from "../components/inputs/FormInput";
@@ -8,16 +6,7 @@ import SmallSpin from "../components/loading components/SmallSpin";
 import { useSelector } from "react-redux";
 import { UnitEntity } from "../services/entities/Unit";
 
-export default function EMICalculator({
-  // name,
-  // brand,
-  // motorPrice,
-  // years,
-  // interest,
-  // unit.downpayment,
-  // load,
-  staff,
-}) {
+export default function EMICalculator({ staff }) {
   const unit = useSelector(UnitEntity);
   const { unitLoading } = useSelector((state) => state.unit);
   const [downPayment, setDownPayment] = useState();
@@ -222,7 +211,21 @@ export default function EMICalculator({
               <StepCard
                 num={3}
                 label="Submit your Documents"
-                context="After filling out the application form, upload your documents to the system."
+                context={
+                  <>
+                    <span>
+                      After filling out the application form, upload your
+                      documents to the system.
+                    </span>
+                    <ul className="mt-3 ml-4 list-disc space-y-2 text-sm">
+                      <li>Valid ID</li>
+                      <li>ID picture</li>
+                      <li>Proof of Income</li>
+                      <li>Proof of Residence</li>
+                    </ul>
+                  </>
+                }
+                // context="After filling out the application form, upload your documents to the system."
               />
               <StepCard
                 num={4}

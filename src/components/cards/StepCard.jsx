@@ -13,7 +13,7 @@ export default function StepCard({ num, label, context }) {
         <span className="block text-lg font-medium text-gray-800 dark:text-white">
           {label}
         </span>
-        <p className="text-sm text-gray-500 dark:text-gray-300">{context}</p>
+        <div className="text-sm text-gray-500 dark:text-gray-300">{context}</div>
       </div>
     </li>
   );

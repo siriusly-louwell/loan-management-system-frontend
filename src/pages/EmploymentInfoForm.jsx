@@ -204,7 +204,7 @@ export default function EmploymentInfoForm() {
         Real and/or Personal Properties:
       </h3>
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        <table className="w-full">
+        <table className="w-full border rounded-lg overflow-hidden">
           <FormTHead>
             <tr>
               <FormTH label="Kind of Property" />
@@ -253,7 +253,7 @@ export default function EmploymentInfoForm() {
         (List down all financing firms & individual who wxtended credit to you)
       </label>
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        <table className="w-full">
+        <table className="w-full border rounded-lg overflow-hidden">
           <FormTHead>
             <tr>
               <FormTH label="Name" />

@@ -24,17 +24,19 @@ import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
 import { FORM_LABELS } from "../constants/formFields";
 import LeafletMap from "../components/maps/LeafletMap";
 import ReadTD from "../components/tables/ReadTD";
+import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import { submitReport } from "../services/redux/slices/reportSlice";
 
 export default function CIReport() {
   const { state } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const application = useSelector(ApplicationEntity);
-  const { loanLoading } = useSelector((state) => state.application);
+  const { loanLoading, loanID } = useSelector((state) => state.application);
   const [report, setReport] = useState({});
   const [appReport, setAppReport] = useState({});
   const [sketch, setSketch] = useState({});
-  const [alert, setAlert] = useState({});
+  //   const [alert, setAlert] = useState({});
   const submitData = new FormData();
 
   useEffect(() => {
@@ -42,11 +44,11 @@ export default function CIReport() {
   }, []);
 
   useEffect(() => {
-    if (state.id) dispatch(fetchLoan({ id: state.id, by: "id" }));
-  }, [state.id, dispatch]);
+    if (state?.id) dispatch(fetchLoan({ id: state?.id, by: "id" }));
+  }, [state?.id, dispatch]);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/application/${state.id}?by=id`)
+    fetch(`http://localhost:8000/api/application/${state?.id}?by=id`)
       .then((response) => response.json())
       .then((data) => {
         setAppReport(data);
@@ -55,58 +57,80 @@ export default function CIReport() {
       .catch((error) => {
         console.error("Error fetching data: ", error);
       });
-  }, [state.id]);
+  }, [state?.id]);
 
   async function handleSubmit(event) {
     event.preventDefault();
-    document.getElementById("report_spin").style.display = "flex";
-
-    if (!sketch && !sketch instanceof File) {
-      setAlert({
-        text: "Please upload a sketch image.",
-        icon: "warn",
-      });
-      document.getElementById("ciReport").style.display = "block";
-      document.getElementById("report_spin").style.display = "none";
-      return;
-    }
-
-    for (let key in report) {
-      submitData.append(`${key}`, report[key]);
-    }
-    submitData.append("sketch", sketch);
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/report", {
-        method: "POST",
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     'Accept': 'application/json'
-        // },
-        body: submitData,
-        // body: JSON.stringify(applicant)
-      });
+      const response = await dispatch(submitReport(report)).unwrap();
 
-      const result = await response.json();
-      if (!response.ok) throw new Error("Update failed");
-      setAlert({
-        text: `Report for ${appReport.first_name} ${appReport.last_name} has been submitted!`,
-        icon: "done",
-        id: result.record_id,
-        contact: result.contact,
-      });
-      document.getElementById("report_spin").style.display = "none";
-      document.getElementById("ciReport").style.display = "block";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      if (response.type === "success") navigate("/ci/evaluation");
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Failed to submit report",
-        icon: "warn",
-      });
-      document.getElementById("ciReport").style.display = "block";
-      document.getElementById("report_spin").style.display = "none";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
   }
+
+//   async function handleSubmit(event) {
+//     event.preventDefault();
+//     document.getElementById("report_spin").style.display = "flex";
+
+//     if (!sketch && !sketch instanceof File) {
+//       setAlert({
+//         text: "Please upload a sketch image.",
+//         icon: "warn",
+//       });
+//       document.getElementById("ciReport").style.display = "block";
+//       document.getElementById("report_spin").style.display = "none";
+//       return;
+//     }
+
+//     for (let key in report) {
+//       submitData.append(`${key}`, report[key]);
+//     }
+//     submitData.append("sketch", sketch);
+
+//     try {
+//       const response = await fetch("http://127.0.0.1:8000/api/report", {
+//         method: "POST",
+//         // headers: {
+//         //     'Content-Type': 'application/json',
+//         //     'Accept': 'application/json'
+//         // },
+//         body: submitData,
+//         // body: JSON.stringify(applicant)
+//       });
+
+//       const result = await response.json();
+//       if (!response.ok) throw new Error("Update failed");
+//       setAlert({
+//         text: `Report for ${appReport.first_name} ${appReport.last_name} has been submitted!`,
+//         icon: "done",
+//         id: result.record_id,
+//         contact: result.contact,
+//       });
+//       document.getElementById("report_spin").style.display = "none";
+//       document.getElementById("ciReport").style.display = "block";
+//     } catch (error) {
+//       console.error("Error: ", error);
+//       setAlert({
+//         text: "Failed to submit report",
+//         icon: "warn",
+//       });
+//       document.getElementById("ciReport").style.display = "block";
+//       document.getElementById("report_spin").style.display = "none";
+//     }
+//   }
 
   function handleChange(event) {
     setReport({
@@ -118,7 +142,7 @@ export default function CIReport() {
   return (
     <>
       <div className="w-full bg-gray-100 dark:bg-gray-900">
-        <section className="max-w-3xl mx-auto p-4">
+        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-4">
           <ApplicationInfoCard title="Credit Investigation Report">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
               <div>
@@ -335,7 +359,7 @@ export default function CIReport() {
               <Button bttnType="submit" text="Done" />
             </div>
           </div>
-        </section>
+        </form>
       </div>
 
       {/* <div className="overflow-y-auto overflow-x-hidden justify-items-center items-center fixed bg-gray-400 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">

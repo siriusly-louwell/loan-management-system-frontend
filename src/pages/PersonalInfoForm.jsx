@@ -450,7 +450,7 @@ export default function PersonalInfoForm() {
         Unit Applied:
       </h3>
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        <table className="w-full">
+        <table className="w-full border rounded-lg overflow-hidden">
           <FormTHead>
             <tr>
               <FormTH label="Model" />

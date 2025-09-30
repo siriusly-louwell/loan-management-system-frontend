@@ -35,7 +35,7 @@ const reportSlice = createSlice({
   },
   reducers: {
     saveReport: (state, action) => {
-      state.loanID = action.payload;
+      state.reportID = action.payload;
       reportRepository.saveId(action.payload);
     },
 

@@ -174,7 +174,7 @@ export default function AccOverview() {
           </div>
         </section>
 
-        {account.isAdmin() && (
+        {account.isAdmin && (
           <>
             <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-4">
               {/* Loan Thresholds */}

@@ -1,9 +1,9 @@
-import ReportAPI from "../api/ReportAPI";
+import PaymentAPI from "../api/PaymentAPI";
 import { formRepository } from "./formRepository";
 
 export const paymentRepository = {
   async fetchAll() {
-    const response = await ReportAPI.fetchAll();
+    const response = await PaymentAPI.fetchAll();
 
     if (!response) {
       return {
@@ -16,7 +16,7 @@ export const paymentRepository = {
   },
 
   async fetchPayment(data) {
-    const response = await ReportAPI.fetchReport(data);
+    const response = await PaymentAPI.fetchReport(data);
 
     if (!response) {
       return {
@@ -29,7 +29,7 @@ export const paymentRepository = {
   },
 
   async fetchPage({ page = 1, perPage = 8, ...params }) {
-    const response = await ReportAPI.paginate(page, perPage, params);
+    const response = await PaymentAPI.paginate(page, perPage, params);
 
     if (!response) {
       return {
@@ -42,12 +42,13 @@ export const paymentRepository = {
   },
 
   async pay(data) {
+    data = { ...data, cert_num: this.generateID() };
     const form = formRepository.formData(data);
-    const response = await ReportAPI.pay(form);
+    const response = await PaymentAPI.pay(form);
 
     if (!response) {
       return {
-        message: "Failed to submit payment",
+        message: "Failed to save payment",
         type: "error",
       };
     }
@@ -56,7 +57,7 @@ export const paymentRepository = {
   },
 
   async patch(data, id) {
-    const response = await ReportAPI.patch(data, id);
+    const response = await PaymentAPI.patch(data, id);
 
     if (!response) {
       return {
@@ -66,6 +67,17 @@ export const paymentRepository = {
     }
 
     return await response;
+  },
+
+  generateID() {
+    const now = new Date();
+    const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}${String(now.getDate()).padStart(2, "0")}`;
+    const randomPart = Math.random().toString(36).substr(2, 6).toUpperCase();
+
+    return `INV-${datePart}-${randomPart}`;
   },
 
   saveId(id) {

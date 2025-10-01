@@ -125,7 +125,7 @@ export default function Navbar({ links, path }) {
                         )
                       }
                     />
-                    {!user?.isAdmin() && (
+                    {!user?.isAdmin && (
                       <MenuLink pathName="Settings" path="" />
                     )}
                     <MenuLink pathName="Log out" click={toggleLogout} />

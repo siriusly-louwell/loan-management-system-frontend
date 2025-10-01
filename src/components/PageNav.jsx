@@ -1,7 +1,10 @@
 import React from "react";
 import Pagination from "@mui/material/Pagination";
+import { useTheme } from "@mui/material/styles";
 
 export default function PageNav({ pagination, changePage }) {
+  const theme = useTheme();
+
   return (
     <nav className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4">
       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -24,15 +27,14 @@ export default function PageNav({ pagination, changePage }) {
         shape="rounded"
         sx={{
           "& .MuiPaginationItem-root": {
-            color: "#6b7280",
-            borderColor: "#6b7280",
-          },
-          "& .MuiPaginationItem-root:hover": {
-            backgroundColor: "#ff20586d",
-          },
-          "& .Mui-selected": {
-            backgroundColor: "#FF2056",
-            color: "#fff",
+            color:
+              theme.palette.mode === "dark"
+                ? theme.palette.grey[200]
+                : theme.palette.grey[700],
+            borderColor:
+              theme.palette.mode === "dark"
+                ? theme.palette.grey[600]
+                : theme.palette.grey[300],
           },
         }}
       />

@@ -6,6 +6,7 @@ import formReducer from "./slices/formSlice";
 import userReducer from "./slices/userSlice";
 import applicationReducer from "./slices/applicationSlice";
 import reportReducer from "./slices/reportSlice";
+import paymentReducer from "./slices/paymentSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     form: formReducer,
     application: applicationReducer,
     report: reportReducer,
+    payment: paymentReducer,
   },
 });
 

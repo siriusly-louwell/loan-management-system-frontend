@@ -30,7 +30,7 @@ export default function InvoiceList({
   const min = useDebounce(navPage.min, 1000);
   const max = useDebounce(navPage.max, 500);
   const statuses =
-    user.isAdmin() || (user.role === "ci" && bttnText !== "Evaluate")
+    user.isAdmin || (user.role === "ci" && bttnText !== "Evaluate")
       ? ["accepted", "evaluated", "approved", "declined", "pending"]
       : user.role === "ci" && bttnText === "Evaluate"
       ? ["accepted"]
@@ -50,97 +50,6 @@ export default function InvoiceList({
   }, [dispatch, navPage.page, navPage.type, max, min, search, user, bttnText]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
-
-  function displayLoan(loan) {
-    // const { pathname } = location;
-    // const {
-    //   record_id,
-    //   first_name,
-    //   last_name,
-    //   created_at,
-    //   apply_status,
-    //   id: loanId,
-    //   ci_id,
-    // } = loan;
-
-    // const showStaffOrAdminLoan =
-    //   pathname === "/staff/loans" ||
-    //   pathname === "/find" ||
-    //   (pathname === "/admin/loans" && apply_status !== "denied");
-
-    // const isEvaluator = bttnText === "Evaluate";
-    // const isAccepted = apply_status === "accepted";
-    // const isNotDenied = apply_status !== "denied";
-    // const isCurrentUser = loan.ci_id === id;
-
-    return (
-      <LogRow
-        key={loan.id}
-        id={loan.record_id}
-        name={loan.fullName}
-        date={loan.applied_at}
-        badge={
-          <CustomBadge text={loan.status.text} color={loan.status.color} />
-        }
-        path={path}
-        bttnText={bttnText}
-        state={loan.id}
-      />
-    );
-
-    // if (
-    //   (user.isAdmin() && apply_status !== "denied") ||
-    //   user.role === "staff" ||
-    //   user.role === "guest"
-    // ) {
-    //   return (
-    //     <LogRow
-    //       key={loanId}
-    //       id={record_id}
-    //       name={loan.fullName}
-    //       date={loan.applied_at}
-    //       badge={
-    //         <CustomBadge text={loan.status.text} color={loan.status.color} />
-    //       }
-    //       path={path}
-    //       bttnText={bttnText}
-    //       state={loanId}
-    //     />
-    //   );
-    // }
-
-    // if (isCurrentUser) {
-    //   if (isEvaluator && isAccepted) {
-    //     return (
-    //       <LogRow
-    //         key={loanId}
-    //         id={record_id}
-    //         name={loan.fullName}
-    //         date={loan.applied_at}
-    //         badge={<CustomBadge text="Accepted" color="green" />}
-    //         path={path}
-    //         bttnText={bttnText}
-    //         state={loanId}
-    //       />
-    //     );
-    //   }
-
-    //   if (!isEvaluator && isNotDenied) {
-    //     return (
-    //       <LogRow
-    //         key={loanId}
-    //         id={record_id}
-    //         name={`${first_name} ${last_name}`}
-    //         date={dateConvert(created_at)}
-    //         badge={statusBadge(apply_status)}
-    //         path={path}
-    //         bttnText={bttnText}
-    //         state={loanId}
-    //       />
-    //     );
-    //   }
-    // }
-  }
 
   return (
     <section className="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
@@ -194,10 +103,6 @@ export default function InvoiceList({
                 context="It seems no such data exists"
               />
             )}
-            {/* <LogRow id="FWB127364372" name="John Doe" date="20/12/2023" state={100}
-                                badge={<CustomBadge text="Evaluated" color="yellow" />} path={path} bttnText={bttnText} /> */}
-            {/* <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Confirmed />} path={path} bttnText={bttnText} />
-                                <LogRow id="FWB127364372" name="John Doe" date="20.12.2023" badge={<Cancelled />} path={path} bttnText={bttnText} /> */}
           </LogList>
 
           <PageNav pagination={pagination} changePage={setPage} />

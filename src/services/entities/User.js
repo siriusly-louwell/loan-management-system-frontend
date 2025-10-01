@@ -66,8 +66,8 @@ export class User {
       : false;
   }
 
-  isAdmin() {
-    return this.role === "admin";
+  get isAdmin() {
+    return this?.role && this.role === "admin";
   }
 
   isSameUser(otherUser) {

@@ -22,6 +22,7 @@ export class Loan {
     amortization = 0.0,
     rent = 0.0,
     income,
+    created_at,
   }) {
     this.id = id;
     this.record_id = record_id;
@@ -38,6 +39,7 @@ export class Loan {
     this.amortization = amortization;
     this.rent = rent;
     this.income = income;
+    this.created_at = created_at;
   }
 
   get fullName() {
@@ -63,13 +65,37 @@ export class Loan {
   }
 
   get downpayment() {
-    return `₱${parseFloat(this.transactions[0].downpayment).toLocaleString()}`;
+    return (
+      this.transactions?.length > 0 &&
+      `₱${parseFloat(this.transactions[0].downpayment).toLocaleString()}`
+    );
   }
 
   get price() {
-    return `₱${parseFloat(
-      this.transactions[0].motorcycle.price
-    ).toLocaleString()}`;
+    return (
+      this.transactions?.length > 0 &&
+      `₱${parseFloat(this.transactions[0].motorcycle.price).toLocaleString()}`
+    );
+  }
+
+  get initialBalance() {
+    const balance =
+      this.transactions?.length > 0 &&
+      Number(this.transactions[0].motorcycle.price) -
+        Number(this.transactions[0].downpayment);
+
+    return `₱${parseFloat(balance).toLocaleString()}`;
+  }
+
+  get dateIssued() {
+    if (!this.created_at) return "";
+    const date = new Date(this.created_at);
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
   get emi() {

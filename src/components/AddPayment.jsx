@@ -8,28 +8,26 @@ import CustomBttn from "./buttons/CustomBttn";
 import BasicBttn from "./buttons/BasicBttn";
 import PopAnimate from "./animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
+import { addPayment } from "../services/redux/slices/paymentSlice";
+import { ApplicationEntity } from "../services/entities/Application";
+import Dialog from "./modals/Dialog";
+import { LoanEntity } from "../services/entities/Loan";
 
-export default function AddPayment({ id }) {
+export default function AddPayment() {
   const dispatch = useDispatch();
+  const { id, record_id } = useSelector(ApplicationEntity);
+  const { initialBalance } = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
-  const [alert, setAlert] = useState({ text: "Are you sure you want to " });
   const now = new Date();
-
-  function generateId() {
-    const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}${String(now.getDate()).padStart(2, "0")}`;
-    const randomPart = Math.random().toString(36).substr(2, 6).toUpperCase();
-
-    return `INV-${datePart}-${randomPart}`;
-  }
 
   const [payment, setPayment] = useState({
     application_form_id: id,
     issued_at: "Rhean Motors Center",
-    cert_num: generateId(),
     prev_balance: 10000,
     status: "on_time",
   });
@@ -43,43 +41,53 @@ export default function AddPayment({ id }) {
     setAlert({ text: `Please confirm the payment ₱${event.target.value}` });
   }
 
-  async function handleSubmit() {
-    document.getElementById("payment_spin").style.display = "flex";
-    document.getElementById("pay-alert").style.display = "none";
+  function checkInput() {
+    if (!payment.amount_paid || payment.amount_paid === "__EMPTY__") {
+      setPayment({ ...payment, amount_paid: "__EMPTY__" });
+      dispatch(
+        setAlert({ message: "Please input payment amount", type: "warn" })
+      );
+    } else
+      dispatch(
+        toggleModal({ name: "confirmPayment", value: modals.confirmPayment })
+      );
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payment),
-      });
+      const response = await dispatch(addPayment(payment)).unwrap();
 
-      const result = await response.json();
-      console.log("Success: ", result);
-      if (!response.ok) throw new Error("Update failed");
-      setAlert({
-        text: "Invoice created successfully!",
-        icon: "done",
-      });
-      document.getElementById("pay-alert").style.display = "block";
-      document.getElementById("payment_spin").style.display = "none";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Unexpected Error!",
-        icon: "warn",
-      });
-      document.getElementById("pay-alert").style.display = "block";
-      document.getElementById("payment_spin").style.display = "none";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
   }
 
+  const paymentText = (
+    <>
+      Add payment amount{" "}
+      <strong className="text-rose-500">
+        ₱{parseFloat(payment.amount_paid).toLocaleString()}{" "}
+      </strong>
+      <br />
+      for loan <strong className="text-rose-500">{record_id}</strong>?
+    </>
+  );
+
   return (
     modals.addPayment && (
-      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
         <PopAnimate>
           <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
@@ -139,12 +147,14 @@ export default function AddPayment({ id }) {
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                     Previous Balance
                   </dt>
-                  <dd className="text-base font-medium text-red-500">₱199</dd>
+                  <dd className="text-base font-medium text-red-500">
+                    {initialBalance}
+                  </dd>
                 </dl>
 
                 <dl className="gap-4 py-3">
                   <FormInput
-                  value={payment.amount_paid}
+                    value={payment.amount_paid}
                     label="Payment Amount"
                     id="amount"
                     name="amount_paid"
@@ -158,13 +168,24 @@ export default function AddPayment({ id }) {
                   <Button
                     text="Add Payment"
                     type="button"
-                    onclick={() =>
-                      (document.getElementById("pay-alert").style.display =
-                        "block")
-                    }
+                    onclick={checkInput}
                   />
                 </dl>
               </div>
+              <Dialog text={paymentText} modalName="confirmPayment">
+                <CustomBttn
+                  text="Confirm"
+                  onclick={handleSubmit}
+                  classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                />
+                <BasicBttn
+                  text="Cancel"
+                  onclick={() =>
+                    (document.getElementById("pay-alert").style.display =
+                      "none")
+                  }
+                />
+              </Dialog>
               <Spinner id="payment_spin" />
               <Alert id="pay-alert" text={alert.text} icon={alert.icon}>
                 {alert.icon === "done" ? (

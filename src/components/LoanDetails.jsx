@@ -9,13 +9,17 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 import { UserEntity } from "../services/entities/User";
 
-export default function LoanDetails({setApproval}) {
+export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { role } = useSelector(UserEntity);
+  const { isAdmin, role } = useSelector(UserEntity);
   const loan = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
+  const statusCondition =
+    loan.status === "evaluated" ||
+    loan.status === "approved" ||
+    loan.status === "declined";
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -183,9 +187,7 @@ export default function LoanDetails({setApproval}) {
                 }
                 classname="flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-700 focus:ring-2 focus:ring-rose-400 transition-colors"
               />
-              {(loan.status === "evaluated" ||
-                loan.status === "approved" ||
-                loan.status === "declined") && (
+              {statusCondition && (
                 <>
                   <CustomBttn
                     text="View Report"
@@ -194,7 +196,7 @@ export default function LoanDetails({setApproval}) {
                     onclick={() => navigate(`/${role}/review`)}
                     classname="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 transition-colors"
                   />
-                  {role === "admin" && (
+                  {isAdmin && (
                     <section className="flex space-x-2">
                       <CustomBttn
                         text="Approve Application"

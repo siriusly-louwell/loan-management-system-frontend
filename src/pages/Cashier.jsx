@@ -13,13 +13,17 @@ import { fetchLoan } from "../services/redux/slices/applicationSlice";
 import useDebounce from "../hooks/useDebounce";
 import AccDetailSkeleton from "../components/loading components/AccDetailSkeleton";
 import { toggleModal } from "../services/redux/slices/uiSlice";
+import { LoanEntity } from "../services/entities/Loan";
 
 export default function Cashier() {
   const [id, setId] = useState({ search: "" });
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const { loan, loanLoading } = useSelector((state) => state.application);
+  const { downpayment, initialBalance, dateIssued } = useSelector(LoanEntity);
   const search = useDebounce(id.search, 500);
+  const emptySearch = search !== "";
+  const emptyObj = Object.keys(loan).length === 0;
 
   useEffect(() => {
     if (id.search !== "")
@@ -51,15 +55,15 @@ export default function Cashier() {
                 Account Details
               </h2>
 
-              {loanLoading && search !== "" ? (
+              {loanLoading && emptySearch ? (
                 <AccDetailSkeleton />
-              ) : search !== "" && Object.keys(loan).length === 0 ? (
+              ) : emptySearch && emptyObj ? (
                 <div className="flex w-full py-20 items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-600">
                   <p className="text-gray-400 dark:text-gray-700 text-lg font-small">
                     Record doesn't exist
                   </p>
                 </div>
-              ) : Object.keys(loan).length === 0 ? (
+              ) : emptyObj ? (
                 <EmptySearch
                   label="No data to show"
                   context="Use the search bar to find applicants"
@@ -139,7 +143,7 @@ export default function Cashier() {
                     Status
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {Object.keys(loan).length === 0 ? "- - -" : "On time"}
+                    {emptyObj ? "- - -" : "On time"}
                   </dd>
                 </dl>
 
@@ -148,7 +152,7 @@ export default function Cashier() {
                     Res. Certificate number
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {Object.keys(loan).length === 0 ? "- - -" : "#4859JS33"}
+                    {emptyObj ? "- - -" : "#4859JS33"}
                   </dd>
                 </dl>
 
@@ -157,7 +161,7 @@ export default function Cashier() {
                     Issued on
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    - - -
+                    {emptyObj ? "- - -" : dateIssued}
                   </dd>
                 </dl>
 
@@ -166,7 +170,7 @@ export default function Cashier() {
                     Issued at
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    - - -
+                    {emptyObj ? "- - -" : "Rhean Motor Center"}
                   </dd>
                 </dl>
 
@@ -175,7 +179,7 @@ export default function Cashier() {
                     Previous Balance
                   </dt>
                   <dd className="text-base font-medium text-red-500">
-                    {Object.keys(loan).length === 0 ? "- - -" : "₱199"}
+                    {emptyObj ? "- - -" : initialBalance}
                   </dd>
                 </dl>
 
@@ -184,7 +188,7 @@ export default function Cashier() {
                     Amount Paid
                   </dt>
                   <dd className="text-base font-medium text-green-500">
-                    {Object.keys(loan).length === 0 ? "- - -" : "₱15,000"}
+                    {emptyObj ? "- - -" : downpayment}
                   </dd>
                 </dl>
 
@@ -193,7 +197,7 @@ export default function Cashier() {
                     Payment Method
                   </dt>
                   <dd className="text-base font-medium text-green-500">
-                    {Object.keys(loan).length === 0 ? "- - -" : "Cash"}
+                    {emptyObj ? "- - -" : "Cash"}
                   </dd>
                 </dl>
 
@@ -202,7 +206,7 @@ export default function Cashier() {
                     Current Balance
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    {Object.keys(loan).length === 0 ? "- - -" : "₱8,392.00"}
+                    {emptyObj ? "- - -" : initialBalance}
                   </dd>
                 </dl>
 

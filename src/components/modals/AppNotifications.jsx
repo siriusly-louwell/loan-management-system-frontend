@@ -1,67 +1,43 @@
-import React, { useState, useEffect } from "react";
-import NotifGroup from "../cards/NotifGroup";
-import NotifSpan from "../texts/NotifSpan";
-import Notification from "../links/Notification";
-import LogList from "../LogList";
-import LogRow from "../tables/LogRow";
-import CustomBadge from "../badges/CustomBadge";
-import SmallSpin from "../loading components/SmallSpin";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPayments } from "../../services/redux/slices/paymentSlice";
+import InvoiceRow from "../tables/InvoiceRow";
+import { PaymentEntities } from "../../services/entities/Payment";
+import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
 
 export default function AppNotifications() {
-  const { state } = useLocation();
-  const id = state?.id;
-  const [payment, setPayment] = useState([]);
-  const [appLoad, setAppLoad] = useState(true);
+  const dispatch = useDispatch();
+  const payments = useSelector(PaymentEntities);
+  const { paymentsLoading } = useSelector((state) => state.payment);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/payment${id ? `/${id}` : ""}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (Array.isArray(data)) setPayment(data);
-        else setPayment([data]);
-        setAppLoad(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        setAppLoad(true);
-      });
-  }, [id]);
+    dispatch(fetchPayments());
+  }, []);
 
   return (
-    <div className="w-full md:px-20 p-4 bg-gray-200 dark:bg-gray-800">
-      <div className="w-full md:px-20">
-        <NotifGroup date="January 13th, 2025">
-          <LogList>
-            {appLoad ? (
-              <div className="w-full h-40 py-20 dark:bg-gray-800 flex justify-center items-center">
-                <SmallSpin size={50} />
-              </div>
-            ) : (
-              payment.map((pay, i) => (
-                <LogRow
-                  key={i}
-                  id={pay.cert_num}
-                  date="2025.07.23"
-                  name="John Doe"
-                  amount={pay.amount_paid}
-                  bttnText="View"
-                  path="/customer/invoice"
-                  badge={<CustomBadge text="On Time" color="green" />}
-                />
-              ))
-            )}
-          </LogList>
-        </NotifGroup>
-        {/* <NotifGroup date="January 9th, 2025">
-                    <Notification content="You have paid for this month's payment.." to="/customer/invoice">
-                        <NotifSpan text="This month's payment successful!" />
-                    </Notification>
-                    <Notification content="You have paid for this month's payment.." to="/customer/invoice">
-                        <NotifSpan text="This month's payment successful!" />
-                    </Notification>
-                </NotifGroup> */}
+    <>
+      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg px-4 py-10">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6">
+          Payment History
+        </h2>
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          {paymentsLoading ? (
+            <PaymentRowSkeleton num={5} />
+          ) : (
+            payments.map((pay, i) => (
+              <InvoiceRow
+                key={i}
+                data={{
+                  date: pay.date,
+                  id: pay.application.record_id,
+                  amount: pay.amount,
+                  cert_num: pay.cert_num,
+                }}
+              />
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

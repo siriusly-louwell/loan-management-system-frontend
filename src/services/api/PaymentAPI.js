@@ -28,10 +28,7 @@ const PaymentAPI = {
   },
 
   async patch(data, id) {
-    const response = await axios.patch(
-      `${API_URL}/api/payment/${id}`,
-      data
-    );
+    const response = await axios.patch(`${API_URL}/api/payment/${id}`, data);
     return response.data;
   },
 

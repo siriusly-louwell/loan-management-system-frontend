@@ -158,6 +158,8 @@ export class Loan {
       ? { label: "Failed", color: "red" }
       : this.status === "pending"
       ? { label: "Pending", color: "blue" }
+      : this.status === "canceled"
+      ? { label: "Canceled", color: "gray" }
       : { label: "Passed", color: "green" };
   }
 }

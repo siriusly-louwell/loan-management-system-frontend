@@ -56,14 +56,14 @@ export class Application {
     return `${this.first_name} ${this.last_name}`;
   }
 
-  imgURL() {
+  get imgURL() {
     return `${process.env.REACT_APP_API_URL}/storage/${this.pfp}`;
   }
 
-  validID() {
+  get validID() {
     return `${process.env.REACT_APP_API_URL}/storage/${this.valid_id}`;
   }
-  residenceImg() {
+  get residenceImg() {
     return `${process.env.REACT_APP_API_URL}/storage/${this.residence_proof}`;
   }
 
@@ -108,6 +108,25 @@ export class Application {
     return this.gender
       ? this.gender.charAt(0).toUpperCase() + this.gender.slice(1)
       : "";
+  }
+
+  get statusBadge() {
+    switch (this.apply_status) {
+      case "accepted":
+        return { text: "Accepted", color: "green" };
+      case "denied":
+        return { text: "Denied", color: "orange" };
+      case "evaluated":
+        return { text: "Evaluated", color: "yellow" };
+      case "approved":
+        return { text: "Approved", color: "purple" };
+      case "declined":
+        return { text: "Declined", color: "red" };
+      case "canceled":
+        return { text: "Canceled", color: "gray" };
+      default:
+        return { text: "Pending", color: "blue" };
+    }
   }
 }
 

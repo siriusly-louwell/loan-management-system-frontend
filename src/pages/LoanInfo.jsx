@@ -67,6 +67,32 @@ export default function LoanInfo() {
     }
   }
 
+  async function cancelApplication(event) {
+    event.preventDefault();
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
+    dispatch(toggleModal({ name: "cancelApp", value: modals.cancelApp }));
+
+    try {
+      const response = await dispatch(
+        updateStatus({ apply_status: approval.text, id: loan.id })
+      ).unwrap();
+
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      if (response.type === "success")
+        dispatch(fetchLoan({ id: loan.id, by: "id" }));
+    } catch (error) {
+      console.error("Error: ", error);
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
+    }
+  }
+
   function staffAction(string) {
     dispatch(toggleModal({ name: "eligibility", value: modals.eligibility }));
     dispatch(
@@ -84,10 +110,8 @@ export default function LoanInfo() {
       <Eligibility />
       <DeclineApplicant />
       <AssignCI />
-      
-      <Dialog
-        text="Do you want to approve this application?"
-        modalName="approvalApp">
+
+      <Dialog text={approval?.label} modalName="approvalApp">
         <section className="flex space-x-4 items-center justify-center">
           <CustomBttn
             text="Yes"

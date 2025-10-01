@@ -119,6 +119,8 @@ export const applyRepository = {
         return { text: "Approved", color: "purple" };
       case "declined":
         return { text: "Declined", color: "red" };
+      case "canceled":
+        return { text: "Canceled", color: "gray" };
       default:
         return { text: "Pending", color: "blue" };
     }

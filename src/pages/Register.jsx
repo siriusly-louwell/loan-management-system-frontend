@@ -9,36 +9,65 @@ import PfpLabel from "../components/PfpLabel";
 import Image from "../assets/icons/Image";
 import CustomBadge from "../components/badges/CustomBadge";
 import UserAPI from "../services/api/UserAPI";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchLoan,
+  setLoading,
+} from "../services/redux/slices/applicationSlice";
+import { ApplicationEntity } from "../services/entities/Application";
 
 export default function Register({ setUser }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const application = useSelector(ApplicationEntity);
+  const { loanLoading } = useSelector((state) => state.application);
   const [record, setRecord] = useState("");
-  const [applicant, setApplicant] = useState({});
+  // const [applicant, setApplicant] = useState({});
   const [register, setRegister] = useState({
     role: "customer",
     status: "active",
-    contact: "",
-    gender: "male",
   });
   const [alert, setAlert] = useState({});
+  const emptyState = record !== "" && application.id === undefined;
+
+  console.log(register);
 
   useEffect(() => {
-    if (record !== "") {
-      fetch(`http://localhost:8000/api/application/${record}?by=record_id`)
-        .then((response) => response.json())
-        .then((data) => {
-          setApplicant(data);
-          setRegister({
-            ...register,
-            first_name: data.first_name,
-            last_name: data.last_name,
-            email: data.email,
-            record_id: data.record_id,
-          });
-        })
-        .catch(() => setApplicant({ none: 0 }));
-    }
-  }, [record]);
+    dispatch(setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (record) dispatch(fetchLoan({ id: record, by: "record_id" }));
+  }, [record, dispatch]);
+
+  useEffect(() => {
+    setRegister({
+      ...register,
+      contact: application.contact_num,
+      gender: application.gender,
+      first_name: application.first_name,
+      last_name: application.last_name,
+      email: application.email,
+    });
+  }, [application]);
+
+  // useEffect(() => {
+  //   if (record !== "") {
+  //     fetch(`http://localhost:8000/api/application/${record}?by=record_id`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setApplicant(data);
+  //         setRegister({
+  //           ...register,
+  //           first_name: data.first_name,
+  //           last_name: data.last_name,
+  //           email: data.email,
+  //           record_id: data.record_id,
+  //         });
+  //       })
+  //       .catch(() => setApplicant({ none: 0 }));
+  //   }
+  // }, [record]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -94,35 +123,10 @@ export default function Register({ setUser }) {
     });
   }
 
-  function statusBadge(status) {
-    let type = [];
-
-    switch (status) {
-      case "accepted":
-        type = ["Accepted", "green"];
-        break;
-      case "denied":
-        type = ["Denied", "orange"];
-        break;
-      case "evaluated":
-        type = ["Evaluated", "yellow"];
-        break;
-      case "approved":
-        type = ["Approved", "purple"];
-        break;
-      case "declined":
-        type = ["Declined", "red"];
-        break;
-      default:
-        type = ["Pending", "blue"];
-    }
-    return <CustomBadge text={type[0]} color={type[1]} />;
-  }
-
   return (
     <>
-      <section className="bg-gray-200 dark:bg-gray-900 p-10">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+      <section className="bg-gray-200 h-screen dark:bg-gray-900">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
             <img src={RMCI} className="h-8 mr-2" alt="Rhean Motor Logo" />
             Rhean Motor Center
@@ -144,37 +148,53 @@ export default function Register({ setUser }) {
                   required={true}
                 />
                 <div className={`flex h-16 space-x-5`}>
-                  {Object.keys(applicant).length === 0 ? (
+                  {loanLoading ? (
+                    <div className="flex items-center space-x-3 animate-pulse">
+                      <div className="h-16 w-16 flex justify-center items-center rounded-lg bg-gray-300 dark:bg-gray-700">
+                        <Image size={8} />
+                      </div>
+
+                      <div className="flex flex-col space-y-2">
+                        <div className="h-4 w-28 rounded bg-gray-300 dark:bg-gray-700" />
+                        <div className="h-3 w-44 rounded bg-gray-300 dark:bg-gray-700" />
+                        <div className="h-6 w-20 rounded bg-gray-300 dark:bg-gray-700" />
+                      </div>
+                    </div>
+                  ) : record === "" ? (
                     <>
                       <div className="h-16 w-16 rounded-lg flex justify-center items-center bg-gray-200 dark:bg-gray-600">
-                        <Image size={10} />
+                        <Image size={8} />
                       </div>
                       <PfpLabel caption="Name" label="- - -" />
                     </>
-                  ) : Object.keys(applicant).length === 1 ? (
+                  ) : emptyState ? (
                     <div className="flex w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-600">
                       <p className="text-gray-400 dark:text-gray-700 text-lg font-small">
                         Record doesn't exist
                       </p>
                     </div>
                   ) : (
-                    <>
-                      <img
-                        className="h-16 w-16 rounded-lg"
-                        src={`http://localhost:8000/storage/${applicant.id_pic}`}
-                        alt="Helene avatar"
-                      />
-                      <div>
-                        <p className="text-gray-500 dark:text-gray-400">{`${applicant.first_name} ${applicant.last_name}`}</p>
-                        <p className="text-rose-400 text-sm font-medium mb-1">
-                          {applicant.email}
-                        </p>
-                        {statusBadge(applicant.apply_status)}
-                        {/* <CustomBadge text={`*${applicant.apply_status}`} color={
-                                                    applicant.apply_status === 'approved'? 'green' : (applicant.apply_status === 'declined' ? 'red' : 'blue')
-                                                } /> */}
-                      </div>
-                    </>
+                    application.id && (
+                      <>
+                        <img
+                          className="h-16 w-16 rounded-lg"
+                          src={application.imgURL}
+                          alt="Helene avatar"
+                        />
+                        <div>
+                          <p className="text-gray-500 dark:text-gray-400">
+                            {application.fullName}
+                          </p>
+                          <p className="text-rose-400 text-sm font-medium mb-1">
+                            {application.email}
+                          </p>
+                          <CustomBadge
+                            text={application.statusBadge.text}
+                            color={application.statusBadge.color}
+                          />
+                        </div>
+                      </>
+                    )
                   )}
                 </div>
                 <TextInput

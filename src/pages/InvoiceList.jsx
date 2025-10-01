@@ -21,7 +21,7 @@ export default function InvoiceList({
   bttnText = "View Details",
 }) {
   const dispatch = useDispatch();
-  const user = useSelector(UserEntity);
+  const { role, isAdmin, id } = useSelector(UserEntity);
   const { applications, appsLoading, pagination } = useSelector(
     (state) => state.application
   );
@@ -30,9 +30,9 @@ export default function InvoiceList({
   const min = useDebounce(navPage.min, 1000);
   const max = useDebounce(navPage.max, 500);
   const statuses =
-    user.isAdmin || (user.role === "ci" && bttnText !== "Evaluate")
+    isAdmin || (role === "ci" && bttnText !== "Evaluate")
       ? ["accepted", "evaluated", "approved", "declined", "pending"]
-      : user.role === "ci" && bttnText === "Evaluate"
+      : role === "ci" && bttnText === "Evaluate"
       ? ["accepted"]
       : [];
 
@@ -43,11 +43,12 @@ export default function InvoiceList({
         type: navPage.type,
         statuses: statuses,
         search: search,
+        isCustomer: role === "customer" && id,
         min: min,
         max: max,
       })
     );
-  }, [dispatch, navPage.page, navPage.type, max, min, search, user, bttnText]);
+  }, [dispatch, navPage.page, navPage.type, max, min, search, role, bttnText]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
 

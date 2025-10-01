@@ -185,7 +185,7 @@ export default function LoanDetails({ setApproval }) {
                     })
                   )
                 }
-                classname="flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-700 focus:ring-2 focus:ring-rose-400 transition-colors"
+                classname="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-700 focus:ring-2 focus:ring-rose-400 transition-colors"
               />
               {statusCondition && (
                 <>
@@ -194,7 +194,7 @@ export default function LoanDetails({ setApproval }) {
                     icon={<FileText className="w-4 h-4 mr-2" />}
                     bttnType="button"
                     onclick={() => navigate(`/${role}/review`)}
-                    classname="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 transition-colors"
+                    classname="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 transition-colors"
                   />
                   {isAdmin && (
                     <section className="flex space-x-2">
@@ -233,6 +233,26 @@ export default function LoanDetails({ setApproval }) {
                         classname="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-400 transition-colors"
                       />
                     </section>
+                  )}
+                  {role === "customer" && (
+                    <CustomBttn
+                      text="Cancel Application"
+                      icon={<XCircle className="w-4 h-4 mr-2" />}
+                      onclick={() => {
+                        setApproval({
+                          label:
+                            "Are you sure you want to cancel this application?",
+                          text: "canceled",
+                        });
+                        dispatch(
+                          toggleModal({
+                            name: "approvalApp",
+                            value: modals.approvalApp,
+                          })
+                        );
+                      }}
+                      classname="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-400 transition-colors"
+                    />
                   )}
                 </>
               )}

@@ -38,7 +38,7 @@ export default function AppliedForm() {
           status={application.getStatus}
           email={application.email}
           contact={application.contact_num}
-          img={application.imgURL()}
+          img={application.imgURL}
           loading={loanLoading}
           address={application.address?.personal_pres}>
           {loanLoading ? (
@@ -49,11 +49,11 @@ export default function AppliedForm() {
             </div>
           ) : (
             <>
-              <FileButton name="Valid ID" link={application.validID()} />
-              <FileButton name="ID Picture" link={application.imgURL()} />
+              <FileButton name="Valid ID" link={application.validID} />
+              <FileButton name="ID Picture" link={application.imgURL} />
               <FileButton
                 name="Proof of Residence"
-                link={application.residenceImg()}
+                link={application.residenceImg}
               />
             </>
           )}

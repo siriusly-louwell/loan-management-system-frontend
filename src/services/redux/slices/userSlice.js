@@ -13,6 +13,17 @@ export const addUser = createAsyncThunk(
   }
 );
 
+export const register = createAsyncThunk(
+  "user/register",
+  async (unit, thunkAPI) => {
+    try {
+      return await addUserUseCase(unit);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
   async (page, thunkAPI) => {

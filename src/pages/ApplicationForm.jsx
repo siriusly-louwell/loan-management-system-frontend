@@ -42,7 +42,6 @@ export default function ApplicationForm() {
   );
   const { regions } = useSelector((state) => state.address);
   const user = useSelector(UserEntity);
-  const [applicant, setApplicant] = useState({});
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
   const [modal, setModal] = useState({});
@@ -292,10 +291,23 @@ export default function ApplicationForm() {
   }, [pageRoute]);
 
   useEffect(() => {
-    dispatch(fetchAddress({ type: "regions" }));
+    if (regions.length === 0) dispatch(fetchAddress({ type: "regions" }));
   }, []);
 
-  console.log(regions);
+  useEffect(() => {
+    dispatch(
+      fetchAddress({ type: "provinces", value: formData.address.region })
+    );
+    dispatch(
+      fetchAddress({ type: "cities", value: formData.address.province })
+    );
+    dispatch(fetchAddress({ type: "barangays", value: formData.address.city }));
+  }, [
+    dispatch,
+    formData.address.region,
+    formData.address.province,
+    formData.address.city,
+  ]);
 
   function handleNext() {
     setPageType("next");
@@ -390,7 +402,7 @@ export default function ApplicationForm() {
 
   const disable = false;
   const outletContext = {
-    applicant,
+    // applicant,
     handleChange,
     dispatchInput,
     fileChange,

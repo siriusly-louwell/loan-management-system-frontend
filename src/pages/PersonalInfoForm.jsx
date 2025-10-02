@@ -21,8 +21,11 @@ import {
 
 export default function PersonalInfoForm() {
   const dispatch = useDispatch();
+  const { regions, provinces, cities, barangays } = useSelector(
+    (state) => state.address
+  );
   const { formData, selectDisable } = useSelector((state) => state.form);
-  const { dispatchInput, locations } = useOutletContext();
+  const { dispatchInput } = useOutletContext();
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -238,6 +241,20 @@ export default function PersonalInfoForm() {
           value={formData.address.region}
           onchange={(e) => dispatchInput(e, "address")}
           require={true}>
+          {regions.map((reg, i) => (
+            <option key={i} value={reg.code}>
+              {reg.name}
+            </option>
+          ))}
+        </FormSelect>
+
+        {/* <FormSelect
+          name="region"
+          label="Region"
+          id="region"
+          value={formData.address.region}
+          onchange={(e) => dispatchInput(e, "address")}
+          require={true}>
           <option>Region I</option>
           <option>Region II</option>
           <option>Region III</option>
@@ -253,7 +270,7 @@ export default function PersonalInfoForm() {
           <option>Region XIII</option>
           <option>Region XIV</option>
           <option>Region XV</option>
-        </FormSelect>
+        </FormSelect> */}
         <FormSelect
           name="province"
           label="Province"
@@ -263,6 +280,13 @@ export default function PersonalInfoForm() {
           require={true}
           disable={selectDisable.personal}>
           {formData.address.region !== undefined &&
+            formData.address.region !== "__EMPTY__" &&
+            provinces.map((prov, i) => (
+              <option key={i} value={prov.code}>
+                {prov.name}
+              </option>
+            ))}
+          {/* {formData.address.region !== undefined &&
           formData.address.region !== "__EMPTY__"
             ? locations[
                 formData.address.region.substring(
@@ -270,7 +294,7 @@ export default function PersonalInfoForm() {
                   formData.address.region.length
                 )
               ].province.map((val, i) => <option key={i}>{val}</option>)
-            : ""}
+            : ""} */}
         </FormSelect>
         <FormSelect
           name="city"
@@ -281,6 +305,13 @@ export default function PersonalInfoForm() {
           require={true}
           disable={selectDisable.personal}>
           {formData.address.region !== undefined &&
+            formData.address.region !== "__EMPTY__" &&
+            cities.map((cit, i) => (
+              <option key={i} value={cit.code}>
+                {cit.name}
+              </option>
+            ))}
+          {/* {formData.address.region !== undefined &&
           formData.address.region !== "__EMPTY__"
             ? locations[
                 formData.address.region.substring(
@@ -288,7 +319,7 @@ export default function PersonalInfoForm() {
                   formData.address.region.length
                 )
               ].city.map((val, i) => <option key={i}>{val}</option>)
-            : ""}
+            : ""} */}
         </FormSelect>
         <FormSelect
           name="brgy"
@@ -298,7 +329,13 @@ export default function PersonalInfoForm() {
           onchange={(e) => dispatchInput(e, "address")}
           require={true}
           disable={selectDisable.personal}>
-          <option>A. O. Floriendo</option>
+          {formData.address.region !== undefined &&
+          formData.address.region !== "__EMPTY__" && barangays.map((bgy, i) => (
+            <option key={i} value={bgy.code}>
+              {bgy.name}
+            </option>
+          ))}
+          {/* <option>A. O. Floriendo</option>
           <option>Buenavista</option>
           <option>Cacao</option>
           <option>Cagangohan</option>
@@ -336,7 +373,7 @@ export default function PersonalInfoForm() {
           <option>Tagpore</option>
           <option>Tibungol</option>
           <option>Upper Licanan</option>
-          <option>Waterfall</option>
+          <option>Waterfall</option> */}
         </FormSelect>
         <FormInput
           label="Purok"

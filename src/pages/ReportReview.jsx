@@ -20,7 +20,6 @@ export default function ReportReview() {
   const dispatch = useDispatch();
   const application = useSelector(ApplicationEntity);
   const report = useSelector(ReportEntity);
-  const { reportLoading } = useSelector((state) => state.report);
   const { loanLoading, loanID } = useSelector((state) => state.application);
 
   useEffect(() => {
@@ -161,22 +160,20 @@ export default function ReportReview() {
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-              {Object.entries(REPORT_LABELS).map(
-                ([key, label], i) => (
-                  <div key={i}>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {label}
-                    </div>
-                    {loanLoading ? (
-                      <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
-                    ) : (
-                      <div className="font-medium text-gray-900 dark:text-white">
-                        {report[key]}
-                      </div>
-                    )}
+              {Object.entries(REPORT_LABELS).map(([key, label], i) => (
+                <div key={i}>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    {label}
                   </div>
-                )
-              )}
+                  {loanLoading ? (
+                    <div className="w-40 h-6 mt-1 rounded-lg bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  ) : (
+                    <div className="font-medium text-gray-900 dark:text-white">
+                      {report[key]}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
 

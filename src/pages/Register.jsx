@@ -3,18 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/buttons/Button";
 import TextInput from "../components/inputs/TextInput";
 import RMCI from "../assets/images/RMCI.png";
-import Alert from "../components/Alert";
-import Spinner from "../components/loading components/Spinner";
 import PfpLabel from "../components/PfpLabel";
 import Image from "../assets/icons/Image";
 import CustomBadge from "../components/badges/CustomBadge";
-import UserAPI from "../services/api/UserAPI";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLoan,
-  setLoading,
+  setLoanLoad,
 } from "../services/redux/slices/applicationSlice";
 import { ApplicationEntity } from "../services/entities/Application";
+import { registerUser } from "../services/redux/slices/userSlice";
+import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import { loginUser } from "../services/redux/slices/authSlice";
 
 export default function Register({ setUser }) {
   const navigate = useNavigate();
@@ -22,18 +22,14 @@ export default function Register({ setUser }) {
   const application = useSelector(ApplicationEntity);
   const { loanLoading } = useSelector((state) => state.application);
   const [record, setRecord] = useState("");
-  // const [applicant, setApplicant] = useState({});
   const [register, setRegister] = useState({
     role: "customer",
     status: "active",
   });
-  const [alert, setAlert] = useState({});
   const emptyState = record !== "" && application.id === undefined;
 
-  console.log(register);
-
   useEffect(() => {
-    dispatch(setLoading(false));
+    dispatch(setLoanLoad(false));
   }, []);
 
   useEffect(() => {
@@ -43,76 +39,43 @@ export default function Register({ setUser }) {
   useEffect(() => {
     setRegister({
       ...register,
+      apply_status: application.apply_status,
       contact: application.contact_num,
       gender: application.gender,
       first_name: application.first_name,
       last_name: application.last_name,
       email: application.email,
+      user_id: application.user_id || false,
+      record_id: application.record_id,
     });
   }, [application]);
 
-  // useEffect(() => {
-  //   if (record !== "") {
-  //     fetch(`http://localhost:8000/api/application/${record}?by=record_id`)
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         setApplicant(data);
-  //         setRegister({
-  //           ...register,
-  //           first_name: data.first_name,
-  //           last_name: data.last_name,
-  //           email: data.email,
-  //           record_id: data.record_id,
-  //         });
-  //       })
-  //       .catch(() => setApplicant({ none: 0 }));
-  //   }
-  // }, [record]);
-
   async function handleSubmit(event) {
     event.preventDefault();
-    document.getElementById("register_spin").style.display = "flex";
+    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
 
     try {
-      //   const response = await fetch("http://127.1:8000/api/account", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Accept: "application/json",
-      //     },
-      //     body: JSON.stringify(register),
-      //   });
+      const response = await dispatch(registerUser(register)).unwrap();
+      dispatch(setAlert({ message: response.message, type: response.type }));
 
-      //   const result = await response.json();
-      const response = await UserAPI.register(register);
-
-      setAlert({
-        text: response.message,
-        icon: response.type === "valid" ? "done" : "warn",
-      });
-      console.log("Success: ", response);
-      if (!response.ok) throw new Error("Update failed");
-      else {
-        document.getElementById("register_alert").style.display = "block";
-        document.getElementById("register_spin").style.display = "none";
-
-        if (response.type == "valid") {
-          setUser(response.user);
-          console.log(response.user);
-
-          setTimeout(() => {
-            navigate("/customer");
-          }, 2000);
-        }
-      }
+      if (response.type === "success") {
+        await dispatch(
+          loginUser({ email: application.email, password: register.password })
+        ).unwrap();
+        setTimeout(() => {
+          dispatch(setLoading({ isActive: false }));
+          navigate("/customer");
+        }, 2000);
+      } else dispatch(setLoading({ isActive: false }));
     } catch (error) {
       console.error("Error: ", error);
-      setAlert({
-        text: "Unexpected error!",
-        icon: "warn",
-      });
-      document.getElementById("register_spin").style.display = "none";
-      document.getElementById("register_alert").style.display = "block";
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Something went wrong. Please try again",
+          type: "error",
+        })
+      );
     }
   }
 
@@ -227,7 +190,7 @@ export default function Register({ setUser }) {
               </form>
             </div>
           </div>
-          <Alert id="register_alert" text={alert.text} icon={alert.icon}>
+          {/* <Alert id="register_alert" text={alert.text} icon={alert.icon}>
             <Button
               text="Ok"
               type="button"
@@ -237,7 +200,7 @@ export default function Register({ setUser }) {
               }
             />
           </Alert>
-          <Spinner id="register_spin" />
+          <Spinner id="register_spin" /> */}
         </div>
       </section>
     </>

@@ -40,7 +40,7 @@ export default function CreateUser({ userType }) {
 
     try {
       const form = formData.createUser;
-      const response = await dispatch(addUser({ form, pfp })).unwrap();
+      const response = await dispatch(addUser({ form })).unwrap();
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userRepository } from "../../repositories/userRepository";
 import { addUserUseCase } from "../../usecases/user/addUserUseCase";
+import { registerUseCase } from "../../usecases/user/registerUseCase";
 
 export const addUser = createAsyncThunk(
   "user/addUser",
@@ -13,11 +14,11 @@ export const addUser = createAsyncThunk(
   }
 );
 
-export const register = createAsyncThunk(
-  "user/register",
-  async (unit, thunkAPI) => {
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (user, thunkAPI) => {
     try {
-      return await addUserUseCase(unit);
+      return await registerUseCase(user);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -74,6 +75,21 @@ const userSlice = createSlice({
             : action.payload.data;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
+        state.usersLoading = false;
+        state.error = action.payload;
+      })
+
+      // ? Register an applicant
+      .addCase(registerUser.pending, (state) => {
+        state.usersLoading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.usersLoading = false;
+
+        state.users = action.payload.user;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
         state.usersLoading = false;
         state.error = action.payload;
       });

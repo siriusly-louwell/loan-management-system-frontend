@@ -86,7 +86,7 @@ const applicationSlice = createSlice({
     applyError: null,
   },
   reducers: {
-    setLoading: (state, action) => {
+    setLoanLoad: (state, action) => {
       state.loanLoading = action.payload;
     },
 
@@ -231,14 +231,14 @@ const applicationSlice = createSlice({
       })
       .addCase(fetchLoan.rejected, (state, action) => {
         state.loanLoading = false;
-        state.load = {};
+        state.loan = {};
         state.applyError = action.payload;
       });
   },
 });
 
 export const {
-  setLoading,
+  setLoanLoad,
   saveLoan,
   getLoanId,
   calculateStability,

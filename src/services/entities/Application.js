@@ -3,6 +3,7 @@ export class Application {
   constructor({
     id,
     record_id,
+    user_id,
     first_name,
     middle_name,
     last_name,
@@ -28,6 +29,7 @@ export class Application {
   }) {
     this.id = id;
     this.record_id = record_id;
+    this.user_id = user_id;
     this.first_name = first_name;
     this.middle_name = middle_name;
     this.last_name = last_name;

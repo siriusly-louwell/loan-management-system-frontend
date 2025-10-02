@@ -11,6 +11,8 @@ export default function FormTextarea({
   disable,
 }) {
   const color = value === "__EMPTY__" ? "red" : "gray";
+  const darkRed =
+    value === "__EMPTY__" ? "dark:bg-red-700/30" : `dark:bg-${color}-700`;
 
   return (
     <div className="sm:col-span-2">
@@ -28,7 +30,7 @@ export default function FormTextarea({
         disabled={disable}
         rows="4"
         placeholder={placeholder}
-        className={`block p-2.5 w-full h-40 text-sm text-${color}-900 bg-${color}-50 rounded-lg border border-${color}-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-${color}-700 dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}></textarea>
+        className={`block p-2.5 w-full h-40 text-sm text-${color}-900 bg-${color}-50 rounded-lg border border-${color}-300 focus:ring-primary-500 focus:border-primary-500 ${darkRed} dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}></textarea>
     </div>
   );
 }

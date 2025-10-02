@@ -28,6 +28,7 @@ import Dialog from "../components/modals/Dialog";
 import Check from "../assets/icons/Check";
 import SaveButton from "../components/buttons/SaveButton";
 import { UserEntity } from "../services/entities/User";
+import { fetchAddress } from "../services/redux/slices/addressSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ export default function ApplicationForm() {
   const { toggled, pageRoute, pageNum, stepIndex, modals } = useSelector(
     (state) => state.ui
   );
+  const { regions } = useSelector((state) => state.address);
   const user = useSelector(UserEntity);
   const [applicant, setApplicant] = useState({});
   const [files, setFiles] = useState({});
@@ -288,6 +290,12 @@ export default function ApplicationForm() {
   useEffect(() => {
     if (pageType === "next" || pageType === "step") navigate(pageRoute);
   }, [pageRoute]);
+
+  useEffect(() => {
+    dispatch(fetchAddress({ type: "regions" }));
+  }, []);
+
+  console.log(regions);
 
   function handleNext() {
     setPageType("next");

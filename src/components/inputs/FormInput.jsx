@@ -12,9 +12,8 @@ export default function FormInput({
   disable = false,
 }) {
   const color = value === "__EMPTY__" ? "red" : "gray";
-  // const color = dispatch(inputCheck({ key: name, value: value }))
-  //   ? "red"
-  //   : "gray";
+  const darkRed =
+    value === "__EMPTY__" ? "dark:bg-red-700/30" : `dark:bg-${color}-700`;
 
   return (
     <div>
@@ -33,7 +32,7 @@ export default function FormInput({
         placeholder={placeholder}
         required={require}
         disabled={disable}
-        className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-rose-600 focus:border-rose-600 block w-full p-2.5 dark:bg-${color}-700 dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-rose-500 dark:focus:border-rose-500`}
+        className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-rose-600 focus:border-rose-600 block w-full p-2.5 ${darkRed}  dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-rose-500 dark:focus:border-rose-500`}
       />
     </div>
   );

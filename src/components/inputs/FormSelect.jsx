@@ -11,6 +11,8 @@ export default function FormSelect({
   disable = false,
 }) {
   const color = value === "__EMPTY__" ? "red" : "gray";
+  const darkRed =
+    value === "__EMPTY__" ? "dark:bg-red-700/30" : `dark:bg-${color}-700`;
 
   return (
     <div>
@@ -25,10 +27,8 @@ export default function FormSelect({
         defaultValue={value}
         onChange={onchange}
         disabled={disable}
-        className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-${color}-700 dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}>
-        <option value="__EMPTY__">
-          Select {label}
-        </option>
+        className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${darkRed} dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}>
+        <option value="__EMPTY__">Select {label}</option>
         {children}
       </select>
     </div>

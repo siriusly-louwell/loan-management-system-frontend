@@ -7,6 +7,7 @@ import userReducer from "./slices/userSlice";
 import applicationReducer from "./slices/applicationSlice";
 import reportReducer from "./slices/reportSlice";
 import paymentReducer from "./slices/paymentSlice";
+import addressReducer from "./slices/addressSlice";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     application: applicationReducer,
     report: reportReducer,
     payment: paymentReducer,
+    address: addressReducer,
   },
 });
 

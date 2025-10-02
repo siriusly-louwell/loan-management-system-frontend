@@ -330,11 +330,12 @@ export default function PersonalInfoForm() {
           require={true}
           disable={selectDisable.personal}>
           {formData.address.region !== undefined &&
-          formData.address.region !== "__EMPTY__" && barangays.map((bgy, i) => (
-            <option key={i} value={bgy.code}>
-              {bgy.name}
-            </option>
-          ))}
+            formData.address.region !== "__EMPTY__" &&
+            barangays.map((bgy, i) => (
+              <option key={i} value={bgy.code}>
+                {bgy.name}
+              </option>
+            ))}
           {/* <option>A. O. Floriendo</option>
           <option>Buenavista</option>
           <option>Cacao</option>

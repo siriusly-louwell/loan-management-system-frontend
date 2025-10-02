@@ -20,8 +20,14 @@ import {
 export default function FamilyInfoForm() {
   const { dispatchInput, locations } = useOutletContext();
   const dispatch = useDispatch();
+  const { regions, provinces, cities, barangays } = useSelector(
+    (state) => state.address
+  );
   const { formData, selectDisable } = useSelector((state) => state.form);
   const [relatives, setRelative] = useState([""]);
+  const regCondition =
+    formData.address.p_region !== undefined &&
+    formData.address.p_region !== "__EMPTY__";
 
   useEffect(() => {
     dispatch(disableAddress());
@@ -236,20 +242,11 @@ export default function FamilyInfoForm() {
           value={formData.address.p_region}
           onchange={(e) => dispatchInput(e, "address")}
           require={true}>
-          <option>Region I</option>
-          <option>Region II</option>
-          <option>Region III</option>
-          <option>Region IV</option>
-          <option>Region V</option>
-          <option>Region VI</option>
-          <option>Region VII</option>
-          <option>Region VIII</option>
-          <option>Region IX</option>
-          <option>Region X</option>
-          <option>Region XI</option>
-          <option>Region XII</option>
-          <option>Region XIII</option>
-          <option>Region XIV</option>
+          {regions.map((reg, i) => (
+            <option key={i} value={reg.code}>
+              {reg.name}
+            </option>
+          ))}
         </FormSelect>
         <FormSelect
           name="p_province"
@@ -259,15 +256,12 @@ export default function FamilyInfoForm() {
           onchange={(e) => dispatchInput(e, "address")}
           require={true}
           disable={selectDisable.parent}>
-          {formData.address.p_region !== undefined &&
-          formData.address.p_region !== "__EMPTY__"
-            ? locations[
-                formData.address.p_region.substring(
-                  7,
-                  formData.address.p_region.length
-                )
-              ].province.map((val, i) => <option key={i}>{val}</option>)
-            : ""}
+          {regCondition &&
+            provinces.map((prov, i) => (
+              <option key={i} value={prov.code}>
+                {prov.name}
+              </option>
+            ))}
         </FormSelect>
         <FormSelect
           name="p_city"
@@ -277,15 +271,12 @@ export default function FamilyInfoForm() {
           onchange={(e) => dispatchInput(e, "address")}
           require={true}
           disable={selectDisable.parent}>
-          {formData.address.p_region !== undefined &&
-          formData.address.p_region !== "__EMPTY__"
-            ? locations[
-                formData.address.p_region.substring(
-                  7,
-                  formData.address.p_region.length
-                )
-              ].city.map((val, i) => <option key={i}>{val}</option>)
-            : ""}
+          {regCondition &&
+            cities.map((cit, i) => (
+              <option key={i} value={cit.code}>
+                {cit.name}
+              </option>
+            ))}
         </FormSelect>
         <FormSelect
           name="p_brgy"
@@ -295,45 +286,12 @@ export default function FamilyInfoForm() {
           onchange={(e) => dispatchInput(e, "address")}
           require={true}
           disable={selectDisable.parent}>
-          <option>A. O. Floriendo</option>
-          <option>Buenavista</option>
-          <option>Cacao</option>
-          <option>Cagangohan</option>
-          <option>Consolacion</option>
-          <option>Dapco</option>
-          <option>Datu Abdul Dadia</option>
-          <option>Gredu</option>
-          <option>J. P. Laurel</option>
-          <option>Kasilak</option>
-          <option>Katipunan</option>
-          <option>Katualan</option>
-          <option>Kiotoy</option>
-          <option>Little Panay</option>
-          <option>Lower Panaga</option>
-          <option>Mabunao</option>
-          <option>Maduao</option>
-          <option>Malativas</option>
-          <option>Manay</option>
-          <option>Nanyo</option>
-          <option>New Malaga</option>
-          <option>New Malitbog</option>
-          <option>New Pandan</option>
-          <option>New Visayas</option>
-          <option>Quezon</option>
-          <option>Salvacion</option>
-          <option>San Francisco</option>
-          <option>San Nicolas</option>
-          <option>San Pedro</option>
-          <option>San Roque</option>
-          <option>San Vicente</option>
-          <option>Santa Cruz</option>
-          <option>Santo Nino</option>
-          <option>Sindaton</option>
-          <option>Southern DAvao</option>
-          <option>Tagpore</option>
-          <option>Tibungol</option>
-          <option>Upper Licanan</option>
-          <option>Waterfall</option>
+          {regCondition &&
+            barangays.map((bgy, i) => (
+              <option key={i} value={bgy.code}>
+                {bgy.name}
+              </option>
+            ))}
         </FormSelect>
         <FormInput
           label="Purok"

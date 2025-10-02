@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { formRepository } from "../../repositories/formRepository";
 import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase";
 import { applyUseCase } from "../../usecases/application/applyUseCase";
+import AddressAPI from "../../api/AddressAPI";
 
 export const applyLoan = createAsyncThunk(
   "form/applyLoan",
@@ -149,21 +150,31 @@ const formSlice = createSlice({
         default:
           state.formData.address = {
             ...address,
-            prev_region: address.region,
-            prev_province: address.province,
-            prev_city: address.city,
-            prev_brgy: address.brgy,
+            prev_region: AddressAPI.region(address.region),
+            prev_province: AddressAPI.province(address.province),
+            prev_city: AddressAPI.city(address.city),
+            prev_brgy: AddressAPI.barangay(address.brgy),
             prev_purok: address.purok,
             prev_lot_num: address.lot_num,
+            // prev_region: address.region,
+            // prev_province: address.province,
+            // prev_city: address.city,
+            // prev_brgy: address.brgy,
+            // prev_purok: address.purok,
+            // prev_lot_num: address.lot_num,
           };
           break;
         case "parent":
           state.formData.address = {
             ...address,
-            p_prev_region: address.p_region,
-            p_prev_province: address.p_province,
-            p_prev_city: address.p_city,
-            p_prev_brgy: address.p_brgy,
+            p_prev_region: AddressAPI.region(address.p_region),
+            p_prev_province: AddressAPI.province(address.p_province),
+            p_prev_city: AddressAPI.city(address.p_city),
+            p_prev_brgy: AddressAPI.barangay(address.p_brgy),
+            // p_prev_region: address.p_region,
+            // p_prev_province: address.p_province,
+            // p_prev_city: address.p_city,
+            // p_prev_brgy: address.p_brgy,
             p_prev_purok: address.p_purok,
             p_prev_lot_num: address.p_lot_num,
           };
@@ -171,10 +182,14 @@ const formSlice = createSlice({
         case "spouse":
           state.formData.address = {
             ...address,
-            sp_prev_region: address.sp_region,
-            sp_prev_province: address.sp_province,
-            sp_prev_city: address.sp_city,
-            sp_prev_brgy: address.sp_brgy,
+            sp_prev_region: AddressAPI.region(address.sp_region),
+            sp_prev_province: AddressAPI.province(address.sp_province),
+            sp_prev_city: AddressAPI.city(address.sp_city),
+            sp_prev_brgy: AddressAPI.barangay(address.sp_brgy),
+            // sp_prev_region: address.sp_region,
+            // sp_prev_province: address.sp_province,
+            // sp_prev_city: address.sp_city,
+            // sp_prev_brgy: address.sp_brgy,
             sp_prev_purok: address.sp_purok,
             sp_prev_lot_num: address.sp_lot_num,
           };

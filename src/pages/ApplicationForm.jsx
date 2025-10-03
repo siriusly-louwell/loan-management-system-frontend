@@ -303,10 +303,41 @@ export default function ApplicationForm() {
     );
     dispatch(fetchAddress({ type: "barangays", value: formData.address.city }));
   }, [
-    dispatch,
     formData.address.region,
     formData.address.province,
     formData.address.city,
+  ]);
+
+  useEffect(() => {
+    dispatch(
+      fetchAddress({ type: "provinces", value: formData.address.p_region })
+    );
+    dispatch(
+      fetchAddress({ type: "cities", value: formData.address.p_province })
+    );
+    dispatch(
+      fetchAddress({ type: "barangays", value: formData.address.p_city })
+    );
+  }, [
+    formData.address.p_region,
+    formData.address.p_province,
+    formData.address.p_city,
+  ]);
+
+  useEffect(() => {
+    dispatch(
+      fetchAddress({ type: "provinces", value: formData.address.sp_region })
+    );
+    dispatch(
+      fetchAddress({ type: "cities", value: formData.address.sp_province })
+    );
+    dispatch(
+      fetchAddress({ type: "barangays", value: formData.address.sp_city })
+    );
+  }, [
+    formData.address.sp_region,
+    formData.address.sp_province,
+    formData.address.sp_city,
   ]);
 
   function handleNext() {

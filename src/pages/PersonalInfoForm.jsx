@@ -406,7 +406,17 @@ export default function PersonalInfoForm() {
         type="checkbox"
         id="copy_address"
         style="mb-4"
-        change={() => dispatch(copyAddress("personal"))}
+        change={() =>
+          dispatch(
+            copyAddress({
+              addressType: "personal",
+              region: formData.address.region,
+              province: formData.address.province,
+              city: formData.address.city,
+              barangay: formData.address.brgy,
+            })
+          )
+        }
         icon={copy_icon}
       />
       <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">

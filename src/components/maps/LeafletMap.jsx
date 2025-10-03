@@ -15,7 +15,9 @@ export default function LeafletMap() {
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
-  
+
+  console.log(JSON.stringify(coords));
+
   function LocationPicker({ setCoords }) {
     useMapEvents({
       click(e) {

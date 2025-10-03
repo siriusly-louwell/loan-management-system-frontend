@@ -15,6 +15,27 @@ export const applyLoan = createAsyncThunk(
   }
 );
 
+export const copyAddress = createAsyncThunk(
+  "form/copyAddress",
+  async (data, thunkAPI) => {
+    try {
+      const region = await AddressAPI.region(data.region);
+      const province = await AddressAPI.province(data.province);
+      const city = await AddressAPI.city(data.city);
+      const barangay = await AddressAPI.barangay(data.barangay);
+
+      return {
+        region: region.name,
+        province: province.name,
+        city: city.name,
+        barangay: barangay.name,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const formSlice = createSlice({
   name: "form",
   initialState: {
@@ -29,6 +50,7 @@ const formSlice = createSlice({
     },
     formType: "createUnit",
     formLoading: true,
+    addressLoading: true,
     colors: [],
     colorIndex: null,
     error: null,
@@ -143,62 +165,63 @@ const formSlice = createSlice({
       });
     },
 
-    copyAddress: (state, action) => {
-      const address = state.formData.address;
+    // copyAddress: (state, action) => {
+    //   const address = state.formData.address;
 
-      switch (action.payload) {
-        default:
-          state.formData.address = {
-            ...address,
-            prev_region: AddressAPI.region(address.region),
-            prev_province: AddressAPI.province(address.province),
-            prev_city: AddressAPI.city(address.city),
-            prev_brgy: AddressAPI.barangay(address.brgy),
-            prev_purok: address.purok,
-            prev_lot_num: address.lot_num,
-            // prev_region: address.region,
-            // prev_province: address.province,
-            // prev_city: address.city,
-            // prev_brgy: address.brgy,
-            // prev_purok: address.purok,
-            // prev_lot_num: address.lot_num,
-          };
-          break;
-        case "parent":
-          state.formData.address = {
-            ...address,
-            p_prev_region: AddressAPI.region(address.p_region),
-            p_prev_province: AddressAPI.province(address.p_province),
-            p_prev_city: AddressAPI.city(address.p_city),
-            p_prev_brgy: AddressAPI.barangay(address.p_brgy),
-            // p_prev_region: address.p_region,
-            // p_prev_province: address.p_province,
-            // p_prev_city: address.p_city,
-            // p_prev_brgy: address.p_brgy,
-            p_prev_purok: address.p_purok,
-            p_prev_lot_num: address.p_lot_num,
-          };
-          break;
-        case "spouse":
-          state.formData.address = {
-            ...address,
-            sp_prev_region: AddressAPI.region(address.sp_region),
-            sp_prev_province: AddressAPI.province(address.sp_province),
-            sp_prev_city: AddressAPI.city(address.sp_city),
-            sp_prev_brgy: AddressAPI.barangay(address.sp_brgy),
-            // sp_prev_region: address.sp_region,
-            // sp_prev_province: address.sp_province,
-            // sp_prev_city: address.sp_city,
-            // sp_prev_brgy: address.sp_brgy,
-            sp_prev_purok: address.sp_purok,
-            sp_prev_lot_num: address.sp_lot_num,
-          };
-          break;
-      }
-    },
+    //   switch (action.payload) {
+    //     default:
+    //       state.formData.address = {
+    //         ...address,
+    //         prev_region: AddressAPI.region(address.region),
+    //         prev_province: AddressAPI.province(address.province),
+    //         prev_city: AddressAPI.city(address.city),
+    //         prev_brgy: AddressAPI.barangay(address.brgy),
+    //         prev_purok: address.purok,
+    //         prev_lot_num: address.lot_num,
+    //         // prev_region: address.region,
+    //         // prev_province: address.province,
+    //         // prev_city: address.city,
+    //         // prev_brgy: address.brgy,
+    //         // prev_purok: address.purok,
+    //         // prev_lot_num: address.lot_num,
+    //       };
+    //       break;
+    //     case "parent":
+    //       state.formData.address = {
+    //         ...address,
+    //         p_prev_region: AddressAPI.region(address.p_region),
+    //         p_prev_province: AddressAPI.province(address.p_province),
+    //         p_prev_city: AddressAPI.city(address.p_city),
+    //         p_prev_brgy: AddressAPI.barangay(address.p_brgy),
+    //         // p_prev_region: address.p_region,
+    //         // p_prev_province: address.p_province,
+    //         // p_prev_city: address.p_city,
+    //         // p_prev_brgy: address.p_brgy,
+    //         p_prev_purok: address.p_purok,
+    //         p_prev_lot_num: address.p_lot_num,
+    //       };
+    //       break;
+    //     case "spouse":
+    //       state.formData.address = {
+    //         ...address,
+    //         sp_prev_region: AddressAPI.region(address.sp_region),
+    //         sp_prev_province: AddressAPI.province(address.sp_province),
+    //         sp_prev_city: AddressAPI.city(address.sp_city),
+    //         sp_prev_brgy: AddressAPI.barangay(address.sp_brgy),
+    //         // sp_prev_region: address.sp_region,
+    //         // sp_prev_province: address.sp_province,
+    //         // sp_prev_city: address.sp_city,
+    //         // sp_prev_brgy: address.sp_brgy,
+    //         sp_prev_purok: address.sp_purok,
+    //         sp_prev_lot_num: address.sp_lot_num,
+    //       };
+    //       break;
+    //   }
+    // },
 
     formCheck: (state, action) => {
       const index = action.payload;
+
       const applicant = checkEmptyUseCase(
         index,
         state.formData[state.formType]
@@ -232,6 +255,57 @@ const formSlice = createSlice({
       .addCase(applyLoan.rejected, (state, action) => {
         state.formLoading = false;
         state.error = action.payload;
+      })
+
+      // ? Copy address
+      .addCase(copyAddress.pending, (state) => {
+        state.addressLoading = true;
+        state.error = null;
+      })
+      .addCase(copyAddress.fulfilled, (state, action) => {
+        state.addressLoading = false;
+        const data = action.payload;
+        const address = state.formData.address;
+
+        switch (action.meta.arg.addressType) {
+          default:
+            state.formData.address = {
+              ...address,
+              prev_region: data.region,
+              prev_province: data.province,
+              prev_city: data.city,
+              prev_brgy: data.barangay,
+              prev_purok: address.purok,
+              prev_lot_num: address.lot_num,
+            };
+            break;
+          case "parent":
+            state.formData.address = {
+              ...address,
+              p_prev_region: data.region,
+              p_prev_province: data.province,
+              p_prev_city: data.city,
+              p_prev_brgy: data.barangay,
+              p_prev_purok: address.p_purok,
+              p_prev_lot_num: address.p_lot_num,
+            };
+            break;
+          case "spouse":
+            state.formData.address = {
+              ...address,
+              sp_prev_region: data.region,
+              sp_prev_province: data.province,
+              sp_prev_city: data.city,
+              sp_prev_brgy: data.barangay,
+              sp_prev_purok: address.sp_purok,
+              sp_prev_lot_num: address.sp_lot_num,
+            };
+            break;
+        }
+      })
+      .addCase(copyAddress.rejected, (state, action) => {
+        state.addressLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -246,7 +320,7 @@ export const {
   handleQuantity,
   setColorIndex,
   initialForm,
-  copyAddress,
+  // copyAddress,
   disableAddress,
   setDisable,
   draftForm,

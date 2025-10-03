@@ -28,6 +28,9 @@ export default function FamilyInfoForm() {
   const regCondition =
     formData.address.p_region !== undefined &&
     formData.address.p_region !== "__EMPTY__";
+  const spCondition =
+    formData.address.sp_region !== undefined &&
+    formData.address.sp_region !== "__EMPTY__";
 
   useEffect(() => {
     dispatch(disableAddress());
@@ -322,7 +325,17 @@ export default function FamilyInfoForm() {
         type="checkbox"
         id="parent_address"
         style="mb-4"
-        change={() => dispatch(copyAddress("parent"))}
+        change={() =>
+          dispatch(
+            copyAddress({
+              addressType: "parent",
+              region: formData.address.p_region,
+              province: formData.address.p_province,
+              city: formData.address.p_city,
+              barangay: formData.address.p_brgy,
+            })
+          )
+        }
         icon={copy_icon}
       />
       <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
@@ -398,20 +411,11 @@ export default function FamilyInfoForm() {
           id="region"
           value={formData.address.sp_region}
           onchange={(e) => dispatchInput(e, "address")}>
-          <option>Region I</option>
-          <option>Region II</option>
-          <option>Region III</option>
-          <option>Region IV</option>
-          <option>Region V</option>
-          <option>Region VI</option>
-          <option>Region VII</option>
-          <option>Region VIII</option>
-          <option>Region IX</option>
-          <option>Region X</option>
-          <option>Region XI</option>
-          <option>Region XII</option>
-          <option>Region XIII</option>
-          <option>Region XIV</option>
+          {regions.map((reg, i) => (
+            <option key={i} value={reg.code}>
+              {reg.name}
+            </option>
+          ))}
         </FormSelect>
         <FormSelect
           name="sp_province"
@@ -420,15 +424,12 @@ export default function FamilyInfoForm() {
           value={formData.address.sp_province}
           onchange={(e) => dispatchInput(e, "address")}
           disable={selectDisable.spouse}>
-          {formData.address.sp_region !== undefined &&
-          formData.address.sp_region !== "__EMPTY__"
-            ? locations[
-                formData.address.sp_region.substring(
-                  7,
-                  formData.address.sp_region.length
-                )
-              ].province.map((val, i) => <option key={i}>{val}</option>)
-            : ""}
+          {spCondition &&
+            provinces.map((prov, i) => (
+              <option key={i} value={prov.code}>
+                {prov.name}
+              </option>
+            ))}
         </FormSelect>
         <FormSelect
           name="sp_city"
@@ -437,15 +438,12 @@ export default function FamilyInfoForm() {
           value={formData.address.sp_city}
           onchange={(e) => dispatchInput(e, "address")}
           disable={selectDisable.spouse}>
-          {formData.address.sp_region !== undefined &&
-          formData.address.sp_region !== "__EMPTY__"
-            ? locations[
-                formData.address.sp_region.substring(
-                  7,
-                  formData.address.sp_region.length
-                )
-              ].city.map((val, i) => <option key={i}>{val}</option>)
-            : ""}
+          {spCondition &&
+            cities.map((cit, i) => (
+              <option key={i} value={cit.code}>
+                {cit.name}
+              </option>
+            ))}
         </FormSelect>
         <FormSelect
           name="sp_brgy"
@@ -454,45 +452,12 @@ export default function FamilyInfoForm() {
           value={formData.address.sp_brgy}
           onchange={(e) => dispatchInput(e, "address")}
           disable={selectDisable.spouse}>
-          <option>A. O. Floriendo</option>
-          <option>Buenavista</option>
-          <option>Cacao</option>
-          <option>Cagangohan</option>
-          <option>Consolacion</option>
-          <option>Dapco</option>
-          <option>Datu Abdul Dadia</option>
-          <option>Gredu</option>
-          <option>J. P. Laurel</option>
-          <option>Kasilak</option>
-          <option>Katipunan</option>
-          <option>Katualan</option>
-          <option>Kiotoy</option>
-          <option>Little Panay</option>
-          <option>Lower Panaga</option>
-          <option>Mabunao</option>
-          <option>Maduao</option>
-          <option>Malativas</option>
-          <option>Manay</option>
-          <option>Nanyo</option>
-          <option>New Malaga</option>
-          <option>New Malitbog</option>
-          <option>New Pandan</option>
-          <option>New Visayas</option>
-          <option>Quezon</option>
-          <option>Salvacion</option>
-          <option>San Francisco</option>
-          <option>San Nicolas</option>
-          <option>San Pedro</option>
-          <option>San Roque</option>
-          <option>San Vicente</option>
-          <option>Santa Cruz</option>
-          <option>Santo Nino</option>
-          <option>Sindaton</option>
-          <option>Southern DAvao</option>
-          <option>Tagpore</option>
-          <option>Tibungol</option>
-          <option>Upper Licanan</option>
-          <option>Waterfall</option>
+          {spCondition &&
+            barangays.map((bgy, i) => (
+              <option key={i} value={bgy.code}>
+                {bgy.name}
+              </option>
+            ))}
         </FormSelect>
         <FormInput
           label="Purok"
@@ -521,7 +486,17 @@ export default function FamilyInfoForm() {
         type="checkbox"
         id="spouse_address"
         style="mb-4"
-        change={() => dispatch(copyAddress("spouse"))}
+        change={() =>
+          dispatch(
+            copyAddress({
+              addressType: "spouse",
+              region: formData.address.region,
+              province: formData.address.province,
+              city: formData.address.city,
+              barangay: formData.address.brgy,
+            })
+          )
+        }
         icon={copy_icon}
       />
       <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">

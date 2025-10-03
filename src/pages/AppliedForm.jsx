@@ -113,7 +113,13 @@ export default function AppliedForm() {
             </div>
           ))}
 
-          <LeafletMap />
+          <LeafletMap
+            display={true}
+            coordinates={{
+              lat: application.address.lat,
+              lng: application.address.lng,
+            }}
+          />
         </ApplicationInfoCard>
 
         <ApplicationInfoCard title="Employment Information">

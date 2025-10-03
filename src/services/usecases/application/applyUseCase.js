@@ -17,6 +17,8 @@ export async function applyUseCase(data) {
     parent_prev: `${address.p_prev_lot_num}, ${address.p_prev_purok} ${address.p_prev_brgy},  ${address.p_prev_city} ${address.p_prev_province}, ${address.p_prev_region}`,
     spouse_pres: `${address.sp_lot_num}, ${address.sp_purok} ${address.sp_brgy},  ${address.sp_city} ${address.sp_province}, ${address.sp_region}`,
     spouse_prev: `${address.sp_prev_lot_num}, ${address.sp_prev_purok} ${address.sp_prev_brgy},  ${address.sp_prev_city} ${address.sp_prev_province}, ${address.sp_prev_region}`,
+    lat: address.lat,
+    lng: address.lng,
   };
 
   const response = await applyRepository.apply({

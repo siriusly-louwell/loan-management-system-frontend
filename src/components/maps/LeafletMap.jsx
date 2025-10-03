@@ -1,12 +1,19 @@
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMapEvents,
+  useMap,
+} from "react-leaflet";
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useDispatch } from "react-redux";
 import { handleChange } from "../../services/redux/slices/formSlice";
 
-export default function LeafletMap() {
+export default function LeafletMap({ display = false, coordinates }) {
   const dispatch = useDispatch();
+  const zoom = display ? 12 : 13;
   const [coords, setCoords] = useState({ lat: 7.3081, lng: 125.6842 });
   const customMarker = new L.Icon({
     iconUrl: `data:image/svg+xml;utf8,
@@ -20,13 +27,34 @@ export default function LeafletMap() {
   });
 
   useEffect(() => {
-    dispatch(
-      handleChange({ name: "lat", value: coords.lat, formType: "address" })
-    );
-    dispatch(
-      handleChange({ name: "lng", value: coords.lng, formType: "address" })
-    );
-  }, [coords]);
+    if (display && coordinates && coordinates.lat && coordinates.lng) {
+      setCoords({
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+      });
+    }
+  }, [display, coordinates]);
+
+  useEffect(() => {
+    if (!display) {
+      dispatch(
+        handleChange({ name: "lat", value: coords.lat, formType: "address" })
+      );
+      dispatch(
+        handleChange({ name: "lng", value: coords.lng, formType: "address" })
+      );
+    }
+  }, [coords, display]);
+
+  function MapUpdater({ coords }) {
+    const map = useMap();
+    useEffect(() => {
+      if (coords) {
+        map.flyTo([coords.lat, coords.lng], zoom, { animate: true });
+      }
+    }, [coords, map]);
+    return null;
+  }
 
   function LocationPicker({ setCoords }) {
     useMapEvents({
@@ -44,9 +72,10 @@ export default function LeafletMap() {
           center={coords}
           zoom={13}
           style={{ height: "400px", width: "100%" }}>
+          <MapUpdater coords={coords} />
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <Marker position={coords} icon={customMarker} />
-          <LocationPicker setCoords={setCoords} />
+          {!display && <LocationPicker setCoords={setCoords} />}
         </MapContainer>
       </div>
     </section>

@@ -247,30 +247,6 @@ export default function PersonalInfoForm() {
             </option>
           ))}
         </FormSelect>
-
-        {/* <FormSelect
-          name="region"
-          label="Region"
-          id="region"
-          value={formData.address.region}
-          onchange={(e) => dispatchInput(e, "address")}
-          require={true}>
-          <option>Region I</option>
-          <option>Region II</option>
-          <option>Region III</option>
-          <option>Region IV</option>
-          <option>Region V</option>
-          <option>Region VI</option>
-          <option>Region VII</option>
-          <option>Region VIII</option>
-          <option>Region IX</option>
-          <option>Region X</option>
-          <option>Region XI</option>
-          <option>Region XII</option>
-          <option>Region XIII</option>
-          <option>Region XIV</option>
-          <option>Region XV</option>
-        </FormSelect> */}
         <FormSelect
           name="province"
           label="Province"
@@ -286,15 +262,6 @@ export default function PersonalInfoForm() {
                 {prov.name}
               </option>
             ))}
-          {/* {formData.address.region !== undefined &&
-          formData.address.region !== "__EMPTY__"
-            ? locations[
-                formData.address.region.substring(
-                  7,
-                  formData.address.region.length
-                )
-              ].province.map((val, i) => <option key={i}>{val}</option>)
-            : ""} */}
         </FormSelect>
         <FormSelect
           name="city"
@@ -311,15 +278,6 @@ export default function PersonalInfoForm() {
                 {cit.name}
               </option>
             ))}
-          {/* {formData.address.region !== undefined &&
-          formData.address.region !== "__EMPTY__"
-            ? locations[
-                formData.address.region.substring(
-                  7,
-                  formData.address.region.length
-                )
-              ].city.map((val, i) => <option key={i}>{val}</option>)
-            : ""} */}
         </FormSelect>
         <FormSelect
           name="brgy"
@@ -336,45 +294,6 @@ export default function PersonalInfoForm() {
                 {bgy.name}
               </option>
             ))}
-          {/* <option>A. O. Floriendo</option>
-          <option>Buenavista</option>
-          <option>Cacao</option>
-          <option>Cagangohan</option>
-          <option>Consolacion</option>
-          <option>Dapco</option>
-          <option>Datu Abdul Dadia</option>
-          <option>Gredu</option>
-          <option>J. P. Laurel</option>
-          <option>Kasilak</option>
-          <option>Katipunan</option>
-          <option>Katualan</option>
-          <option>Kiotoy</option>
-          <option>Little Panay</option>
-          <option>Lower Panaga</option>
-          <option>Mabunao</option>
-          <option>Maduao</option>
-          <option>Malativas</option>
-          <option>Manay</option>
-          <option>Nanyo</option>
-          <option>New Malaga</option>
-          <option>New Malitbog</option>
-          <option>New Pandan</option>
-          <option>New Visayas</option>
-          <option>Quezon</option>
-          <option>Salvacion</option>
-          <option>San Francisco</option>
-          <option>San Nicolas</option>
-          <option>San Pedro</option>
-          <option>San Roque</option>
-          <option>San Vicente</option>
-          <option>Santa Cruz</option>
-          <option>Santo Nino</option>
-          <option>Sindaton</option>
-          <option>Southern DAvao</option>
-          <option>Tagpore</option>
-          <option>Tibungol</option>
-          <option>Upper Licanan</option>
-          <option>Waterfall</option> */}
         </FormSelect>
         <FormInput
           label="Purok"

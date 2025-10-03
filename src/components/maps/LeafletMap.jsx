@@ -1,9 +1,12 @@
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { useDispatch } from "react-redux";
+import { handleChange } from "../../services/redux/slices/formSlice";
 
 export default function LeafletMap() {
+  const dispatch = useDispatch();
   const [coords, setCoords] = useState({ lat: 7.3081, lng: 125.6842 });
   const customMarker = new L.Icon({
     iconUrl: `data:image/svg+xml;utf8,
@@ -16,7 +19,14 @@ export default function LeafletMap() {
     popupAnchor: [1, -34],
   });
 
-  console.log(JSON.stringify(coords));
+  useEffect(() => {
+    dispatch(
+      handleChange({ name: "lat", value: coords.lat, formType: "address" })
+    );
+    dispatch(
+      handleChange({ name: "lng", value: coords.lng, formType: "address" })
+    );
+  }, [coords]);
 
   function LocationPicker({ setCoords }) {
     useMapEvents({

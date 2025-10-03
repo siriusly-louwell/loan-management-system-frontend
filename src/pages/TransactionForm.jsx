@@ -159,7 +159,7 @@ export default function TransactionForm() {
                     type="number"
                     value={formData[formType].downpayment}
                     name="downpayment"
-                    onchange={(e) => dispatchInput(e)}
+                    onchange={(e) => dispatchInput(e, 'unit')}
                     placeholder="Input downpayment here"
                   />
                   {formData[formType].downpayment <
@@ -174,7 +174,7 @@ export default function TransactionForm() {
                   label="Loan Years"
                   id="tenure"
                   value={formData[formType].tenure}
-                  onchange={(e) => dispatchInput(e)}
+                  onchange={(e) => dispatchInput(e, 'unit')}
                   require={true}>
                   {[...Array(unit.tenure)].map((_, i) => (
                     <option key={i} value={i + 1}>

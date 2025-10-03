@@ -18,7 +18,7 @@ import {
 } from "../services/redux/slices/formSlice";
 
 export default function FamilyInfoForm() {
-  const { dispatchInput, locations } = useOutletContext();
+  const { dispatchInput } = useOutletContext();
   const dispatch = useDispatch();
   const { regions, provinces, cities, barangays } = useSelector(
     (state) => state.address

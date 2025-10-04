@@ -39,13 +39,13 @@ export default function FormRequirements() {
           change={fileChange}
           require={true}
         />
-        <FileInput
+        {/* <FileInput
           label="Sketch Image"
           name="sketch"
           type="img"
           change={fileChange}
           require={true}
-        />
+        /> */}
 
         <div className="grid col-span-2 grid-cols-1">
           <label className="text-md font-medium text-gray-900 dark:text-white">

@@ -1,10 +1,7 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import StarRating from "../StarRating";
 import AddtoCartBttn from "../buttons/AddtoCartBttn";
 import ProductLink from "../links/ProductLink";
 import ColorLabel from "../ColorLabel";
-import Check from "../../assets/icons/Check";
 import { useDispatch, useSelector } from "react-redux";
 import { UserEntity } from "../../services/entities/User";
 import { storeID } from "../../services/redux/slices/unitSlice";
@@ -94,6 +91,10 @@ export default function ProductCard({ unit }) {
 
           <ProductLink
             url={`${url}/unit`}
+            click={() => {
+              dispatch(storeID(unit.id));
+              window.scrollTo(0, 0);
+            }}
             prodName={unit.brand + ": " + unit.name}
             id={unit.id}
           />

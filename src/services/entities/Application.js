@@ -69,6 +69,10 @@ export class Application {
     return `${process.env.REACT_APP_API_URL}/storage/${this.residence_proof}`;
   }
 
+  get personalPres() {
+    return "";
+  }
+
   get birthDate() {
     if (!this.birth_day) return "";
     const date = new Date(this.birth_day);

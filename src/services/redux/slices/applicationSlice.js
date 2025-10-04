@@ -7,6 +7,8 @@ import { ndiStabilityUseCase } from "../../usecases/application/ndiStabilityUseC
 import { calculateViability } from "../../usecases/application/calculateViability";
 import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
 import { assignCIUseCase } from "../../usecases/application/assignCIUseCase";
+import AddressAPI from "./../../api/AddressAPI";
+import { addressRepository } from "../../repositories/addressRepository";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
@@ -218,7 +220,7 @@ const applicationSlice = createSlice({
         state.loanLoading = false;
         const data = action.payload;
 
-        if (Object.keys(data).length > 0)
+        if (Object.keys(data).length > 0) {
           state.loan = {
             ...data,
             civil_stat: data.status,
@@ -227,7 +229,7 @@ const applicationSlice = createSlice({
             status: applyRepository.statusBadge(data.apply_status),
             parsedSalary: `₱${parseFloat(data.salary).toLocaleString()}`,
           };
-        else state.loan = {};
+        } else state.loan = {};
       })
       .addCase(fetchLoan.rejected, (state, action) => {
         state.loanLoading = false;

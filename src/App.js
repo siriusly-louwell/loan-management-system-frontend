@@ -53,8 +53,6 @@ import AccOverview from "./pages/AccOverview";
 
 function App() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  // const { user } = useSelector(UserEntity);
 
   useEffect(() => {
     dispatch(loginUserWithToken());
@@ -384,14 +382,6 @@ function App() {
             }
           />
           <Route
-            path="loan_his"
-            element={
-              <ProtectedRoute type="staff">
-                <AppNotifications />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="profile"
             element={
               <ProtectedRoute type="staff">
@@ -414,6 +404,15 @@ function App() {
             element={
               <ProtectedRoute type="staff">
                 <ReportReview />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="invoice"
+            element={
+              <ProtectedRoute type="staff">
+                <Invoice />
               </ProtectedRoute>
             }
           />

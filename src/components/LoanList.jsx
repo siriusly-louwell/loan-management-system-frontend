@@ -5,7 +5,6 @@ import SmallSpin from "./loading components/SmallSpin";
 
 export default function LoanList({
   price,
-  units,
   downpayment,
   img,
   name,
@@ -22,7 +21,7 @@ export default function LoanList({
         ) : (
           <img
             className="h-60 w-60 object-contain rounded-lg flex-shrink-0"
-            src={`http://127.0.0.1:8000/storage/${img}`}
+            src={img}
             alt="unit"
           />
         )}

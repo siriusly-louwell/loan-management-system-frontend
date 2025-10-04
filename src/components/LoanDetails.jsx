@@ -21,7 +21,7 @@ export default function LoanDetails({ setApproval }) {
     loan.status === "approved" ||
     loan.status === "declined";
 
-  return (
+    return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <div className="flex justify-between w-full">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -78,7 +78,7 @@ export default function LoanDetails({ setApproval }) {
                 color={trans.color}
                 price={trans.motorcycle.price}
                 units={trans.quantity}
-                img={trans.motorcycle.file_path}
+                img={loan.unitImage}
                 name={trans.motorcycle.name}
               />
             ))}

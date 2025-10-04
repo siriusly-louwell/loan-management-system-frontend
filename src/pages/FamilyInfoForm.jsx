@@ -24,7 +24,10 @@ export default function FamilyInfoForm() {
     (state) => state.address
   );
   const { formData, selectDisable } = useSelector((state) => state.form);
-  const [relatives, setRelative] = useState([""]);
+  const [relatives, setRelative] = useState(1);
+  const [nearest, setNearest] = useState(1);
+  const [children, setChildren] = useState(1);
+  const [dependents, setDependents] = useState(1);
   const regCondition =
     formData.address.p_region !== undefined &&
     formData.address.p_region !== "__EMPTY__";
@@ -121,42 +124,47 @@ export default function FamilyInfoForm() {
       </div>
 
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        <div className="grid gap-4 sm:grid-cols-4">
-          <FormInput
-            label="Name of Schooling Children"
-            type="text"
-            name="prod_name"
-            id="name"
-            placeholder="Full name here"
-            onchange={() => {}}
-          />
-          <FormInput
-            label="Age"
-            type="number"
-            name="prod_name"
-            id="name"
-            placeholder=""
-            onchange={() => {}}
-          />
-          <FormInput
-            label="Enrolled at"
-            type="text"
-            name="prod_name"
-            id="name"
-            placeholder="Type school here"
-            onchange={() => {}}
-          />
-          <FormInput
-            label="Address"
-            type="text"
-            name="prod_name"
-            id="name"
-            placeholder="Full address here"
-            onchange={() => {}}
-          />
-        </div>
+        {[...Array(children)].map((i) => (
+          <div key={i} className="grid gap-4 sm:grid-cols-4">
+            <FormInput
+              label="Name of Schooling Children"
+              type="text"
+              name="prod_name"
+              id="name"
+              placeholder="Full name here"
+              onchange={() => {}}
+            />
+            <FormInput
+              label="Age"
+              type="number"
+              name="prod_name"
+              id="name"
+              placeholder=""
+              onchange={() => {}}
+            />
+            <FormInput
+              label="Enrolled at"
+              type="text"
+              name="prod_name"
+              id="name"
+              placeholder="Type school here"
+              onchange={() => {}}
+            />
+            <FormInput
+              label="Address"
+              type="text"
+              name="prod_name"
+              id="name"
+              placeholder="Full address here"
+              onchange={() => {}}
+            />
+          </div>
+        ))}
         <div className="grid pt-4 sm:cols-span-3">
-          <BttnwithIcon text="Add row" type="button">
+          <BttnwithIcon
+            text="Add row"
+            type="button"
+            click={() => setChildren(children + 1)}>
             <Plus />
           </BttnwithIcon>
         </div>
@@ -572,7 +580,7 @@ export default function FamilyInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            {relatives.map((i) => (
+            {[...Array(relatives)].map((i) => (
               <tr key={i}>
                 <FormTD placeholder="Full name here" />
                 <FormTD placeholder="Address here" />
@@ -585,13 +593,13 @@ export default function FamilyInfoForm() {
           <BttnwithIcon
             text="Add row"
             type="button"
-            click={() => setRelative([...relatives, ""])}>
+            click={() => setRelative(relatives + 1)}>
             <Plus />
           </BttnwithIcon>
         </div>
 
         <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
-          Dependants:
+          Dependents:
         </h3>
         <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
           <table className="w-full border rounded-lg overflow-hidden">
@@ -604,16 +612,21 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTHead>
             <FormTBody>
-              <tr>
-                <FormTD placeholder="Full name here" />
-                <FormTD placeholder="Address here" />
-                <FormTD placeholder="Cellphone number" />
-                <FormTD placeholder="School name" />
-              </tr>
+              {[...Array(dependents)].map((i) => (
+                <tr key={i}>
+                  <FormTD placeholder="Full name here" />
+                  <FormTD placeholder="Address here" />
+                  <FormTD placeholder="Cellphone number" />
+                  <FormTD placeholder="School name" />
+                </tr>
+              ))}
             </FormTBody>
           </table>
           <div className="grid pt-4 sm:cols-span-1">
-            <BttnwithIcon text="Add row" type="button">
+            <BttnwithIcon
+              text="Add row"
+              type="button"
+              click={() => setDependents(dependents + 1)}>
               <Plus />
             </BttnwithIcon>
           </div>
@@ -633,16 +646,21 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTHead>
             <FormTBody>
-              <tr>
-                <FormTD placeholder="Full name here" />
-                <FormTD placeholder="Address here" />
-                <FormTD placeholder="Cellphone number" />
-                <FormTD placeholder="School name" />
-              </tr>
+              {[...Array(nearest)].map((i) => (
+                <tr key={i}>
+                  <FormTD placeholder="Full name here" />
+                  <FormTD placeholder="Address here" />
+                  <FormTD placeholder="Cellphone number" />
+                  <FormTD placeholder="School name" />
+                </tr>
+              ))}
             </FormTBody>
           </table>
           <div className="grid pt-4 sm:cols-span-1">
-            <BttnwithIcon text="Add row" type="button">
+            <BttnwithIcon
+              text="Add row"
+              type="button"
+              click={() => setNearest(nearest + 1)}>
               <Plus />
             </BttnwithIcon>
           </div>

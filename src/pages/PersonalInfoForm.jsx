@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
@@ -26,6 +26,7 @@ export default function PersonalInfoForm() {
   );
   const { formData, selectDisable } = useSelector((state) => state.form);
   const { dispatchInput } = useOutletContext();
+  const [unitApplied, setUnitApplied] = useState(1);
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -426,15 +427,20 @@ export default function PersonalInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            <tr>
-              <FormTD placeholder="Model name" />
-              <FormTD placeholder="Downpayment here" />
-              <FormTD placeholder="Terms & Conditions" />
-            </tr>
+            {[...Array(unitApplied)].map((_, i) => (
+              <tr key={i}>
+                <FormTD placeholder="Model name" />
+                <FormTD placeholder="Downpayment here" />
+                <FormTD placeholder="Terms & Conditions" />
+              </tr>
+            ))}
           </FormTBody>
         </table>
         <div className="grid pt-4 sm:cols-span-1">
-          <BttnwithIcon text="Add row" type="button">
+          <BttnwithIcon
+            text="Add row"
+            type="button"
+            click={() => setUnitApplied(unitApplied + 1)}>
             <Plus />
           </BttnwithIcon>
         </div>

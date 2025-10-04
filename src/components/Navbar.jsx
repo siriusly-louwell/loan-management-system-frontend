@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import HamburgerMenu from "./buttons/HamburgerMenu";
@@ -16,12 +15,12 @@ import {
 import { clearAuth, logout } from "../services/redux/slices/authSlice";
 import { clearID } from "../services/redux/slices/unitSlice";
 import { UserEntity } from "../services/entities/User";
+import { resetInput } from "../services/redux/slices/formSlice";
+import { clearLoan } from "../services/redux/slices/applicationSlice";
 
 export default function Navbar({ links, path }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const user = useSelector(UserEntity);
   const { modals } = useSelector((state) => state.ui);
@@ -33,8 +32,6 @@ export default function Navbar({ links, path }) {
     "/customer/apply/requirements",
     "/customer/apply/comakerform",
   ];
-
-  // const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   function toggleLogout() {
     dispatch(setLoading({ isActive: true, text: "Logging out..." }));
@@ -49,6 +46,8 @@ export default function Navbar({ links, path }) {
         })
       );
       dispatch(clearID());
+      dispatch(resetInput());
+      dispatch(clearLoan());
       dispatch(setLoading({ isActive: false }));
     }, 2000);
 
@@ -57,24 +56,10 @@ export default function Navbar({ links, path }) {
     }, 3000);
   }
 
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   const applyPath = apply.find((path) => location.pathname === path);
 
-  return applyPath ? (
-    ""
-  ) : (
-    <>
+  return (
+    !applyPath && (
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a
@@ -125,9 +110,7 @@ export default function Navbar({ links, path }) {
                         )
                       }
                     />
-                    {!user?.isAdmin && (
-                      <MenuLink pathName="Settings" path="" />
-                    )}
+                    {!user?.isAdmin && <MenuLink pathName="Settings" path="" />}
                     <MenuLink pathName="Log out" click={toggleLogout} />
                   </DropdownMenu>
                 )}
@@ -144,6 +127,6 @@ export default function Navbar({ links, path }) {
           </div>
         </div>
       </nav>
-    </>
+    )
   );
 }

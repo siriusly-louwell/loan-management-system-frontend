@@ -15,8 +15,8 @@ export default function EmploymentInfoForm() {
   const { dispatchInput } = useOutletContext();
   const dispatch = useDispatch();
   const { formData } = useSelector((state) => state.form);
-  const [properties, setProperty] = useState([""]);
-  const [references, setReference] = useState([""]);
+  const [properties, setProperty] = useState(1);
+  const [references, setReference] = useState(1);
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -220,7 +220,7 @@ export default function EmploymentInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            {properties.map((i) => (
+            {[...Array(properties)].map((i) => (
               <tr key={i}>
                 <FormTD placeholder="Property name here" />
                 <FormTD placeholder="Location here" />
@@ -239,7 +239,7 @@ export default function EmploymentInfoForm() {
         <div className="grid pt-4 sm:cols-span-1">
           <BttnwithIcon
             type="button"
-            click={() => setProperty([...properties, ""])}
+            click={() => setProperty(properties + 1)}
             text="Add row">
             <Plus />
           </BttnwithIcon>
@@ -265,7 +265,7 @@ export default function EmploymentInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            {references.map((i) => (
+            {[...Array(references)].map((i) => (
               <tr key={i}>
                 <FormTD placeholder="Property name here" />
                 <FormTD placeholder="Location here" />
@@ -281,7 +281,7 @@ export default function EmploymentInfoForm() {
           <BttnwithIcon
             text="Add row"
             type="button"
-            click={() => setReference([...references, ""])}>
+            click={() => setReference(references + 1)}>
             <Plus />
           </BttnwithIcon>
         </div>

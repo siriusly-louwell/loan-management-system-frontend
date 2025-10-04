@@ -101,6 +101,11 @@ const applicationSlice = createSlice({
       state.loanID = Number(applyRepository.getId());
     },
 
+    clearLoan: (state) => {
+      state.loanID = null;
+      applyRepository.clearId();
+    },
+
     calculateStability: (state, action) => {
       const data = action.payload;
 
@@ -243,6 +248,7 @@ export const {
   setLoanLoad,
   saveLoan,
   getLoanId,
+  clearLoan,
   calculateStability,
   assessDecision,
   assessResult,

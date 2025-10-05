@@ -19,7 +19,7 @@ export default function CollectionReceipt({
   const { modals } = useSelector((state) => state.ui);
 
   return (
-    modals.invoice && (
+    modals.receipt && (
       <section className="w-screen h-screen top-0 left-0 right-0 z-40 fixed flex items-center justify-center bg-gray-200 bg-opacity-30 dark:bg-gray-800 dark:bg-opacity-30">
         <PopAnimate>
           <div className="bg-gray-700 px-5 py-3">
@@ -27,7 +27,7 @@ export default function CollectionReceipt({
               <CloseBttn
                 trigger={() =>
                   dispatch(
-                    toggleModal({ name: "invoice", value: modals.invoice })
+                    toggleModal({ name: "receipt", value: modals.receipt })
                   )
                 }
               />

@@ -100,5 +100,5 @@ const paymentSlice = createSlice({
   },
 });
 
-export const { save } = paymentSlice.actions;
+export const { savePayment, getPaymentId } = paymentSlice.actions;
 export default paymentSlice.reducer;

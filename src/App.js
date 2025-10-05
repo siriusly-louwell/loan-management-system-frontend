@@ -18,7 +18,6 @@ import LoanInfo from "./pages/LoanInfo";
 import ApplicantNav from "./components/navigations/ApplicantNav";
 import AppNotifications from "./components/modals/AppNotifications";
 import InvoiceList from "./pages/InvoiceList";
-import Invoice from "./pages/Invoice";
 import Profile from "./pages/Profile";
 import EMICalculator from "./pages/EMICalculator";
 import ApplicationForm from "./pages/ApplicationForm";

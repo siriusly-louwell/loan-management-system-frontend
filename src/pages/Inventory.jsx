@@ -36,6 +36,7 @@ export default function Inventory() {
     <CRUDformat
       title="Motorcycle Inventory"
       label="Unit"
+      itemName="units"
       setPage={setPage}
       pagination={pagination}
       modalName="createUnit"

@@ -106,7 +106,7 @@ export default function InvoiceList({
             )}
           </LogList>
 
-          <PageNav pagination={pagination} changePage={setPage} />
+          <PageNav pagination={pagination} changePage={setPage} itemName="applications" />
         </div>
       </div>
     </section>

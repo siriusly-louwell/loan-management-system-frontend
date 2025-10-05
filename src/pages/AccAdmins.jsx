@@ -56,6 +56,7 @@ export default function AccAdmins() {
       title="Staff"
       setPage={setPage}
       pagination={pagination}
+      itemName="accounts"
       label="User">
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <Table>

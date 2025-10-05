@@ -4,6 +4,8 @@ import { fetchPayments } from "../../services/redux/slices/paymentSlice";
 import InvoiceRow from "../tables/InvoiceRow";
 import { PaymentEntities } from "../../services/entities/Payment";
 import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
+import CollectionReceipt from "../cards/CollectionReceipt";
+import { saveLoan } from "../../services/redux/slices/applicationSlice";
 
 export default function AppNotifications() {
   const dispatch = useDispatch();
@@ -33,11 +35,13 @@ export default function AppNotifications() {
                   amount: pay.amount,
                   cert_num: pay.cert_num,
                 }}
+                click={() => dispatch(saveLoan(pay.application_form_id))}
               />
             ))
           )}
         </div>
       </div>
+      <CollectionReceipt />
     </>
   );
 }

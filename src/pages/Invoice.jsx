@@ -3,243 +3,224 @@ import Download from "../assets/icons/Download";
 import Ex from "../assets/icons/Ex";
 import RMCI from "../assets/images/RMCI.png";
 import CustomBttn from "../components/buttons/CustomBttn";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  fetchLoan,
+  getLoanId,
+} from "../services/redux/slices/applicationSlice";
+import { LoanEntity } from "../services/entities/Loan";
+import { ApplicationEntity } from "../services/entities/Application";
+import ColorLabel from "../components/ColorLabel";
+import { fetchPayment } from "../services/redux/slices/paymentSlice";
+import { PaymentEntity } from "../services/entities/Payment";
 
 export default function Invoice() {
+  const dispatch = useDispatch();
+  const { transactions } = useSelector(LoanEntity);
+  const payment = useSelector(PaymentEntity);
+  const { email, fullName, address } = useSelector(ApplicationEntity);
+  const { loanID, loanLoading } = useSelector((state) => state.application);
+
+  console.log(payment);
+
+  useEffect(() => {
+    dispatch(getLoanId());
+  }, []);
+
+  useEffect(() => {
+    if (loanID) {
+      dispatch(fetchLoan({ id: loanID, by: "id" }));
+      dispatch(fetchPayment({ id: loanID }));
+    }
+  }, [loanID, dispatch]);
+
   return (
-    <div class="max-w-full px-4 sm:px-6 lg:px-28 mx-auto py-4 bg-gray-100 dark:bg-gray-800 sm:py-10">
-      <div class="mb-5 pb-5 flex justify-between items-center border-b border-gray-200">
-        <div>
-          <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-            Invoice
-          </h2>
-        </div>
+    <div className="max-w-full h-screen px-4 sm:px-6 lg:px-28 mx-auto py-4 bg-gray-100 dark:bg-gray-900 sm:py-10">
+      <section className="p-4 bg-white dark:bg-gray-800/90 rounded-lg">
+        <div className="mb-5 pb-5 flex justify-between items-center border-b border-gray-200 dark:border-gray-500">
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+              Invoice
+            </h2>
+          </div>
 
-        <div class="inline-flex gap-x-2">
-          <BttnwithIcon
-            text="Download PDF"
-            click={() =>
-              (document.getElementById("pdfPrint").style.display = "block")
-            }>
-            <Download />
-          </BttnwithIcon>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-3">
-        <div>
-          <div class="grid space-y-3">
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Billed to:</dt>
-              <dd class="text-gray-800 dark:text-gray-200">
-                <span class="inline-flex items-center cursor-pointer gap-x-1.5 text-rose-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium">
-                  sara@site.com
-                </span>
-              </dd>
-            </dl>
-
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Billing details:</dt>
-              <dd class="font-medium text-gray-800 dark:text-gray-200">
-                <span class="block font-semibold">Sara Williams</span>
-                <address class="not-italic font-normal">
-                  280 Suzanne Throughway, Breannabury, OR 45801, United States
-                </address>
-              </dd>
-            </dl>
-
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Shipping details:</dt>
-              <dd class="font-medium text-gray-800 dark:text-gray-200">
-                <span class="block font-semibold">Sara Williams</span>
-                <address class="not-italic font-normal">
-                  280 Suzanne Throughway, Breannabury, OR 45801, United States
-                </address>
-              </dd>
-            </dl>
+          <div className="inline-flex gap-x-2">
+            <BttnwithIcon
+              text="Download PDF"
+              click={() =>
+                (document.getElementById("pdfPrint").style.display = "block")
+              }>
+              <Download />
+            </BttnwithIcon>
           </div>
         </div>
 
-        <div>
-          <div class="grid space-y-3">
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Invoice number:</dt>
-              <dd class="font-medium text-gray-800 dark:text-gray-200">
-                ADUQ2189H1-0038
-              </dd>
-            </dl>
+        <div className="grid md:grid-cols-2 gap-3">
+          <div>
+            <div className="grid space-y-3">
+              <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt className="min-w-36 max-w-50 text-gray-500">Billed to:</dt>
+                <dd className="text-gray-800 dark:text-gray-200">
+                  <span className="inline-flex items-center cursor-pointer gap-x-1.5 text-rose-600 dark:text-rose-500 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium">
+                    {email}
+                  </span>
+                </dd>
+              </dl>
 
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Currency:</dt>
-              <dd class="font-medium text-gray-800 dark:text-gray-200">
-                PHP - Philippine Peso
-              </dd>
-            </dl>
+              <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt className="min-w-36 max-w-50 text-gray-500">
+                  Billing details:
+                </dt>
+                <dd className="font-medium text-gray-800 dark:text-gray-200">
+                  <span className="block font-semibold">{fullName}</span>
+                  <address className="not-italic font-normal">
+                    {address.personal_pres}
+                  </address>
+                </dd>
+              </dl>
+            </div>
+          </div>
 
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Due date:</dt>
-              <dd class="font-medium text-gray-800 dark:text-gray-200">
-                10 Jan 2023
-              </dd>
-            </dl>
+          <div>
+            <div className="grid space-y-3">
+              <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt className="min-w-36 max-w-50 text-gray-500">
+                  Invoice number:
+                </dt>
+                <dd className="font-medium text-gray-800 dark:text-gray-200">
+                  ADUQ2189H1-0038
+                </dd>
+              </dl>
 
-            <dl class="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt class="min-w-36 max-w-50 text-gray-500">Billing method:</dt>
-              <dd class="font-medium text-gray-800 dark:text-gray-200">
-                Send invoice
-              </dd>
-            </dl>
+              <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt className="min-w-36 max-w-50 text-gray-500">Currency:</dt>
+                <dd className="font-medium text-gray-800 dark:text-gray-200">
+                  PHP - Philippine Peso
+                </dd>
+              </dl>
+
+              <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt className="min-w-36 max-w-50 text-gray-500">Due date:</dt>
+                <dd className="font-medium text-gray-800 dark:text-gray-200">
+                  10 Jan 2023
+                </dd>
+              </dl>
+
+              <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+                <dt className="min-w-36 max-w-50 text-gray-500">
+                  Billing method:
+                </dt>
+                <dd className="font-medium text-gray-800 dark:text-gray-200">
+                  Send invoice
+                </dd>
+              </dl>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mt-6 border border-gray-200 p-4 rounded-lg space-y-4">
-        <div class="hidden sm:grid sm:grid-cols-5">
-          <div class="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
-            Item
-          </div>
-          <div class="text-start text-xs font-medium text-gray-500 uppercase">
-            Qty
-          </div>
-          <div class="text-start text-xs font-medium text-gray-500 uppercase">
-            Rate
-          </div>
-          <div class="text-end text-xs font-medium text-gray-500 uppercase">
-            Amount
-          </div>
-        </div>
-
-        <div class="hidden sm:block border-b border-gray-200"></div>
-
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-          <div class="col-span-full sm:col-span-2">
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+        <div className="mt-6 border border-gray-200 dark:border-gray-500 p-4 rounded-lg space-y-4">
+          <div className="hidden sm:grid sm:grid-cols-5">
+            <div className="text-xs font-medium text-gray-500 uppercase">
               Item
-            </h5>
-            <p class="font-medium text-gray-800 dark:text-gray-200">
-              Yamaha 460T
-            </p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+            </div>
+            <div className="text-xs font-medium text-gray-500 uppercase">
+              Brand
+            </div>
+            <div className="text-start text-xs font-medium text-gray-500 uppercase">
               Qty
-            </h5>
-            <p class="text-gray-800 dark:text-gray-200">1</p>
+            </div>
+            <div className="text-start text-xs font-medium text-gray-500 uppercase">
+              Color
+            </div>
+            <div className="text-end text-xs font-medium text-gray-500 uppercase">
+              Tenure
+            </div>
           </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Rate
-            </h5>
-            <p class="text-gray-800 dark:text-gray-200">5</p>
+
+          <div className="hidden sm:block border-b border-gray-200 dark:border-gray-500"></div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+            <div className="col-span-full sm:col-span-1">
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                Item
+              </h5>
+              <p className="font-medium text-gray-800 dark:text-gray-200">
+                {!loanLoading && transactions[0].motorcycle.name}
+              </p>
+            </div>
+            <div className="col-span-full sm:col-span-1">
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                Brand
+              </h5>
+              <p className="font-medium text-gray-800 dark:text-gray-200">
+                {!loanLoading && transactions[0].motorcycle.brand}
+              </p>
+            </div>
+            <div>
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                Qty
+              </h5>
+              <p className="text-gray-800 dark:text-gray-200">
+                {!loanLoading && transactions[0].quantity}
+              </p>
+            </div>
+            <div>
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                Color
+              </h5>
+              <ColorLabel
+                style={(!loanLoading && transactions[0].color) || ""}
+              />
+            </div>
+            <div>
+              <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                Tenure
+              </h5>
+              <p className="sm:text-end text-gray-800 dark:text-gray-200">
+                {!loanLoading && transactions[0].tenure} years
+              </p>
+            </div>
           </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Amount
-            </h5>
-            <p class="sm:text-end text-gray-800 dark:text-gray-200">₱500</p>
-          </div>
+
+          <div className="sm:hidden border-b border-gray-200"></div>
         </div>
 
-        <div class="sm:hidden border-b border-gray-200"></div>
+        <div className="mt-8 flex sm:justify-end">
+          <div className="w-full max-w-2xl sm:text-end space-y-2">
+            <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+              <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt className="col-span-3 text-gray-500">Subtotal:</dt>
+                <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                  ₱2750.00
+                </dd>
+              </dl>
 
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-          <div class="col-span-full sm:col-span-2">
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Item
-            </h5>
-            <p class="font-medium text-gray-800 dark:text-gray-200">Wave 100</p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Qty
-            </h5>
-            <p class="text-gray-800 dark:text-gray-200">1</p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Rate
-            </h5>
-            <p class="text-gray-800 dark:text-gray-200">24</p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Amount
-            </h5>
-            <p class="sm:text-end text-gray-800 dark:text-gray-200">₱1250</p>
+              <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt className="col-span-3 text-gray-500">Total:</dt>
+                <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                  ₱2750.00
+                </dd>
+              </dl>
+
+              <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt className="col-span-3 text-gray-500">Amount paid:</dt>
+                <dd className="col-span-2 font-medium text-rose-600 dark:text-rose-500">
+                  ₱2789.00
+                </dd>
+              </dl>
+
+              <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
+                <dt className="col-span-3 text-gray-500">Due balance:</dt>
+                <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                  ₱0.00
+                </dd>
+              </dl>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="sm:hidden border-b border-gray-200"></div>
-
-        <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-          <div class="col-span-full sm:col-span-2">
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Item
-            </h5>
-            <p class="font-medium text-gray-800 dark:text-gray-200">
-              Raider FI
-            </p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Qty
-            </h5>
-            <p class="text-gray-800 dark:text-gray-200">1</p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Rate
-            </h5>
-            <p class="text-gray-800 dark:text-gray-200">6</p>
-          </div>
-          <div>
-            <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
-              Amount
-            </h5>
-            <p class="sm:text-end text-gray-800 dark:text-gray-200">₱2000</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 flex sm:justify-end">
-        <div class="w-full max-w-2xl sm:text-end space-y-2">
-          <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
-            <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
-              <dt class="col-span-3 text-gray-500">Subotal:</dt>
-              <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                ₱2750.00
-              </dd>
-            </dl>
-
-            <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
-              <dt class="col-span-3 text-gray-500">Total:</dt>
-              <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                ₱2750.00
-              </dd>
-            </dl>
-
-            <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
-              <dt class="col-span-3 text-gray-500">Tax:</dt>
-              <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                ₱39.00
-              </dd>
-            </dl>
-
-            <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
-              <dt class="col-span-3 text-gray-500">Amount paid:</dt>
-              <dd class="col-span-2 font-medium text-rose-600 dark:text-rose-200">
-                ₱2789.00
-              </dd>
-            </dl>
-
-            <dl class="grid sm:grid-cols-5 gap-x-3 text-sm">
-              <dt class="col-span-3 text-gray-500">Due balance:</dt>
-              <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                ₱0.00
-              </dd>
-            </dl>
-          </div>
-        </div>
-      </div>
       <div
         id="pdfPrint"
         className="fixed hidden top-0 left-0 right-0 z-50 px-20 pt-10 bg-gray-500 bg-opacity-30 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 max-h-full">
@@ -256,19 +237,14 @@ export default function Invoice() {
               <span className="sr-only">Close modal</span>
             </button>
             <div className="px-10 py-8 bg-gray-200">
-              <div class="mb-4 pb-1 flex justify-between items-end border-b border-gray-500">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">
+              <div className="mb-4 pb-1 flex justify-between items-end border-b border-gray-500">
+                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">
                   PDF View
                 </h2>
                 <CustomBttn
                   text="Download"
                   classname="text-white bg-rose-600 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 dark:focus:ring-rose-800 font-medium rounded-lg text-sm inline-flex items-center px-4 py-1.5 text-center mr-2"
                 />
-                {/* <div class="inline-flex gap-x-2">
-                                    <BttnwithIcon text="Download PDF">
-                                        <Download />
-                                    </BttnwithIcon>
-                                </div> */}
               </div>
               <div className="bg-white rounded-lg px-10 py-5 text-xs">
                 <a
@@ -277,42 +253,46 @@ export default function Invoice() {
                   <img src={RMCI} className="h-6 mr-2" alt="Rhean Motor Logo" />
                   Rhean Motor Center
                 </a>
-                <div class="grid md:grid-cols-2 gap-3">
+                <div className="grid md:grid-cols-2 gap-3">
                   <div>
-                    <div class="grid space-y-3">
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                    <div className="grid space-y-3">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Billed to:
                         </dt>
-                        <dd class="text-gray-800 dark:text-gray-200">
+                        <dd className="text-gray-800 dark:text-gray-200">
                           <a
-                            class="inline-flex items-center gap-x-1.5 text-rose-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
+                            className="inline-flex items-center gap-x-1.5 text-rose-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium"
                             href="#">
                             sara@site.com
                           </a>
                         </dd>
                       </dl>
 
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Billing details:
                         </dt>
-                        <dd class="font-medium text-gray-800 dark:text-gray-200">
-                          <span class="block font-semibold">Sara Williams</span>
-                          <address class="not-italic font-normal">
+                        <dd className="font-medium text-gray-800 dark:text-gray-200">
+                          <span className="block font-semibold">
+                            Sara Williams
+                          </span>
+                          <address className="not-italic font-normal">
                             280 Suzanne Throughway, Breannabury, OR 45801,
                             United States
                           </address>
                         </dd>
                       </dl>
 
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Shipping details:
                         </dt>
-                        <dd class="font-medium text-gray-800 dark:text-gray-200">
-                          <span class="block font-semibold">Sara Williams</span>
-                          <address class="not-italic font-normal">
+                        <dd className="font-medium text-gray-800 dark:text-gray-200">
+                          <span className="block font-semibold">
+                            Sara Williams
+                          </span>
+                          <address className="not-italic font-normal">
                             280 Suzanne Throughway, Breannabury, OR 45801,
                             United States
                           </address>
@@ -322,39 +302,39 @@ export default function Invoice() {
                   </div>
 
                   <div>
-                    <div class="grid space-y-3">
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                    <div className="grid space-y-3">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Invoice number:
                         </dt>
-                        <dd class="font-medium text-gray-800 dark:text-gray-200">
+                        <dd className="font-medium text-gray-800 dark:text-gray-200">
                           ADUQ2189H1-0038
                         </dd>
                       </dl>
 
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Currency:
                         </dt>
-                        <dd class="font-medium text-gray-800 dark:text-gray-200">
+                        <dd className="font-medium text-gray-800 dark:text-gray-200">
                           PHP - Philippine Peso
                         </dd>
                       </dl>
 
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Due date:
                         </dt>
-                        <dd class="font-medium text-gray-800 dark:text-gray-200">
+                        <dd className="font-medium text-gray-800 dark:text-gray-200">
                           10 Jan 2023
                         </dd>
                       </dl>
 
-                      <dl class="flex flex-col sm:flex-row gap-x-3 text-xs">
-                        <dt class="min-w-36 max-w-50 text-gray-500">
+                      <dl className="flex flex-col sm:flex-row gap-x-3 text-xs">
+                        <dt className="min-w-36 max-w-50 text-gray-500">
                           Billing method:
                         </dt>
-                        <dd class="font-medium text-gray-800 dark:text-gray-200">
+                        <dd className="font-medium text-gray-800 dark:text-gray-200">
                           Send invoice
                         </dd>
                       </dl>
@@ -362,156 +342,160 @@ export default function Invoice() {
                   </div>
                 </div>
 
-                <div class="mt-6 border border-rose-200 p-4 rounded-lg space-y-4">
-                  <div class="hidden sm:grid sm:grid-cols-5">
-                    <div class="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
+                <div className="mt-6 border border-rose-200 p-4 rounded-lg space-y-4">
+                  <div className="hidden sm:grid sm:grid-cols-5">
+                    <div className="sm:col-span-2 text-xs font-medium text-gray-500 uppercase">
                       Item
                     </div>
-                    <div class="text-start text-xs font-medium text-gray-500 uppercase">
+                    <div className="text-start text-xs font-medium text-gray-500 uppercase">
                       Qty
                     </div>
-                    <div class="text-start text-xs font-medium text-gray-500 uppercase">
+                    <div className="text-start text-xs font-medium text-gray-500 uppercase">
                       Rate
                     </div>
-                    <div class="text-end text-xs font-medium text-gray-500 uppercase">
+                    <div className="text-end text-xs font-medium text-gray-500 uppercase">
                       Amount
                     </div>
                   </div>
 
-                  <div class="hidden sm:block border-b border-rose-200"></div>
+                  <div className="hidden sm:block border-b border-rose-200"></div>
 
-                  <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                    <div class="col-span-full sm:col-span-2">
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    <div className="col-span-full sm:col-span-2">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Item
                       </h5>
-                      <p class="font-medium text-gray-800 dark:text-gray-200">
+                      <p className="font-medium text-gray-800 dark:text-gray-200">
                         Yamaha 460T
                       </p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Qty
                       </h5>
-                      <p class="text-gray-800 dark:text-gray-200">1</p>
+                      <p className="text-gray-800 dark:text-gray-200">1</p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Rate
                       </h5>
-                      <p class="text-gray-800 dark:text-gray-200">5</p>
+                      <p className="text-gray-800 dark:text-gray-200">5</p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Amount
                       </h5>
-                      <p class="sm:text-end text-gray-800 dark:text-gray-200">
+                      <p className="sm:text-end text-gray-800 dark:text-gray-200">
                         ₱500
                       </p>
                     </div>
                   </div>
 
-                  <div class="sm:hidden border-b border-gray-200"></div>
+                  <div className="sm:hidden border-b border-gray-200"></div>
 
-                  <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                    <div class="col-span-full sm:col-span-2">
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    <div className="col-span-full sm:col-span-2">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Item
                       </h5>
-                      <p class="font-medium text-gray-800 dark:text-gray-200">
+                      <p className="font-medium text-gray-800 dark:text-gray-200">
                         Wave 100
                       </p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Qty
                       </h5>
-                      <p class="text-gray-800 dark:text-gray-200">1</p>
+                      <p className="text-gray-800 dark:text-gray-200">1</p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Rate
                       </h5>
-                      <p class="text-gray-800 dark:text-gray-200">24</p>
+                      <p className="text-gray-800 dark:text-gray-200">24</p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Amount
                       </h5>
-                      <p class="sm:text-end text-gray-800 dark:text-gray-200">
+                      <p className="sm:text-end text-gray-800 dark:text-gray-200">
                         ₱1250
                       </p>
                     </div>
                   </div>
 
-                  <div class="sm:hidden border-b border-gray-200"></div>
+                  <div className="sm:hidden border-b border-gray-200"></div>
 
-                  <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
-                    <div class="col-span-full sm:col-span-2">
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    <div className="col-span-full sm:col-span-2">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Item
                       </h5>
-                      <p class="font-medium text-gray-800 dark:text-gray-200">
+                      <p className="font-medium text-gray-800 dark:text-gray-200">
                         Raider FI
                       </p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Qty
                       </h5>
-                      <p class="text-gray-800 dark:text-gray-200">1</p>
+                      <p className="text-gray-800 dark:text-gray-200">1</p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Rate
                       </h5>
-                      <p class="text-gray-800 dark:text-gray-200">6</p>
+                      <p className="text-gray-800 dark:text-gray-200">6</p>
                     </div>
                     <div>
-                      <h5 class="sm:hidden text-xs font-medium text-gray-500 uppercase">
+                      <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
                         Amount
                       </h5>
-                      <p class="sm:text-end text-gray-800 dark:text-gray-200">
+                      <p className="sm:text-end text-gray-800 dark:text-gray-200">
                         ₱2000
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div class="mt-8 flex sm:justify-end">
-                  <div class="w-full max-w-2xl sm:text-end space-y-2">
-                    <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
-                      <dl class="grid sm:grid-cols-5 gap-x-3 text-xs">
-                        <dt class="col-span-3 text-gray-500">Subotal:</dt>
-                        <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                <div className="mt-8 flex sm:justify-end">
+                  <div className="w-full max-w-2xl sm:text-end space-y-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
+                      <dl className="grid sm:grid-cols-5 gap-x-3 text-xs">
+                        <dt className="col-span-3 text-gray-500">Subotal:</dt>
+                        <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
                           ₱2750.00
                         </dd>
                       </dl>
 
-                      <dl class="grid sm:grid-cols-5 gap-x-3 text-xs">
-                        <dt class="col-span-3 text-gray-500">Total:</dt>
-                        <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                      <dl className="grid sm:grid-cols-5 gap-x-3 text-xs">
+                        <dt className="col-span-3 text-gray-500">Total:</dt>
+                        <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
                           ₱2750.00
                         </dd>
                       </dl>
 
-                      <dl class="grid sm:grid-cols-5 gap-x-3 text-xs">
-                        <dt class="col-span-3 text-gray-500">Tax:</dt>
-                        <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                      <dl className="grid sm:grid-cols-5 gap-x-3 text-xs">
+                        <dt className="col-span-3 text-gray-500">Tax:</dt>
+                        <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
                           ₱39.00
                         </dd>
                       </dl>
 
-                      <dl class="grid sm:grid-cols-5 gap-x-3 text-xs">
-                        <dt class="col-span-3 text-gray-500">Amount paid:</dt>
-                        <dd class="col-span-2 font-medium text-rose-600 dark:text-rose-200">
+                      <dl className="grid sm:grid-cols-5 gap-x-3 text-xs">
+                        <dt className="col-span-3 text-gray-500">
+                          Amount paid:
+                        </dt>
+                        <dd className="col-span-2 font-medium text-rose-600 dark:text-rose-200">
                           ₱2789.00
                         </dd>
                       </dl>
 
-                      <dl class="grid sm:grid-cols-5 gap-x-3 text-xs">
-                        <dt class="col-span-3 text-gray-500">Due balance:</dt>
-                        <dd class="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                      <dl className="grid sm:grid-cols-5 gap-x-3 text-xs">
+                        <dt className="col-span-3 text-gray-500">
+                          Due balance:
+                        </dt>
+                        <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
                           ₱0.00
                         </dd>
                       </dl>

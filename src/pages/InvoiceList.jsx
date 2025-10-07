@@ -14,6 +14,7 @@ import {
 import InvoiceRowSkeleton from "../components/loading components/InvoiceRowSkeleton";
 import { UserEntity } from "../services/entities/User";
 import ApplicationFilter from "../components/filters/ApplicationFilter";
+import InvoiceTable from "../components/tables/InvoiceTable";
 
 export default function InvoiceList({
   headText,
@@ -54,7 +55,7 @@ export default function InvoiceList({
 
   return (
     <section className="bg-gray-200 py-8 w-full antialiased dark:bg-gray-800 md:py-10">
-      <div className="mx-auto max-w-screen-x 2xl:px-0">
+      {/* <div className="mx-auto max-w-screen-x 2xl:px-0">
         <div className="mx-auto max-w-5xl bg-white dark:bg-gray-800 border border-gray-600 rounded-xl p-5">
           <div className="space-y-2 sm:items-center border-b border-gray-600 pb-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -108,7 +109,8 @@ export default function InvoiceList({
 
           <PageNav pagination={pagination} changePage={setPage} />
         </div>
-      </div>
+      </div> */}
+      <InvoiceTable />
     </section>
   );
 }

@@ -22,7 +22,7 @@ export default function Login() {
 
   async function login(event) {
     event.preventDefault();
-    dispatch(setLoading({ isActive: true, text: "Logging nn..." }));
+    dispatch(setLoading({ isActive: true, text: "Logging..." }));
 
     try {
       const response = await dispatch(loginUser(loginData)).unwrap();

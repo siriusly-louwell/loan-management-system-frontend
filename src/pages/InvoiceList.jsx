@@ -110,7 +110,7 @@ export default function InvoiceList({
           <PageNav pagination={pagination} changePage={setPage} itemName="applications" />
         </div>
       </div> */}
-      <InvoiceTable />
+      <InvoiceTable headText={headText} path={path} bttnText={bttnText} />
     </section>
   );
 }

@@ -6,7 +6,7 @@ export default function InvoiceRowSkeleton({ num = 1 }) {
           Date:
         </dt>
         <dd className="mt-1.5">
-          <div className="h-4 w-24 bg-gray-300 rounded dark:bg-gray-600"></div>
+          <div className="h-4 w-24 bg-gray-200 rounded dark:bg-gray-600"></div>
         </dd>
       </dl>
 
@@ -15,7 +15,7 @@ export default function InvoiceRowSkeleton({ num = 1 }) {
           Name:
         </dt>
         <dd className="mt-1.5">
-          <div className="h-4 w-32 bg-gray-300 rounded dark:bg-gray-600"></div>
+          <div className="h-4 w-32 bg-gray-200 rounded dark:bg-gray-600"></div>
         </dd>
       </dl>
 
@@ -24,7 +24,7 @@ export default function InvoiceRowSkeleton({ num = 1 }) {
           Amount:
         </dt>
         <dd className="mt-1.5">
-          <div className="h-4 w-20 bg-gray-300 rounded dark:bg-gray-600"></div>
+          <div className="h-4 w-20 bg-gray-200 rounded dark:bg-gray-600"></div>
         </dd>
       </dl>
 
@@ -33,7 +33,7 @@ export default function InvoiceRowSkeleton({ num = 1 }) {
           Record ID:
         </dt>
         <dd className="mt-1.5">
-          <div className="h-4 w-28 bg-gray-300 rounded dark:bg-gray-600"></div>
+          <div className="h-4 w-28 bg-gray-200 rounded dark:bg-gray-600"></div>
         </dd>
       </dl>
 
@@ -42,12 +42,12 @@ export default function InvoiceRowSkeleton({ num = 1 }) {
           Status:
         </dt>
         <dd className="mt-1.5">
-          <div className="h-6 w-16 bg-gray-300 rounded-full dark:bg-gray-600"></div>
+          <div className="h-6 w-16 bg-gray-200 rounded-full dark:bg-gray-600"></div>
         </dd>
       </dl>
 
       <div className="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-        <div className="h-10 w-full bg-gray-300 rounded-lg dark:bg-gray-600"></div>
+        <div className="h-10 w-full bg-gray-200 rounded-lg dark:bg-gray-600"></div>
       </div>
     </div>
   ));

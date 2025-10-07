@@ -4,7 +4,6 @@ import FormSelect from "../components/inputs/FormSelect";
 import Button from "../components/buttons/Button";
 import CloseBttn from "../components/buttons/CloseBttn";
 import Spinner from "../components/loading components/Spinner";
-import FileInput from "../components/inputs/FileInput";
 import Alert from "../components/Alert";
 import PopAnimate from "../components/animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";

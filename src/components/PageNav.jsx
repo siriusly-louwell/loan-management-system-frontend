@@ -2,7 +2,7 @@ import React from "react";
 import Pagination from "@mui/material/Pagination";
 import { useTheme } from "@mui/material/styles";
 
-export default function PageNav({ pagination, changePage }) {
+export default function PageNav({ pagination, changePage, itemName }) {
   const theme = useTheme();
 
   return (
@@ -16,7 +16,7 @@ export default function PageNav({ pagination, changePage }) {
         <span className="font-semibold text-gray-900 dark:text-white">
           {` ${pagination.total} `}
         </span>
-        units
+        {itemName}
       </span>
 
       <Pagination

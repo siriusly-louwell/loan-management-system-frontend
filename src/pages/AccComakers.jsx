@@ -89,6 +89,7 @@ export default function AccComakers() {
       title="Registered Customers"
       setPage={setPage}
       pagination={pagination}
+      itemName="customers"
       label="User">
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <Table>

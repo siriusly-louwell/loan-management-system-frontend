@@ -34,6 +34,7 @@ export default function AccApplicants() {
       label="User"
       setPage={setPage}
       pagination={pagination}
+      itemName="applicants"
       filterComponent={<ApplicationFilter setPage={setPage} />}>
       <ApplicantsTable />
     </CRUDformat>

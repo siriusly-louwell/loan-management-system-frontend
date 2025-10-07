@@ -7,8 +7,6 @@ import { ndiStabilityUseCase } from "../../usecases/application/ndiStabilityUseC
 import { calculateViability } from "../../usecases/application/calculateViability";
 import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
 import { assignCIUseCase } from "../../usecases/application/assignCIUseCase";
-import AddressAPI from "./../../api/AddressAPI";
-import { addressRepository } from "../../repositories/addressRepository";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUserWithToken } from "./services/redux/slices/authSlice";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -18,8 +18,6 @@ import LoanInfo from "./pages/LoanInfo";
 import ApplicantNav from "./components/navigations/ApplicantNav";
 import AppNotifications from "./components/modals/AppNotifications";
 import InvoiceList from "./pages/InvoiceList";
-import CustomBttn from "./components/buttons/CustomBttn";
-import Invoice from "./pages/Invoice";
 import Profile from "./pages/Profile";
 import EMICalculator from "./pages/EMICalculator";
 import ApplicationForm from "./pages/ApplicationForm";
@@ -50,11 +48,10 @@ import GlobalLoading from "./components/loading components/GlobalLoading";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import UnitList from "./pages/UnitList";
 import AccOverview from "./pages/AccOverview";
+import InvoicePage from "./pages/InvoicePage";
 
 function App() {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  // const { user } = useSelector(UserEntity);
 
   useEffect(() => {
     dispatch(loginUserWithToken());
@@ -209,7 +206,8 @@ function App() {
             path="invoice"
             element={
               <ProtectedRoute type="customer">
-                <Invoice />
+                {/* <Invoice /> */}
+                <InvoicePage />
               </ProtectedRoute>
             }
           />
@@ -384,14 +382,6 @@ function App() {
             }
           />
           <Route
-            path="loan_his"
-            element={
-              <ProtectedRoute type="staff">
-                <AppNotifications />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="profile"
             element={
               <ProtectedRoute type="staff">
@@ -414,6 +404,16 @@ function App() {
             element={
               <ProtectedRoute type="staff">
                 <ReportReview />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="invoice"
+            element={
+              <ProtectedRoute type="staff">
+                {/* <Invoice /> */}
+                <InvoicePage />
               </ProtectedRoute>
             }
           />
@@ -451,7 +451,8 @@ function App() {
             path="invoice"
             element={
               <ProtectedRoute type="admin">
-                <Invoice />
+                {/* <Invoice /> */}
+                <InvoicePage />
               </ProtectedRoute>
             }
           />

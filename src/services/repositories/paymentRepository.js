@@ -16,7 +16,7 @@ export const paymentRepository = {
   },
 
   async fetchPayment(data) {
-    const response = await PaymentAPI.fetchReport(data);
+    const response = await PaymentAPI.fetchPayment(data);
 
     if (!response) {
       return {

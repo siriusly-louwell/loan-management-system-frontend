@@ -220,7 +220,7 @@ export default function EmploymentInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            {[...Array(properties)].map((i) => (
+            {[...Array(properties)].map((_, i) => (
               <tr key={i}>
                 <FormTD placeholder="Property name here" />
                 <FormTD placeholder="Location here" />
@@ -265,7 +265,7 @@ export default function EmploymentInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            {[...Array(references)].map((i) => (
+            {[...Array(references)].map((_, i) => (
               <tr key={i}>
                 <FormTD placeholder="Property name here" />
                 <FormTD placeholder="Location here" />

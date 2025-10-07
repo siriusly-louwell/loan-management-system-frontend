@@ -135,6 +135,13 @@ export class Loan {
     );
   }
 
+  get unitImage() {
+    return (
+      this.transactions?.length &&
+      `${process.env.REACT_APP_API_URL}/storage/${this.transactions[0].motorcycle.file_path}`
+    );
+  }
+
   trackStatus(stage) {
     const stageConfig = STATUS_MAP[stage];
     if (!stageConfig[this.status]) return stageConfig.default;

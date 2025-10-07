@@ -62,6 +62,9 @@ export default function AddPayment() {
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
+      dispatch(
+        toggleModal({ name: "confirmPayment", value: modals.confirmPayment })
+      );
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -180,40 +183,16 @@ export default function AddPayment() {
                 />
                 <BasicBttn
                   text="Cancel"
-                  onclick={() =>
-                    (document.getElementById("pay-alert").style.display =
-                      "none")
+                  click={() =>
+                    dispatch(
+                      toggleModal({
+                        name: "confirmPayment",
+                        value: modals.confirmPayment,
+                      })
+                    )
                   }
                 />
               </Dialog>
-              <Spinner id="payment_spin" />
-              <Alert id="pay-alert" text={alert.text} icon={alert.icon}>
-                {alert.icon === "done" ? (
-                  <Button
-                    text="Ok"
-                    type="button"
-                    onclick={() =>
-                      (document.getElementById("pay-alert").style.display =
-                        "none")
-                    }
-                  />
-                ) : (
-                  <>
-                    <CustomBttn
-                      text="Confirm"
-                      onclick={handleSubmit}
-                      classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                    />
-                    <BasicBttn
-                      text="Cancel"
-                      onclick={() =>
-                        (document.getElementById("pay-alert").style.display =
-                          "none")
-                      }
-                    />
-                  </>
-                )}
-              </Alert>
             </div>
           </div>
         </PopAnimate>

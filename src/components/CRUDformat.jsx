@@ -18,6 +18,7 @@ export default function CRUDformat({
   setPage,
   filterComponent,
   pagination,
+  itemName
 }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
@@ -83,7 +84,7 @@ export default function CRUDformat({
 
             <div className="overflow-x-auto min-h-40">{children}</div>
 
-            <PageNav pagination={pagination} changePage={setPage} />
+            <PageNav pagination={pagination} changePage={setPage} itemName={itemName} />
           </div>
         </div>
       </section>

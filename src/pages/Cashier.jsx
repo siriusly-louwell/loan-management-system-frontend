@@ -20,7 +20,8 @@ export default function Cashier() {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const { loan, loanLoading } = useSelector((state) => state.application);
-  const { downpayment, initialBalance, dateIssued } = useSelector(LoanEntity);
+  const { downpayment, initialBalance, dateIssued, unitImage } =
+    useSelector(LoanEntity);
   const search = useDebounce(id.search, 500);
   const emptySearch = search !== "";
   const emptyObj = Object.keys(loan).length === 0;
@@ -72,7 +73,7 @@ export default function Cashier() {
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="flex space-x-4 items-center">
                     <img
-                      className="h-16 w-16 rounded-lg"
+                      className="h-16 w-16 rounded-lg  object-cover"
                       src={loan.imgURL}
                       alt="loan avatar"
                     />
@@ -122,7 +123,7 @@ export default function Cashier() {
                         color={trans.color}
                         price={trans.motorcycle.price}
                         units={trans.quantity}
-                        img={trans.motorcycle.file_path}
+                        img={unitImage}
                         name={trans.motorcycle.name}
                       />
                     ))}

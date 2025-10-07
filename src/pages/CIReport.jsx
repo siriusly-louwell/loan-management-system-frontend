@@ -114,7 +114,13 @@ export default function CIReport() {
             </div>
           ))}
 
-          <LeafletMap />
+          <LeafletMap
+            display={true}
+            coordinates={{
+              lat: application.address.lat,
+              lng: application.address.lng,
+            }}
+          />
 
           <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
             Dependents:

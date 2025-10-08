@@ -15,7 +15,7 @@ export default function DashOverview() {
       }
     };
 
-    setTimeout(handleResize, 100); // slight delay after mount
+    setTimeout(handleResize, 100);
   }, []);
 
   return (

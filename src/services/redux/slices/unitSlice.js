@@ -40,6 +40,19 @@ export const fetchUnits = createAsyncThunk(
   }
 );
 
+export const unitAnalysis = createAsyncThunk(
+  "unit/unitAnalysis",
+  async (params, thunkAPI) => {
+    try {
+      const count = unitRepository.countUnits();
+
+      return count;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchUnit = createAsyncThunk(
   "unit/fetchUnit",
   async (unitID, thunkAPI) => {

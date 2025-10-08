@@ -22,6 +22,13 @@ const UnitAPI = {
     return response.data;
   },
 
+  async count(params) {
+    const response = await axios.get(`${API_URL}/api/motorcycle/count`, {
+      params: { ...params },
+    });
+    return response.data;
+  },
+
   async add(data) {
     const response = await axios.post(`${API_URL}/api/motorcycle/`, data);
 

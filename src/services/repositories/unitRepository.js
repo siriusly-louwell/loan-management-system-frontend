@@ -4,12 +4,11 @@ export const unitRepository = {
   async fetchAll(data) {
     const response = await UnitAPI.fetchAll(data);
 
-    if (!response) {
+    if (!response)
       return {
         message: "Failed to fetch units",
         type: "error",
       };
-    }
 
     return await response;
   },
@@ -17,12 +16,23 @@ export const unitRepository = {
   async fetchPage({ page = 1, perPage = 8, ...params }) {
     const response = await UnitAPI.paginate(page, perPage, params);
 
-    if (!response) {
+    if (!response)
       return {
         message: "Failed to fetch units",
         type: "error",
       };
-    }
+
+    return await response;
+  },
+
+  async countUnits(params) {
+    const response = await UnitAPI.paginate(params);
+
+    if (!response)
+      return {
+        message: "Failed to fetch results",
+        type: "error",
+      };
 
     return await response;
   },
@@ -30,12 +40,11 @@ export const unitRepository = {
   async add(data) {
     const response = await UnitAPI.add(data);
 
-    if (!response) {
+    if (!response)
       return {
         message: "Failed to create unit",
         type: "error",
       };
-    }
 
     return await response;
   },
@@ -43,12 +52,11 @@ export const unitRepository = {
   async edit(data, id) {
     const response = await UnitAPI.edit(data, id);
 
-    if (!response) {
+    if (!response)
       return {
         message: "Failed to edit unit",
         type: "error",
       };
-    }
 
     return await response;
   },
@@ -56,12 +64,11 @@ export const unitRepository = {
   async patch(data, id) {
     const response = await UnitAPI.patch(data, id);
 
-    if (!response) {
+    if (!response)
       return {
         message: "Failed to update unit",
         type: "error",
       };
-    }
 
     return await response;
   },

@@ -36,19 +36,19 @@ export default function DashOverview() {
               amount={results.new?.count}
               label="New units this month"
               percent={results.new?.difference}
-              arrow={results.total?.increment_type}
+              type={results.total?.increment_type}
             />
             <InfoCard
               amount="5,355"
               label="Sold units this month"
               percent="32.9%"
-              arrow={<UpArrow />}
+              type={<UpArrow />}
             />
             <InfoCard
               amount={results.repo?.count}
               label="Repo units this month"
               percent={results.repo?.difference}
-              arrow={<DownArrow />}
+              type={<DownArrow />}
             />
           </>
         )}
@@ -62,31 +62,31 @@ export default function DashOverview() {
               amount="5,355"
               label="Applications this month"
               percent="32.9%"
-              arrow={<UpArrow />}
+              type={<UpArrow />}
             />
             <InfoCard
               amount="385"
               label="Pending applications this month"
               percent="-3.7%"
-              arrow={<DownArrow />}
+              type={<DownArrow />}
             />
             <InfoCard
               amount="385"
               label="Approved applications this month"
               percent="-3.7%"
-              arrow={<DownArrow />}
+              type={<DownArrow />}
             />
             <InfoCard
               amount="385"
               label="Declined applications this month"
               percent="-3.7%"
-              arrow={<DownArrow />}
+              type={<DownArrow />}
             />
             <InfoCard
               amount="385"
               label="Paid loans this month"
               percent="-3.7%"
-              arrow={<DownArrow />}
+              type={<DownArrow />}
             />
           </>
         )}

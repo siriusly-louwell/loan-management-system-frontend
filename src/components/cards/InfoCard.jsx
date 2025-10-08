@@ -1,8 +1,10 @@
 import React from "react";
 import UpArrow from "../../assets/icons/UpArrow";
+import DownArrow from "../../assets/icons/DownArrown";
 
 export default function InfoCard({ amount, label, percent, arrow }) {
-  const color = arrow.type === UpArrow ? "text-green-500" : "text-red-500";
+  const color = arrow ? "text-green-500" : "text-red-500";
+  const icon = arrow ? <UpArrow /> : <DownArrow />;
   const className =
     "ml-5 w-0 flex items-center justify-end flex-1 text-base font-bold " +
     color;
@@ -20,7 +22,7 @@ export default function InfoCard({ amount, label, percent, arrow }) {
         </div>
         <div className={className}>
           {percent}
-          {arrow}
+          {icon}
         </div>
       </div>
     </div>

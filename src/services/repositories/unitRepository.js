@@ -26,7 +26,7 @@ export const unitRepository = {
   },
 
   async countUnits(params) {
-    const response = await UnitAPI.paginate(params);
+    const response = await UnitAPI.count(params);
 
     if (!response)
       return {

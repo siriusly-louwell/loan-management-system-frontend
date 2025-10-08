@@ -70,8 +70,10 @@ const UnitSlice = createSlice({
   initialState: {
     unit: {},
     units: [],
+    results: {},
     unitLoading: true,
     unitsLoading: false,
+    resultLoading: false,
     images: [],
     error: null,
     brands: MOTOR_BRANDS,
@@ -172,6 +174,20 @@ const UnitSlice = createSlice({
       })
       .addCase(fetchUnit.rejected, (state, action) => {
         state.unitLoading = false;
+        state.error = action.payload;
+      })
+
+      // ? fetch results
+      .addCase(unitAnalysis.pending, (state) => {
+        state.resultLoading = true;
+        state.error = null;
+      })
+      .addCase(unitAnalysis.fulfilled, (state, action) => {
+        state.resultLoading = false;
+        state.results = action.payload;
+      })
+      .addCase(unitAnalysis.rejected, (state, action) => {
+        state.resultLoading = false;
         state.error = action.payload;
       });
   },

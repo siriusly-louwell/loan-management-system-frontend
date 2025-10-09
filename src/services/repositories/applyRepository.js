@@ -54,6 +54,18 @@ export const applyRepository = {
     return await response;
   },
 
+  async countLoans(params) {
+    const response = await ApplicationAPI.count(params);
+
+    if (!response)
+      return {
+        message: "Failed to fetch results",
+        type: "error",
+      };
+
+    return await response;
+  },
+
   async patch(data, id) {
     const response = await ApplicationAPI.patch(data, id);
 

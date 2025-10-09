@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import InfoCard from "../components/cards/InfoCard";
-import UpArrow from "../assets/icons/UpArrow";
-import DownArrow from "../assets/icons/DownArrown";
 import Donut from "../components/charts/Donut";
 import InvoiceTable from "../components/tables/InvoiceTable";
 import LineTwo from "../components/charts/LineTwo";
@@ -9,13 +7,18 @@ import BarTwo from "../components/charts/BarTwo";
 import { useDispatch, useSelector } from "react-redux";
 import { unitAnalysis } from "../services/redux/slices/unitSlice";
 import InfoCardSkeleton from "../components/loading components/InfoCardSkeleton";
+import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
 
 export default function DashOverview() {
   const dispatch = useDispatch();
-  const { results, resultLoading } = useSelector((state) => state.unit);
+  const { loanResults, appsLoading } = useSelector(
+    (state) => state.application
+  );
+  const { unitResults, unitsLoading } = useSelector((state) => state.unit);
 
   useEffect(() => {
     dispatch(unitAnalysis());
+    dispatch(applicationAnalysis());
     const handleResize = () => {
       if (window.ApexCharts) {
         window.dispatchEvent(new Event("resize"));
@@ -28,65 +31,65 @@ export default function DashOverview() {
   return (
     <section>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
-        {resultLoading ? (
+        {unitsLoading || appsLoading ? (
           <InfoCardSkeleton />
         ) : (
           <>
             <InfoCard
-              amount={results.new?.count}
+              amount={unitResults.new?.count}
               label="New units this month"
-              percent={results.new?.difference}
-              type={results.total?.increment_type}
+              percent={unitResults.new?.difference}
+              type={unitResults.new?.increment_type}
             />
             <InfoCard
-              amount="5,355"
+              amount={loanResults.approved?.count}
               label="Sold units this month"
-              percent="32.9%"
-              type={<UpArrow />}
+              percent={loanResults.approved?.difference}
+              type={loanResults.approved?.increment_type}
             />
             <InfoCard
-              amount={results.repo?.count}
+              amount={unitResults.repo?.count}
               label="Repo units this month"
-              percent={results.repo?.difference}
-              type={<DownArrow />}
+              percent={unitResults.repo?.difference}
+              type={unitResults.repo?.increment_type}
             />
           </>
         )}
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
-        {resultLoading ? (
+        {unitsLoading || appsLoading ? (
           <InfoCardSkeleton num={6} />
         ) : (
           <>
             <InfoCard
-              amount="5,355"
+              amount={loanResults.total?.count}
               label="Applications this month"
-              percent="32.9%"
-              type={<UpArrow />}
+              percent={loanResults.total?.difference}
+              type={loanResults.total?.increment_type}
             />
             <InfoCard
-              amount="385"
+              amount={loanResults.pending?.count}
               label="Pending applications this month"
-              percent="-3.7%"
-              type={<DownArrow />}
+              percent={loanResults.pending?.difference}
+              type={loanResults.pending?.increment_type}
             />
             <InfoCard
-              amount="385"
+              amount={loanResults.approved?.count}
               label="Approved applications this month"
-              percent="-3.7%"
-              type={<DownArrow />}
+              percent={loanResults.approved?.difference}
+              type={loanResults.approved?.increment_type}
             />
             <InfoCard
-              amount="385"
+              amount={loanResults.declined?.count}
               label="Declined applications this month"
-              percent="-3.7%"
-              type={<DownArrow />}
+              percent={loanResults.declined?.difference}
+              type={loanResults.declined?.increment_type}
             />
             <InfoCard
-              amount="385"
+              amount={loanResults.paid?.count}
               label="Paid loans this month"
-              percent="-3.7%"
-              type={<DownArrow />}
+              percent={loanResults.paid?.difference}
+              type={loanResults.paid?.increment_type}
             />
           </>
         )}

@@ -22,6 +22,13 @@ const ApplicationAPI = {
     return response.data;
   },
 
+  async count(params) {
+    const response = await axios.get(`${API_URL}/api/application/count`, {
+      params: { ...params },
+    });
+    return response.data;
+  },
+
   async apply(data) {
     const response = await axios.post(`${API_URL}/api/application`, data);
     return response.data;

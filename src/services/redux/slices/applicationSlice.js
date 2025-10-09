@@ -41,6 +41,19 @@ export const fetchLoan = createAsyncThunk(
   }
 );
 
+export const applicationAnalysis = createAsyncThunk(
+  "application/applicationAnalysis",
+  async (params, thunkAPI) => {
+    try {
+      const count = applyRepository.countLoans();
+
+      return count;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateStatus = createAsyncThunk(
   "application/updateStatus",
   async (data, thunkAPI) => {
@@ -60,6 +73,7 @@ const applicationSlice = createSlice({
     applications: [],
     customers: [],
     loan: {},
+    loanResults: {},
     loanID: null,
     loanLoading: true,
     customLoading: false,
@@ -238,6 +252,20 @@ const applicationSlice = createSlice({
         state.loanLoading = false;
         state.loan = {};
         state.applyError = action.payload;
+      })
+
+      // ? fetch results
+      .addCase(applicationAnalysis.pending, (state) => {
+        state.appsLoading = true;
+        state.error = null;
+      })
+      .addCase(applicationAnalysis.fulfilled, (state, action) => {
+        state.appsLoading = false;
+        state.loanResults = action.payload;
+      })
+      .addCase(applicationAnalysis.rejected, (state, action) => {
+        state.appsLoading = false;
+        state.error = action.payload;
       });
   },
 });

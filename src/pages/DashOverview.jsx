@@ -8,18 +8,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { unitAnalysis } from "../services/redux/slices/unitSlice";
 import InfoCardSkeleton from "../components/loading components/InfoCardSkeleton";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
+import { paymentAnalysis } from "../services/redux/slices/paymentSlice";
 
 export default function DashOverview() {
   const dispatch = useDispatch();
   const { loanResults, appsLoading } = useSelector(
     (state) => state.application
   );
+  const { paymentResults, paymentsLoading } = useSelector(
+    (state) => state.payment
+  );
   const { unitResults, unitsLoading } = useSelector((state) => state.unit);
-  const loading = unitsLoading || appsLoading;
+  const loading = unitsLoading || appsLoading || paymentsLoading;
 
   useEffect(() => {
     dispatch(unitAnalysis());
     dispatch(applicationAnalysis({ analysis: true }));
+    dispatch(paymentAnalysis({ analysis: true }));
 
     const handleResize = () => {
       if (window.ApexCharts) {
@@ -102,13 +107,13 @@ export default function DashOverview() {
           series={loanResults.donut || []}
           loading={loading}
         />
+        <Bar results={paymentResults} loading={loading} />
         <Line
           data={loanResults.line?.series || []}
           categories={loanResults.line?.categories || []}
           count={loanResults.total?.count}
           loading={loading}
         />
-        <Bar loading={loading} />
       </div>
       <section className="px-5">
         <InvoiceTable isDashboard={true} />

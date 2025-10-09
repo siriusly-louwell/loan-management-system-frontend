@@ -22,6 +22,13 @@ const PaymentAPI = {
     return response.data;
   },
 
+  async count(params) {
+    const response = await axios.get(`${API_URL}/api/payment/count`, {
+      params: { ...params },
+    });
+    return response.data;
+  },
+
   async pay(data) {
     const response = await axios.post(`${API_URL}/api/payment`, data);
     return response.data;

@@ -255,7 +255,7 @@ const applicationSlice = createSlice({
         state.applyError = action.payload;
       })
 
-      // ? fetch results
+      // ? Fetch results
       .addCase(applicationAnalysis.pending, (state) => {
         state.appsLoading = true;
         state.error = null;
@@ -264,7 +264,7 @@ const applicationSlice = createSlice({
         state.appsLoading = false;
         const data = action.payload;
         const donut = dashboardRepository.donutConfig(data);
-        const line = dashboardRepository.lineConfig(data.data);
+        const line = dashboardRepository.chartConfig(data.data);
 
         state.loanResults = { ...data, donut, line };
       })

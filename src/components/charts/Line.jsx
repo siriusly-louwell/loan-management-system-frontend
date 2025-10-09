@@ -46,12 +46,14 @@ export default function Line({ count = 0, data, categories, loading }) {
   return (
     <div className="max-w-sm w-full bg-white rounded-lg shadow-sm dark:bg-gray-700 p-4 md:p-6">
       <div className="flex space-x-2 items-center border-b border-gray-200 dark:border-gray-700 pb-3">
-          <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+        <dl>
+          <dt className="text-base font-normal mb-1 text-gray-500 dark:text-gray-400">
             Total Loans
           </dt>
           <dd className="leading-none text-3xl font-bold text-gray-900 dark:text-white">
             {count}
           </dd>
+        </dl>
       </div>
 
       {loading ? (

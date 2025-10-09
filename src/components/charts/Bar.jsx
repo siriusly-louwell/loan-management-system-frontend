@@ -2,16 +2,16 @@ import React from "react";
 import Chart from "react-apexcharts";
 import { BarChartSkeleton } from "../loading components/ChartSkeletons";
 
-export default function Bar({ loading }) {
+export default function Bar({ results = {}, loading }) {
   const chartData = {
     series: [
       {
         name: "Punctual Payments",
-        data: [95, 100, 90, 85, 92, 97],
+        data: results.punctualData?.series || [],
       },
       {
         name: "Late Payments",
-        data: [10, 8, 12, 9, 7, 5],
+        data: results.lateData?.series || [],
       },
     ],
     options: {
@@ -32,7 +32,7 @@ export default function Bar({ loading }) {
       colors: ["#31C48D", "#F05252"],
       dataLabels: { enabled: false },
       xaxis: {
-        categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        categories: results.punctual?.categories || [],
         labels: {
           style: { fontFamily: "Inter, sans-serif" },
         },
@@ -50,32 +50,15 @@ export default function Bar({ loading }) {
 
   return (
     <div className="max-w-sm w-full bg-white rounded-lg shadow-sm dark:bg-gray-700 p-4 md:p-6">
-      <div className="flex justify-between border-gray-200 border-b dark:border-gray-700 pb-3">
+      <div className="flex space-x-2 items-center border-gray-200 border-b dark:border-gray-700 pb-3">
         <dl>
           <dt className="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">
             Loan Payments
           </dt>
           <dd className="leading-none text-3xl font-bold text-gray-900 dark:text-white">
-            108
+            {results.total?.count}
           </dd>
         </dl>
-        <span className="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300">
-          <svg
-            className="w-2.5 h-2.5 me-1.5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 14">
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 13V1m0 0L1 5m4-4 4 4"
-            />
-          </svg>
-          Payment rate 23.5%
-        </span>
       </div>
 
       <div className="grid grid-cols-2 py-3">
@@ -84,7 +67,7 @@ export default function Bar({ loading }) {
             Punctual
           </dt>
           <dd className="leading-none text-xl font-bold text-green-500 dark:text-green-400">
-            75
+            {results.on_time?.count}
           </dd>
         </dl>
         <dl>
@@ -92,7 +75,7 @@ export default function Bar({ loading }) {
             Late
           </dt>
           <dd className="leading-none text-xl font-bold text-red-600 dark:text-red-500">
-            30
+            {results.late?.count}
           </dd>
         </dl>
       </div>

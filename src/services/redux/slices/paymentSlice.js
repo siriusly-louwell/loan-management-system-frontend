@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { paymentRepository } from "../../repositories/paymentRepository";
+import { dashboardRepository } from "../../repositories/dashboardRepository";
 
 export const addPayment = createAsyncThunk(
   "payment/addPayment",
@@ -34,11 +35,25 @@ export const fetchPayments = createAsyncThunk(
   }
 );
 
+export const paymentAnalysis = createAsyncThunk(
+  "payment/paymentAnalysis",
+  async (params, thunkAPI) => {
+    try {
+      const count = paymentRepository.countPayments(params);
+
+      return count;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const paymentSlice = createSlice({
   name: "payment",
   initialState: {
     paymentLoading: false,
     paymentsLoading: false,
+    paymentResults: {},
     payment: {},
     payments: [],
     paymentID: null,
@@ -95,6 +110,28 @@ const paymentSlice = createSlice({
       })
       .addCase(fetchPayment.rejected, (state, action) => {
         state.paymentLoading = false;
+        state.paymentError = action.payload;
+      })
+
+      // ? Fetch results
+      .addCase(paymentAnalysis.pending, (state) => {
+        state.paymentsLoading = true;
+        state.paymentError = null;
+      })
+      .addCase(paymentAnalysis.fulfilled, (state, action) => {
+        state.paymentsLoading = false;
+        const data = action.payload;
+        const punctualData = dashboardRepository.chartConfig(
+          data.data.filter((i) => i.status === "on_time")
+        );
+        const lateData = dashboardRepository.chartConfig(
+          data.data.filter((i) => i.status === "late")
+        );
+
+        state.paymentResults = { ...data, punctualData, lateData };
+      })
+      .addCase(paymentAnalysis.rejected, (state, action) => {
+        state.paymentsLoading = false;
         state.paymentError = action.payload;
       });
   },

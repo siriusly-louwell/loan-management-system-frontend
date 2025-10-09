@@ -22,7 +22,7 @@ export const dashboardRepository = {
     return donut;
   },
 
-  lineConfig(data) {
+  chartConfig(data) {
     if (data.length === 0) {
       return { categories: [], series: [0, 0, 0, 0, 0, 0] };
     }

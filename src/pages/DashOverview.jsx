@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { unitAnalysis } from "../services/redux/slices/unitSlice";
 import InfoCardSkeleton from "../components/loading components/InfoCardSkeleton";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
-import useAnimateNumber from "../hooks/useAnimateNumber";
 
 export default function DashOverview() {
   const dispatch = useDispatch();
@@ -17,7 +16,6 @@ export default function DashOverview() {
   );
   const { unitResults, unitsLoading } = useSelector((state) => state.unit);
   const loading = unitsLoading || appsLoading;
-  const sample = useAnimateNumber(10, 1000);
 
   useEffect(() => {
     dispatch(unitAnalysis());
@@ -35,7 +33,6 @@ export default function DashOverview() {
   return (
     <section>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
-        <h1 className="text-gray-100">{sample}</h1>
         {loading ? (
           <InfoCardSkeleton />
         ) : (
@@ -47,8 +44,7 @@ export default function DashOverview() {
               type={unitResults.new?.increment_type}
             />
             <InfoCard
-              // amount={loanResults.approved?.count}
-              amount={sample}
+              amount={loanResults.approved?.count}
               label="Sold units this month"
               percent={loanResults.approved?.difference}
               type={loanResults.approved?.increment_type}

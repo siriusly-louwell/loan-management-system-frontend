@@ -5,8 +5,6 @@ import Widget from "../assets/icons/Widget";
 import Notif from "../assets/icons/Notif";
 import Chart from "../assets/icons/Chart";
 import Mailbox from "../assets/icons/Mailbox";
-import Users from "../assets/icons/Users";
-import Basket from "../assets/icons/Basket";
 
 export default function Dashboard() {
   return (
@@ -26,17 +24,10 @@ export default function Dashboard() {
             icon: "",
           },
           {
-            key: "notifications",
-            text: "Notifications",
+            key: "invoices",
+            text: "Invoices",
             component: <Mailbox />,
             icon: <Notif num="3" />,
-          },
-          { key: "invoices", text: "Invoices", component: <Users />, icon: "" },
-          {
-            key: "products",
-            text: "Products",
-            component: <Basket />,
-            icon: "",
           },
         ]}
       />

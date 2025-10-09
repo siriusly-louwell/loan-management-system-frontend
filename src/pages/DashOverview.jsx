@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { unitAnalysis } from "../services/redux/slices/unitSlice";
 import InfoCardSkeleton from "../components/loading components/InfoCardSkeleton";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
+import useAnimateNumber from "../hooks/useAnimateNumber";
 
 export default function DashOverview() {
   const dispatch = useDispatch();
@@ -15,10 +16,13 @@ export default function DashOverview() {
     (state) => state.application
   );
   const { unitResults, unitsLoading } = useSelector((state) => state.unit);
+  const loading = unitsLoading || appsLoading;
+  const sample = useAnimateNumber(10, 1000);
 
   useEffect(() => {
     dispatch(unitAnalysis());
-    dispatch(applicationAnalysis());
+    dispatch(applicationAnalysis({ analysis: true }));
+
     const handleResize = () => {
       if (window.ApexCharts) {
         window.dispatchEvent(new Event("resize"));
@@ -31,7 +35,8 @@ export default function DashOverview() {
   return (
     <section>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
-        {unitsLoading || appsLoading ? (
+        <h1 className="text-gray-100">{sample}</h1>
+        {loading ? (
           <InfoCardSkeleton />
         ) : (
           <>
@@ -42,7 +47,8 @@ export default function DashOverview() {
               type={unitResults.new?.increment_type}
             />
             <InfoCard
-              amount={loanResults.approved?.count}
+              // amount={loanResults.approved?.count}
+              amount={sample}
               label="Sold units this month"
               percent={loanResults.approved?.difference}
               type={loanResults.approved?.increment_type}
@@ -57,7 +63,7 @@ export default function DashOverview() {
         )}
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
-        {unitsLoading || appsLoading ? (
+        {loading ? (
           <InfoCardSkeleton num={6} />
         ) : (
           <>
@@ -98,9 +104,15 @@ export default function DashOverview() {
         <Donut
           labels={loanResults.donut?.labels || []}
           series={loanResults.donut || []}
+          loading={loading}
         />
-        <Line />
-        <Bar />
+        <Line
+          data={loanResults.line?.series || []}
+          categories={loanResults.line?.categories || []}
+          count={loanResults.total?.count}
+          loading={loading}
+        />
+        <Bar loading={loading} />
       </div>
       <section className="px-5">
         <InvoiceTable isDashboard={true} />

@@ -7,7 +7,6 @@ import { ndiStabilityUseCase } from "../../usecases/application/ndiStabilityUseC
 import { calculateViability } from "../../usecases/application/calculateViability";
 import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
 import { assignCIUseCase } from "../../usecases/application/assignCIUseCase";
-import { APPLICATION_STATUS } from "../../../constants/statuses";
 import { dashboardRepository } from "../../repositories/dashboardRepository";
 
 export const fetchApplicants = createAsyncThunk(
@@ -47,7 +46,7 @@ export const applicationAnalysis = createAsyncThunk(
   "application/applicationAnalysis",
   async (params, thunkAPI) => {
     try {
-      const count = applyRepository.countLoans();
+      const count = applyRepository.countLoans(params);
 
       return count;
     } catch (error) {
@@ -265,8 +264,9 @@ const applicationSlice = createSlice({
         state.appsLoading = false;
         const data = action.payload;
         const donut = dashboardRepository.donutConfig(data);
+        const line = dashboardRepository.lineConfig(data.data);
 
-        state.loanResults = { ...data, donut };
+        state.loanResults = { ...data, donut, line };
       })
       .addCase(applicationAnalysis.rejected, (state, action) => {
         state.appsLoading = false;

@@ -1,7 +1,8 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import { BarChartSkeleton } from "../loading components/ChartSkeletons";
 
-export default function Bar() {
+export default function Bar({ loading }) {
   const chartData = {
     series: [
       {
@@ -96,35 +97,19 @@ export default function Bar() {
         </dl>
       </div>
 
-      <Chart
-        options={chartData.options}
-        series={chartData.series}
-        type="bar"
-        height={320}
-      />
+      {loading ? (
+        <BarChartSkeleton />
+      ) : (
+        <Chart
+          options={chartData.options}
+          series={chartData.series}
+          type="bar"
+          height={320}
+        />
+      )}
 
       <div className="grid grid-cols-1 border-t border-gray-200 dark:border-gray-700 mt-4">
-        <div className="flex justify-between items-center pt-5">
-          <button
-            id="dropdownDefaultButton"
-            className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 inline-flex items-center dark:hover:text-white"
-            type="button">
-            Last 6 months
-            <svg
-              className="w-2.5 m-2.5 ms-1.5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6">
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-
+        <div className="flex justify-end items-center pt-5">
           <a
             href="#"
             className="uppercase text-sm font-semibold inline-flex items-center text-blue-600 hover:text-blue-700 dark:hover:text-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg px-3 py-2">

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
 import { Info, Download } from "lucide-react";
+import { CHART_COLORS } from "../../constants/colors";
 
-export default function Donut() {
+export default function Donut({ labels, series }) {
   const [days, setDays] = useState("Last 7 days");
   const chartData = {
-    series: [120, 80, 30], // Approved, Pending, Rejected
+    series: series,
     options: {
       chart: { type: "donut" },
-      labels: ["Approved", "Pending", "Rejected"],
-      colors: ["#16BDCA", "#FDBA8C", "#E74694", "#1C64F2"],
+      labels: labels,
+      colors: CHART_COLORS,
       stroke: {
         show: false,
         width: 0,

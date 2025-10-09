@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import InfoCard from "../components/cards/InfoCard";
 import Donut from "../components/charts/Donut";
 import InvoiceTable from "../components/tables/InvoiceTable";
-import LineTwo from "../components/charts/LineTwo";
-import BarTwo from "../components/charts/BarTwo";
+import Line from "../components/charts/Line";
+import Bar from "../components/charts/Bar";
 import { useDispatch, useSelector } from "react-redux";
 import { unitAnalysis } from "../services/redux/slices/unitSlice";
 import InfoCardSkeleton from "../components/loading components/InfoCardSkeleton";
@@ -95,9 +95,12 @@ export default function DashOverview() {
         )}
       </div>
       <div className="grid justify-items-center mx-5 py-5 mb-5 grid-cols-auto md:grid-cols-3 gap-4 items-start border-b border-gray-300 dark:border-gray-600">
-        <Donut />
-        <LineTwo />
-        <BarTwo />
+        <Donut
+          labels={loanResults.donut?.labels || []}
+          series={loanResults.donut || []}
+        />
+        <Line />
+        <Bar />
       </div>
       <section className="px-5">
         <InvoiceTable isDashboard={true} />

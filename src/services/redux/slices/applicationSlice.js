@@ -7,6 +7,8 @@ import { ndiStabilityUseCase } from "../../usecases/application/ndiStabilityUseC
 import { calculateViability } from "../../usecases/application/calculateViability";
 import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
 import { assignCIUseCase } from "../../usecases/application/assignCIUseCase";
+import { APPLICATION_STATUS } from "../../../constants/statuses";
+import { dashboardRepository } from "../../repositories/dashboardRepository";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
@@ -261,7 +263,10 @@ const applicationSlice = createSlice({
       })
       .addCase(applicationAnalysis.fulfilled, (state, action) => {
         state.appsLoading = false;
-        state.loanResults = action.payload;
+        const data = action.payload;
+        const donut = dashboardRepository.donutConfig(data);
+
+        state.loanResults = { ...data, donut };
       })
       .addCase(applicationAnalysis.rejected, (state, action) => {
         state.appsLoading = false;

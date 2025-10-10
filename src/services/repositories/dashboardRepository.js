@@ -63,4 +63,67 @@ export const dashboardRepository = {
       series: monthCounts,
     };
   },
+
+  chartConfigMulti(data, seriesConfig = []) {
+    // Handle empty data case
+    if (data.length === 0) {
+      return {
+        categories: [],
+        series: seriesConfig.map((config) => ({
+          name: config.name,
+          data: new Array(6).fill(0),
+        })),
+      };
+    }
+
+    // Sort applications by date in descending order
+    const sortedApps = [...data].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    // Get the latest date for reference
+    const latestDate = new Date(sortedApps[0].created_at);
+    const currentMonth = latestDate.getMonth();
+    const currentYear = latestDate.getFullYear();
+
+    // Initialize month labels
+    const monthLabels = [];
+    for (let i = 0; i < 6; i++) {
+      const monthIndex = (currentMonth - i + 12) % 12;
+      const monthAbbrev = Object.keys(MONTHS)[monthIndex];
+      monthLabels.unshift(
+        monthAbbrev.charAt(0).toUpperCase() + monthAbbrev.slice(1)
+      );
+    }
+
+    // Initialize series data
+    const seriesData = seriesConfig.map((config) => ({
+      name: config.name,
+      data: new Array(6).fill(0),
+    }));
+
+    // Count applications for each series
+    sortedApps.forEach((app) => {
+      const appDate = new Date(app.created_at);
+      const appMonth = appDate.getMonth();
+      const appYear = appDate.getFullYear();
+
+      const monthsDiff =
+        (currentYear - appYear) * 12 + (currentMonth - appMonth);
+
+      if (monthsDiff >= 0 && monthsDiff < 6) {
+        // Find matching series for this status
+        seriesConfig.forEach((config, index) => {
+          if (config.filter(app)) {
+            seriesData[index].data[5 - monthsDiff]++;
+          }
+        });
+      }
+    });
+
+    return {
+      categories: monthLabels,
+      series: seriesData,
+    };
+  },
 };

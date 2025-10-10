@@ -8,7 +8,7 @@ export default function ChartContainer({ title, count, subtitle, children }) {
   const filters = ["Today", "Last 7 Days", "Last 30 Days", "This Year"];
 
   return (
-    <div className="w-full bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+    <div className="w-full bg-white dark:bg-gray-700 rounded-xl shadow-md p-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -19,15 +19,13 @@ export default function ChartContainer({ title, count, subtitle, children }) {
               {count}
             </p>
           )}
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-              {subtitle}
-            </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
         </div>
 
         <div className="relative mt-4 md:mt-0">
           <button
             onClick={() => setShowMenu(!showMenu)}
-            className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-3 py-1.5 rounded-md hover:bg-gray-200 active:bg-rose-500 active:text-white dark:hover:bg-gray-600 transition">
+            className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1.5 rounded-md hover:bg-gray-200 active:bg-rose-500 active:text-white dark:active:bg-rose-500 dark:active:text-white dark:hover:bg-gray-800 transition">
             <Filter size={16} />
             <span className="text-sm font-medium">{filter}</span>
             <MoreHorizontal size={16} />

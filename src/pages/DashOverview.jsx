@@ -27,6 +27,10 @@ export default function DashOverview() {
   );
   const { unitResults, unitsLoading } = useSelector((state) => state.unit);
   const loading = unitsLoading || appsLoading || paymentsLoading;
+  const barSeries = paymentResults.chart?.series.map((config) => ({
+    name: config.name,
+    data: config.data,
+  }));
 
   useEffect(() => {
     dispatch(unitAnalysis());
@@ -145,17 +149,8 @@ export default function DashOverview() {
               </div>
               <Bar
                 colors={MONOCHROME_COLORS.filter((_, i) => i === 3 || i === 4)}
-                series={[
-                  {
-                    name: "Punctual Payments",
-                    data: paymentResults.punctualData?.series || [],
-                  },
-                  {
-                    name: "Late Payments",
-                    data: paymentResults.lateData?.series || [],
-                  },
-                ]}
-                categories={paymentResults.punctualData?.categories}
+                series={barSeries || []}
+                categories={paymentResults.chart?.categories || []}
               />
             </>
           )}

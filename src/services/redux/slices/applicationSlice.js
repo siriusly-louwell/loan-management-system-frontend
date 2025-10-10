@@ -263,10 +263,44 @@ const applicationSlice = createSlice({
       .addCase(applicationAnalysis.fulfilled, (state, action) => {
         state.appsLoading = false;
         const data = action.payload;
+        const analyticsConfig = [
+          {
+            name: "Pending",
+            filter: (app) => app.apply_status === "pending",
+          },
+          {
+            name: "Accepted",
+            filter: (app) => app.apply_status === "accepted",
+          },
+          {
+            name: "Denied",
+            filter: (app) => app.apply_status === "denied",
+          },
+          {
+            name: "Evaluated",
+            filter: (app) => app.apply_status === "evaluated",
+          },
+          {
+            name: "Approved",
+            filter: (app) => app.apply_status === "approved",
+          },
+          {
+            name: "Declined",
+            filter: (app) => app.apply_status === "declined",
+          },
+          {
+            name: "Canceled",
+            filter: (app) => app.apply_status === "canceled",
+          },
+        ];
+
         const donut = dashboardRepository.donutConfig(data);
         const line = dashboardRepository.chartConfig(data.data);
-
-        state.loanResults = { ...data, donut, line };
+        const barChart = dashboardRepository.chartConfigMulti(
+          data.data,
+          analyticsConfig
+        );
+        state.loanResults = { ...data, donut, line, barChart };
       })
       .addCase(applicationAnalysis.rejected, (state, action) => {
         state.appsLoading = false;

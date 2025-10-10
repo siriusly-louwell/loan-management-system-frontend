@@ -113,13 +113,26 @@ export const OFC_COLORS = [
 ];
 
 export const CHART_COLORS = [
+  "#16BDCA",
   "#FDBA8C",
-  "#22C55E",
   "#E74694",
   "#1C64F2",
-  "#DC2626",
-  "#16BDCA",
-  "#FACC15",
-  "#94A3B8",
-  "#8B5CF6",
+  "#15a1c8ff",
+  "#7762ffff",
+  "#C026D3",
+  "#FB7185",
+  "#13a99cff",
+];
+
+export const MONOCHROME_COLORS = [
+  "#FFE4E6",
+  "#DBEAFE",
+  "#FDA4AF",
+  "#93C5FD",
+  "#E11D48",
+  "#3B82F6",
+  "#BE123C",
+  "#1D4ED8",
+  "#881337",
+  "#1E3A8A",
 ];

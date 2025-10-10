@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from "react-apexcharts";
 
-export default function Bar({ series, categories, isHorizontal = true }) {
+export default function Bar({ series, categories, isHorizontal = true, colors }) {
   const chartData = {
     series: series,
     options: {
@@ -15,11 +15,11 @@ export default function Bar({ series, categories, isHorizontal = true }) {
           horizontal: isHorizontal,
           borderRadius: 6,
           barHeight: "70%",
-          columnWidth: "100%",
+          columnWidth: "90%",
           borderRadiusApplication: "end",
         },
       },
-      colors: ["#31C48D", "#F05252"],
+      colors: colors,
       dataLabels: { enabled: false },
       xaxis: {
         categories: categories || [],

@@ -15,6 +15,7 @@ import {
   BarChartSkeleton,
   DonutChartSkeleton,
 } from "../components/loading components/ChartSkeletons";
+import { MONOCHROME_COLORS } from "../constants/colors";
 
 export default function DashOverview() {
   const dispatch = useDispatch();
@@ -129,7 +130,7 @@ export default function DashOverview() {
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">
                     Punctual
                   </dt>
-                  <dd className="leading-none text-xl font-bold text-green-500 dark:text-green-400">
+                  <dd className="leading-none text-xl font-bold text-blue-500 dark:text-blue-400">
                     {paymentResults.on_time?.count}
                   </dd>
                 </dl>
@@ -137,12 +138,13 @@ export default function DashOverview() {
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">
                     Late
                   </dt>
-                  <dd className="leading-none text-xl font-bold text-red-600 dark:text-red-500">
+                  <dd className="leading-none text-xl font-bold text-rose-600 dark:text-rose-500">
                     {paymentResults.late?.count}
                   </dd>
                 </dl>
               </div>
               <Bar
+                colors={MONOCHROME_COLORS.filter((_, i) => i === 3 || i === 4)}
                 series={[
                   {
                     name: "Punctual Payments",
@@ -170,6 +172,7 @@ export default function DashOverview() {
           )}
         </ChartCard>
       </div>
+
       <section className="px-5">
         <InvoiceTable isDashboard={true} />
       </section>

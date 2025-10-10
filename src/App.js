@@ -49,6 +49,7 @@ import UnauthorizedPage from "./pages/UnauthorizedPage";
 import UnitList from "./pages/UnitList";
 import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
+import Analytics from "./pages/Analytics";
 
 function App() {
   const dispatch = useDispatch();
@@ -545,6 +546,14 @@ function App() {
                     headText="Invoices"
                     path="/admin/invoice"
                   />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="analytics"
+              element={
+                <ProtectedRoute type="admin">
+                  <Analytics />
                 </ProtectedRoute>
               }
             />

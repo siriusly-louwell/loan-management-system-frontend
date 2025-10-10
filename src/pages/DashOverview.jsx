@@ -9,6 +9,12 @@ import { unitAnalysis } from "../services/redux/slices/unitSlice";
 import InfoCardSkeleton from "../components/loading components/InfoCardSkeleton";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
 import { paymentAnalysis } from "../services/redux/slices/paymentSlice";
+import ChartCard from "../components/cards/ChartCard";
+import {
+  AreaChartSkeleton,
+  BarChartSkeleton,
+  DonutChartSkeleton,
+} from "../components/loading components/ChartSkeletons";
 
 export default function DashOverview() {
   const dispatch = useDispatch();
@@ -45,19 +51,19 @@ export default function DashOverview() {
             <InfoCard
               amount={unitResults.new?.count}
               label="New units this month"
-              percent={unitResults.new?.difference}
+              diff={unitResults.new?.difference}
               type={unitResults.new?.increment_type}
             />
             <InfoCard
               amount={loanResults.approved?.count}
               label="Sold units this month"
-              percent={loanResults.approved?.difference}
+              diff={loanResults.approved?.difference}
               type={loanResults.approved?.increment_type}
             />
             <InfoCard
               amount={unitResults.repo?.count}
               label="Repo units this month"
-              percent={unitResults.repo?.difference}
+              diff={unitResults.repo?.difference}
               type={unitResults.repo?.increment_type}
             />
           </>
@@ -71,49 +77,98 @@ export default function DashOverview() {
             <InfoCard
               amount={loanResults.total?.count}
               label="Applications this month"
-              percent={loanResults.total?.difference}
+              diff={loanResults.total?.difference}
               type={loanResults.total?.increment_type}
             />
             <InfoCard
               amount={loanResults.pending?.count}
               label="Pending applications this month"
-              percent={loanResults.pending?.difference}
+              diff={loanResults.pending?.difference}
               type={loanResults.pending?.increment_type}
             />
             <InfoCard
               amount={loanResults.approved?.count}
               label="Approved applications this month"
-              percent={loanResults.approved?.difference}
+              diff={loanResults.approved?.difference}
               type={loanResults.approved?.increment_type}
             />
             <InfoCard
               amount={loanResults.declined?.count}
               label="Declined applications this month"
-              percent={loanResults.declined?.difference}
+              diff={loanResults.declined?.difference}
               type={loanResults.declined?.increment_type}
             />
             <InfoCard
               amount={loanResults.paid?.count}
               label="Paid loans this month"
-              percent={loanResults.paid?.difference}
+              diff={loanResults.paid?.difference}
               type={loanResults.paid?.increment_type}
             />
           </>
         )}
       </div>
       <div className="grid justify-items-center mx-5 py-5 mb-5 grid-cols-auto md:grid-cols-3 gap-4 items-start border-b border-gray-300 dark:border-gray-600">
-        <Donut
-          labels={loanResults.donut?.labels || []}
-          series={loanResults.donut || []}
-          loading={loading}
-        />
-        <Bar results={paymentResults} loading={loading} />
-        <Line
-          data={loanResults.line?.series || []}
-          categories={loanResults.line?.categories || []}
-          count={loanResults.total?.count}
-          loading={loading}
-        />
+        <ChartCard label="Loan Applications">
+          {loading ? (
+            <DonutChartSkeleton />
+          ) : (
+            <Donut
+              labels={loanResults.donut?.labels || []}
+              series={loanResults.donut || []}
+            />
+          )}
+        </ChartCard>
+
+        <ChartCard label="Loan Payments" count={paymentResults.total?.count}>
+          {loading ? (
+            <BarChartSkeleton />
+          ) : (
+            <>
+              <div className="grid grid-cols-2 py-3">
+                <dl>
+                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">
+                    Punctual
+                  </dt>
+                  <dd className="leading-none text-xl font-bold text-green-500 dark:text-green-400">
+                    {paymentResults.on_time?.count}
+                  </dd>
+                </dl>
+                <dl>
+                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">
+                    Late
+                  </dt>
+                  <dd className="leading-none text-xl font-bold text-red-600 dark:text-red-500">
+                    {paymentResults.late?.count}
+                  </dd>
+                </dl>
+              </div>
+              <Bar
+                series={[
+                  {
+                    name: "Punctual Payments",
+                    data: paymentResults.punctualData?.series || [],
+                  },
+                  {
+                    name: "Late Payments",
+                    data: paymentResults.lateData?.series || [],
+                  },
+                ]}
+                categories={paymentResults.punctualData?.categories}
+              />
+            </>
+          )}
+        </ChartCard>
+
+        <ChartCard label="Total Loans" count={loanResults.total?.count}>
+          {loading ? (
+            <AreaChartSkeleton />
+          ) : (
+            <Line
+              data={loanResults.line?.series || []}
+              categories={loanResults.line?.categories || []}
+            />
+          )}
+        </ChartCard>
       </div>
       <section className="px-5">
         <InvoiceTable isDashboard={true} />

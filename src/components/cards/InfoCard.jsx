@@ -2,7 +2,7 @@ import React from "react";
 import UpArrow from "../../assets/icons/UpArrow";
 import DownArrow from "../../assets/icons/DownArrown";
 
-export default function InfoCard({ amount, label, percent, type }) {
+export default function InfoCard({ amount, label, diff, type }) {
   const color =
     type === "incremented"
       ? "text-green-500"
@@ -29,7 +29,7 @@ export default function InfoCard({ amount, label, percent, type }) {
         </div>
         <div
           className={`ml-5 w-0 flex items-center justify-end flex-1 text-base font-bold ${color}`}>
-          {percent}
+          {diff}
           {icon}
         </div>
       </div>

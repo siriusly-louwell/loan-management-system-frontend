@@ -24,7 +24,8 @@
       "sublabel",
       "swingarm",
       "usecases",
-      "xaxis"
+      "xaxis",
+      "yaxis"
     ],
 
     "indentRainbow.colors": [

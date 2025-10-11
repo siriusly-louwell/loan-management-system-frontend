@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { MoreHorizontal, Filter } from "lucide-react";
 
 export default function ChartContainer({ title, count, subtitle, children }) {
-  const [filter, setFilter] = useState("Last 7 Days");
+  const [filter, setFilter] = useState("This Year");
   const [showMenu, setShowMenu] = useState(false);
 
-  const filters = ["Today", "Last 7 Days", "Last 30 Days", "This Year"];
+  const filters = ["Last 7 Days", "Last 4 weeks", "Last 6 months", "This Year"];
 
   return (
     <div className="w-full bg-white dark:bg-gray-700 rounded-xl shadow-md p-6">

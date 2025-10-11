@@ -1,13 +1,8 @@
 import Chart from "react-apexcharts";
 
-export default function Line({ data, categories }) {
+export default function Line({ series, categories }) {
   const chartData = {
-    series: [
-      {
-        name: "Total Loans",
-        data: data,
-      },
-    ],
+    series: series || [],
     options: {
       chart: {
         type: "area",

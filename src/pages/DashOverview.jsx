@@ -161,7 +161,12 @@ export default function DashOverview() {
             <AreaChartSkeleton />
           ) : (
             <Line
-              data={loanResults.line?.series || []}
+              series={[
+                {
+                  name: loanResults.line?.series[0]?.name,
+                  data: loanResults.line?.series[0]?.data || [],
+                },
+              ]}
               categories={loanResults.line?.categories || []}
             />
           )}

@@ -6,7 +6,10 @@ import { useEffect } from "react";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
 import ProgressBar from "../components/charts/ProgressBar";
 import ChartCardWide from "../components/cards/ChartCardWide";
-import { AreaChartSkeleton, VerticalBarChartSkeleton } from "../components/loading components/ChartSkeletons";
+import {
+  AreaChartSkeleton,
+  VerticalBarChartSkeleton,
+} from "../components/loading components/ChartSkeletons";
 import Line from "../components/charts/Line";
 
 export default function Analytics() {
@@ -47,7 +50,9 @@ export default function Analytics() {
           />
         )}
       </ChartCardWide>
-      <ChartContainer title="Loan Statuses" subtitle="Number of applications per status over time">
+      <ChartContainer
+        title="Loan Statuses"
+        subtitle="Number of applications per status over time">
         {appsLoading ? (
           <VerticalBarChartSkeleton />
         ) : (
@@ -64,7 +69,12 @@ export default function Analytics() {
           <AreaChartSkeleton />
         ) : (
           <Line
-            data={loanResults.line?.series || []}
+            series={[
+              {
+                name: loanResults.line?.series[0]?.name,
+                data: loanResults.line?.series[0]?.data || [],
+              },
+            ]}
             categories={loanResults.line?.categories || []}
           />
         )}

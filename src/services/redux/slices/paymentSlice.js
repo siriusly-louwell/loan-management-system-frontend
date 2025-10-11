@@ -121,27 +121,15 @@ const paymentSlice = createSlice({
       .addCase(paymentAnalysis.fulfilled, (state, action) => {
         state.paymentsLoading = false;
         const data = action.payload;
-        const paymentSeriesConfig = [
-          {
-            name: "Punctual Payments",
-            filter: (payment) => payment.status === "on_time",
-          },
-          {
-            name: "Late Payments",
-            filter: (payment) => payment.status === "late",
-          },
-        ];
+        const paymentSeriesConfig = dashboardRepository.makeFilters("status", [
+          "on_time",
+          "late",
+        ]);
 
         const chart = dashboardRepository.chartConfigMulti(
           data.data,
           paymentSeriesConfig
         );
-        // const punctualData = dashboardRepository.chartConfig(
-        //   data.data.filter((i) => i.status === "on_time")
-        // );
-        // const lateData = dashboardRepository.chartConfig(
-        //   data.data.filter((i) => i.status === "late")
-        // );
 
         state.paymentResults = { ...data, chart };
       })

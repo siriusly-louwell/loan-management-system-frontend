@@ -122,12 +122,12 @@ export const dashboardRepository = {
   //   };
   // },
 
-  chartConfigMulti(data, seriesConfig = [], range = "last6months") {
+  chartConfigMulti(data, seriesConfig = [{}], range = "months") {
     // Generate categories and an index finder that maps a date to a category index
     let categories = [];
     let getCategoryIndex;
 
-    if (range === "last7days") {
+    if (range === "days") {
       // last 7 days (labels are short weekday names in chronological order)
       categories = buildLastNDaysLabels(7);
 
@@ -148,7 +148,7 @@ export const dashboardRepository = {
         }
         return -1;
       };
-    } else if (range === "last4weeks") {
+    } else if (range === "weeks") {
       categories = build4WeekRangesLabels();
 
       // Determine week ranges (start..end) aligned to Sunday..Saturday, for the 4 most recent completed weeks
@@ -178,7 +178,7 @@ export const dashboardRepository = {
         return -1;
       };
     } else {
-      // default last6months (existing behavior) - categories are month names (short)
+      // default months (existing behavior) - categories are month names (short)
       categories = buildLastNMonthsLabels(6);
 
       // Map app date to month bucket relative to latest month in data
@@ -218,9 +218,9 @@ export const dashboardRepository = {
       };
     }
 
-    // Handle empty data early for last7days / last4weeks where we already have categories length
+    // Handle empty data early for days / weeks where we already have categories length
     if (
-      (range === "last7days" || range === "last4weeks") &&
+      (range === "days" || range === "weeks") &&
       data.length === 0
     ) {
       return {
@@ -258,6 +258,13 @@ export const dashboardRepository = {
       categories,
       series: seriesData,
     };
+  },
+
+  makeFilters(prop, filters) {
+    return filters.map((val) => ({
+      name: val.charAt(0).toUpperCase() + val.slice(1),
+      filter: (app) => app[prop] === val,
+    }));
   },
 };
 

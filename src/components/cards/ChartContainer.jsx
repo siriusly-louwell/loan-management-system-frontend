@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { MoreHorizontal, Filter } from "lucide-react";
+import { DASHBOARD_FILTERS } from "../../constants/filters";
+import { useDispatch } from "react-redux";
+import { selectDate } from "../../services/redux/slices/applicationSlice";
 
 export default function ChartContainer({ title, count, subtitle, children }) {
-  const [filter, setFilter] = useState("Last 6 months");
+  const dispatch = useDispatch();
+  const [filter, setFilter] = useState("months");
   const [showMenu, setShowMenu] = useState(false);
 
-  const filters = ["Last 7 Days", "Last 4 weeks", "Last 6 months", "This Year"];
+  function selectFilter(option) {
+    setFilter(option);
+    setShowMenu(false);
+    dispatch(selectDate({ chart: "line", filter: option }));
+  }
 
   return (
     <div className="max-w-[80%] bg-white dark:bg-gray-700 rounded-xl shadow-md p-6 mb-5">
@@ -27,25 +35,24 @@ export default function ChartContainer({ title, count, subtitle, children }) {
             onClick={() => setShowMenu(!showMenu)}
             className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1.5 rounded-md hover:bg-gray-200 active:bg-rose-500 active:text-white dark:active:bg-rose-500 dark:active:text-white dark:hover:bg-gray-800 transition">
             <Filter size={16} />
-            <span className="text-sm font-medium">{filter}</span>
+            <span className="text-sm font-medium">
+              {DASHBOARD_FILTERS[filter]}
+            </span>
             <MoreHorizontal size={16} />
           </button>
 
           {showMenu && (
             <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg z-20">
-              {filters.map((option) => (
+              {Object.keys(DASHBOARD_FILTERS).map((option) => (
                 <button
                   key={option}
-                  onClick={() => {
-                    setFilter(option);
-                    setShowMenu(false);
-                  }}
+                  onClick={() => selectFilter(option)}
                   className={`block w-full text-left px-4 py-2 text-sm ${
                     filter === option
                       ? "bg-blue-100 dark:bg-gray-600 font-semibold"
                       : "hover:bg-gray-100 dark:hover:bg-gray-600"
                   } text-gray-700 dark:text-gray-200`}>
-                  {option}
+                  {DASHBOARD_FILTERS[option]}
                 </button>
               ))}
             </div>

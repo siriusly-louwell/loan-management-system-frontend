@@ -153,7 +153,15 @@ const applicationSlice = createSlice({
     },
 
     // ? Dashboard reducers
-    selectDate: (state, action) => {}
+    selectDate: (state, action) => {
+      const data = action.payload;
+
+      state.loanResults[data.chart] = dashboardRepository.chartConfigMulti(
+        state.loanResults.data,
+        [{ name: "Total Loans", filter: (_) => true }],
+        data.filter
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -266,43 +274,28 @@ const applicationSlice = createSlice({
       .addCase(applicationAnalysis.fulfilled, (state, action) => {
         state.appsLoading = false;
         const data = action.payload;
-        const analyticsConfig = [
-          {
-            name: "Pending",
-            filter: (app) => app.apply_status === "pending",
-          },
-          {
-            name: "Accepted",
-            filter: (app) => app.apply_status === "accepted",
-          },
-          {
-            name: "Denied",
-            filter: (app) => app.apply_status === "denied",
-          },
-          {
-            name: "Evaluated",
-            filter: (app) => app.apply_status === "evaluated",
-          },
-          {
-            name: "Approved",
-            filter: (app) => app.apply_status === "approved",
-          },
-          {
-            name: "Declined",
-            filter: (app) => app.apply_status === "declined",
-          },
-        ];
+        const wideBar = dashboardRepository.makeFilters("apply_status", [
+          "pending",
+          "accepted",
+          "denied",
+          "evaluated",
+          "approved",
+          "declined",
+        ]);
 
         const donut = dashboardRepository.countSlice(data, [
           "paid",
           "canceled",
           "evaluated",
         ]);
+        const line = dashboardRepository.chartConfigMulti(data.data, [
+          { name: "Total Loans", filter: (_) => true },
+        ]);
+        // const line = dashboardRepository.chartConfig(data.data);
         const progress = dashboardRepository.countSlice(data, undefined, true);
-        const line = dashboardRepository.chartConfig(data.data);
         const barChart = dashboardRepository.chartConfigMulti(
           data.data,
-          analyticsConfig
+          wideBar
         );
         state.loanResults = { ...data, donut, line, progress, barChart };
       })
@@ -321,5 +314,6 @@ export const {
   calculateStability,
   assessDecision,
   assessResult,
+  selectDate,
 } = applicationSlice.actions;
 export default applicationSlice.reducer;

@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
 import ProgressBar from "../components/charts/ProgressBar";
 import ChartCardWide from "../components/cards/ChartCardWide";
+import { AreaChartSkeleton, VerticalBarChartSkeleton } from "../components/loading components/ChartSkeletons";
+import Line from "../components/charts/Line";
 
 export default function Analytics() {
   const dispatch = useDispatch();
@@ -30,20 +32,40 @@ export default function Analytics() {
 
   return (
     <div className="px-5 py-3 w-full">
-      <ChartCardWide title="Storage" count="37.03 GB" subtitle="of 64 GB">
+      <ChartCardWide
+        title="Status Count"
+        count={loanResults.progress?.series[4]}
+        subtitle="Approved applications">
         {appsLoading ? (
-          <div className="bg-gray-600 dark:bg-gray-500 h-5 w-full mt-4 mb-6 rounded-full animate-pulse" />
+          <div className="bg-gray-200 dark:bg-gray-500 h-5 w-full mt-4 mb-6 rounded-full animate-pulse" />
         ) : (
-          <ProgressBar />
+          <ProgressBar
+            series={loanResults.progress?.series.map((val, i) => ({
+              name: loanResults.progress?.labels[i],
+              data: [val],
+            }))}
+          />
         )}
       </ChartCardWide>
-      <ChartContainer title="Loan Statuses">
-        {!appsLoading && (
+      <ChartContainer title="Loan Statuses" subtitle="Number of applications per status over time">
+        {appsLoading ? (
+          <VerticalBarChartSkeleton />
+        ) : (
           <Bar
             isHorizontal={false}
             colors={CHART_COLORS}
             series={barSeries || []}
             categories={loanResults.barChart?.categories}
+          />
+        )}
+      </ChartContainer>
+      <ChartContainer title="Loan Trends" subtitle="Number of loans over time">
+        {appsLoading ? (
+          <AreaChartSkeleton />
+        ) : (
+          <Line
+            data={loanResults.line?.series || []}
+            categories={loanResults.line?.categories || []}
           />
         )}
       </ChartContainer>

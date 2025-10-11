@@ -151,6 +151,9 @@ const applicationSlice = createSlice({
         state.loanResult[category] = CATEGORY_RESULTS[category][color];
       });
     },
+
+    // ? Dashboard reducers
+    selectDate: (state, action) => {}
   },
   extraReducers: (builder) => {
     builder
@@ -290,13 +293,18 @@ const applicationSlice = createSlice({
           },
         ];
 
-        const donut = dashboardRepository.donutConfig(data);
+        const donut = dashboardRepository.countSlice(data, [
+          "paid",
+          "canceled",
+          "evaluated",
+        ]);
+        const progress = dashboardRepository.countSlice(data, undefined, true);
         const line = dashboardRepository.chartConfig(data.data);
         const barChart = dashboardRepository.chartConfigMulti(
           data.data,
           analyticsConfig
         );
-        state.loanResults = { ...data, donut, line, barChart };
+        state.loanResults = { ...data, donut, line, progress, barChart };
       })
       .addCase(applicationAnalysis.rejected, (state, action) => {
         state.appsLoading = false;

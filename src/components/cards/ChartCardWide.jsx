@@ -6,11 +6,9 @@ export default function ChartCardWide({ title, count, subtitle, children }) {
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {title}
           </h2>
-          {count && (
             <p className="leading-none text-3xl font-bold text-gray-900 dark:text-white">
               {count}
             </p>
-          )}
           <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
         </div>
       </div>

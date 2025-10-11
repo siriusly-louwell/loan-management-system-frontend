@@ -12,7 +12,7 @@ export default function Donut({ labels, series }) {
         show: false,
         width: 0,
       },
-      legend: { position: "bottom" },
+      legend: { position: "bottom", labels: { colors: "#9CA3AF" } },
       dataLabels: {
         enabled: false,
       },
@@ -20,8 +20,9 @@ export default function Donut({ labels, series }) {
       plotOptions: {
         pie: {
           donut: {
-            labels: { show: true },
+            labels: { show: true, value: { color: "#9CA3AF" } },
             size: "80%",
+            colors: "#9CA3AF",
           },
         },
       },

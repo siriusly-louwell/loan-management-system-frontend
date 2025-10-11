@@ -119,7 +119,7 @@ export default function DashOverview() {
           ) : (
             <Donut
               labels={loanResults.donut?.labels || []}
-              series={loanResults.donut || []}
+              series={loanResults.donut?.series || []}
             />
           )}
         </ChartCard>

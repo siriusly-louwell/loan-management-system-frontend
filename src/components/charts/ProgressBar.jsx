@@ -2,26 +2,9 @@ import React from "react";
 import Chart from "react-apexcharts";
 import { CHART_COLORS } from "../../constants/colors";
 
-export default function ProgressBar({labels, series}) {
+export default function ProgressBar({ series }) {
   const chartData = {
-    series: [
-      {
-        name: "Regular",
-        data: [15.31],
-      },
-      {
-        name: "System",
-        data: [11.52],
-      },
-      {
-        name: "Shared",
-        data: [10.2],
-      },
-      {
-        name: "Free",
-        data: [26.97],
-      },
-    ],
+    series: series || [],
     options: {
       chart: {
         type: "bar",
@@ -41,7 +24,7 @@ export default function ProgressBar({labels, series}) {
         enabled: false,
       },
       xaxis: {
-        categories: ["Storage"],
+        categories: ["Progress"],
         labels: { show: false },
         axisBorder: { show: false },
         axisTicks: { show: false },

@@ -1,25 +1,20 @@
-import { APPLICATION_STATUS } from "../../constants/statuses";
+import { APPLICATION_STATUS } from "../../constants/loanStatus";
 import { MONTHS } from "../../constants/dates";
 
 export const dashboardRepository = {
-  donutConfig(data) {
-    const donut = Object.keys(data)
-      .filter(
-        (k) =>
-          k !== "month" &&
-          k !== "total" &&
-          k !== "paid" &&
-          k !== "canceled" &&
-          k !== "evaluated" &&
-          k !== "data"
-      )
-      .map((i) => data[i].count);
+  countSlice(data, exclude = []) {
+    const excluded = ["month", "total", "data"];
+    const exclusions = [...excluded, ...exclude];
 
-    donut.labels = Object.keys(APPLICATION_STATUS)
-      .filter((i) => i !== "paid" && i !== "canceled" && i !== "evaluated")
+    const labels = Object.keys(APPLICATION_STATUS)
+      .filter((key) => !exclude.includes(key))
       .map((i) => APPLICATION_STATUS[i]);
 
-    return donut;
+    const series = Object.keys(data)
+      .filter((key) => !exclusions.includes(key))
+      .map((i) => data[i].count);
+
+    return { series, labels };
   },
 
   chartConfig(data) {
@@ -128,14 +123,6 @@ export const dashboardRepository = {
   // },
 
   chartConfigMulti(data, seriesConfig = [], range = "last6months") {
-    // Small helper to create empty series result object
-    function emptySeriesResult(categoriesCount) {
-      return seriesConfig.map((config) => ({
-        name: config.name,
-        data: new Array(categoriesCount).fill(0),
-      }));
-    }
-
     // Generate categories and an index finder that maps a date to a category index
     let categories = [];
     let getCategoryIndex;
@@ -327,7 +314,6 @@ function buildLastNMonthsLabels(n) {
   const labels = [];
   const now = new Date();
   const currentMonth = now.getMonth();
-  const currentYear = now.getFullYear();
 
   for (let i = n - 1; i >= 0; i--) {
     const m = (currentMonth - i + 12) % 12;

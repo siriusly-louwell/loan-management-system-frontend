@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { MoreHorizontal, Filter } from "lucide-react";
 
 export default function ChartContainer({ title, count, subtitle, children }) {
-  const [filter, setFilter] = useState("This Year");
+  const [filter, setFilter] = useState("Last 6 months");
   const [showMenu, setShowMenu] = useState(false);
 
   const filters = ["Last 7 Days", "Last 4 weeks", "Last 6 months", "This Year"];
 
   return (
-    <div className="w-full bg-white dark:bg-gray-700 rounded-xl shadow-md p-6">
+    <div className="max-w-[80%] bg-white dark:bg-gray-700 rounded-xl shadow-md p-6 mb-5">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">

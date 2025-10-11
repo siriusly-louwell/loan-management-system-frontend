@@ -288,10 +288,6 @@ const applicationSlice = createSlice({
             name: "Declined",
             filter: (app) => app.apply_status === "declined",
           },
-          {
-            name: "Canceled",
-            filter: (app) => app.apply_status === "canceled",
-          },
         ];
 
         const donut = dashboardRepository.donutConfig(data);

@@ -4,6 +4,8 @@ import Bar from "../components/charts/Bar";
 import { CHART_COLORS } from "../constants/colors";
 import { useEffect } from "react";
 import { applicationAnalysis } from "../services/redux/slices/applicationSlice";
+import ProgressBar from "../components/charts/ProgressBar";
+import ChartCardWide from "../components/cards/ChartCardWide";
 
 export default function Analytics() {
   const dispatch = useDispatch();
@@ -28,6 +30,13 @@ export default function Analytics() {
 
   return (
     <div className="px-5 py-3 w-full">
+      <ChartCardWide title="Storage" count="37.03 GB" subtitle="of 64 GB">
+        {appsLoading ? (
+          <div className="bg-gray-600 dark:bg-gray-500 h-5 w-full mt-4 mb-6 rounded-full animate-pulse" />
+        ) : (
+          <ProgressBar />
+        )}
+      </ChartCardWide>
       <ChartContainer title="Loan Statuses">
         {!appsLoading && (
           <Bar

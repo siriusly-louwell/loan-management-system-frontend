@@ -1,14 +1,13 @@
-import { APPLICATION_STATUS } from "../../constants/loanStatus";
 import { MONTHS } from "../../constants/dates";
 
 export const dashboardRepository = {
-  countSlice(data, exclude = []) {
+  countSlice(data, objType, exclude = []) {
     const excluded = ["month", "total", "data"];
     const exclusions = [...excluded, ...exclude];
 
-    const labels = Object.keys(APPLICATION_STATUS)
+    const labels = Object.keys(objType)
       .filter((key) => !exclude.includes(key))
-      .map((i) => APPLICATION_STATUS[i]);
+      .map((i) => objType[i]);
 
     const series = Object.keys(data)
       .filter((key) => !exclusions.includes(key))

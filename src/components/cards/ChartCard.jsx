@@ -23,7 +23,7 @@ export default function ChartCard({ label, count, scroll, children }) {
 
       {children}
 
-      <div className="grid grid-cols-1 border-t border-gray-200 dark:border-gray-700 mt-4">
+      <div className="grid grid-cols-1 border-t border-gray-200 dark:border-gray-500 mt-4">
         <div className="flex justify-end items-center pt-5">
           <button
             onClick={goTo}

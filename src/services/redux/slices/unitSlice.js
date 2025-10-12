@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { addUnitUseCase } from "../../usecases/unit/addUnitUseCase";
 import { unitRepository } from "../../repositories/unitRepository";
 import UnitAPI from "../../api/UnitAPI";
-import { MOTOR_BRANDS } from "../../../constants/brands";
+import { BRAND_FILTERS, MOTOR_BRANDS } from "../../../constants/brands";
 import { editUnitUseCase } from "../../usecases/unit/editUnitUseCase";
+import { dashboardRepository } from "../../repositories/dashboardRepository";
 
 export const addUnit = createAsyncThunk(
   "unit/addUnit",
@@ -44,7 +45,7 @@ export const unitAnalysis = createAsyncThunk(
   "unit/unitAnalysis",
   async (params, thunkAPI) => {
     try {
-      const count = unitRepository.countUnits();
+      const count = unitRepository.countUnits(params);
 
       return count;
     } catch (error) {
@@ -183,7 +184,13 @@ const UnitSlice = createSlice({
       })
       .addCase(unitAnalysis.fulfilled, (state, action) => {
         state.unitsLoading = false;
-        state.unitResults = action.payload;
+        const data = action.payload;
+        const brandPie = dashboardRepository.countSlice(
+          data.brand_count,
+          BRAND_FILTERS
+        );
+
+        state.unitResults = { ...data, brandPie };
       })
       .addCase(unitAnalysis.rejected, (state, action) => {
         state.unitsLoading = false;

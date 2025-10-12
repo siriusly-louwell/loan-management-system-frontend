@@ -14,3 +14,20 @@ export const MOTOR_BRANDS = [
   "QJMotor",
   "FKM",
 ];
+
+export const BRAND_FILTERS = {
+  honda: "Honda",
+  yamaha: "Yamaha",
+  kawasaki: "Kawasaki",
+  suzuki: "Suzuki",
+  ktm: "KTM",
+  kymco: "Kymco",
+  sym: "SYM",
+  skygo: "Skygo",
+  benneli: "Bennelli",
+  bristol: "Bristol",
+  rusi: "Rusi",
+  motostar: "Motorstar",
+  qjmotor: "QJMotor",
+  fkm: "FKM",
+};

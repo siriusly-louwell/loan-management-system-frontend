@@ -8,6 +8,7 @@ import { calculateViability } from "../../usecases/application/calculateViabilit
 import { CATEGORY_RESULTS } from "../../../constants/eligibilityStatus";
 import { assignCIUseCase } from "../../usecases/application/assignCIUseCase";
 import { dashboardRepository } from "../../repositories/dashboardRepository";
+import { APPLICATION_STATUS } from "../../../constants/loanStatus";
 
 export const fetchApplicants = createAsyncThunk(
   "application/fetchApplicants",
@@ -295,7 +296,7 @@ const applicationSlice = createSlice({
           "declined",
         ]);
 
-        const donut = dashboardRepository.countSlice(data, [
+        const donut = dashboardRepository.countSlice(data, APPLICATION_STATUS, [
           "paid",
           "canceled",
           "evaluated",
@@ -303,11 +304,8 @@ const applicationSlice = createSlice({
         const line = dashboardRepository.chartConfig(data.data, [
           { name: "Total Loans", filter: (_) => true },
         ]);
-        const progress = dashboardRepository.countSlice(data, undefined, true);
-        const barChart = dashboardRepository.chartConfig(
-          data.data,
-          wideBar
-        );
+        const progress = dashboardRepository.countSlice(data, APPLICATION_STATUS);
+        const barChart = dashboardRepository.chartConfig(data.data, wideBar);
 
         state.loanResults = { ...data, donut, line, progress, barChart };
       })

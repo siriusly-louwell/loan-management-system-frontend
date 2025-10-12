@@ -87,10 +87,18 @@ export function DonutChartSkeleton() {
   return (
     <div className="animate-pulse flex justify-center items-center h-[320px]">
       <div className="relative">
-        {/* Outer circle */}
         <div className="w-48 h-48 rounded-full bg-gray-200 dark:bg-gray-600" />
-        {/* Inner circle (donut hole) */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-white dark:bg-gray-700" />
+      </div>
+    </div>
+  );
+}
+
+export function PieChartSkeleton() {
+  return (
+    <div className="animate-pulse flex justify-center items-center h-[320px]">
+      <div className="relative">
+        <div className="w-48 h-48 rounded-full bg-gray-200 dark:bg-gray-600" />
       </div>
     </div>
   );

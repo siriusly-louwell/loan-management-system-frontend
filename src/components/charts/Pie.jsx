@@ -14,7 +14,7 @@ export default function Pie({ labels, series }) {
       },
       legend: { position: "bottom", labels: { colors: "#9CA3AF" } },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       title: { text: undefined },
       plotOptions: {

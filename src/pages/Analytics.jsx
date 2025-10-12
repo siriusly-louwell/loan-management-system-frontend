@@ -72,14 +72,14 @@ export default function Analytics() {
           <ChartContainer
             title="Unit Price per brand"
             subtitle="Average price of each unit brand"
-            chart="barChart">
+            showFilter={false}>
             {loading ? (
               <VerticalBarChartSkeleton num={10} />
             ) : (
               <Bar
                 radius={20}
                 isHorizontal={false}
-                colors={CHART_COLORS}
+                colors={MONOCHROME_COLORS.filter((_, i) => i === 7)}
                 categories={unitResults.pricePerBrand?.categories || []}
                 series={priceUnitSeries || []}
               />
@@ -170,7 +170,7 @@ export default function Analytics() {
           <VerticalBarChartSkeleton num={12} />
         ) : (
           <Bar
-          radius={20}
+            radius={20}
             isHorizontal={false}
             colors={MONOCHROME_COLORS.filter((_, i) => i === 3 || i === 4)}
             series={

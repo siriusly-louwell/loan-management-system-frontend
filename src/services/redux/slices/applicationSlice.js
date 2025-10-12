@@ -155,10 +155,22 @@ const applicationSlice = createSlice({
     // ? Dashboard reducers
     selectDate: (state, action) => {
       const data = action.payload;
+      const barChart = dashboardRepository.makeFilters("apply_status", [
+        "pending",
+        "accepted",
+        "denied",
+        "evaluated",
+        "approved",
+        "declined",
+      ]);
+      const config =
+        data.chart === "line"
+          ? [{ name: "Total Loans", filter: (_) => true }]
+          : barChart;
 
-      state.loanResults[data.chart] = dashboardRepository.chartConfigMulti(
+      state.loanResults[data.chart] = dashboardRepository.chartConfig(
         state.loanResults.data,
-        [{ name: "Total Loans", filter: (_) => true }],
+        config,
         data.filter
       );
     },
@@ -288,15 +300,15 @@ const applicationSlice = createSlice({
           "canceled",
           "evaluated",
         ]);
-        const line = dashboardRepository.chartConfigMulti(data.data, [
+        const line = dashboardRepository.chartConfig(data.data, [
           { name: "Total Loans", filter: (_) => true },
         ]);
-        // const line = dashboardRepository.chartConfig(data.data);
         const progress = dashboardRepository.countSlice(data, undefined, true);
-        const barChart = dashboardRepository.chartConfigMulti(
+        const barChart = dashboardRepository.chartConfig(
           data.data,
           wideBar
         );
+
         state.loanResults = { ...data, donut, line, progress, barChart };
       })
       .addCase(applicationAnalysis.rejected, (state, action) => {

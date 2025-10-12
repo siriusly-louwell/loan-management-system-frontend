@@ -47,8 +47,8 @@ export default function DashOverview() {
   }, []);
 
   return (
-    <section>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
+    <section className="w-full flex flex-col items-center">
+      <div className="min-w-[90%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
         {loading ? (
           <InfoCardSkeleton />
         ) : (
@@ -74,7 +74,7 @@ export default function DashOverview() {
           </>
         )}
       </div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
+      <div className="min-w-[90%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
         {loading ? (
           <InfoCardSkeleton num={6} />
         ) : (
@@ -173,7 +173,7 @@ export default function DashOverview() {
         </ChartCard>
       </div>
 
-      <section className="px-5">
+      <section className="px-5 w-full">
         <InvoiceTable isDashboard={true} />
       </section>
     </section>

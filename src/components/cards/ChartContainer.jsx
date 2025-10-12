@@ -4,7 +4,7 @@ import { DASHBOARD_FILTERS } from "../../constants/filters";
 import { useDispatch } from "react-redux";
 import { selectDate } from "../../services/redux/slices/applicationSlice";
 
-export default function ChartContainer({ title, count, subtitle, children }) {
+export default function ChartContainer({ title, chart, count, subtitle, children }) {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState("months");
   const [showMenu, setShowMenu] = useState(false);
@@ -12,11 +12,11 @@ export default function ChartContainer({ title, count, subtitle, children }) {
   function selectFilter(option) {
     setFilter(option);
     setShowMenu(false);
-    dispatch(selectDate({ chart: "line", filter: option }));
+    dispatch(selectDate({ chart: chart, filter: option }));
   }
 
   return (
-    <div className="max-w-[80%] bg-white dark:bg-gray-700 rounded-xl shadow-md p-6 mb-5">
+    <div className="min-w-[80%] max-w-[100%] bg-white dark:bg-gray-700 rounded-xl shadow-md p-6 mb-5">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -60,7 +60,6 @@ export default function ChartContainer({ title, count, subtitle, children }) {
         </div>
       </div>
 
-      {/* Chart Content */}
       <div className="min-h-[200px] w-full overflow-x-auto">{children}</div>
     </div>
   );

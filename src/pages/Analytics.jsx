@@ -34,7 +34,7 @@ export default function Analytics() {
   }, []);
 
   return (
-    <div className="px-5 py-3 w-full">
+    <div className="px-5 py-3 w-full flex flex-col items-center">
       <ChartCardWide
         title="Status Count"
         count={loanResults.progress?.series[4]}
@@ -50,9 +50,11 @@ export default function Analytics() {
           />
         )}
       </ChartCardWide>
+
       <ChartContainer
         title="Loan Statuses"
-        subtitle="Number of applications per status over time">
+        subtitle="Number of applications per status over time"
+        chart="barChart">
         {appsLoading ? (
           <VerticalBarChartSkeleton />
         ) : (
@@ -64,7 +66,11 @@ export default function Analytics() {
           />
         )}
       </ChartContainer>
-      <ChartContainer title="Loan Trends" subtitle="Number of loans over time">
+
+      <ChartContainer
+        title="Loan Trends"
+        subtitle="Number of loans over time"
+        chart="line">
         {appsLoading ? (
           <AreaChartSkeleton />
         ) : (
@@ -79,6 +85,8 @@ export default function Analytics() {
           />
         )}
       </ChartContainer>
+
+      <div className="w-[85%] border-b border-gray-500 my-5" />
     </div>
   );
 }

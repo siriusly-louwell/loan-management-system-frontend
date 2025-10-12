@@ -126,7 +126,7 @@ const paymentSlice = createSlice({
           "late",
         ]);
 
-        const chart = dashboardRepository.chartConfigMulti(
+        const chart = dashboardRepository.chartConfig(
           data.data,
           paymentSeriesConfig
         );

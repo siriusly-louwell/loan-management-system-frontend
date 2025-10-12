@@ -16,6 +16,32 @@ export const dashboardRepository = {
     return { series, labels };
   },
 
+  pricePerBrand(data) {
+    const brandMap = {};
+
+    data.forEach(({ brand, price }) => {
+      if (!brandMap[brand]) {
+        brandMap[brand] = { total: 0, count: 0 };
+      }
+      brandMap[brand].total += parseFloat(price);
+      brandMap[brand].count += 1;
+    });
+
+    const categories = Object.keys(brandMap);
+    const averages = categories.map(
+      (brand) => brandMap[brand].total / brandMap[brand].count
+    );
+
+    const series = [
+      {
+        name: "Average Price",
+        data: averages,
+      },
+    ];
+
+    return { categories, series };
+  },
+
   chartConfig(data, seriesConfig = [{}], range = "months") {
     let categories = [];
     let getCategoryIndex;

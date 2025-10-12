@@ -8,14 +8,12 @@ import ProgressBar from "../components/charts/ProgressBar";
 import ChartCardWide from "../components/cards/ChartCardWide";
 import {
   AreaChartSkeleton,
-  DonutChartSkeleton,
   PieChartSkeleton,
   VerticalBarChartSkeleton,
 } from "../components/loading components/ChartSkeletons";
 import Line from "../components/charts/Line";
 import { paymentAnalysis } from "../services/redux/slices/paymentSlice";
 import { unitAnalysis } from "../services/redux/slices/unitSlice";
-import Donut from "../components/charts/Donut";
 import ChartContSmall from "../components/cards/ChartContSmall";
 import Pie from "../components/charts/Pie";
 
@@ -28,11 +26,15 @@ export default function Analytics() {
     (state) => state.payment
   );
   const { unitResults, unitsLoading } = useSelector((state) => state.unit);
+  const loading = paymentsLoading || appsLoading || unitsLoading;
   const barSeries = loanResults.barChart?.series.map((config) => ({
     name: config.name,
     data: config.data,
   }));
-  const loading = paymentsLoading || appsLoading || unitsLoading;
+  const priceUnitSeries = unitResults.pricePerBrand?.series.map((config) => ({
+    name: config.name,
+    data: config.data,
+  }));
 
   useEffect(() => {
     dispatch(unitAnalysis({ analysis: true }));
@@ -47,21 +49,44 @@ export default function Analytics() {
     setTimeout(handleResize, 100);
   }, []);
 
+  console.log(unitResults.pricePerBrand);
+
   return (
     <div className="px-5 py-3 w-full flex flex-col items-center">
-      <ChartContSmall
-        title="Brand Distribution"
-        subtitle="Quantity of each unit brand"
-        chart="barChart">
-        {loading ? (
-          <PieChartSkeleton />
-        ) : (
-          <Pie
-            labels={unitResults.brandPie?.labels || []}
-            series={unitResults.brandPie?.series || []}
-          />
-        )}
-      </ChartContSmall>
+      <section className="max-w-[80%] max-w-[100%] grid grid-cols-3 gap-1">
+        <ChartContSmall
+          title="Brand Distribution"
+          subtitle="Quantity of each unit brand"
+          chart="barChart">
+          {loading ? (
+            <PieChartSkeleton />
+          ) : (
+            <Pie
+              labels={unitResults.brandPie?.labels || []}
+              series={unitResults.brandPie?.series || []}
+            />
+          )}
+        </ChartContSmall>
+
+        <div className="grid col-span-2 grid-cols-1">
+          <ChartContainer
+            title="Unit Price per brand"
+            subtitle="Average price of each unit brand"
+            chart="barChart">
+            {loading ? (
+              <VerticalBarChartSkeleton num={10} />
+            ) : (
+              <Bar
+                radius={20}
+                isHorizontal={false}
+                colors={CHART_COLORS}
+                categories={unitResults.pricePerBrand?.categories || []}
+                series={priceUnitSeries || []}
+              />
+            )}
+          </ChartContainer>
+        </div>
+      </section>
 
       <div className="w-[85%] border-b border-gray-500 my-5" />
 
@@ -86,9 +111,10 @@ export default function Analytics() {
         subtitle="Number of applications per status over time"
         chart="barChart">
         {loading ? (
-          <VerticalBarChartSkeleton />
+          <VerticalBarChartSkeleton num={12} />
         ) : (
           <Bar
+            radius={10}
             isHorizontal={false}
             colors={CHART_COLORS}
             series={barSeries || []}
@@ -141,9 +167,10 @@ export default function Analytics() {
           </div>
         }>
         {loading ? (
-          <VerticalBarChartSkeleton />
+          <VerticalBarChartSkeleton num={12} />
         ) : (
           <Bar
+          radius={20}
             isHorizontal={false}
             colors={MONOCHROME_COLORS.filter((_, i) => i === 3 || i === 4)}
             series={

@@ -6,6 +6,7 @@ export default function Bar({
   categories,
   isHorizontal = true,
   colors,
+  radius = 6
 }) {
   const chartData = {
     series: series,
@@ -18,7 +19,7 @@ export default function Bar({
       plotOptions: {
         bar: {
           horizontal: isHorizontal,
-          borderRadius: 6,
+          borderRadius: radius,
           barHeight: "70%",
           columnWidth: "90%",
           borderRadiusApplication: "end",

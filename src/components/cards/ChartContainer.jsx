@@ -11,6 +11,7 @@ export default function ChartContainer({
   count,
   subtitle,
   children,
+  showFilter = true,
 }) {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState("months");
@@ -39,34 +40,36 @@ export default function ChartContainer({
           <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
         </div>
 
-        <div className="relative mt-4 md:mt-0">
-          <button
-            onClick={() => setShowMenu(!showMenu)}
-            className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1.5 rounded-md hover:bg-gray-200 active:bg-rose-500 active:text-white dark:active:bg-rose-500 dark:active:text-white dark:hover:bg-gray-800 transition">
-            <Filter size={16} />
-            <span className="text-sm font-medium">
-              {DASHBOARD_FILTERS[filter]}
-            </span>
-            <MoreHorizontal size={16} />
-          </button>
+        {showFilter && (
+          <div className="relative mt-4 md:mt-0">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-3 py-1.5 rounded-md hover:bg-gray-200 active:bg-rose-500 active:text-white dark:active:bg-rose-500 dark:active:text-white dark:hover:bg-gray-800 transition">
+              <Filter size={16} />
+              <span className="text-sm font-medium">
+                {DASHBOARD_FILTERS[filter]}
+              </span>
+              <MoreHorizontal size={16} />
+            </button>
 
-          {showMenu && (
-            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg z-20">
-              {Object.keys(DASHBOARD_FILTERS).map((option) => (
-                <button
-                  key={option}
-                  onClick={() => selectFilter(option)}
-                  className={`block w-full text-left px-4 py-2 text-sm ${
-                    filter === option
-                      ? "bg-blue-100 dark:bg-gray-600 font-semibold"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-600"
-                  } text-gray-700 dark:text-gray-200`}>
-                  {DASHBOARD_FILTERS[option]}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+            {showMenu && (
+              <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg z-20">
+                {Object.keys(DASHBOARD_FILTERS).map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => selectFilter(option)}
+                    className={`block w-full text-left px-4 py-2 text-sm ${
+                      filter === option
+                        ? "bg-blue-100 dark:bg-gray-600 font-semibold"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-600"
+                    } text-gray-700 dark:text-gray-200`}>
+                    {DASHBOARD_FILTERS[option]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="min-h-[200px] w-full overflow-x-auto">{children}</div>

@@ -6,7 +6,7 @@ export default function ChartCard({ label, count, scroll, children }) {
     navigate("/admin/dashboard/analytics");
     setTimeout(() => {
       window.scrollTo({ top: scroll, behavior: "smooth" });
-    }, 1000);
+    }, 900);
   }
   return (
     <div className="max-w-sm w-full bg-white rounded-lg shadow-sm dark:bg-gray-700 p-4 md:p-6">

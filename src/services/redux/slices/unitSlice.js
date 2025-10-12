@@ -185,12 +185,13 @@ const UnitSlice = createSlice({
       .addCase(unitAnalysis.fulfilled, (state, action) => {
         state.unitsLoading = false;
         const data = action.payload;
+        const pricePerBrand = dashboardRepository.pricePerBrand(data.data);
         const brandPie = dashboardRepository.countSlice(
           data.brand_count,
           BRAND_FILTERS
         );
 
-        state.unitResults = { ...data, brandPie };
+        state.unitResults = { ...data, brandPie, pricePerBrand };
       })
       .addCase(unitAnalysis.rejected, (state, action) => {
         state.unitsLoading = false;

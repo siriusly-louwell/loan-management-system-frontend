@@ -61,11 +61,11 @@ export function BarChartSkeleton() {
   );
 }
 
-export function VerticalBarChartSkeleton() {
+export function VerticalBarChartSkeleton({num = 6}) {
   return (
     <div className="animate-pulse w-full h-[250px] flex flex-col justify-end">
       <div className="flex items-end justify-between h-full px-6">
-        {[...Array(12)].map((_, i) => (
+        {[...Array(num)].map((_, i) => (
           <div key={i} className="flex flex-col items-center space-y-2">
             <div
               className="w-6 bg-rose-100 dark:bg-rose-500/50 rounded-t"

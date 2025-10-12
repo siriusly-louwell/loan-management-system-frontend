@@ -113,7 +113,7 @@ export default function DashOverview() {
         )}
       </div>
       <div className="grid justify-items-center mx-5 py-5 mb-5 grid-cols-auto md:grid-cols-3 gap-4 items-start border-b border-gray-300 dark:border-gray-600">
-        <ChartCard label="Loan Applications" scroll={0}>
+        <ChartCard label="Loan Applications" scroll={550}>
           {loading ? (
             <DonutChartSkeleton />
           ) : (
@@ -127,7 +127,7 @@ export default function DashOverview() {
         <ChartCard
           label="Loan Payments"
           count={paymentResults.total?.count}
-          scroll={1000}>
+          scroll={1600}>
           {loading ? (
             <BarChartSkeleton />
           ) : (
@@ -162,7 +162,7 @@ export default function DashOverview() {
         <ChartCard
           label="Total Loans"
           count={loanResults.total?.count}
-          scroll={750}>
+          scroll={1250}>
           {loading ? (
             <AreaChartSkeleton />
           ) : (

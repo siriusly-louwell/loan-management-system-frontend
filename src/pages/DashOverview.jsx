@@ -47,7 +47,7 @@ export default function DashOverview() {
   }, []);
 
   return (
-    <section className="w-full flex flex-col items-center">
+    <section className="w-full flex flex-col items-center pb-10">
       <div className="min-w-[90%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-b border-gray-300 dark:border-gray-600 gap-4 p-5 m-5">
         {loading ? (
           <InfoCardSkeleton />

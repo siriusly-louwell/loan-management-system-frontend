@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import { MoreHorizontal, Filter } from "lucide-react";
 import { DASHBOARD_FILTERS } from "../../constants/filters";
 import { useDispatch } from "react-redux";
-import { selectDate } from "../../services/redux/slices/applicationSlice";
+import { loanDashFilter } from "../../services/redux/slices/applicationSlice";
+import { paymentDashFilter } from "../../services/redux/slices/paymentSlice";
 
-export default function ChartContainer({ title, chart, count, subtitle, children }) {
+export default function ChartContainer({
+  title,
+  chart,
+  count,
+  subtitle,
+  children,
+}) {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState("months");
   const [showMenu, setShowMenu] = useState(false);
@@ -12,7 +19,9 @@ export default function ChartContainer({ title, chart, count, subtitle, children
   function selectFilter(option) {
     setFilter(option);
     setShowMenu(false);
-    dispatch(selectDate({ chart: chart, filter: option }));
+    if (chart === "chart")
+      dispatch(paymentDashFilter({ chart: chart, filter: option }));
+    else dispatch(loanDashFilter({ chart: chart, filter: option }));
   }
 
   return (

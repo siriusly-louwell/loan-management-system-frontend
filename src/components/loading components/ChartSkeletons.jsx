@@ -51,8 +51,8 @@ export function BarChartSkeleton() {
         <div className="flex-1 flex flex-col justify-between">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex gap-2 h-4">
-              <div className="w-3/4 bg-green-100 dark:bg-green-500 rounded" />
-              <div className="w-1/4 bg-red-100 dark:bg-red-500 rounded" />
+              <div className="w-3/4 bg-blue-100 dark:bg-blue-500 rounded" />
+              <div className="w-1/4 bg-rose-100 dark:bg-rose-500 rounded" />
             </div>
           ))}
         </div>

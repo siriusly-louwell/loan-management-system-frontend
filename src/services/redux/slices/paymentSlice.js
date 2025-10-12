@@ -68,6 +68,21 @@ const paymentSlice = createSlice({
     getPaymentId: (state) => {
       state.paymentID = Number(paymentRepository.getId());
     },
+
+    // ? Dashboard reducers
+    paymentDashFilter: (state, action) => {
+      const data = action.payload;
+      const config = dashboardRepository.makeFilters("status", [
+        "on_time",
+        "late",
+      ]);
+
+      state.paymentResults[data.chart] = dashboardRepository.chartConfig(
+        state.paymentResults.data,
+        config,
+        data.filter
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -140,5 +155,5 @@ const paymentSlice = createSlice({
   },
 });
 
-export const { savePayment, getPaymentId } = paymentSlice.actions;
+export const { savePayment, getPaymentId, paymentDashFilter } = paymentSlice.actions;
 export default paymentSlice.reducer;

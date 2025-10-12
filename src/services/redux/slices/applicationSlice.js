@@ -153,7 +153,7 @@ const applicationSlice = createSlice({
     },
 
     // ? Dashboard reducers
-    selectDate: (state, action) => {
+    loanDashFilter: (state, action) => {
       const data = action.payload;
       const barChart = dashboardRepository.makeFilters("apply_status", [
         "pending",
@@ -326,6 +326,6 @@ export const {
   calculateStability,
   assessDecision,
   assessResult,
-  selectDate,
+  loanDashFilter,
 } = applicationSlice.actions;
 export default applicationSlice.reducer;

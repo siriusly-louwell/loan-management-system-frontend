@@ -541,11 +541,7 @@ function App() {
               path="invoices"
               element={
                 <ProtectedRoute type="admin">
-                  <InvoiceList
-                    // id={user?.id}
-                    headText="Invoices"
-                    path="/admin/invoice"
-                  />
+                  <AppNotifications />
                 </ProtectedRoute>
               }
             />

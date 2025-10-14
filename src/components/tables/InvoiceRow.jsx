@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import CustomBadge from "../badges/CustomBadge";
+import { useSelector } from "react-redux";
+import { UserEntity } from "../../services/entities/User";
 
 export default function InvoiceRow({ data, click }) {
+  const { role } = useSelector(UserEntity);
+
   return (
     <div className="flex flex-wrap items-center gap-y-4 py-6">
       <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
@@ -47,7 +51,7 @@ export default function InvoiceRow({ data, click }) {
       <div className="w-full sm:w-auto flex justify-end mt-4 sm:mt-0">
         <Link
           onClick={click}
-          to="/staff/invoice"
+          to={`/${role}/invoice`}
           className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-rose-600 text-white hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-400">
           View Invoice
         </Link>

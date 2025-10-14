@@ -180,7 +180,7 @@ export default function DashOverview() {
       </div>
 
       <section className="px-5 w-full">
-        <InvoiceTable isDashboard={true} />
+        <InvoiceTable isDashboard={true} path="/admin/loan" />
       </section>
     </section>
   );

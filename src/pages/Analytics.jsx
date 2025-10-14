@@ -49,8 +49,6 @@ export default function Analytics() {
     setTimeout(handleResize, 100);
   }, []);
 
-  console.log(unitResults.pricePerBrand);
-
   return (
     <div className="px-5 py-3 w-full flex flex-col items-center">
       <section className="max-w-[80%] max-w-[100%] grid grid-cols-3 gap-1">

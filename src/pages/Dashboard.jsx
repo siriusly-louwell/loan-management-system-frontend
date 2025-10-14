@@ -2,7 +2,6 @@ import React from "react";
 import SideBar from "../components/SideBar";
 import { Outlet } from "react-router-dom";
 import Widget from "../assets/icons/Widget";
-import Notif from "../assets/icons/Notif";
 import Chart from "../assets/icons/Chart";
 import Mailbox from "../assets/icons/Mailbox";
 
@@ -27,7 +26,7 @@ export default function Dashboard() {
             key: "invoices",
             text: "Invoices",
             component: <Mailbox />,
-            icon: <Notif num="3" />,
+            // icon: <Notif num="3" />,
           },
         ]}
       />

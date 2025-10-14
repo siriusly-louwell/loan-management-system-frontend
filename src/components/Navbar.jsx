@@ -12,7 +12,11 @@ import {
   setLoading,
   toggleModal,
 } from "../services/redux/slices/uiSlice";
-import { clearAuth, logout } from "../services/redux/slices/authSlice";
+import {
+  clearAuth,
+  fetchAccount,
+  logout,
+} from "../services/redux/slices/authSlice";
 import { clearID } from "../services/redux/slices/unitSlice";
 import { UserEntity } from "../services/entities/User";
 import { resetInput } from "../services/redux/slices/formSlice";
@@ -101,14 +105,16 @@ export default function Navbar({ links, path }) {
                     <MenuLink
                       pathName="Profile"
                       path={`${path}/profile`}
-                      click={() =>
+                      click={() => {
+                        console.log(user.id);
+                        dispatch(fetchAccount(user.id));
                         dispatch(
                           toggleModal({
                             name: "profile",
                             value: modals.profile,
                           })
-                        )
-                      }
+                        );
+                      }}
                     />
                     {!user?.isAdmin && <MenuLink pathName="Settings" path="" />}
                     <MenuLink pathName="Log out" click={toggleLogout} />

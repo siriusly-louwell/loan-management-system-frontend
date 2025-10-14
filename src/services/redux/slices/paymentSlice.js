@@ -69,6 +69,11 @@ const paymentSlice = createSlice({
       state.paymentID = Number(paymentRepository.getId());
     },
 
+    clearPayment: (state) => {
+      paymentRepository.clearId();
+      state.payment = {};
+    },
+
     // ? Dashboard reducers
     paymentDashFilter: (state, action) => {
       const data = action.payload;
@@ -155,5 +160,6 @@ const paymentSlice = createSlice({
   },
 });
 
-export const { savePayment, getPaymentId, paymentDashFilter } = paymentSlice.actions;
+export const { savePayment, clearPayment, getPaymentId, paymentDashFilter } =
+  paymentSlice.actions;
 export default paymentSlice.reducer;

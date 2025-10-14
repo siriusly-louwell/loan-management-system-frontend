@@ -42,6 +42,11 @@ const reportSlice = createSlice({
     getReportId: (state) => {
       state.reportID = Number(reportRepository.getId());
     },
+
+    clearReport: (state) => {
+      reportRepository.clearId();
+      state.report = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -75,5 +80,5 @@ const reportSlice = createSlice({
   },
 });
 
-export const { saveReport, getReportId } = reportSlice.actions;
+export const { saveReport, getReportId, clearReport } = reportSlice.actions;
 export default reportSlice.reducer;

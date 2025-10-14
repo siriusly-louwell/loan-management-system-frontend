@@ -93,6 +93,7 @@ const UnitSlice = createSlice({
 
     clearID: (state) => {
       unitRepository.clearId();
+      state.unit = {};
     },
 
     clearUnit: (state) => {

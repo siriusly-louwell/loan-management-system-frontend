@@ -102,7 +102,7 @@ const formSlice = createSlice({
 
     resetInput: (state) => {
       state.formData = {
-        createUnit: {},
+        createUnit: { quantity: [1], unit_type: "new" },
         editUnit: {},
         unitStock: {},
         unit: {},

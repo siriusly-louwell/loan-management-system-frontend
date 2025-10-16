@@ -42,6 +42,7 @@ export default function InvoiceTable({
       fetchApplicants({
         page: navPage.page,
         type: navPage.type,
+        perPage: 6,
         statuses: statuses,
         search: search,
         isCustomer: role === "customer" && id,
@@ -106,7 +107,7 @@ export default function InvoiceTable({
           )}
         </LogList>
 
-        <PageNav pagination={pagination} changePage={setPage} />
+        <PageNav pagination={pagination} changePage={setPage} itemName="applications" />
       </div>
     </div>
   );

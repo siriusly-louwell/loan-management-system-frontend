@@ -117,6 +117,7 @@ const applicationSlice = createSlice({
 
     clearLoan: (state) => {
       state.loanID = null;
+      state.loan = {};
       applyRepository.clearId();
     },
 

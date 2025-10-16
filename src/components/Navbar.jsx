@@ -21,6 +21,8 @@ import { clearID } from "../services/redux/slices/unitSlice";
 import { UserEntity } from "../services/entities/User";
 import { resetInput } from "../services/redux/slices/formSlice";
 import { clearLoan } from "../services/redux/slices/applicationSlice";
+import { clearPayment } from "../services/redux/slices/paymentSlice";
+import { clearReport } from "../services/redux/slices/reportSlice";
 
 export default function Navbar({ links, path }) {
   const navigate = useNavigate();
@@ -52,6 +54,8 @@ export default function Navbar({ links, path }) {
       dispatch(clearID());
       dispatch(resetInput());
       dispatch(clearLoan());
+      dispatch(clearReport());
+      dispatch(clearPayment());
       dispatch(setLoading({ isActive: false }));
     }, 2000);
 

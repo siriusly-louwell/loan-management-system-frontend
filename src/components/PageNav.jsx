@@ -2,7 +2,7 @@ import React from "react";
 import Pagination from "@mui/material/Pagination";
 import { useTheme } from "@mui/material/styles";
 
-export default function PageNav({ pagination, changePage, itemName }) {
+export default function PageNav({ pagination, changePage, itemName = "" }) {
   const theme = useTheme();
 
   return (

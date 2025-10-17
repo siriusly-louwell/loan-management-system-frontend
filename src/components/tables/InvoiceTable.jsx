@@ -10,6 +10,7 @@ import useDebounce from "../../hooks/useDebounce";
 import {
   fetchApplicants,
   saveLoan,
+  setLoanLoad,
 } from "../../services/redux/slices/applicationSlice";
 import InvoiceRowSkeleton from "../../components/loading components/InvoiceRowSkeleton";
 import { UserEntity } from "../../services/entities/User";
@@ -36,6 +37,10 @@ export default function InvoiceTable({
       : role === "ci" && bttnText === "Evaluate"
       ? ["accepted"]
       : [];
+
+  useEffect(() => {
+    dispatch(setLoanLoad(true));
+  }, []);
 
   useEffect(() => {
     dispatch(
@@ -107,7 +112,11 @@ export default function InvoiceTable({
           )}
         </LogList>
 
-        <PageNav pagination={pagination} changePage={setPage} itemName="applications" />
+        <PageNav
+          pagination={pagination}
+          changePage={setPage}
+          itemName="applications"
+        />
       </div>
     </div>
   );

@@ -36,6 +36,7 @@ export default function AccComakers() {
         statuses: ["approved"],
         type: navPage.type,
         search: search,
+        isCustomer: false,
         min: min,
         max: max,
       })

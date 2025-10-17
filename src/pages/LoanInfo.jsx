@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchLoan,
   getLoanId,
-  setLoanLoad,
   updateStatus,
 } from "../services/redux/slices/applicationSlice";
 import {
@@ -31,7 +30,6 @@ export default function LoanInfo() {
 
   useEffect(() => {
     dispatch(getLoanId());
-    dispatch(setLoanLoad(true));
   }, []);
 
   useEffect(() => {

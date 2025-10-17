@@ -8,8 +8,6 @@ import { BarChart2, CheckCircle2, FileText, XCircle } from "lucide-react";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 import { UserEntity } from "../services/entities/User";
-import { useEffect } from "react";
-import { setLoanLoad } from "../services/redux/slices/applicationSlice";
 
 export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
@@ -23,10 +21,6 @@ export default function LoanDetails({ setApproval }) {
     loan.status === "approved" ||
     loan.status === "declined";
 
-  useEffect(() => {
-    dispatch(setLoanLoad(true));
-  }, []);
-
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <div className="flex justify-between w-full">
@@ -36,7 +30,7 @@ export default function LoanDetails({ setApproval }) {
       </div>
 
       <div className="mt-6 sm:mt-8 lg:flex lg:gap-8">
-        {loanLoading && loan.transactions === undefined ? (
+        {loanLoading ? (
           <div className="w-full h-fit bg-gray-100 dark:bg-gray-800 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600 lg:max-w-xl xl:max-w-2xl">
             <LoanList load={loanLoading} />
             <div className="space-y-4 bg-white p-6 dark:bg-gray-800">

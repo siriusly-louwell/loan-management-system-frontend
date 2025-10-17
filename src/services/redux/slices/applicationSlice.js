@@ -235,6 +235,8 @@ const applicationSlice = createSlice({
             ? [...state.customers, ...action.payload.data]
             : action.payload.data;
 
+        console.log(state.customers);
+
         const filtered = state.customers
           .filter((f) => f.user && f.user.id)
           .map((app) => ({
@@ -305,7 +307,10 @@ const applicationSlice = createSlice({
         const line = dashboardRepository.chartConfig(data.data, [
           { name: "Total Loans", filter: (_) => true },
         ]);
-        const progress = dashboardRepository.countSlice(data, APPLICATION_STATUS);
+        const progress = dashboardRepository.countSlice(
+          data,
+          APPLICATION_STATUS
+        );
         const barChart = dashboardRepository.chartConfig(data.data, wideBar);
 
         state.loanResults = { ...data, donut, line, progress, barChart };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import Button from "../components/buttons/Button";
@@ -24,7 +24,6 @@ export default function CreateUser({ userType }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const { formData } = useSelector((state) => state.form);
-  const [pfp, setPfp] = useState({});
 
   useEffect(() => {
     dispatch(setType("createUser"));
@@ -45,7 +44,6 @@ export default function CreateUser({ userType }) {
       dispatch(setAlert({ message: response.message, type: response.type }));
       if (response.type === "success") {
         dispatch(resetInput());
-        setPfp({});
         dispatch(fetchUsers({ page: 1, role: userType }));
       }
     } catch (error) {
@@ -59,10 +57,6 @@ export default function CreateUser({ userType }) {
       );
     }
   }
-
-  // function pfpChange(event) {
-  //   setPfp(event.target.files[0]);
-  // }
 
   function dispatchInput(event) {
     dispatch(
@@ -97,7 +91,7 @@ export default function CreateUser({ userType }) {
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 mb-4 sm:grid-cols-3">
-                  <FormInput
+                  <FormInputj
                     label="First name"
                     type="text"
                     value={formData.createUser.first_name || ""}
@@ -156,13 +150,7 @@ export default function CreateUser({ userType }) {
                     <option value="female">Female</option>
                   </FormSelect>
                 </div>
-                {/* <FileInput
-                  label="Upload Profile picture:"
-                  type="img"
-                  name="pfp"
-                  change={pfpChange}
-                  require={true}
-                /> */}
+
                 <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                   <Button text="Add user" type="submit" />
                 </div>

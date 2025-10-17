@@ -35,4 +35,13 @@ export const authRepository = {
   clearToken() {
     localStorage.removeItem("token");
   },
+
+  generateRandomString(length = 12) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567891-_.";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
 };

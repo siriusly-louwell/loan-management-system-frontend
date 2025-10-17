@@ -91,7 +91,7 @@ export default function CreateUser({ userType }) {
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 mb-4 sm:grid-cols-3">
-                  <FormInputj
+                  <FormInput
                     label="First name"
                     type="text"
                     value={formData.createUser.first_name || ""}
@@ -150,7 +150,6 @@ export default function CreateUser({ userType }) {
                     <option value="female">Female</option>
                   </FormSelect>
                 </div>
-
                 <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
                   <Button text="Add user" type="submit" />
                 </div>

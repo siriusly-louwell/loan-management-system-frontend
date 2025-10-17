@@ -247,11 +247,6 @@ export default function CIReport() {
               onchange={handleChange}
               placeholder="Type unit name here"
             />
-            {/* <img
-                src={`http://127.0.0.1:8000/storage/${appReport.sketch}`}
-                className="rounded rounded-lg w-20"
-                alt="Sketch"
-              /> */}
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Delivered?

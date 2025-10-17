@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUnits } from "../services/redux/slices/unitSlice";
+import { fetchUnits, setUnitLoad } from "../services/redux/slices/unitSlice";
 import CRUDformat from "../components/CRUDformat";
 import useDebounce from "../hooks/useDebounce";
 import UnitFilter from "../components/filters/UnitFilter";
@@ -13,6 +13,10 @@ export default function UnitList() {
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
   const max = useDebounce(navPage.max, 500);
+
+  useEffect(() => {
+    dispatch(setUnitLoad(true));
+  }, []);
 
   useEffect(() => {
     dispatch(

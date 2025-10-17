@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserWithToken } from "./services/redux/slices/authSlice";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -48,9 +48,11 @@ import UnitList from "./pages/UnitList";
 import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
 import Analytics from "./pages/Analytics";
+import { UserEntity } from "./services/entities/User";
 
 function App() {
   const dispatch = useDispatch();
+  const { role } = useSelector(UserEntity);
 
   useEffect(() => {
     dispatch(loginUserWithToken());
@@ -65,6 +67,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path={`/${role}`} element={<PageNotFound />} />
         <Route path="*" element={<PageNotFound />} />
 
         {/* Guest Routes */}

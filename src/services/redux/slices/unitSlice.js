@@ -87,6 +87,9 @@ const UnitSlice = createSlice({
     },
   },
   reducers: {
+    setUnitLoad: (state, action) => {
+      state.unitLoading = action.payload;
+    },
     storeID: (state, action) => {
       unitRepository.saveId(action.payload);
     },
@@ -201,5 +204,6 @@ const UnitSlice = createSlice({
   },
 });
 
-export const { storeID, getID, clearID, clearUnit } = UnitSlice.actions;
+export const { setUnitLoad, storeID, getID, clearID, clearUnit } =
+  UnitSlice.actions;
 export default UnitSlice.reducer;

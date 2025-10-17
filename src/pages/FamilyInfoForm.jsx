@@ -124,7 +124,7 @@ export default function FamilyInfoForm() {
       </div>
 
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
-        {[...Array(children)].map((i) => (
+        {[...Array(children)].map((_, i) => (
           <div key={i} className="grid gap-4 sm:grid-cols-4">
             <FormInput
               label="Name of Schooling Children"
@@ -580,7 +580,7 @@ export default function FamilyInfoForm() {
             </tr>
           </FormTHead>
           <FormTBody>
-            {[...Array(relatives)].map((i) => (
+            {[...Array(relatives)].map((_, i) => (
               <tr key={i}>
                 <FormTD placeholder="Full name here" />
                 <FormTD placeholder="Address here" />
@@ -612,7 +612,7 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTHead>
             <FormTBody>
-              {[...Array(dependents)].map((i) => (
+              {[...Array(dependents)].map((_,i) => (
                 <tr key={i}>
                   <FormTD placeholder="Full name here" />
                   <FormTD placeholder="Address here" />

@@ -110,6 +110,7 @@ const formSlice = createSlice({
         address: {},
         createUser: { password: "password", status: "active" },
       };
+      state.pageComplete = null;
       state.colors = [];
       formRepository.clearForm();
     },

@@ -57,7 +57,7 @@ export default function ApplicationForm() {
       );
 
     window.scrollTo(0, 0);
-  }, [isChecked, stepIndex, toggled, pageComplete, pageType, dispatch]);
+  }, [isChecked, stepIndex, toggled, pageComplete, pageType]);
 
   useEffect(() => {
     if (pageType === "next" || pageType === "step") navigate(pageRoute);
@@ -139,6 +139,7 @@ export default function ApplicationForm() {
       dispatch(setAlert({ message: response.message, type: response.type }));
       dispatch(resetInput());
       dispatch(resetState());
+      setPageType("next");
       setFiles([]);
       setModal({
         text: `Your application has been submitted!`,

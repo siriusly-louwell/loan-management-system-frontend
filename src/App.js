@@ -9,8 +9,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PageLayout from "./pages/PageLayout";
 import GuestNav from "./components/navigations/GuestNav";
 import ProductList from "./pages/ProductList";
-import UnitsAll from "./pages/UnitsAll";
-import UnitsNew from "./pages/UnitsNew";
 import SearchPage from "./pages/SearchPage";
 import About from "./pages/About";
 import ProductInfo from "./pages/ProductInfo";
@@ -72,9 +70,6 @@ function App() {
         {/* Guest Routes */}
         <Route path="/" element={<PageLayout links={<GuestNav />} />}>
           <Route path="" element={<ProductList />} />
-          <Route path="prodlist" element={<ProductList />}>
-            <Route index element={<UnitsAll />} />
-          </Route>
           <Route path="find" element={<SearchPage />} />
           <Route path="about" element={<About />} />
           <Route path="guest/unit" element={<ProductInfo />} />
@@ -85,88 +80,22 @@ function App() {
         <Route
           path="/customer"
           element={<PageLayout links={<ApplicantNav />} path="/customer" />}>
-          {/* <Route index element={<ProductList url="/customer/product" />} /> */}
           <Route
-            path=""
+            path="app"
             element={
               <ProtectedRoute type="customer">
-                <ProductList url="/customer/product" />
+                <ProductList />
               </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsAll />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="new"
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsNew />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="top"
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsNew />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="repo"
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsNew />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+            }
+          />
           <Route
-            path="prodlist"
+            path="unit"
             element={
               <ProtectedRoute type="customer">
-                <ProductList url="/customer/product" />
+                <ProductInfo />
               </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsAll />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="new"
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsNew />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="top"
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsNew />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="repo"
-              element={
-                <ProtectedRoute type="customer">
-                  <UnitsNew />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-          {/* <Route path="prodlist" element={<ProductList url="/customer/product" />} /> */}
+            }
+          />
           <Route
             path="history"
             element={
@@ -186,7 +115,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="myloans" element={<InvoiceList id={user.id} headText="My Loans" />} /> */}
           <Route
             path="loan"
             element={
@@ -207,7 +135,6 @@ function App() {
             path="invoice"
             element={
               <ProtectedRoute type="customer">
-                {/* <Invoice /> */}
                 <InvoicePage />
               </ProtectedRoute>
             }
@@ -250,15 +177,7 @@ function App() {
         {/* CI Routes */}
         <Route path="/ci" element={<PageLayout links={<CINav />} path="/ci" />}>
           <Route
-            index
-            element={
-              <ProtectedRoute type="ci">
-                <InvoiceList headText="Loan Applications" path="/ci/ciloan" />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="loan"
+            path="app"
             element={
               <ProtectedRoute type="ci">
                 <InvoiceList headText="Loan Applications" path="/ci/ciloan" />
@@ -277,7 +196,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="recommendation" element={<InvoiceList id={user.id} headText="Evaluated Loans" />} /> */}
           <Route
             path="ciloan"
             element={
@@ -302,7 +220,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="ciappform" element={<CIAppForm />} /> */}
           <Route
             path="profile"
             element={
@@ -326,27 +243,18 @@ function App() {
           path="/staff"
           element={<PageLayout links={<StaffNav />} path="/staff" />}>
           <Route
-            index
+            path="app"
             element={
               <ProtectedRoute type="staff">
-                <Cashier />
+                <InvoiceList headText="Loan Applications" path="/staff/loan" />
               </ProtectedRoute>
             }
           />
-          {/* <Route path="inventory" element={<Inventory />} /> */}
           <Route
             path="cashier"
             element={
               <ProtectedRoute type="staff">
                 <Cashier />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="loans"
-            element={
-              <ProtectedRoute type="staff">
-                <InvoiceList headText="Loan Applications" path="/staff/loan" />
               </ProtectedRoute>
             }
           />
@@ -425,13 +333,54 @@ function App() {
           path="/admin"
           element={<PageLayout links={<AdminNav />} path="/admin" />}>
           <Route
-            path=""
+            path="app"
             element={
               <ProtectedRoute type="admin">
-                <Inventory />
+                <Dashboard />
               </ProtectedRoute>
-            }
-          />
+            }>
+            <Route
+              index
+              element={
+                <ProtectedRoute type="admin">
+                  <DashOverview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="overview"
+              element={
+                <ProtectedRoute type="admin">
+                  <DashOverview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="notifications"
+              element={
+                <ProtectedRoute type="admin">
+                  <Notifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="invoices"
+              element={
+                <ProtectedRoute type="admin">
+                  <AppNotifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="analytics"
+              element={
+                <ProtectedRoute type="admin">
+                  <Analytics />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
           <Route
             path="inventory"
             element={
@@ -452,7 +401,6 @@ function App() {
             path="invoice"
             element={
               <ProtectedRoute type="admin">
-                {/* <Invoice /> */}
                 <InvoicePage />
               </ProtectedRoute>
             }
@@ -505,55 +453,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          <Route
-            path="dashboard"
-            element={
-              <ProtectedRoute type="admin">
-                <Dashboard />
-              </ProtectedRoute>
-            }>
-            <Route
-              index
-              element={
-                <ProtectedRoute type="admin">
-                  <DashOverview />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="overview"
-              element={
-                <ProtectedRoute type="admin">
-                  <DashOverview />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="notifications"
-              element={
-                <ProtectedRoute type="admin">
-                  <Notifications />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="invoices"
-              element={
-                <ProtectedRoute type="admin">
-                  <AppNotifications />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="analytics"
-              element={
-                <ProtectedRoute type="admin">
-                  <Analytics />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
 
           <Route
             path="accounts"

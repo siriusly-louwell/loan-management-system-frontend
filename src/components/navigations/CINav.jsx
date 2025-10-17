@@ -1,11 +1,11 @@
-import React from 'react';
-import Navlink from '../links/NavLink';
+import React from "react";
+import Navlink from "../links/NavLink";
 
 export default function CINav() {
-    return (
-        <>
-            <Navlink pathName="Applications" to="loan" />
-            <Navlink pathName="Evaluation" to="evaluation" />
-        </>
-    );
+  return (
+    <>
+      <Navlink pathName="Applications" to="app" />
+      <Navlink pathName="Evaluation" to="evaluation" />
+    </>
+  );
 }

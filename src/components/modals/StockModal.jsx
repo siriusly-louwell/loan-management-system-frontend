@@ -55,7 +55,7 @@ export default function StockModal() {
   }
 
   return (
-    <div className="fixed flex items-center justify-center top-0 left-0 right-0 z-40 p-20 bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div className="fixed flex items-center justify-center top-0 left-0 right-0 z-40 p-20 bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-40 backdrop-blur-sm justify-items-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
       <PopAnimate>
         <div className="relative w-full h-auto max-w-md max-h-full">
           <div className="relative flex flex-col bg-white rounded-lg shadow dark:bg-gray-800 border dark:border-gray-500">

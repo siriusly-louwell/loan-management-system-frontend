@@ -9,7 +9,7 @@ export default function Dialog({ text, children, icon, modalName }) {
   const { modals } = useSelector((state) => state.ui);
 
   return modals[modalName] && (
-    <div className="fixed top-0 left-0 right-0 z-50 p-20 bg-gray-500 dark:bg-gray-800 dark:bg-opacity-30 bg-opacity-30 flex justify-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div className="fixed top-0 left-0 right-0 z-50 p-20 bg-gray-500 dark:bg-gray-800 dark:bg-opacity-30 bg-opacity-30 backdrop-blur-sm flex justify-center items-center overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
       <AnimatePresence>
         <motion.div
           initial={{ scale: 0.8, opacity: 1 }}

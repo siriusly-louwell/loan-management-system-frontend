@@ -8,6 +8,7 @@ import { BarChart2, CheckCircle2, FileText, XCircle } from "lucide-react";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 import { UserEntity } from "../services/entities/User";
+import SubtleIconBttn from "./buttons/SubtleIconBttn";
 
 export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
@@ -149,6 +150,7 @@ export default function LoanDetails({ setApproval }) {
                 label={loan.statusLabel("acceptance", 0)}
                 sublabel={loan.statusLabel("acceptance", 1)}
                 status={loan.trackStatus("accept")}
+                extra={loan.status === "denied" && <SubtleIconBttn />}
               />
               <TrackList
                 label="Credit Investigation"
@@ -159,6 +161,7 @@ export default function LoanDetails({ setApproval }) {
                 label={loan.statusLabel("approval", 0)}
                 sublabel={loan.statusLabel("approval", 1)}
                 status={loan.trackStatus("approve")}
+                extra={loan.status === "declined" && <SubtleIconBttn />}
               />
               <TrackList
                 label="Initial Payment"

@@ -11,7 +11,7 @@ export default function ColorModal({ colors }) {
   const { modals } = useSelector((state) => state.ui);
 
   return (
-    <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+    <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 backdrop-blur-sm top-0 right-0 left-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
       <AnimatePresence>
         <motion.div
           initial={{ scale: 0.8, opacity: 1 }}

@@ -49,7 +49,7 @@ export default function Eligibility() {
 
   return (
     modals.eligibility && (
-      <div className="fixed inset-0 flex justify-center items-center overflow-y-auto bg-gray-900/50 dark:bg-gray-900/80 z-40 flex items-center justify-center p-4">
+      <div className="fixed inset-0 flex justify-center items-center overflow-y-auto bg-gray-900/50 dark:bg-gray-900/80 backdrop-blur-sm z-40 flex items-center justify-center p-4">
         <PopAnimate>
           <div className="w-full max-w-5xl mt-20 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-xl">
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">

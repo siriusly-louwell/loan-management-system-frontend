@@ -20,6 +20,7 @@ import { fetchUnits } from "../services/redux/slices/unitSlice";
 import Dialog from "../components/modals/Dialog";
 import UnitRecommendation from "../components/UnitRecommendation";
 import LoanDetails from "../components/LoanDetails";
+import TextDialog from "../components/modals/TextDialog";
 
 export default function LoanInfo() {
   const dispatch = useDispatch();
@@ -107,6 +108,7 @@ export default function LoanInfo() {
       {(loan.status === "declined" || loan.status === "denied") && (
         <UnitRecommendation />
       )}
+      <TextDialog title="Reason for Rejection:" content={loan.reject_reason} />
       <Eligibility />
       <DeclineApplicant />
       <AssignCI />

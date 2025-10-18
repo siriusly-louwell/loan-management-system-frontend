@@ -17,6 +17,7 @@ import {
   fetchLoan,
   updateStatus,
 } from "../services/redux/slices/applicationSlice";
+import FormInput from "./inputs/FormInput";
 
 export default function AssignCI() {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ export default function AssignCI() {
 
   return (
     modals.addCI && (
-      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 backdrop-blur-sm top-0 right-0 left-0 z-40 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
         <PopAnimate>
           <div className="relative p-4 w-[100vh] max-w-3xl h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
@@ -103,7 +104,39 @@ export default function AssignCI() {
                         </option>
                       ))}
                   </FormSelect>
+
+                  {applicant.ci_id && applicant.ci_id !== "__EMPTY__" && (
+                    <div className="flex flex-col gap-y-2 py-3">
+                      <span className="text-md font-medium text-gray-900 dark:text-white">
+                        Set Meeting schedule:
+                      </span>
+                      <section className="flex ml-10 gap-x-5">
+                        <FormInput
+                          label="From"
+                          type="date"
+                          name="from_sched"
+                          min={new Date().toISOString().split("T")[0]}
+                          value={applicant.from_sched}
+                          onchange={handleChange}
+                          require={true}
+                        />
+                        <FormInput
+                          label="To"
+                          type="date"
+                          name="to_sched"
+                          min={applicant.from_sched}
+                          value={applicant.to_sched}
+                          onchange={handleChange}
+                          require={true}
+                        />
+                      </section>
+                    </div>
+                  )}
+
                   <FormTextarea
+                    name="message"
+                    value={applicant.message}
+                    onchange={handleChange}
                     label="Add a message to the applicant (optional):"
                     placeholder="Write your message here..."
                   />

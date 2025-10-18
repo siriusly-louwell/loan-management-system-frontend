@@ -22,6 +22,7 @@ export class Loan {
     amortization = 0.0,
     rent = 0.0,
     income,
+    reject_reason,
     created_at,
   }) {
     this.id = id;
@@ -39,6 +40,7 @@ export class Loan {
     this.amortization = amortization;
     this.rent = rent;
     this.income = income;
+    this.reject_reason = reject_reason;
     this.created_at = created_at;
   }
 

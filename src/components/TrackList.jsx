@@ -2,8 +2,7 @@ import React from "react";
 import BlueCheck from "../assets/icons/BlueCheck";
 import Ex from "../assets/icons/Ex";
 
-export default function TrackList({ label, sublabel, status }) {
-
+export default function TrackList({ label, sublabel, status, extra }) {
   return (
     <li className={`mb-10 ms-6 ${status.check}`}>
       <span
@@ -14,6 +13,7 @@ export default function TrackList({ label, sublabel, status }) {
         {label} {status.type === "current" && "(In progress...)"}
       </h4>
       <p className={`text-sm font-normal ${status.span}`}>{sublabel}</p>
+      {extra}
     </li>
   );
 }

@@ -60,7 +60,7 @@ export default function DeclineApplicant() {
 
   return (
     modals.declineApp && (
-      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
+      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 backdrop-blur-sm top-0 right-0 left-0 z-40 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
         <PopAnimate>
           <div className="relative p-4 w-[100vh] max-w-3xl h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
@@ -90,11 +90,15 @@ export default function DeclineApplicant() {
                     label="Reason for Declination"
                     value={decline.type}
                     onchange={handleChange}>
-                    <option>Incorrect inputted values</option>
-                    <option>Wrong requirements uploaded</option>
-                    <option>Unmet standards</option>
+                    <option value="incorrect_info">
+                      Incorrect inputted values
+                    </option>
+                    <option value="incorrect_file">
+                      Wrong requirements uploaded
+                    </option>
+                    <option value="unmet">Unmet standards</option>
                   </FormSelect>
-                  {decline.type !== "Unmet standards" && decline.type && (
+                  {decline.type !== "unmet" && decline.type && (
                     <div>
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Allow Resubmit?
@@ -120,6 +124,9 @@ export default function DeclineApplicant() {
                     </div>
                   )}
                   <FormTextarea
+                    name="message"
+                    value={decline.message}
+                    onchange={handleChange}
                     label="Add a message to the applicant (optional):"
                     placeholder="Write your message here..."
                   />

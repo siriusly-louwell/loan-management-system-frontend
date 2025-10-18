@@ -6,7 +6,6 @@ import PopAnimate from "../animations/popAnimate";
 export default function CollectionReceipt({
   receiptNo = "10551",
   date = "",
-  receivedFrom = "",
   address = "",
   tin = "",
   businessStyle = "",
@@ -50,13 +49,12 @@ export default function CollectionReceipt({
               <p>
                 RECEIVED from{" "}
                 <span className="border-b border-gray-400 inline-block min-w-[200px]">
-                  {tin}
                 </span>
               </p>
               <p>
                 with TIN{" "}
                 <span className="border-b border-gray-400 inline-block min-w-[200px]">
-                  {receivedFrom}
+                  {tin}
                 </span>
               </p>
               <p>
@@ -68,7 +66,6 @@ export default function CollectionReceipt({
               <p>
                 style of{" "}
                 <span className="border-b border-gray-400 inline-block min-w-[200px]">
-                  {businessStyle}
                 </span>
               </p>
               <p>

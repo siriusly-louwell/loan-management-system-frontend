@@ -89,114 +89,106 @@ export default function AddPayment() {
   );
 
   return (
-    modals.addPayment && (
-      <div className="overflow-y-auto overflow-x-hidden fixed bg-gray-400 dark:bg-gray-800 bg-opacity-60 dark:bg-opacity-60 top-0 right-0 left-0 z-40 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] md:h-full">
-        <PopAnimate>
-          <div className="relative p-4 w-full max-w-3xl h-full md:h-auto">
-            <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
-              <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Add Payment
-                </h3>
-                <CloseBttn
-                  trigger={() =>
-                    dispatch(
-                      toggleModal({
-                        name: "addPayment",
-                        value: modals.addPayment,
-                      })
-                    )
-                  }
-                />
-              </div>
-              <div className="my-3 divide-y divide-gray-200 dark:divide-gray-800">
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Res. Certificate number
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {payment.cert_num}
-                  </dd>
-                </dl>
+    <PopAnimate
+      modalName={modals.addPayment}
+      classStyle="relative p-4 w-full max-w-3xl h-full md:h-auto">
+      <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-10 sm:py-8 border border-gray-500">
+        <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Add Payment
+          </h3>
+          <CloseBttn
+            trigger={() =>
+              dispatch(
+                toggleModal({
+                  name: "addPayment",
+                  value: modals.addPayment,
+                })
+              )
+            }
+          />
+        </div>
+        <div className="my-3 divide-y divide-gray-200 dark:divide-gray-800">
+          <dl className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+              Res. Certificate number
+            </dt>
+            <dd className="text-base font-medium text-gray-900 dark:text-white">
+              {payment.cert_num}
+            </dd>
+          </dl>
 
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Status
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    On time
-                  </dd>
-                </dl>
+          <dl className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+              Status
+            </dt>
+            <dd className="text-base font-medium text-gray-900 dark:text-white">
+              On time
+            </dd>
+          </dl>
 
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Issued on
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {now.toLocaleDateString("en-US")}
-                  </dd>
-                </dl>
+          <dl className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+              Issued on
+            </dt>
+            <dd className="text-base font-medium text-gray-900 dark:text-white">
+              {now.toLocaleDateString("en-US")}
+            </dd>
+          </dl>
 
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Issued at
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    Rhean Motors Center
-                  </dd>
-                </dl>
+          <dl className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+              Issued at
+            </dt>
+            <dd className="text-base font-medium text-gray-900 dark:text-white">
+              Rhean Motors Center
+            </dd>
+          </dl>
 
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Previous Balance
-                  </dt>
-                  <dd className="text-base font-medium text-red-500">
-                    {initialBalance}
-                  </dd>
-                </dl>
+          <dl className="flex items-center justify-between gap-4 py-3">
+            <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+              Previous Balance
+            </dt>
+            <dd className="text-base font-medium text-red-500">
+              {initialBalance}
+            </dd>
+          </dl>
 
-                <dl className="gap-4 py-3">
-                  <FormInput
-                    value={payment.amount_paid}
-                    label="Payment Amount"
-                    id="amount"
-                    name="amount_paid"
-                    type="number"
-                    placeholder="₱10,000"
-                    onchange={(e) => handleChange(e)}
-                  />
-                </dl>
+          <dl className="gap-4 py-3">
+            <FormInput
+              value={payment.amount_paid}
+              label="Payment Amount"
+              id="amount"
+              name="amount_paid"
+              type="number"
+              placeholder="₱10,000"
+              onchange={(e) => handleChange(e)}
+            />
+          </dl>
 
-                <dl className="mt-5">
-                  <Button
-                    text="Add Payment"
-                    type="button"
-                    onclick={checkInput}
-                  />
-                </dl>
-              </div>
-              <Dialog text={paymentText} modalName="confirmPayment">
-                <CustomBttn
-                  text="Confirm"
-                  onclick={handleSubmit}
-                  classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                />
-                <BasicBttn
-                  text="Cancel"
-                  click={() =>
-                    dispatch(
-                      toggleModal({
-                        name: "confirmPayment",
-                        value: modals.confirmPayment,
-                      })
-                    )
-                  }
-                />
-              </Dialog>
-            </div>
-          </div>
-        </PopAnimate>
+          <dl className="mt-5">
+            <Button text="Add Payment" type="button" onclick={checkInput} />
+          </dl>
+        </div>
+        <Dialog text={paymentText} modalName="confirmPayment">
+          <CustomBttn
+            text="Confirm"
+            onclick={handleSubmit}
+            classname="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+          />
+          <BasicBttn
+            text="Cancel"
+            click={() =>
+              dispatch(
+                toggleModal({
+                  name: "confirmPayment",
+                  value: modals.confirmPayment,
+                })
+              )
+            }
+          />
+        </Dialog>
       </div>
-    )
+    </PopAnimate>
   );
 }

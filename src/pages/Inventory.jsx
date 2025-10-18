@@ -12,7 +12,7 @@ import UnitFilter from "../components/filters/UnitFilter";
 export default function Inventory() {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
-    const { pagination } = useSelector((state) => state.unit);
+  const { pagination } = useSelector((state) => state.unit);
   const [navPage, setNavPage] = useState({});
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
@@ -43,8 +43,9 @@ export default function Inventory() {
       addModal={<CreateProduct />}
       filterComponent={<UnitFilter setPage={setPage} />}>
       <InventoryTable />
-      {modals?.editUnit && <EditProduct />}
-      {modals?.unitStock && <StockModal />}
+      
+      <EditProduct />
+      <StockModal />
     </CRUDformat>
   );
 }

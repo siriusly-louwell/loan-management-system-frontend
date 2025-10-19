@@ -1,5 +1,6 @@
 import { addressRepository } from "../../repositories/addressRepository";
 import { applyRepository } from "../../repositories/applyRepository";
+import { EquationRepository } from "../../repositories/EquationRepository";
 
 export async function applyUseCase(data) {
   if (data.files.length === 0)
@@ -10,9 +11,16 @@ export async function applyUseCase(data) {
 
   const address = data.formData.address;
   const fullAddress = await addressRepository.constructAddress(address);
+  const unit = data.FormData.unit;
+  const emi = EquationRepository.emi(
+    unit.downpayment,
+    unit.interest,
+    unit.tenure
+  );
 
   const applicant = {
     ...data.formData.applicant,
+    emi: emi,
     personal_pres: fullAddress.personal_pres,
     personal_prev: fullAddress.personal_prev,
     parent_pres: fullAddress.parent_pres,

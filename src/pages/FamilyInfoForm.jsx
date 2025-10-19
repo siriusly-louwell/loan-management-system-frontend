@@ -646,7 +646,7 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTHead>
             <FormTBody>
-              {[...Array(nearest)].map((i) => (
+              {[...Array(nearest)].map((_, i) => (
                 <tr key={i}>
                   <FormTD placeholder="Full name here" />
                   <FormTD placeholder="Address here" />

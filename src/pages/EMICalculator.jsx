@@ -29,7 +29,6 @@ export default function EMICalculator({ staff }) {
     }
   }, [downPayment]);
 
-  // const downPayment = (motorPrice * downPayment) / 100;
   const loanAmount = unit?.price - downPayment;
   const monthlyRate = unit?.interest / 12 / 100;
 
@@ -54,10 +53,6 @@ export default function EMICalculator({ staff }) {
       <div className="py-20 sm:flex sm:space-x-20 items-center px-4 justify-center">
         <div className="sm:w-1/2 p-2">
           <div className="mb-6">
-            {/* <FormSelect name="unit" id="color" label="Select Motorcycle unit" onchange={(e) => setPrice(parseInt(e.target.value))}>
-                            <option value={100000}>Honda - Wave 100</option>
-                            <option value={140000}>Honda - Click</option>
-                        </FormSelect> */}
           </div>
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">

@@ -12,25 +12,29 @@ export default function ImageModal() {
       modalName={modals.previewModal}
       classStyle="relative w-full h-auto max-w-4xl max-h-full">
       <div className="relative flex flex-col shadow">
-        <div className="self-end mt-1">
-          <CloseBttn
-            trigger={() =>
-              dispatch(
-                toggleModal({
-                  name: "previewModal",
-                  value: modals.previewModal,
-                })
-              )
-            }
-          />
-        </div>
-        <section className="px-10">
-          <img
-            src={imgPreview}
-            alt="unit preview"
-            className="rounded-2xl border border-gray-300"
-          />
-        </section>
+        {modals.previewModal && (
+          <>
+            <div className="self-end mt-1">
+              <CloseBttn
+                trigger={() =>
+                  dispatch(
+                    toggleModal({
+                      name: "previewModal",
+                      value: modals.previewModal,
+                    })
+                  )
+                }
+              />
+            </div>
+            <section className="px-10">
+              <img
+                src={imgPreview}
+                alt="unit preview"
+                className="rounded-2xl border border-gray-300"
+              />
+            </section>
+          </>
+        )}
       </div>
     </PopAnimate>
   );

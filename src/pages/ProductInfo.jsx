@@ -228,7 +228,9 @@ export default function ProductInfo({ staff = false }) {
                       <div
                         key={key}
                         className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-200 dark:bg-gray-900/50 p-4 shadow-sm hover:shadow-md transition">
-                        <p className="text-sm text-gray-700 dark:text-gray-400">{SPECS[key]}</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-400">
+                          {SPECS[key]}
+                        </p>
                         <p className="text-lg font-semibold dark:text-gray-100">
                           {value || "—"}
                         </p>
@@ -251,7 +253,7 @@ export default function ProductInfo({ staff = false }) {
         load={unitLoading}
       />
 
-      {modals?.previewModal && <ImageModal />}
+      <ImageModal />
     </section>
   );
 }

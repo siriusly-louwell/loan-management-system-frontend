@@ -21,6 +21,7 @@ import Dialog from "../components/modals/Dialog";
 import UnitRecommendation from "../components/UnitRecommendation";
 import LoanDetails from "../components/LoanDetails";
 import TextDialog from "../components/modals/TextDialog";
+import ApproveLoan from "../components/ApproveLoan";
 
 export default function LoanInfo() {
   const dispatch = useDispatch();
@@ -112,6 +113,7 @@ export default function LoanInfo() {
       <Eligibility />
       <DeclineApplicant />
       <AssignCI />
+      <ApproveLoan />
 
       <Dialog text={approval?.label} modalName="approvalApp">
         <section className="flex space-x-4 items-center justify-center">

@@ -37,8 +37,6 @@ export default function ApproveLoan() {
     });
   }
 
-  console.log(applicant);
-
   async function handleSubmit(event) {
     event.preventDefault();
     dispatch(setLoading({ isActive: true, text: "Saving data..." }));

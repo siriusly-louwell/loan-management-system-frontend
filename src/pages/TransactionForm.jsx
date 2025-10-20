@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import SmallLabel from "../components/texts/SmallLabel";
 import SmallSpin from "../components/loading components/SmallSpin";

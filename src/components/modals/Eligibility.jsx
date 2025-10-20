@@ -50,7 +50,7 @@ export default function Eligibility() {
   return (
     <PopAnimate
       modalName={modals.eligibility}
-      classStyle="w-full max-w-5xl mt-20 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-xl">
+      classStyle="w-full max-w-5xl mt-20 bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Loan Eligibility Assessment

@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function CustomBadge({ icon, text, color }) {
-  const newText = text == "new" ? "2" : "2.5";
+  const newText = text === "new" ? "2" : "2.5";
 
   return (
     <div

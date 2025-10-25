@@ -6,8 +6,6 @@ export class Payment {
     application,
     amount_paid,
     cert_num,
-    prev_balance,
-    curr_balance,
     status,
     created_at,
   }) {
@@ -16,22 +14,12 @@ export class Payment {
     this.application = application;
     this.amount_paid = amount_paid;
     this.cert_num = cert_num;
-    this.prev_balance = prev_balance;
-    this.curr_balance = curr_balance;
     this.status = status;
     this.created_at = created_at;
   }
 
   get amount() {
     return `₱${parseFloat(this.amount_paid).toLocaleString()}`;
-  }
-
-  get prevBalance() {
-    return `₱${parseFloat(this.prev_balance).toLocaleString()}`;
-  }
-
-  get currBalance() {
-    return `₱${parseFloat(this.curr_balance).toLocaleString()}`;
   }
 
   get date() {

@@ -177,7 +177,7 @@ export default function Cashier() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Previous Balance
+                    Amount Due
                   </dt>
                   <dd className="text-base font-medium text-red-500">
                     {emptyObj ? "- - -" : initialBalance}

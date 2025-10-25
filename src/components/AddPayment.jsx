@@ -28,7 +28,6 @@ export default function AddPayment() {
   const [payment, setPayment] = useState({
     application_form_id: id,
     issued_at: "Rhean Motors Center",
-    prev_balance: 10000,
     status: "on_time",
   });
 

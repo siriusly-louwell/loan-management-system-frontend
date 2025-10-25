@@ -64,7 +64,7 @@ export default function Register({ setUser }) {
         ).unwrap();
         setTimeout(() => {
           dispatch(setLoading({ isActive: false }));
-          navigate("/customer");
+          navigate("/customer/app");
         }, 2000);
       } else dispatch(setLoading({ isActive: false }));
     } catch (error) {

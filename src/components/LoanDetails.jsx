@@ -166,7 +166,7 @@ export default function LoanDetails({ setApproval }) {
               <TrackList
                 label="Initial Payment"
                 sublabel="The loan application has been successful"
-                status={loan.trackStatus("payment")}
+                status={loan.trackStatus("incomplete")}
               />
               <TrackList
                 label="Paid!"

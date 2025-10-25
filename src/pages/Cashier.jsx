@@ -14,22 +14,28 @@ import useDebounce from "../hooks/useDebounce";
 import AccDetailSkeleton from "../components/loading components/AccDetailSkeleton";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import { LoanEntity } from "../services/entities/Loan";
+import { fetchPayment } from "../services/redux/slices/paymentSlice";
+import { PaymentEntity } from "../services/entities/Payment";
 
 export default function Cashier() {
   const [id, setId] = useState({ search: "" });
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const { loan, loanLoading } = useSelector((state) => state.application);
-  const { downpayment, initialBalance, dateIssued, unitImage } =
-    useSelector(LoanEntity);
+  const { initialBalance, unitImage, emi } = useSelector(LoanEntity);
+  const payment = useSelector(PaymentEntity);
   const search = useDebounce(id.search, 500);
   const emptySearch = search !== "";
   const emptyObj = Object.keys(loan).length === 0;
 
   useEffect(() => {
+    if (loan.id)
+      dispatch(
+        fetchPayment({ id: loan.id, by: "application_form_id", isLatest: true })
+      );
     if (id.search !== "")
       dispatch(fetchLoan({ id: search, by: "record_id", stff: "record_id" }));
-  }, [dispatch, search]);
+  }, [dispatch, search, loan.id]);
 
   return (
     <section className="bg-gray-100 py-8 antialiased dark:bg-gray-800 md:py-16">
@@ -143,8 +149,9 @@ export default function Cashier() {
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                     Status
                   </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : "On time"}
+                  <dd
+                    className={`text-base font-medium text-${payment.payStatus[1]}-500`}>
+                    {emptyObj ? "- - -" : payment.payStatus[0]}
                   </dd>
                 </dl>
 
@@ -153,7 +160,7 @@ export default function Cashier() {
                     Res. Certificate number
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : "#4859JS33"}
+                    {emptyObj ? "- - -" : payment.cert_num}
                   </dd>
                 </dl>
 
@@ -162,7 +169,7 @@ export default function Cashier() {
                     Issued on
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : dateIssued}
+                    {emptyObj ? "- - -" : payment.date}
                   </dd>
                 </dl>
 
@@ -177,24 +184,6 @@ export default function Cashier() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Amount Due
-                  </dt>
-                  <dd className="text-base font-medium text-red-500">
-                    {emptyObj ? "- - -" : initialBalance}
-                  </dd>
-                </dl>
-
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Amount Paid
-                  </dt>
-                  <dd className="text-base font-medium text-green-500">
-                    {emptyObj ? "- - -" : downpayment}
-                  </dd>
-                </dl>
-
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                     Payment Method
                   </dt>
                   <dd className="text-base font-medium text-green-500">
@@ -203,11 +192,29 @@ export default function Cashier() {
                 </dl>
 
                 <dl className="flex items-center justify-between gap-4 py-3">
+                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                    Amount Due
+                  </dt>
+                  <dd className="text-base font-medium text-gray-900 dark:text-white">
+                    {emptyObj ? "- - -" : `₱${emi}`}
+                  </dd>
+                </dl>
+
+                <dl className="flex items-center justify-between gap-4 py-3">
+                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                    Loan Cost
+                  </dt>
+                  <dd className="text-base font-medium text-red-500">
+                    {emptyObj ? "- - -" : initialBalance}
+                  </dd>
+                </dl>
+
+                <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-bold text-gray-900 dark:text-white">
-                    Current Balance
+                    Amount Paid
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : initialBalance}
+                    {emptyObj ? "- - -" : payment.amount}
                   </dd>
                 </dl>
 

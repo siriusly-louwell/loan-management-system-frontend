@@ -21,7 +21,7 @@ import { LoanEntity } from "../services/entities/Loan";
 export default function AddPayment() {
   const dispatch = useDispatch();
   const { id, record_id } = useSelector(ApplicationEntity);
-  const { initialBalance } = useSelector(LoanEntity);
+  const { emi } = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
   const now = new Date();
 
@@ -146,10 +146,10 @@ export default function AddPayment() {
 
           <dl className="flex items-center justify-between gap-4 py-3">
             <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-              Previous Balance
+              Amount Due
             </dt>
             <dd className="text-base font-medium text-red-500">
-              {initialBalance}
+              ₱{emi}
             </dd>
           </dl>
 

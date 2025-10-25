@@ -22,6 +22,10 @@ export class Payment {
     return `₱${parseFloat(this.amount_paid).toLocaleString()}`;
   }
 
+  get payStatus() {
+    return this.status === "on_time" ? ["On Time", "green"] : ["Late", "red"];
+  }
+
   get date() {
     const date = new Date(this.created_at);
 

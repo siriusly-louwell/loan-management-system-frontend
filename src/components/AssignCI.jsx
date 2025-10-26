@@ -104,29 +104,15 @@ export default function AssignCI() {
 
             {applicant.ci_id && applicant.ci_id !== "__EMPTY__" && (
               <div className="flex flex-col gap-y-2 py-3">
-                <span className="text-md font-medium text-gray-900 dark:text-white">
-                  Set Meeting schedule:
-                </span>
-                <section className="flex ml-10 gap-x-5">
-                  <FormInput
-                    label="From"
-                    type="date"
-                    name="from_sched"
-                    min={new Date().toISOString().split("T")[0]}
-                    value={applicant.from_sched}
-                    onchange={handleChange}
-                    require={true}
-                  />
-                  <FormInput
-                    label="To"
-                    type="date"
-                    name="to_sched"
-                    min={applicant.from_sched}
-                    value={applicant.to_sched}
-                    onchange={handleChange}
-                    require={true}
-                  />
-                </section>
+                <FormInput
+                  label="Set Meeting Schedule"
+                  type="date"
+                  name="schedule"
+                  min={new Date().toISOString().split("T")[0]}
+                  value={applicant.schedule}
+                  onchange={handleChange}
+                  require={true}
+                />
               </div>
             )}
 

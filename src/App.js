@@ -60,8 +60,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Alert />
       <GlobalLoading />
+      <Alert />
       <Routes>
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />

@@ -1,4 +1,4 @@
-  import React, { useEffect } from "react";
+import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, CheckCircle, Info, XCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,7 +46,7 @@ export default function Alert() {
   }, [alert, dispatch]);
 
   return (
-    <div className="fixed z-50 flex justify-center w-screen top-5">
+    <div className="fixed z-50 flex justify-center w-screen top-5 pointer-events-none">
       <AnimatePresence>
         {alert.toggle && (
           <motion.div
@@ -54,7 +54,7 @@ export default function Alert() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: alert.duration }}
-            className={`flex items-center gap-3 p-3 rounded-2xl border ${bgColor} shadow-md max-w-md`}>
+            className={`flex items-center gap-3 p-3 rounded-2xl border ${bgColor} shadow-md max-w-md pointer-events-auto`}>
             {icon}
             <span className="font-medium">{alert.message}</span>
           </motion.div>

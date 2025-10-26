@@ -56,6 +56,7 @@ const creditSlic = createSlice({
     creditsLoading: false,
     creditResult: {},
     credit: {},
+    creditScore: {},
     credits: [],
     creditID: null,
     creditError: null,
@@ -104,6 +105,20 @@ const creditSlic = createSlice({
         state.credits = action.payload;
       })
       .addCase(fetchCredits.rejected, (state, action) => {
+        state.creditLoading = false;
+        state.creditError = action.payload;
+      })
+
+      // ? Fetch credit score
+      .addCase(fetchScore.pending, (state) => {
+        state.creditLoading = true;
+        state.creditError = null;
+      })
+      .addCase(fetchScore.fulfilled, (state, action) => {
+        state.creditLoading = false;
+        state.creditScore = action.payload;
+      })
+      .addCase(fetchScore.rejected, (state, action) => {
         state.creditLoading = false;
         state.creditError = action.payload;
       })

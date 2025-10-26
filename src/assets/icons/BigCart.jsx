@@ -3,7 +3,7 @@ import React from "react";
 export default function BigCart() {
   return (
     <svg
-      className="mb-2 h-8 w-8 text-gray-400 dark:text-gray-500"
+      className="mb-2 h-8 w-8 text-gray-400 dark:text-gray-400"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"

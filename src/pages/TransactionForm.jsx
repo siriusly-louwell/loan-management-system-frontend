@@ -40,6 +40,7 @@ export default function TransactionForm() {
         color: unit.colors !== undefined ? unit.colors[0].color : "",
         downpayment: unit.downpayment,
         quantity: 1,
+        price: unit.price
       })
     );
   }, [transLoad, dispatch]);

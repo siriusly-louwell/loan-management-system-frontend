@@ -184,7 +184,9 @@ export default function CreateProduct() {
                     require={true}
                     onchange={dispatchInput}>
                     {brands.map((brand, i) => (
-                      <option key={i}>{brand}</option>
+                      <option key={i} value={brand}>
+                        {brand}
+                      </option>
                     ))}
                   </FormSelect>
                   <FormInput

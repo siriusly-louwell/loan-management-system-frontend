@@ -10,6 +10,7 @@ export default function ProfileCard({
   percent,
   loading,
 }) {
+  const isCredit = label === "Credit Score" && "bg-blue-500 bg-opacity-20 dark:bg-blue-600/20 border border-blue-500 dark:border-blue-600";
   const color =
     type === "increase"
       ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
@@ -24,7 +25,7 @@ export default function ProfileCard({
     );
 
   return (
-    <div className="rounded-lg hover:bg-gray-100 aactive:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-gray-700 px-4 py-2 w-40 cursor-pointer">
+    <div className={`rounded-lg hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-gray-700 px-4 py-2 w-40 cursor-pointer ${isCredit}`}>
       {icon}
       <h3 className="mb-2 text-gray-500 dark:text-gray-400">{label}</h3>
       <span className="flex items-center text-2xl font-bold text-gray-900 dark:text-white">

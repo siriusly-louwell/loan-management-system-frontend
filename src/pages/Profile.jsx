@@ -3,9 +3,6 @@ import PfpLabel from "../components/PfpLabel";
 import CustomBttn from "../components/buttons/CustomBttn";
 import Edit from "../assets/icons/Edit";
 import LogRow from "../components/tables/LogRow";
-import Preorder from "../components/badges/Preorder";
-import Cancelled from "../components/badges/Cancelled";
-import Confirmed from "../components/badges/Confirmed";
 import ProfileCard from "../components/cards/ProfileCard";
 import BigCart from "../assets/icons/BigCart";
 import BigStar from "../assets/icons/BigStar";
@@ -14,16 +11,22 @@ import ImageSkeleton from "../components/loading components/ImageSkeleton";
 import { ApplicationEntity } from "../services/entities/Application";
 import { fetchScore } from "../services/redux/slices/creditSlice";
 import { Ban, Clock } from "lucide-react";
+import CustomBadge from "./../components/badges/CustomBadge";
 import {
+  fetchApplicants,
   fetchLoan,
   getLoanId,
+  saveLoan,
 } from "../services/redux/slices/applicationSlice";
+import InvoiceRowSkeleton from "../components/loading components/InvoiceRowSkeleton";
 
 export default function Profile() {
   const loan = useSelector(ApplicationEntity);
   const dispatch = useDispatch();
   const { creditScore, creditLoading } = useSelector((state) => state.credit);
-  const { loanID, loanLoading } = useSelector((state) => state.application);
+  const { loanID, appsLoading, loanLoading, applications } = useSelector(
+    (state) => state.application
+  );
 
   useEffect(() => {
     dispatch(getLoanId());
@@ -31,7 +34,10 @@ export default function Profile() {
 
   useEffect(() => {
     if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
-    if (loan.user_id) dispatch(fetchScore({ id: loan.user_id }));
+    if (loan.user_id) {
+      dispatch(fetchScore({ id: loan.user_id }));
+      dispatch(fetchApplicants({ perPage: 5, isCustomer: loan.user_id }));
+    }
   }, [loan.user_id, loanID, dispatch]);
 
   return (
@@ -42,7 +48,7 @@ export default function Profile() {
         </h2>
         <div className="grid grid-cols-2 gap-x-6 border-b border-t border-gray-200 py-2 dark:border-gray-700 md:py-2 lg:grid-cols-4 xl:gap-16">
           <ProfileCard
-            label="Credit score"
+            label="Credit Score"
             amount={creditScore.score?.value}
             icon={<BigStar />}
             type={creditScore.score?.type}
@@ -50,7 +56,7 @@ export default function Profile() {
             loading={creditLoading}
           />
           <ProfileCard
-            label="Loans made"
+            label="Loans Made"
             amount={creditScore.total_loans?.value}
             icon={<BigCart />}
             type={creditScore.total_loans?.type}
@@ -156,36 +162,28 @@ export default function Profile() {
           <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
             Recent loans
           </h3>
-          <LogRow
-            id="#FWB12546777"
-            date="10.11.2024"
-            badge={<Preorder />}
-            name="John Doe"
-          />
-          <LogRow
-            id="#FWB12546777"
-            date="10.11.2024"
-            badge={<Confirmed />}
-            name="John Doe"
-          />
-          <LogRow
-            id="#FWB12546777"
-            date="10.11.2024"
-            badge={<Cancelled />}
-            name="John Doe"
-          />
-          <LogRow
-            id="#FWB12546777"
-            date="10.11.2024"
-            badge={<Confirmed />}
-            name="John Doe"
-          />
-          <LogRow
-            id="#FWB12546777"
-            date="10.11.2024"
-            badge={<Preorder />}
-            name="John Doe"
-          />
+          {appsLoading || loanLoading ? (
+            <InvoiceRowSkeleton num={5} />
+          ) : (
+            applications.map((loan) => (
+              <LogRow
+                key={loan.id}
+                click={() => dispatch(saveLoan(loan.id))}
+                id={loan.record_id}
+                name={loan.fullName}
+                date={loan.applied_at}
+                badge={
+                  <CustomBadge
+                    text={loan.status.text}
+                    color={loan.status.color}
+                  />
+                }
+                path="/admin/loan"
+                bttnText="View Details"
+                state={loan.id}
+              />
+            ))
+          )}
         </div>
       </div>
     </section>

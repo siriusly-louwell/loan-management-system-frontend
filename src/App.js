@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUserWithToken } from "./services/redux/slices/authSlice";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -48,12 +48,10 @@ import UnitList from "./pages/UnitList";
 import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
 import Analytics from "./pages/Analytics";
-import { UserEntity } from "./services/entities/User";
 import CreditHistory from "./components/modals/CreditHistory";
 
 function App() {
   const dispatch = useDispatch();
-  const { role } = useSelector(UserEntity);
 
   useEffect(() => {
     dispatch(loginUserWithToken());
@@ -68,8 +66,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
-        <Route path={`/${role}`} element={<PageNotFound />} />
-        <Route path="*" element={<PageNotFound />} />
+        {["admin", "staff", "ci", "*"].map((path) => (
+          <Route path={path} element={<PageNotFound />} />
+        ))}
 
         {/* Guest Routes */}
         <Route path="/" element={<PageLayout links={<GuestNav />} />}>
@@ -396,7 +395,11 @@ function App() {
             path="loans"
             element={
               <ProtectedRoute type="admin">
-                <InvoiceList headText="Loan Applications" path="/admin/loan" type="all" />
+                <InvoiceList
+                  headText="Loan Applications"
+                  path="/admin/loan"
+                  type="all"
+                />
               </ProtectedRoute>
             }
           />
@@ -404,7 +407,11 @@ function App() {
             path="customer-loans"
             element={
               <ProtectedRoute type="admin">
-                <InvoiceList headText="Customer Loans" path="/admin/loan" type="customer" />
+                <InvoiceList
+                  headText="Customer Loans"
+                  path="/admin/loan"
+                  type="customer"
+                />
               </ProtectedRoute>
             }
           />

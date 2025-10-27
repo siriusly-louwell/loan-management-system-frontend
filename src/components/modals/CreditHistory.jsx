@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
 import { fetchCredits } from "../../services/redux/slices/creditSlice";
 import CreditsRow from "../tables/CreditsRow";
 import {
@@ -8,6 +7,8 @@ import {
   getLoanId,
 } from "../../services/redux/slices/applicationSlice";
 import { ApplicationEntity } from "../../services/entities/Application";
+import EmptySearch from "../empty states/EmptySearch";
+import CreditHistorySkeleton from './../loading components/CreditHistorySkeleton';
 
 export default function CreditHistory() {
   const dispatch = useDispatch();
@@ -32,7 +33,12 @@ export default function CreditHistory() {
         </h2>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {creditsLoading ? (
-            <PaymentRowSkeleton num={5} />
+            <CreditHistorySkeleton num={5} />
+          ) : credits.length === 0 ? (
+            <EmptySearch
+              label="No such data has been found"
+              context="It's quite empty in here"
+            />
           ) : (
             credits.map((credit, i) => (
               <CreditsRow

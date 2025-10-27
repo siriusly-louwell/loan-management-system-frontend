@@ -9,6 +9,7 @@ import { PaymentEntities } from "../../services/entities/Payment";
 import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
 import { saveLoan } from "../../services/redux/slices/applicationSlice";
 import { ApplicationEntity } from "../../services/entities/Application";
+import EmptySearch from "../empty states/EmptySearch";
 
 export default function AppNotifications({ isCustomer = false }) {
   const dispatch = useDispatch();
@@ -29,6 +30,11 @@ export default function AppNotifications({ isCustomer = false }) {
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {paymentsLoading ? (
             <PaymentRowSkeleton num={5} />
+          ) : payments.length === 0 ? (
+            <EmptySearch
+              label="No payments found"
+              context="It's quite empty in here"
+            />
           ) : (
             payments.map((pay, i) => (
               <InvoiceRow

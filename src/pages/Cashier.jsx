@@ -196,7 +196,7 @@ export default function Cashier() {
                     Amount Due
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : `₱${emi}`}
+                    {emptyObj ? "- - -" : `₱${parseFloat(emi).toLocaleString()}`}
                   </dd>
                 </dl>
 

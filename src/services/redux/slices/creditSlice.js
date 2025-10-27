@@ -49,15 +49,23 @@ export const creditAnalysis = createAsyncThunk(
   }
 );
 
-const creditSlic = createSlice({
+const creditSlice = createSlice({
   name: "credit",
   initialState: {
     creditLoading: false,
     creditsLoading: false,
     creditResult: {},
     credit: {},
-    creditScore: {},
     credits: [],
+    creditScore: {},
+    pagination: {
+      from: 1,
+      to: 1,
+      currentPage: 1,
+      lastPage: 1,
+      total: 0,
+      nextPage: 2,
+    },
     creditID: null,
     creditError: null,
   },
@@ -97,15 +105,28 @@ const creditSlic = createSlice({
     builder
       // ? Fetch all history
       .addCase(fetchCredits.pending, (state) => {
-        state.creditLoading = true;
+        state.creditsLoading = true;
         state.creditError = null;
       })
       .addCase(fetchCredits.fulfilled, (state, action) => {
-        state.creditLoading = false;
-        state.credits = action.payload;
+        state.creditsLoading = false;
+        state.credits = action.payload.data;
+
+        state.pagination = {
+          from: action.payload.from,
+          to: action.payload.to,
+          currentPage: action.payload.current_page,
+          lastPage: action.payload.last_page,
+          total: action.payload.total,
+        };
+
+        state.credits =
+          action.meta.arg.mode === "append"
+            ? [...state.credits, ...action.payload.data]
+            : action.payload.data;
       })
       .addCase(fetchCredits.rejected, (state, action) => {
-        state.creditLoading = false;
+        state.creditsLoading = false;
         state.creditError = action.payload;
       })
 
@@ -167,5 +188,5 @@ const creditSlic = createSlice({
 });
 
 export const { saveCredit, clearCredit, getCreditId, creditDashFilter } =
-  creditSlic.actions;
-export default creditSlic.reducer;
+  creditSlice.actions;
+export default creditSlice.reducer;

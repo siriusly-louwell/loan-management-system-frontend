@@ -19,14 +19,19 @@ export class Payment {
   }
 
   get amount() {
-    return `₱${parseFloat(this.amount_paid).toLocaleString()}`;
+    return this.amount_paid ? `₱${parseFloat(this.amount_paid).toLocaleString()}` : "N/A";
   }
 
   get payStatus() {
-    return this.status === "on_time" ? ["On Time", "green"] : ["Late", "red"];
+    return this.status === "on_time"
+      ? ["On Time", "green"]
+      : this.status === "late"
+      ? ["Late", "red"]
+      : ["N/A", "gray"];
   }
 
   get date() {
+    if(!this.created_at) return "N/A";
     const date = new Date(this.created_at);
 
     return (

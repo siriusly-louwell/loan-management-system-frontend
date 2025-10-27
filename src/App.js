@@ -49,6 +49,7 @@ import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
 import Analytics from "./pages/Analytics";
 import { UserEntity } from "./services/entities/User";
+import CreditHistory from "./components/modals/CreditHistory";
 
 function App() {
   const dispatch = useDispatch();
@@ -324,7 +325,6 @@ function App() {
             path="invoice"
             element={
               <ProtectedRoute type="staff">
-                {/* <Invoice /> */}
                 <InvoicePage />
               </ProtectedRoute>
             }
@@ -396,7 +396,15 @@ function App() {
             path="loans"
             element={
               <ProtectedRoute type="admin">
-                <InvoiceList headText="Loan Applications" path="/admin/loan" />
+                <InvoiceList headText="Loan Applications" path="/admin/loan" type="all" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="customer-loans"
+            element={
+              <ProtectedRoute type="admin">
+                <InvoiceList headText="Customer Loans" path="/admin/loan" type="customer" />
               </ProtectedRoute>
             }
           />
@@ -405,6 +413,14 @@ function App() {
             element={
               <ProtectedRoute type="admin">
                 <InvoicePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="credits"
+            element={
+              <ProtectedRoute type="admin">
+                <CreditHistory />
               </ProtectedRoute>
             }
           />
@@ -434,6 +450,14 @@ function App() {
           />
           <Route
             path="history"
+            element={
+              <ProtectedRoute type="admin">
+                <AppNotifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="customer-payments"
             element={
               <ProtectedRoute type="admin">
                 <AppNotifications />

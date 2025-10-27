@@ -33,7 +33,7 @@ export default function AccComakers() {
     dispatch(
       fetchCustomers({
         page: navPage.page,
-        statuses: ["approved"],
+        statuses: ["approved", "paid", "incomplete"],
         type: navPage.type,
         search: search,
         isCustomer: false,

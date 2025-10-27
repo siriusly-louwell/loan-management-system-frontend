@@ -101,6 +101,8 @@ export class Loan {
   }
 
   get emi() {
+    if (!this.transactions) return 0;
+
     return this.transactions.reduce((sum, item) => {
       const tenure = item.tenure * 12;
       const loanAmount =

@@ -59,7 +59,6 @@ export const STATUS_TEXT = {
   },
 };
 
-// Add these groupings for easier status checks
 export const STATUS_GROUPS = {
   acceptance: {
     positive: "accepted",

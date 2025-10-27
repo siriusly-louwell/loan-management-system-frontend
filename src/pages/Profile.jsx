@@ -54,6 +54,7 @@ export default function Profile() {
             type={creditScore.score?.type}
             percent={creditScore.score?.difference}
             loading={creditLoading}
+            path="/admin/credits"
           />
           <ProfileCard
             label="Loans Made"
@@ -62,6 +63,7 @@ export default function Profile() {
             type={creditScore.total_loans?.type}
             percent={creditScore.total_loans?.difference}
             loading={creditLoading}
+            path="/admin/customer-loans"
           />
           <ProfileCard
             label="Defaulted Loans"
@@ -70,6 +72,7 @@ export default function Profile() {
             type={creditScore.defaulted_loans?.type}
             percent={creditScore.defaulted_loans?.difference}
             loading={creditLoading}
+            path="/admin/customer-loans"
           />
           <ProfileCard
             label="Late Payments"
@@ -78,6 +81,7 @@ export default function Profile() {
             type={creditScore.late_payments?.type}
             percent={creditScore.late_payments?.difference}
             loading={creditLoading}
+            path="/admin/customer-payments"
           />
         </div>
         <div className="py-4 md:py-8">

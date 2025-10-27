@@ -16,14 +16,14 @@ import InvoiceRowSkeleton from "../../components/loading components/InvoiceRowSk
 import { UserEntity } from "../../services/entities/User";
 import ApplicationFilter from "../../components/filters/ApplicationFilter";
 
-export default function InvoiceTable({
+export default function CustomerLoansTable({
   headText,
   path,
-  isDashboard = false,
+  id,
   bttnText = "View Details",
 }) {
   const dispatch = useDispatch();
-  const { role, isAdmin, id } = useSelector(UserEntity);
+  const { role } = useSelector(UserEntity);
   const { applications, appsLoading, pagination } = useSelector(
     (state) => state.application
   );
@@ -31,12 +31,6 @@ export default function InvoiceTable({
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
   const max = useDebounce(navPage.max, 500);
-  const statuses =
-    (isAdmin && !isDashboard) || (role === "ci" && bttnText !== "Evaluate")
-      ? ["accepted", "evaluated", "approved", "declined", "pending", "incomplete", "paid", "canceled"]
-      : role === "ci" && bttnText === "Evaluate"
-      ? ["accepted"]
-      : [];
 
   useEffect(() => {
     dispatch(setLoanLoad(true));
@@ -48,9 +42,9 @@ export default function InvoiceTable({
         page: navPage.page,
         type: navPage.type,
         perPage: 6,
-        statuses: statuses,
+        statuses: [],
         search: search,
-        isCustomer: role === "customer" && id,
+        isCustomer: id,
         min: min,
         max: max,
       })

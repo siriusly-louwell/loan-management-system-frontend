@@ -8,14 +8,16 @@ import InvoiceRow from "../tables/InvoiceRow";
 import { PaymentEntities } from "../../services/entities/Payment";
 import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
 import { saveLoan } from "../../services/redux/slices/applicationSlice";
+import { ApplicationEntity } from "../../services/entities/Application";
 
-export default function AppNotifications() {
+export default function AppNotifications({ isCustomer = false }) {
   const dispatch = useDispatch();
+  const { user_id } = useSelector(ApplicationEntity);
   const payments = useSelector(PaymentEntities);
   const { paymentsLoading } = useSelector((state) => state.payment);
 
   useEffect(() => {
-    dispatch(fetchPayments());
+    dispatch(fetchPayments({ isCustomer: isCustomer && user_id }));
   }, []);
 
   return (
@@ -35,6 +37,7 @@ export default function AppNotifications() {
                   date: pay.date,
                   id: pay.application.record_id,
                   amount: pay.amount,
+                  status: pay.payStatus,
                   cert_num: pay.cert_num,
                 }}
                 click={() => {

@@ -235,8 +235,6 @@ const applicationSlice = createSlice({
             ? [...state.customers, ...action.payload.data]
             : action.payload.data;
 
-        console.log(state.customers);
-
         const filtered = state.customers
           .filter((f) => f.user && f.user.id)
           .map((app) => ({

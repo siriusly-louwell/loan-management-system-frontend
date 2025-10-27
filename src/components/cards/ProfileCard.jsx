@@ -1,6 +1,7 @@
 import React from "react";
 import SmallUpArrow from "../../assets/icons/SmallUpArrow";
 import SmallDownArrow from "../../assets/icons/SmallDownArrow";
+import { Link } from "react-router-dom";
 
 export default function ProfileCard({
   icon,
@@ -9,6 +10,7 @@ export default function ProfileCard({
   amount,
   percent,
   loading,
+  path
 }) {
   const isCredit = label === "Credit Score" && "bg-blue-500 bg-opacity-20 dark:bg-blue-600/20 border border-blue-500 dark:border-blue-600";
   const color =
@@ -25,7 +27,7 @@ export default function ProfileCard({
     );
 
   return (
-    <div className={`rounded-lg hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-gray-700 px-4 py-2 w-40 cursor-pointer ${isCredit}`}>
+    <Link to={path} className={`rounded-lg hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-gray-700 px-4 py-2 w-40 cursor-pointer ${isCredit}`}>
       {icon}
       <h3 className="mb-2 text-gray-500 dark:text-gray-400">{label}</h3>
       <span className="flex items-center text-2xl font-bold text-gray-900 dark:text-white">
@@ -61,6 +63,6 @@ export default function ProfileCard({
         </svg>
         vs last month
       </p>
-    </div>
+    </Link>
   );
 }

@@ -3,14 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
 import { fetchCredits } from "../../services/redux/slices/creditSlice";
 import CreditsRow from "../tables/CreditsRow";
+import {
+  fetchLoan,
+  getLoanId,
+} from "../../services/redux/slices/applicationSlice";
+import { ApplicationEntity } from "../../services/entities/Application";
 
 export default function CreditHistory() {
   const dispatch = useDispatch();
+  const { user_id } = useSelector(ApplicationEntity);
+  const { loanID } = useSelector((state) => state.application);
   const { credits, creditsLoading } = useSelector((state) => state.credit);
 
   useEffect(() => {
-    dispatch(fetchCredits({ mode: "page" }));
+    dispatch(getLoanId());
   }, []);
+
+  useEffect(() => {
+    if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
+    if (user_id) dispatch(fetchCredits({ mode: "page", customer: user_id }));
+  }, [loanID, dispatch, user_id]);
 
   return (
     <section className="w-full h-full py-10">

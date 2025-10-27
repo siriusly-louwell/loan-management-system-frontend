@@ -17,8 +17,8 @@ export default function AppNotifications({ isCustomer = false }) {
   const { paymentsLoading } = useSelector((state) => state.payment);
 
   useEffect(() => {
-    dispatch(fetchPayments({ isCustomer: isCustomer && user_id }));
-  }, []);
+    dispatch(fetchPayments({ customer: isCustomer && user_id }));
+  }, [isCustomer, user_id, dispatch]);
 
   return (
     <section className="w-full h-full py-10">

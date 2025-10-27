@@ -26,9 +26,9 @@ export const fetchPayment = createAsyncThunk(
 
 export const fetchPayments = createAsyncThunk(
   "payment/fetchPayments",
-  async (payment, thunkAPI) => {
+  async (page, thunkAPI) => {
     try {
-      return await paymentRepository.fetchAll();
+      return await paymentRepository.fetchPage(page);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -112,7 +112,7 @@ const paymentSlice = createSlice({
       })
       .addCase(fetchPayments.fulfilled, (state, action) => {
         state.paymentLoading = false;
-        state.payments = action.payload;
+        state.payments = action.payload.data;
       })
       .addCase(fetchPayments.rejected, (state, action) => {
         state.paymentLoading = false;

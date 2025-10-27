@@ -460,7 +460,7 @@ function App() {
             path="customer-payments"
             element={
               <ProtectedRoute type="admin">
-                <AppNotifications />
+                <AppNotifications isCustomer={true} />
               </ProtectedRoute>
             }
           />

@@ -23,6 +23,8 @@ import {
   setStep,
   toggleModal,
   resetState,
+  savePageNum,
+  getPageNum,
 } from "../services/redux/slices/uiSlice";
 import Dialog from "../components/modals/Dialog";
 import Check from "../assets/icons/Check";
@@ -45,6 +47,8 @@ export default function ApplicationForm() {
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
   const [modal, setModal] = useState({});
+
+  console.log(pageNum);
 
   useEffect(() => {
     if (pageType === "next" && pageComplete) dispatch(nextPage());
@@ -190,7 +194,10 @@ export default function ApplicationForm() {
 
   useEffect(() => {
     dispatch(setDisable(false));
-    if (location.pathname !== "/customer/apply") dispatch(getDraft());
+    if (location.pathname !== "/customer/apply") {
+      dispatch(getDraft());
+      dispatch(getPageNum());
+    }
   }, []);
 
   useEffect(() => {

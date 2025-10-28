@@ -66,7 +66,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
-        {["admin", "staff", "ci", "*"].map((path) => (
+        {["admin", "staff", "ci", "customer", "*"].map((path) => (
           <Route path={path} element={<PageNotFound />} />
         ))}
 

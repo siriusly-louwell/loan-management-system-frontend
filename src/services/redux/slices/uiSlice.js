@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import formRoutes, { FORM_ROUTES } from "../../../constants/formRoutes";
+import { formRepository } from "../../repositories/formRepository";
 
 const initialState = {
   alert: {
@@ -110,6 +111,7 @@ const uiSlice = createSlice({
       if (nextIndex < routes.length) {
         state.pageRoute = routes[nextIndex];
         state.pageNum = nextIndex;
+        formRepository.savePage(state.pageNum);
       }
     },
 
@@ -132,6 +134,20 @@ const uiSlice = createSlice({
     goToStep: (state, action) => {
       state.pageRoute = FORM_ROUTES[action.payload];
       state.pageNum = action.payload;
+      formRepository.savePage(state.pageNum);
+    },
+
+    savePageNum: (state, action) => {
+      formRepository.savePage(action.payload);
+    },
+
+    getPageNum: (state) => {
+      state.pageNum = formRepository.getPage();
+    },
+
+    clearPageNum: (state) => {
+      state.pageNum = 0;
+      formRepository.clearPage();
     },
   },
 });
@@ -152,5 +168,8 @@ export const {
   prevPage,
   goToStep,
   setStep,
+  savePageNum,
+  getPageNum,
+  clearPageNum,
 } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -22,4 +22,16 @@ export const formRepository = {
   clearForm() {
     localStorage.removeItem("form");
   },
+
+  savePage(page) {
+    localStorage.setItem("page-num", JSON.stringify(page));
+  },
+
+  getPage() {
+    return JSON.parse(localStorage.getItem("page-num")) || {};
+  },
+
+  clearPage() {
+    localStorage.removeItem("page-num");
+  },
 };

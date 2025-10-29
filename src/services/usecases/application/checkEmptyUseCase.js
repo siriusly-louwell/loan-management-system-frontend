@@ -6,8 +6,6 @@ export function checkEmptyUseCase(pageNum, form, type = "applicant") {
   let hasEmpty = false;
   const updatedForm = { ...form };
 
-  console.log(fields, pageNum);
-
   if (fields.length > 0)
     fields.forEach((field) => {
       const value = updatedForm[field];

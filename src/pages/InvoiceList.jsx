@@ -6,7 +6,7 @@ import { ApplicationEntity } from "../services/entities/Application";
 export default function InvoiceList({
   headText,
   path,
-  type,
+  type = "all",
   bttnText = "View Details",
 }) {
   const { user_id } = useSelector(ApplicationEntity);

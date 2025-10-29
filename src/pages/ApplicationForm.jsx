@@ -5,9 +5,15 @@ import Button from "../components/buttons/Button";
 import Stepper from "../components/Stepper";
 import Step from "../components/Step";
 import { useDispatch, useSelector } from "react-redux";
+import Dialog from "../components/modals/Dialog";
+import Check from "../assets/icons/Check";
+import SaveButton from "../components/buttons/SaveButton";
+import { UserEntity } from "../services/entities/User";
+import { fetchAddress } from "../services/redux/slices/addressSlice";
 import {
   applyLoan,
   draftForm,
+  fetchUserData,
   formCheck,
   getDraft,
   handleChange,
@@ -23,14 +29,8 @@ import {
   setStep,
   toggleModal,
   resetState,
-  savePageNum,
   getPageNum,
 } from "../services/redux/slices/uiSlice";
-import Dialog from "../components/modals/Dialog";
-import Check from "../assets/icons/Check";
-import SaveButton from "../components/buttons/SaveButton";
-import { UserEntity } from "../services/entities/User";
-import { fetchAddress } from "../services/redux/slices/addressSlice";
 
 export default function ApplicationForm() {
   const navigate = useNavigate();
@@ -43,13 +43,12 @@ export default function ApplicationForm() {
     (state) => state.ui
   );
   const { regions } = useSelector((state) => state.address);
-  const user = useSelector(UserEntity);
+  const { role, id } = useSelector(UserEntity);
   const [files, setFiles] = useState({});
   const [pageType, setPageType] = useState("next");
   const [modal, setModal] = useState({});
 
-  console.log(pageNum);
-
+  // ? Handles navigation
   useEffect(() => {
     if (pageType === "next" && pageComplete) dispatch(nextPage());
     if (pageType === "step" && pageComplete) dispatch(goToStep(stepIndex));
@@ -67,6 +66,7 @@ export default function ApplicationForm() {
     if (pageType === "next" || pageType === "step") navigate(pageRoute);
   }, [pageRoute]);
 
+  // ? Handles PSGC API
   useEffect(() => {
     if (regions.length === 0) dispatch(fetchAddress({ type: "regions" }));
   }, []);
@@ -117,6 +117,7 @@ export default function ApplicationForm() {
     formData.address.sp_city,
   ]);
 
+  // ? Navigation methods
   function handleNext() {
     setPageType("next");
     dispatch(formCheck(pageNum));
@@ -127,6 +128,7 @@ export default function ApplicationForm() {
     dispatch(prevPage());
   }
 
+  // ? Submission
   async function handleSubmit(event) {
     event.preventDefault();
     dispatch(
@@ -169,6 +171,7 @@ export default function ApplicationForm() {
     }
   }
 
+  // ? Handles form data
   function fileChange(event) {
     setFiles({
       ...files,
@@ -186,25 +189,12 @@ export default function ApplicationForm() {
     );
   }
 
+  // ? Step status checker
   function stepCheck(index) {
     // if (incomplete.includes(index)) return "incomplete";
     // else
     return pageNum === index ? "current" : pageNum > index ? "done" : "pend";
   }
-
-  useEffect(() => {
-    dispatch(setDisable(false));
-    if (location.pathname !== "/customer/apply") {
-      dispatch(getDraft());
-      dispatch(getPageNum());
-    }
-  }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(draftForm());
-    }, 3000);
-  }, [formData, dispatch]);
 
   function stepNavCheck(index) {
     setPageType("step");
@@ -212,6 +202,24 @@ export default function ApplicationForm() {
     dispatch(formCheck(pageNum));
   }
 
+  // ? On-load / Refresh initializations
+  useEffect(() => {
+    dispatch(setDisable(false));
+    if (role === "customer") dispatch(fetchUserData(id));
+    if (location.pathname !== "/customer/apply") {
+      dispatch(getDraft());
+      dispatch(getPageNum());
+    }
+  }, []);
+
+  // ? Auto save form
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(draftForm());
+    }, 3000);
+  }, [formData, dispatch]);
+
+  // ? Children outlet
   const outletContext = {
     handleChange,
     dispatchInput,
@@ -301,9 +309,7 @@ export default function ApplicationForm() {
               text="Finish"
               type="button"
               onclick={() => {
-                user?.role === "staff"
-                  ? navigate("/staff/units")
-                  : navigate("/");
+                role === "staff" ? navigate("/staff/units") : navigate("/");
 
                 dispatch(
                   toggleModal({

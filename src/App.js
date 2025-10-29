@@ -398,7 +398,6 @@ function App() {
                 <InvoiceList
                   headText="Loan Applications"
                   path="/admin/loan"
-                  type="all"
                 />
               </ProtectedRoute>
             }

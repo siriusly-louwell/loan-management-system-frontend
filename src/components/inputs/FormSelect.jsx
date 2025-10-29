@@ -24,7 +24,7 @@ export default function FormSelect({
       <select
         id={id}
         name={name}
-        defaultValue={value}
+        value={value}
         onChange={onchange}
         disabled={disable}
         className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${darkRed} dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}>

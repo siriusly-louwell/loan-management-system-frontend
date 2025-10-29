@@ -85,10 +85,10 @@ export default function Login() {
                 </div>
                 <Button text="Login" />
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Is your application accepted?{" "}
+                  Is your application approved?
                   <Link
                     to="/register"
-                    className="font-medium text-rose-500 hover:underline dark:text-primary-500 cursor-pointer">
+                    className="font-medium text-rose-500 hover:underline ml-1 dark:text-primary-500 cursor-pointer">
                     Register here
                   </Link>
                 </p>

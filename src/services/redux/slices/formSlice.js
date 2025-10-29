@@ -3,6 +3,7 @@ import { formRepository } from "../../repositories/formRepository";
 import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase";
 import { applyUseCase } from "../../usecases/application/applyUseCase";
 import AddressAPI from "../../api/AddressAPI";
+import { applyRepository } from "../../repositories/applyRepository";
 
 export const applyLoan = createAsyncThunk(
   "form/applyLoan",
@@ -30,6 +31,17 @@ export const copyAddress = createAsyncThunk(
         city: city.name,
         barangay: barangay.name,
       };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchUserData = createAsyncThunk(
+  "form/fetchUserData",
+  async (id, thunkAPI) => {
+    try {
+      return await applyRepository.fetchApplication({ id: id, by: "user_id" });
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -201,6 +213,34 @@ const formSlice = createSlice({
       })
       .addCase(applyLoan.rejected, (state, action) => {
         state.formLoading = false;
+        state.error = action.payload;
+      })
+
+      // ? Fetch user application
+      .addCase(fetchUserData.pending, (state) => {
+        state.formLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserData.fulfilled, (state, action) => {
+        state.formLoading = false;
+        const data = action.payload;
+
+        state.formData.applicant = Object.fromEntries(
+          Object.entries(data)
+            .filter(
+              ([key]) =>
+                key !== "address" ||
+                key !== "created_at" ||
+                key !== "updated_at" ||
+                key !== "address_id" ||
+                key !== "ci_id"
+            )
+            .map(([key, value]) => [key, value === null ? "" : value])
+        );
+      })
+      .addCase(fetchUserData.rejected, (state, action) => {
+        state.formLoading = false;
+        state.loan = {};
         state.error = action.payload;
       })
 

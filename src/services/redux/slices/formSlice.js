@@ -181,12 +181,10 @@ const formSlice = createSlice({
     formCheck: (state, action) => {
       const index = action.payload;
 
-      const formToCheck =
-        state.formType === "applicant"
-          ? state.formData.applicant
-          : state.formData[state.formType];
-
-      const applicant = checkEmptyUseCase(index, formToCheck);
+      const applicant = checkEmptyUseCase(
+        index,
+        state.formData[state.formType]
+      );
       const address = checkEmptyUseCase(
         index,
         state.formData.address,
@@ -194,10 +192,7 @@ const formSlice = createSlice({
       );
 
       state.isChecked = Date.now();
-      if (state.formType === "applicant")
-        state.formData.applicant = applicant.form;
-      else state.formData[state.formType] = applicant.form;
-
+      state.formData[state.formType] = applicant.form;
       state.formData.address = address.form;
       state.pageComplete =
         index !== 0 && index !== 2 && index !== 4

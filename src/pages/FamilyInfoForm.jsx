@@ -11,6 +11,7 @@ import FormTBody from "../components/tables/FormTBody";
 import FormTD from "../components/tables/FormTD";
 import copy_icon from "../assets/images/copy_icon.png";
 import { useDispatch, useSelector } from "react-redux";
+import { UserEntity } from "../services/entities/User";
 import {
   copyAddress,
   disableAddress,
@@ -20,14 +21,15 @@ import {
 export default function FamilyInfoForm() {
   const { dispatchInput } = useOutletContext();
   const dispatch = useDispatch();
-  const { regions, provinces, cities, barangays } = useSelector(
-    (state) => state.address
-  );
+  const { role } = useSelector(UserEntity);
   const { formData, selectDisable } = useSelector((state) => state.form);
   const [relatives, setRelative] = useState(1);
   const [nearest, setNearest] = useState(1);
   const [children, setChildren] = useState(1);
   const [dependents, setDependents] = useState(1);
+  const { regions, provinces, cities, barangays } = useSelector(
+    (state) => state.address
+  );
   const regCondition =
     formData.address.p_region !== undefined &&
     formData.address.p_region !== "__EMPTY__";
@@ -242,6 +244,39 @@ export default function FamilyInfoForm() {
         />
       </div>
 
+      {role === "customer" && (
+        <>
+          <FormCheck
+            label="Keep current address"
+            type="checkbox"
+            id="keep_address"
+            style="mb-4"
+            icon={copy_icon}
+          />
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+            Current Address:
+          </h3>
+          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-2">
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Parent's Present Address:
+              </label>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {formData.address.parent_pres}
+              </span>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Parent's Previous Address:
+              </label>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {formData.address.parent_prev}
+              </span>
+            </div>
+          </div>
+        </>
+      )}
+
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Parent's Present Address:
       </h3>
@@ -408,6 +443,39 @@ export default function FamilyInfoForm() {
           require={true}
         />
       </div>
+
+      {role === "customer" && (
+        <>
+          <FormCheck
+            label="Keep current address"
+            type="checkbox"
+            id="keep_address"
+            style="mb-4"
+            icon={copy_icon}
+          />
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+            Current Address:
+          </h3>
+          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-2">
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Spouse's Present Address:
+              </label>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {formData.address.spouse_pres}
+              </span>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Spouse's Previous Address:
+              </label>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {formData.address.spouse_prev}
+              </span>
+            </div>
+          </div>
+        </>
+      )}
 
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Spouse's Present Address:
@@ -612,7 +680,7 @@ export default function FamilyInfoForm() {
               </tr>
             </FormTHead>
             <FormTBody>
-              {[...Array(dependents)].map((_,i) => (
+              {[...Array(dependents)].map((_, i) => (
                 <tr key={i}>
                   <FormTD placeholder="Full name here" />
                   <FormTD placeholder="Address here" />

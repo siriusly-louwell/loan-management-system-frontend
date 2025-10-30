@@ -18,19 +18,21 @@ import {
   copyAddress,
   disableAddress,
 } from "../services/redux/slices/formSlice";
+import { UserEntity } from "../services/entities/User";
 
 export default function PersonalInfoForm() {
   const dispatch = useDispatch();
-  const { regions, provinces, cities, barangays } = useSelector(
-    (state) => state.address
-  );
+  const { role } = useSelector(UserEntity);
   const { formData, selectDisable } = useSelector((state) => state.form);
   const { dispatchInput } = useOutletContext();
   const [unitApplied, setUnitApplied] = useState(1);
+  const { regions, provinces, cities, barangays } = useSelector(
+    (state) => state.address
+  );
 
   useEffect(() => {
     dispatch(setType("applicant"));
-    dispatch(initialForm({}));
+    if (role !== "customer") dispatch(initialForm({}));
   }, []);
 
   useEffect(() => {
@@ -231,6 +233,40 @@ export default function PersonalInfoForm() {
           require={true}
         />
       </div>
+
+      {role === "customer" && (
+        <>
+          <FormCheck
+            label="Keep current address"
+            type="checkbox"
+            id="keep_address"
+            style="mb-4"
+            icon={copy_icon}
+          />
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
+            Current Address:
+          </h3>
+          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-2">
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Present Address:
+              </label>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {formData.address.personal_pres}
+              </span>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Previous Address:
+              </label>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {formData.address.personal_prev}
+              </span>
+            </div>
+          </div>
+        </>
+      )}
+
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
         Present Address:
       </h3>

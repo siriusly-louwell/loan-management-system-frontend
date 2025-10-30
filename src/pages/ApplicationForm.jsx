@@ -36,17 +36,17 @@ export default function ApplicationForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { regions } = useSelector((state) => state.address);
+  const { role, id } = useSelector(UserEntity);
+  const [files, setFiles] = useState({});
+  const [pageType, setPageType] = useState("next");
+  const [modal, setModal] = useState({});
   const { formType, formData, pageComplete, isChecked } = useSelector(
     (state) => state.form
   );
   const { toggled, pageRoute, pageNum, stepIndex, modals } = useSelector(
     (state) => state.ui
   );
-  const { regions } = useSelector((state) => state.address);
-  const { role, id } = useSelector(UserEntity);
-  const [files, setFiles] = useState({});
-  const [pageType, setPageType] = useState("next");
-  const [modal, setModal] = useState({});
 
   // ? Handles navigation
   useEffect(() => {
@@ -320,10 +320,6 @@ export default function ApplicationForm() {
               }}
             />
           </Dialog>
-          {/* {modals.application ? (
-          ) : (
-            ""
-          )} */}
         </div>
       </div>
     </div>

@@ -181,10 +181,12 @@ const formSlice = createSlice({
     formCheck: (state, action) => {
       const index = action.payload;
 
-      const applicant = checkEmptyUseCase(
-        index,
-        state.formData[state.formType]
-      );
+      const formToCheck =
+        state.formType === "applicant"
+          ? state.formData.applicant
+          : state.formData[state.formType];
+
+      const applicant = checkEmptyUseCase(index, formToCheck);
       const address = checkEmptyUseCase(
         index,
         state.formData.address,
@@ -192,7 +194,10 @@ const formSlice = createSlice({
       );
 
       state.isChecked = Date.now();
-      state.formData[state.formType] = applicant.form;
+      if (state.formType === "applicant")
+        state.formData.applicant = applicant.form;
+      else state.formData[state.formType] = applicant.form;
+
       state.formData.address = address.form;
       state.pageComplete =
         index !== 0 && index !== 2 && index !== 4
@@ -229,18 +234,27 @@ const formSlice = createSlice({
           Object.entries(data)
             .filter(
               ([key]) =>
-                key !== "address" ||
-                key !== "created_at" ||
-                key !== "updated_at" ||
-                key !== "address_id" ||
+                key !== "id" &&
+                key !== "address" &&
+                key !== "created_at" &&
+                key !== "updated_at" &&
+                key !== "address_id" &&
                 key !== "ci_id"
+            )
+            .map(([key, value]) => [key, value === null ? "" : value])
+        );
+
+        state.formData.address = Object.fromEntries(
+          Object.entries(data.address)
+            .filter(
+              ([key]) =>
+                key !== "id" && key !== "created_at" && key !== "updated_at"
             )
             .map(([key, value]) => [key, value === null ? "" : value])
         );
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.formLoading = false;
-        state.loan = {};
         state.error = action.payload;
       })
 
@@ -307,7 +321,6 @@ export const {
   handleQuantity,
   setColorIndex,
   initialForm,
-  // copyAddress,
   disableAddress,
   setDisable,
   draftForm,

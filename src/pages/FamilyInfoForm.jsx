@@ -249,9 +249,12 @@ export default function FamilyInfoForm() {
           <FormCheck
             label="Keep current address"
             type="checkbox"
+            name="keep_parent"
             id="keep_address"
             style="mb-4"
+            value={true}
             icon={copy_icon}
+            change={(e) => dispatchInput(e, "address")}
           />
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Current Address:
@@ -449,9 +452,12 @@ export default function FamilyInfoForm() {
           <FormCheck
             label="Keep current address"
             type="checkbox"
-            id="keep_address"
+            name="keep_spouse"
+            id="keep-address"
             style="mb-4"
+            value={true}
             icon={copy_icon}
+            change={(e) => dispatchInput(e, "address")}
           />
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Current Address:

@@ -1,6 +1,5 @@
 import { addressRepository } from "../../repositories/addressRepository";
 import { applyRepository } from "../../repositories/applyRepository";
-import { EquationRepository } from "../../repositories/EquationRepository";
 
 export async function applyUseCase(data) {
   if (data.files.length === 0)

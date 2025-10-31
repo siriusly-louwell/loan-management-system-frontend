@@ -1,3 +1,4 @@
+import { ADDRESS_NAMES, FIELD_NAMES } from "../../constants/formFields";
 import AddressAPI from "./../api/AddressAPI";
 
 export const addressRepository = {
@@ -68,5 +69,24 @@ export const addressRepository = {
     const brgy = barangay ? await AddressAPI.barangay(barangay) : "";
 
     return `${lot_num}, ${purok} ${brgy.name}, ${cit.name} ${prov.name}, ${reg.name}`;
+  },
+
+  // skipper(addressSection, keepFlag) {
+  //   return keepFlag && Object.keys(addressSection).some(key =>
+  //     key.startsWith('prev_') && addressSection[key]
+  //   );
+  // },
+
+  getFields(pageNum, type, keepFlags) {
+    const fields =
+      type === "applicant" ? FIELD_NAMES[pageNum] : ADDRESS_NAMES[pageNum];
+
+    if (type !== "address") return fields;
+    if (keepFlags.keep_personal && pageNum === 1)
+      return fields.filter((field) => !ADDRESS_NAMES[1].includes(field));
+    if (keepFlags.keep_parent && pageNum === 3)
+      return fields.filter((field) => !ADDRESS_NAMES[3].includes(field));
+
+    return fields;
   },
 };

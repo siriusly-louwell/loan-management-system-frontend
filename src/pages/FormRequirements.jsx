@@ -7,7 +7,7 @@ import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from "../assets/images/copy_icon.png";
 
 export default function FormRequirements() {
-  const { fileChange, dispatchInput } = useOutletContext();
+  const { fileChange, toggleKeep } = useOutletContext();
   const { role } = useSelector(UserEntity);
   const { formData } = useSelector((state) => state.form);
   const coords =
@@ -29,7 +29,7 @@ export default function FormRequirements() {
           style="mb-4"
           value={true}
           icon={copy_icon}
-          change={(e) => dispatchInput(e, "applicant")}
+          change={() => toggleKeep("keep_files", "applicant")}
         />
       )}
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">

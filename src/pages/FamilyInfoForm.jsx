@@ -253,7 +253,7 @@ export default function FamilyInfoForm() {
             id="keep-parent"
             style="mb-4"
             icon={copy_icon}
-            change={() => toggleKeep("keep_parent")}
+            change={() => toggleKeep("keep_parent", "address")}
           />
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Current Address:
@@ -459,7 +459,7 @@ export default function FamilyInfoForm() {
             id="keep-spouse"
             style="mb-4"
             icon={copy_icon}
-            change={() => toggleKeep("keep_spouse")}
+            change={() => toggleKeep("keep_spouse", "address")}
           />
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Current Address:

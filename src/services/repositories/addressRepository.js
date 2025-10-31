@@ -3,54 +3,70 @@ import AddressAPI from "./../api/AddressAPI";
 
 export const addressRepository = {
   async constructAddress(address) {
-    const personalPres = await this.fullAddress(
-      address.region,
-      address.province,
-      address.city,
-      address.brgy,
-      address.purok,
-      address.lot_num
-    );
-    const personalPrev = await this.fullAddress(
-      address.prev_region,
-      address.prev_province,
-      address.prev_city,
-      address.prev_brgy,
-      address.prev_purok,
-      address.prev_lot_num
-    );
-    const parentPres = await this.fullAddress(
-      address.p_region,
-      address.p_province,
-      address.p_city,
-      address.p_brgy,
-      address.p_purok,
-      address.p_lot_num
-    );
-    const parentPrev = await this.fullAddress(
-      address.p_prev_region,
-      address.p_prev_province,
-      address.p_prev_city,
-      address.p_prev_brgy,
-      address.p_prev_purok,
-      address.p_prev_lot_num
-    );
-    const spousePres = await this.fullAddress(
-      address.sp_region,
-      address.sp_province,
-      address.sp_city,
-      address.sp_brgy,
-      address.sp_purok,
-      address.sp_lot_num
-    );
-    const spousePrev = await this.fullAddress(
-      address.sp_prev_region,
-      address.sp_prev_province,
-      address.sp_prev_city,
-      address.sp_prev_brgy,
-      address.sp_prev_purok,
-      address.sp_prev_lot_num
-    );
+    const personalPres = address.keep_personal
+      ? address.personal_pres
+      : await this.fullAddress(
+          address.region,
+          address.province,
+          address.city,
+          address.brgy,
+          address.purok,
+          address.lot_num
+        );
+    const personalPrev = address.keep_personal
+      ? address.personal_prev
+      : await this.fullAddress(
+          address.prev_region,
+          address.prev_province,
+          address.prev_city,
+          address.prev_brgy,
+          address.prev_purok,
+          address.prev_lot_num
+        );
+
+    // ? Parent address
+    const parentPres = address.keep_parent
+      ? address.parent_pres
+      : await this.fullAddress(
+          address.p_region,
+          address.p_province,
+          address.p_city,
+          address.p_brgy,
+          address.p_purok,
+          address.p_lot_num
+        );
+    const parentPrev = address.keep_parent
+      ? address.parent_prev
+      : await this.fullAddress(
+          address.p_prev_region,
+          address.p_prev_province,
+          address.p_prev_city,
+          address.p_prev_brgy,
+          address.p_prev_purok,
+          address.p_prev_lot_num
+        );
+
+    // ? Spouse address
+    const spousePres = address.keep_spouse
+      ? address.spouse_pres
+      : await this.fullAddress(
+          address.sp_region,
+          address.sp_province,
+          address.sp_city,
+          address.sp_brgy,
+          address.sp_purok,
+          address.sp_lot_num
+        );
+    const spousePrev = address.keep_spouse
+      ? address.spouse_prev
+      : await this.fullAddress(
+          address.sp_prev_region,
+          address.sp_prev_province,
+          address.sp_prev_city,
+          address.sp_prev_brgy,
+          address.sp_prev_purok,
+          address.sp_prev_lot_num
+        );
 
     return {
       personal_pres: personalPres,

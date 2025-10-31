@@ -243,7 +243,7 @@ export default function PersonalInfoForm() {
             id="keep_address"
             style="mb-4"
             icon={copy_icon}
-            change={() => toggleKeep("keep_personal")}
+            change={() => toggleKeep("keep_personal", "address")}
           />
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Current Address:

@@ -2,7 +2,7 @@ import { addressRepository } from "../../repositories/addressRepository";
 import { applyRepository } from "../../repositories/applyRepository";
 
 export async function applyUseCase(data) {
-  if (data.files.length === 0)
+  if (data.files.length === 0 && !data.applicant.keep_files)
     return {
       message: "Please upload a file in the requirement section.",
       type: "warn",

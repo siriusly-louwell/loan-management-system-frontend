@@ -190,15 +190,13 @@ export default function ApplicationForm() {
   }
 
   // ? Keep address toggle
-  function toggleKeep(name) {
+  function toggleKeep(name, type) {
     const initial = !formData.address[name]
       ? "false"
       : formData.address.keep_personal;
     const bool = initial === "false" ? true : false;
 
-    console.log(initial, bool);
-
-    dispatch(handleChange({ name: name, value: bool, formType: "address" }));
+    dispatch(handleChange({ name: name, value: bool, formType: type }));
   }
 
   // ? Step status checker

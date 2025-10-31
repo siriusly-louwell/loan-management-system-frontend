@@ -4,6 +4,7 @@ import { checkEmptyUseCase } from "../../usecases/application/checkEmptyUseCase"
 import { applyUseCase } from "../../usecases/application/applyUseCase";
 import AddressAPI from "../../api/AddressAPI";
 import { applyRepository } from "../../repositories/applyRepository";
+import ApplicationAPI from "../../api/ApplicationAPI";
 
 export const applyLoan = createAsyncThunk(
   "form/applyLoan",
@@ -225,7 +226,7 @@ const formSlice = createSlice({
         state.formLoading = false;
         const data = action.payload;
 
-        state.formData.applicant = Object.fromEntries(
+        const applicant = Object.fromEntries(
           Object.entries(data)
             .filter(
               ([key]) =>
@@ -238,6 +239,14 @@ const formSlice = createSlice({
             )
             .map(([key, value]) => [key, value === null ? "" : value])
         );
+
+        state.formData.applicant = {
+          ...applicant,
+          idPic: ApplicationAPI.imgPath(data.id_pic),
+          validId: ApplicationAPI.imgPath(data.valid_id),
+          residenceImg: ApplicationAPI.imgPath(data.residence_proof),
+          incomeImg: ApplicationAPI.imgPath(data.income_proof),
+        }
 
         state.formData.address = Object.fromEntries(
           Object.entries(data.address)

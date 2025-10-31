@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { UserEntity } from "../services/entities/User";
 import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from "../assets/images/copy_icon.png";
+import FileButton from "../components/buttons/FileButton";
 
 export default function FormRequirements() {
   const { fileChange, toggleKeep } = useOutletContext();
@@ -21,16 +22,27 @@ export default function FormRequirements() {
         Other Requirements:
       </h3>
       {role === "customer" && (
-        <FormCheck
-          label="Keep current "
-          type="checkbox"
-          name="keep_files"
-          id="keep-files"
-          style="mb-4"
-          value={true}
-          icon={copy_icon}
-          change={() => toggleKeep("keep_files", "applicant")}
-        />
+        <div className="flex mb-8 items-center">
+          <FormCheck
+            label="Keep current files"
+            type="checkbox"
+            name="keep_files"
+            id="keep-files"
+            value={true}
+            icon={copy_icon}
+            change={() => toggleKeep("keep_files", "applicant")}
+          />
+          <FileButton name="ID Picture" link={formData.applicant.idPic} />
+          <FileButton name="Valid ID" link={formData.applicant.validId} />
+          <FileButton
+            name="Proof of Residence"
+            link={formData.applicant.residenceImg}
+          />
+          <FileButton
+            name="Proof of Income"
+            link={formData.applicant.incomeImg}
+          />
+        </div>
       )}
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
         <FileInput

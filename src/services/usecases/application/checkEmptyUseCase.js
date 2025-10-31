@@ -9,7 +9,7 @@ export function checkEmptyUseCase(pageNum, form, type = "applicant") {
 
   let hasEmpty = false;
   const fields = addressRepository.getFields(pageNum, type, keepFlags);
-  let updatedForm = addressRepository.filterFields(pageNum, keepFlags, form);
+  let updatedForm = addressRepository.filterFields(pageNum, form);
 
   if (fields.length > 0)
     fields.forEach((field) => {

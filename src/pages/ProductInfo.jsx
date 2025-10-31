@@ -183,12 +183,7 @@ export default function ProductInfo({ staff = false }) {
                       />
                     </svg>
                   </BttnwithIcon>
-                  <AddtoCartBttn
-                    text="Apply Loan"
-                    // state={{ selected: selected, selectColor: selectColor }}
-                    url="/customer/apply"
-                  />
-                  <AddtoCartBttn text="Pay in Cash" />
+                  <AddtoCartBttn text="Apply Loan" url="/customer/apply" />
                 </div>
                 <hr className="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
                 <div className="mb-6 text-gray-500 dark:text-gray-400">

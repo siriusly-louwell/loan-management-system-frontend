@@ -100,16 +100,16 @@ export const addressRepository = {
     return fields;
   },
 
-  filterFields(pageNum, keepFlags, form) {
+  filterFields(pageNum, form) {
     const updatedForm = { ...form };
 
-    if (keepFlags.keep_personal && pageNum === 1)
+    if (form.keep_personal && pageNum === 1)
       return Object.fromEntries(
         Object.entries(updatedForm).filter(
           ([key]) => !ADDRESS_NAMES[1].includes(key)
         )
       );
-    if (keepFlags.keep_parent && pageNum === 3)
+    if (form.keep_parent && pageNum === 3)
       return Object.fromEntries(
         Object.entries(updatedForm).filter(
           ([key]) => !ADDRESS_NAMES[3].includes(key)

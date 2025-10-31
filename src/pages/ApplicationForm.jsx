@@ -117,6 +117,23 @@ export default function ApplicationForm() {
     formData.address.sp_city,
   ]);
 
+  // ? On-load / Refresh initializations
+  useEffect(() => {
+    dispatch(setDisable(false));
+    if (role === "customer") dispatch(fetchUserData(id));
+    if (location.pathname !== "/customer/apply") {
+      dispatch(getDraft());
+      dispatch(getPageNum());
+    }
+  }, []);
+
+  // ? Auto save form
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(draftForm());
+    }, 3000);
+  }, [formData, dispatch]);
+
   // ? Navigation methods
   function handleNext() {
     setPageType("next");
@@ -126,6 +143,47 @@ export default function ApplicationForm() {
   function handlePrev() {
     setPageType("prev");
     dispatch(prevPage());
+  }
+
+  // ? Handles form data
+  function fileChange(event) {
+    setFiles({
+      ...files,
+      [event.target.name]: event.target.files[0],
+    });
+  }
+
+  function dispatchInput(event, type = formType) {
+    dispatch(
+      handleChange({
+        name: event.target.name,
+        value: event.target.value,
+        formType: type,
+      })
+    );
+  }
+
+  // ? Keep address toggle
+  function toggleKeep(name, type) {
+    const initial = !formData.address[name]
+      ? "false"
+      : formData.address.keep_personal;
+    const bool = initial === "false" ? true : false;
+
+    dispatch(handleChange({ name: name, value: bool, formType: type }));
+  }
+
+  // ? Step status checker
+  function stepCheck(index) {
+    // if (incomplete.includes(index)) return "incomplete";
+    // else
+    return pageNum === index ? "current" : pageNum > index ? "done" : "pend";
+  }
+
+  function stepNavCheck(index) {
+    setPageType("step");
+    dispatch(setStep(index));
+    dispatch(formCheck(pageNum));
   }
 
   // ? Submission
@@ -170,64 +228,6 @@ export default function ApplicationForm() {
       );
     }
   }
-
-  // ? Handles form data
-  function fileChange(event) {
-    setFiles({
-      ...files,
-      [event.target.name]: event.target.files[0],
-    });
-  }
-
-  function dispatchInput(event, type = formType) {
-    dispatch(
-      handleChange({
-        name: event.target.name,
-        value: event.target.value,
-        formType: type,
-      })
-    );
-  }
-
-  // ? Keep address toggle
-  function toggleKeep(name, type) {
-    const initial = !formData.address[name]
-      ? "false"
-      : formData.address.keep_personal;
-    const bool = initial === "false" ? true : false;
-
-    dispatch(handleChange({ name: name, value: bool, formType: type }));
-  }
-
-  // ? Step status checker
-  function stepCheck(index) {
-    // if (incomplete.includes(index)) return "incomplete";
-    // else
-    return pageNum === index ? "current" : pageNum > index ? "done" : "pend";
-  }
-
-  function stepNavCheck(index) {
-    setPageType("step");
-    dispatch(setStep(index));
-    dispatch(formCheck(pageNum));
-  }
-
-  // ? On-load / Refresh initializations
-  useEffect(() => {
-    dispatch(setDisable(false));
-    if (role === "customer") dispatch(fetchUserData(id));
-    if (location.pathname !== "/customer/apply") {
-      dispatch(getDraft());
-      dispatch(getPageNum());
-    }
-  }, []);
-
-  // ? Auto save form
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(draftForm());
-    }, 3000);
-  }, [formData, dispatch]);
 
   // ? Children outlet
   const outletContext = {

@@ -45,34 +45,38 @@ export default function FormRequirements() {
         </div>
       )}
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-        <FileInput
-          label="Valid ID"
-          name="valid_id"
-          type="img"
-          change={fileChange}
-          require={true}
-        />
-        <FileInput
-          label="2x2 Picture"
-          name="id_pic"
-          type="img"
-          change={fileChange}
-          require={true}
-        />
-        <FileInput
-          label="Proof of Residence"
-          name="residence_proof"
-          type="img"
-          change={fileChange}
-          require={true}
-        />
-        <FileInput
-          label="Proof of Income"
-          name="income_proof"
-          type="img"
-          change={fileChange}
-          require={true}
-        />
+        {!formData.applicant.keep_files && (
+          <>
+            <FileInput
+              label="Valid ID"
+              name="valid_id"
+              type="img"
+              change={fileChange}
+              require={true}
+            />
+            <FileInput
+              label="2x2 Picture"
+              name="id_pic"
+              type="img"
+              change={fileChange}
+              require={true}
+            />
+            <FileInput
+              label="Proof of Residence"
+              name="residence_proof"
+              type="img"
+              change={fileChange}
+              require={true}
+            />
+            <FileInput
+              label="Proof of Income"
+              name="income_proof"
+              type="img"
+              change={fileChange}
+              require={true}
+            />
+          </>
+        )}
 
         <div className="grid col-span-2 grid-cols-1">
           <label className="text-md font-medium text-gray-900 dark:text-white">

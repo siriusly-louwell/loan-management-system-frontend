@@ -22,12 +22,12 @@ export default function FamilyInfoForm() {
   const { dispatchInput, toggleKeep } = useOutletContext();
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
-  const { formData, selectDisable } = useSelector((state) => state.form);
+  const { formData, selectDisable, copyLoading } = useSelector((state) => state.form);
   const [relatives, setRelative] = useState(1);
   const [nearest, setNearest] = useState(1);
   const [children, setChildren] = useState(1);
   const [dependents, setDependents] = useState(1);
-  const { regions, provinces, cities, barangays } = useSelector(
+  const { regions, provinces, cities, barangays, addressLoading } = useSelector(
     (state) => state.address
   );
   const regCondition =
@@ -289,9 +289,10 @@ export default function FamilyInfoForm() {
               name="p_region"
               label="Region"
               id="region"
+              require={true}
+              loading={addressLoading}
               value={formData.address.p_region}
-              onchange={(e) => dispatchInput(e, "address")}
-              require={true}>
+              onchange={(e) => dispatchInput(e, "address")}>
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -302,9 +303,10 @@ export default function FamilyInfoForm() {
               name="p_province"
               label="Province"
               id="province"
+              require={true}
+              loading={addressLoading}
               value={formData.address.p_province}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
               disable={selectDisable.parent}>
               {regCondition &&
                 provinces.map((prov, i) => (
@@ -317,9 +319,10 @@ export default function FamilyInfoForm() {
               name="p_city"
               label="Municipality/City"
               id="city"
+              require={true}
+              loading={addressLoading}
               value={formData.address.p_city}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
               disable={selectDisable.parent}>
               {regCondition &&
                 cities.map((cit, i) => (
@@ -332,9 +335,10 @@ export default function FamilyInfoForm() {
               name="p_brgy"
               label="Barangay"
               id="brgy"
+              require={true}
+              loading={addressLoading}
               value={formData.address.p_brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
               disable={selectDisable.parent}>
               {regCondition &&
                 barangays.map((bgy, i) => (
@@ -391,6 +395,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="p_prev_region"
               id="region"
+              loading={copyLoading}
               value={formData.address.p_prev_region}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
@@ -401,6 +406,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="p_prev_province"
               id="province"
+              loading={copyLoading}
               value={formData.address.p_prev_province}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
@@ -411,6 +417,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="p_prev_city"
               id="city"
+              loading={copyLoading}
               value={formData.address.p_prev_city}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
@@ -421,6 +428,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="p_prev_brgy"
               id="brgy"
+              loading={copyLoading}
               value={formData.address.p_prev_brgy}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"

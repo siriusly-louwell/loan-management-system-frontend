@@ -282,10 +282,10 @@ export default function PersonalInfoForm() {
               name="region"
               label="Region"
               id="region"
-              require={true}>
-                loading={addressLoading}
-                value={formData.address.region}
-                onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+              loading={addressLoading}
+              value={formData.address.region}
+              onchange={(e) => dispatchInput(e, "address")}>
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}

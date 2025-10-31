@@ -24,7 +24,7 @@ export default function PersonalInfoForm() {
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
   const { formData, selectDisable } = useSelector((state) => state.form);
-  const { dispatchInput } = useOutletContext();
+  const { dispatchInput, toggleKeep } = useOutletContext();
   const [unitApplied, setUnitApplied] = useState(1);
   const { regions, provinces, cities, barangays } = useSelector(
     (state) => state.address
@@ -242,9 +242,8 @@ export default function PersonalInfoForm() {
             name="keep_personal"
             id="keep_address"
             style="mb-4"
-            value={true}
             icon={copy_icon}
-            change={(e) => dispatchInput(e, "address")}
+            change={() => toggleKeep("keep_personal")}
           />
           <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
             Current Address:
@@ -270,176 +269,180 @@ export default function PersonalInfoForm() {
         </>
       )}
 
-      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
-        Present Address:
-      </h3>
-      <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
-        <FormSelect
-          name="region"
-          label="Region"
-          id="region"
-          value={formData.address.region}
-          onchange={(e) => dispatchInput(e, "address")}
-          require={true}>
-          {regions.map((reg, i) => (
-            <option key={i} value={reg.code}>
-              {reg.name}
-            </option>
-          ))}
-        </FormSelect>
-        <FormSelect
-          name="province"
-          label="Province"
-          id="province"
-          value={formData.address.province}
-          onchange={(e) => dispatchInput(e, "address")}
-          require={true}
-          disable={selectDisable.personal}>
-          {formData.address.region !== undefined &&
-            formData.address.region !== "__EMPTY__" &&
-            provinces.map((prov, i) => (
-              <option key={i} value={prov.code}>
-                {prov.name}
-              </option>
-            ))}
-        </FormSelect>
-        <FormSelect
-          name="city"
-          label="Municipality/City"
-          id="city"
-          value={formData.address.city}
-          onchange={(e) => dispatchInput(e, "address")}
-          require={true}
-          disable={selectDisable.personal}>
-          {formData.address.region !== undefined &&
-            formData.address.region !== "__EMPTY__" &&
-            cities.map((cit, i) => (
-              <option key={i} value={cit.code}>
-                {cit.name}
-              </option>
-            ))}
-        </FormSelect>
-        <FormSelect
-          name="brgy"
-          label="Barangay"
-          id="brgy"
-          value={formData.address.brgy}
-          onchange={(e) => dispatchInput(e, "address")}
-          require={true}
-          disable={selectDisable.personal}>
-          {formData.address.region !== undefined &&
-            formData.address.region !== "__EMPTY__" &&
-            barangays.map((bgy, i) => (
-              <option key={i} value={bgy.code}>
-                {bgy.name}
-              </option>
-            ))}
-        </FormSelect>
-        <FormInput
-          label="Purok"
-          type="text"
-          name="purok"
-          id="purok"
-          value={formData.address.purok}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type purok number here"
-          require={true}
-        />
-        <FormInput
-          label="Lot/House Number"
-          type="text"
-          name="lot_num"
-          id="lot_num"
-          value={formData.address.lot_num}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type House number here"
-          require={true}
-        />
-      </div>
+      {!formData.address.keep_personal && (
+        <>
+          <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+            Present Address:
+          </h3>
+          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+            <FormSelect
+              name="region"
+              label="Region"
+              id="region"
+              value={formData.address.region}
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}>
+              {regions.map((reg, i) => (
+                <option key={i} value={reg.code}>
+                  {reg.name}
+                </option>
+              ))}
+            </FormSelect>
+            <FormSelect
+              name="province"
+              label="Province"
+              id="province"
+              value={formData.address.province}
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+              disable={selectDisable.personal}>
+              {formData.address.region !== undefined &&
+                formData.address.region !== "__EMPTY__" &&
+                provinces.map((prov, i) => (
+                  <option key={i} value={prov.code}>
+                    {prov.name}
+                  </option>
+                ))}
+            </FormSelect>
+            <FormSelect
+              name="city"
+              label="Municipality/City"
+              id="city"
+              value={formData.address.city}
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+              disable={selectDisable.personal}>
+              {formData.address.region !== undefined &&
+                formData.address.region !== "__EMPTY__" &&
+                cities.map((cit, i) => (
+                  <option key={i} value={cit.code}>
+                    {cit.name}
+                  </option>
+                ))}
+            </FormSelect>
+            <FormSelect
+              name="brgy"
+              label="Barangay"
+              id="brgy"
+              value={formData.address.brgy}
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+              disable={selectDisable.personal}>
+              {formData.address.region !== undefined &&
+                formData.address.region !== "__EMPTY__" &&
+                barangays.map((bgy, i) => (
+                  <option key={i} value={bgy.code}>
+                    {bgy.name}
+                  </option>
+                ))}
+            </FormSelect>
+            <FormInput
+              label="Purok"
+              type="text"
+              name="purok"
+              id="purok"
+              value={formData.address.purok}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type purok number here"
+              require={true}
+            />
+            <FormInput
+              label="Lot/House Number"
+              type="text"
+              name="lot_num"
+              id="lot_num"
+              value={formData.address.lot_num}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type House number here"
+              require={true}
+            />
+          </div>
 
-      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
-        Previous Address:
-      </h3>
-      <FormCheck
-        label="Copy Present Address"
-        type="checkbox"
-        id="copy_address"
-        style="mb-4"
-        change={() =>
-          dispatch(
-            copyAddress({
-              addressType: "personal",
-              region: formData.address.region,
-              province: formData.address.province,
-              city: formData.address.city,
-              barangay: formData.address.brgy,
-            })
-          )
-        }
-        icon={copy_icon}
-      />
-      <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
-        <FormInput
-          label="Region"
-          type="text"
-          name="prev_region"
-          id="region"
-          value={formData.address.prev_region}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type region here"
-          require={true}
-        />
-        <FormInput
-          label="Province"
-          type="text"
-          name="prev_province"
-          id="province"
-          value={formData.address.prev_province}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type province here"
-          require={true}
-        />
-        <FormInput
-          label="City/Municipality"
-          type="text"
-          name="prev_city"
-          id="city"
-          value={formData.address.prev_city}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type city here"
-          require={true}
-        />
-        <FormInput
-          label="Barangay"
-          type="text"
-          name="prev_brgy"
-          id="brgy"
-          value={formData.address.prev_brgy}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type barangay here"
-          require={true}
-        />
-        <FormInput
-          label="Purok"
-          type="text"
-          name="prev_purok"
-          id="purok"
-          value={formData.address.prev_purok}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type House number here"
-          require={true}
-        />
-        <FormInput
-          label="Lot/House Number"
-          type="text"
-          name="prev_lot_num"
-          id="prev_lot_num"
-          value={formData.address.prev_lot_num}
-          onchange={(e) => dispatchInput(e, "address")}
-          placeholder="Type House number here"
-          require={true}
-        />
-      </div>
+          <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
+            Previous Address:
+          </h3>
+          <FormCheck
+            label="Copy Present Address"
+            type="checkbox"
+            id="copy_address"
+            style="mb-4"
+            change={() =>
+              dispatch(
+                copyAddress({
+                  addressType: "personal",
+                  region: formData.address.region,
+                  province: formData.address.province,
+                  city: formData.address.city,
+                  barangay: formData.address.brgy,
+                })
+              )
+            }
+            icon={copy_icon}
+          />
+          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+            <FormInput
+              label="Region"
+              type="text"
+              name="prev_region"
+              id="region"
+              value={formData.address.prev_region}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type region here"
+              require={true}
+            />
+            <FormInput
+              label="Province"
+              type="text"
+              name="prev_province"
+              id="province"
+              value={formData.address.prev_province}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type province here"
+              require={true}
+            />
+            <FormInput
+              label="City/Municipality"
+              type="text"
+              name="prev_city"
+              id="city"
+              value={formData.address.prev_city}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type city here"
+              require={true}
+            />
+            <FormInput
+              label="Barangay"
+              type="text"
+              name="prev_brgy"
+              id="brgy"
+              value={formData.address.prev_brgy}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type barangay here"
+              require={true}
+            />
+            <FormInput
+              label="Purok"
+              type="text"
+              name="prev_purok"
+              id="purok"
+              value={formData.address.prev_purok}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type House number here"
+              require={true}
+            />
+            <FormInput
+              label="Lot/House Number"
+              type="text"
+              name="prev_lot_num"
+              id="prev_lot_num"
+              value={formData.address.prev_lot_num}
+              onchange={(e) => dispatchInput(e, "address")}
+              placeholder="Type House number here"
+              require={true}
+            />
+          </div>
+        </>
+      )}
 
       <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-1">
         <FormTextarea

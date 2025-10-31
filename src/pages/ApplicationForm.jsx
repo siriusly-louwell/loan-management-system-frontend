@@ -189,6 +189,18 @@ export default function ApplicationForm() {
     );
   }
 
+  // ? Keep address toggle
+  function toggleKeep(name) {
+    const initial = !formData.address[name]
+      ? "false"
+      : formData.address.keep_personal;
+    const bool = initial === "false" ? true : false;
+
+    console.log(initial, bool);
+
+    dispatch(handleChange({ name: name, value: bool, formType: "address" }));
+  }
+
   // ? Step status checker
   function stepCheck(index) {
     // if (incomplete.includes(index)) return "incomplete";
@@ -224,6 +236,7 @@ export default function ApplicationForm() {
     handleChange,
     dispatchInput,
     fileChange,
+    toggleKeep,
   };
 
   return (

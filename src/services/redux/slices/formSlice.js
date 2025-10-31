@@ -63,7 +63,7 @@ const formSlice = createSlice({
     },
     formType: "createUnit",
     formLoading: true,
-    addressLoading: true,
+    copyLoading: false,
     colors: [],
     colorIndex: null,
     error: null,
@@ -264,11 +264,11 @@ const formSlice = createSlice({
 
       // ? Copy address
       .addCase(copyAddress.pending, (state) => {
-        state.addressLoading = true;
+        state.copyLoading = true;
         state.error = null;
       })
       .addCase(copyAddress.fulfilled, (state, action) => {
-        state.addressLoading = false;
+        state.copyLoading = false;
         const data = action.payload;
         const address = state.formData.address;
 
@@ -309,7 +309,7 @@ const formSlice = createSlice({
         }
       })
       .addCase(copyAddress.rejected, (state, action) => {
-        state.addressLoading = false;
+        state.copyLoading = false;
         state.error = action.payload;
       });
   },

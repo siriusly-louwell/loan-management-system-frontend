@@ -1,4 +1,5 @@
 import React from "react";
+import SmallSpin from "../loading components/SmallSpin";
 
 export default function FormSelect({
   children,
@@ -7,6 +8,7 @@ export default function FormSelect({
   id,
   value,
   onchange,
+  loading,
   require = false,
   disable = false,
 }) {
@@ -21,16 +23,26 @@ export default function FormSelect({
         className={`block mb-2 text-sm font-medium text-${color}-900 dark:text-white`}>
         {label} {require ? <strong className="text-rose-500">*</strong> : ""}
       </label>
-      <select
-        id={id}
-        name={name}
-        value={value}
-        onChange={onchange}
-        disabled={disable}
-        className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${darkRed} dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}>
-        <option value="__EMPTY__">Select {label}</option>
-        {children}
-      </select>
+
+      {loading ? (
+        <section className="flex items-center gap-1">
+          <SmallSpin size={20} />
+          <span className="text-sm text-gray-300 dark:text-gray-500">
+            Fetching location...
+          </span>
+        </section>
+      ) : (
+        <select
+          id={id}
+          name={name}
+          value={value}
+          onChange={onchange}
+          disabled={disable}
+          className={`bg-${color}-50 border border-${color}-400 text-${color}-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ${darkRed} dark:border-${color}-600 dark:placeholder-${color}-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}>
+          <option value="__EMPTY__">Select {label}</option>
+          {children}
+        </select>
+      )}
     </div>
   );
 }

@@ -23,9 +23,12 @@ import { UserEntity } from "../services/entities/User";
 export default function PersonalInfoForm() {
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
-  const { formData, selectDisable } = useSelector((state) => state.form);
   const { dispatchInput, toggleKeep } = useOutletContext();
   const [unitApplied, setUnitApplied] = useState(1);
+  const { addressLoading } = useSelector((state) => state.address);
+  const { formData, selectDisable, copyLoading } = useSelector(
+    (state) => state.form
+  );
   const { regions, provinces, cities, barangays } = useSelector(
     (state) => state.address
   );
@@ -279,9 +282,10 @@ export default function PersonalInfoForm() {
               name="region"
               label="Region"
               id="region"
-              value={formData.address.region}
-              onchange={(e) => dispatchInput(e, "address")}
               require={true}>
+                loading={addressLoading}
+                value={formData.address.region}
+                onchange={(e) => dispatchInput(e, "address")}
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -292,9 +296,10 @@ export default function PersonalInfoForm() {
               name="province"
               label="Province"
               id="province"
+              require={true}
+              loading={addressLoading}
               value={formData.address.province}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
               disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
@@ -308,9 +313,10 @@ export default function PersonalInfoForm() {
               name="city"
               label="Municipality/City"
               id="city"
+              require={true}
+              loading={addressLoading}
               value={formData.address.city}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
               disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
@@ -324,9 +330,10 @@ export default function PersonalInfoForm() {
               name="brgy"
               label="Barangay"
               id="brgy"
+              require={true}
+              loading={addressLoading}
               value={formData.address.brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
               disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
@@ -385,6 +392,7 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_region"
               id="region"
+              loading={copyLoading}
               value={formData.address.prev_region}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
@@ -395,6 +403,7 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_province"
               id="province"
+              loading={copyLoading}
               value={formData.address.prev_province}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
@@ -405,6 +414,7 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_city"
               id="city"
+              loading={copyLoading}
               value={formData.address.prev_city}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
@@ -415,6 +425,7 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_brgy"
               id="brgy"
+              loading={copyLoading}
               value={formData.address.prev_brgy}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"

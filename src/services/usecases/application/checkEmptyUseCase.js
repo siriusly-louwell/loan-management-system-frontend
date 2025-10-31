@@ -7,13 +7,9 @@ export function checkEmptyUseCase(pageNum, form, type = "applicant") {
     keep_spouse: form.keep_spouse || false,
   };
 
-  const fields = addressRepository.getFields(pageNum, type, keepFlags);
-  // const fields =
-  //   type === "applicant" ? FIELD_NAMES[pageNum] : ADDRESS_NAMES[pageNum];
   let hasEmpty = false;
-  const updatedForm = { ...form };
-
-  console.log(fields);
+  const fields = addressRepository.getFields(pageNum, type, keepFlags);
+  let updatedForm = addressRepository.filterFields(pageNum, keepFlags, form);
 
   if (fields.length > 0)
     fields.forEach((field) => {
@@ -31,5 +27,5 @@ export function checkEmptyUseCase(pageNum, form, type = "applicant") {
       }
     });
 
-  return { form: updatedForm, hasEmpty: hasEmpty };
+  return { form: updatedForm, hasEmpty };
 }

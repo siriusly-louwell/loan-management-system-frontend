@@ -247,10 +247,10 @@ export default function FamilyInfoForm() {
       {role === "customer" && (
         <>
           <FormCheck
-            label="Keep current address"
+            label="Keep current parent address"
             type="checkbox"
             name="keep_parent"
-            id="keep_address"
+            id="keep-parent"
             style="mb-4"
             value={true}
             icon={copy_icon}
@@ -450,10 +450,10 @@ export default function FamilyInfoForm() {
       {role === "customer" && (
         <>
           <FormCheck
-            label="Keep current address"
+            label="Keep current spouse address"
             type="checkbox"
             name="keep_spouse"
-            id="keep-address"
+            id="keep-spouse"
             style="mb-4"
             value={true}
             icon={copy_icon}

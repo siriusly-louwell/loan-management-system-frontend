@@ -71,12 +71,6 @@ export const addressRepository = {
     return `${lot_num}, ${purok} ${brgy.name}, ${cit.name} ${prov.name}, ${reg.name}`;
   },
 
-  // skipper(addressSection, keepFlag) {
-  //   return keepFlag && Object.keys(addressSection).some(key =>
-  //     key.startsWith('prev_') && addressSection[key]
-  //   );
-  // },
-
   getFields(pageNum, type, keepFlags) {
     const fields =
       type === "applicant" ? FIELD_NAMES[pageNum] : ADDRESS_NAMES[pageNum];
@@ -88,5 +82,24 @@ export const addressRepository = {
       return fields.filter((field) => !ADDRESS_NAMES[3].includes(field));
 
     return fields;
+  },
+
+  filterFields(pageNum, keepFlags, form) {
+    const updatedForm = { ...form };
+
+    if (keepFlags.keep_personal && pageNum === 1)
+      return Object.fromEntries(
+        Object.entries(updatedForm).filter(
+          ([key]) => !ADDRESS_NAMES[1].includes(key)
+        )
+      );
+    if (keepFlags.keep_parent && pageNum === 3)
+      return Object.fromEntries(
+        Object.entries(updatedForm).filter(
+          ([key]) => !ADDRESS_NAMES[3].includes(key)
+        )
+      );
+
+    return updatedForm;
   },
 };

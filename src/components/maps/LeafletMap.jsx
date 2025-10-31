@@ -8,11 +8,13 @@ import {
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleChange } from "../../services/redux/slices/formSlice";
+import { UserEntity } from "../../services/entities/User";
 
 export default function LeafletMap({ display = false, coordinates }) {
   const dispatch = useDispatch();
+  const { role } = useSelector(UserEntity);
   const zoom = display ? 12 : 13;
   const [coords, setCoords] = useState({ lat: 7.3081, lng: 125.6842 });
   const customMarker = new L.Icon({
@@ -27,13 +29,13 @@ export default function LeafletMap({ display = false, coordinates }) {
   });
 
   useEffect(() => {
-    if (display && coordinates && coordinates.lat && coordinates.lng) {
+    if ((display || role === "customer") && coordinates) {
       setCoords({
         lat: coordinates.lat,
         lng: coordinates.lng,
       });
     }
-  }, [display, coordinates]);
+  }, [display, role]);
 
   useEffect(() => {
     if (!display) {

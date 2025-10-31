@@ -8,6 +8,7 @@ import Button from "./buttons/Button";
 import RMCI from "../assets/images/RMCI.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearPageNum,
   setAlert,
   setLoading,
   toggleModal,
@@ -56,6 +57,7 @@ export default function Navbar({ links, path }) {
       dispatch(clearLoan());
       dispatch(clearReport());
       dispatch(clearPayment());
+      dispatch(clearPageNum());
       dispatch(setLoading({ isActive: false }));
     }, 2000);
 

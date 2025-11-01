@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import CustomerLoansTable from "../components/tables/CustomerLoansTable";
 import InvoiceTable from "../components/tables/InvoiceTable";
 import { ApplicationEntity } from "../services/entities/Application";
+import StatusLegend from "../components/modals/StatusLegend";
 
 export default function InvoiceList({
   headText,
@@ -23,6 +24,7 @@ export default function InvoiceList({
           bttnText={bttnText}
         />
       )}
+      <StatusLegend />
     </section>
   );
 }

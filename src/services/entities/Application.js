@@ -128,6 +128,10 @@ export class Application {
         return { text: "Approved", color: "purple" };
       case "declined":
         return { text: "Declined", color: "red" };
+      case "incomplete":
+        return { text: "Incomplete", color: "lime" };
+      case "paid":
+        return { text: "Paid", color: "cyan" };
       case "canceled":
         return { text: "Canceled", color: "gray" };
       default:

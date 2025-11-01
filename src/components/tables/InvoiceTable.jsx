@@ -15,6 +15,8 @@ import {
 import InvoiceRowSkeleton from "../../components/loading components/InvoiceRowSkeleton";
 import { UserEntity } from "../../services/entities/User";
 import ApplicationFilter from "../../components/filters/ApplicationFilter";
+import InfoButton from "./../buttons/InfoButton";
+import { toggleModal } from "../../services/redux/slices/uiSlice";
 
 export default function InvoiceTable({
   headText,
@@ -24,16 +26,26 @@ export default function InvoiceTable({
 }) {
   const dispatch = useDispatch();
   const { role, isAdmin, id } = useSelector(UserEntity);
-  const { applications, appsLoading, pagination } = useSelector(
-    (state) => state.application
-  );
   const [navPage, setNavPage] = useState({});
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
   const max = useDebounce(navPage.max, 500);
+  const { modals } = useSelector((state) => state.ui);
+  const { applications, appsLoading, pagination } = useSelector(
+    (state) => state.application
+  );
   const statuses =
     (isAdmin && !isDashboard) || (role === "ci" && bttnText !== "Evaluate")
-      ? ["accepted", "evaluated", "approved", "declined", "pending", "incomplete", "paid", "canceled"]
+      ? [
+          "accepted",
+          "evaluated",
+          "approved",
+          "declined",
+          "pending",
+          "incomplete",
+          "paid",
+          "canceled",
+        ]
       : role === "ci" && bttnText === "Evaluate"
       ? ["accepted"]
       : [];
@@ -71,6 +83,13 @@ export default function InvoiceTable({
               <ApplicationFilter setPage={setPage} />
             </section>
             <div className="mt-6 gap-x-6 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+              <InfoButton
+                click={() =>
+                  dispatch(
+                    toggleModal({ name: "legend", value: modals.legend })
+                  )
+                }
+              />
               <SearchInput
                 id="invoice_search"
                 name="log_search"

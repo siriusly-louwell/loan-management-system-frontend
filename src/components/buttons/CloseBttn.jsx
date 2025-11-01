@@ -6,7 +6,7 @@ export default function CloseBttn({ trigger }) {
     <button
       type="button"
       onClick={trigger}
-      className="dark:text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+      className="dark:text-gray-400 bg-transparent hover:bg-gray-200 active:text-rose-300 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white dark:active:text-rose-400">
       <Ex className="w-5 h-5" />
       <span className="sr-only">Close modal</span>
     </button>

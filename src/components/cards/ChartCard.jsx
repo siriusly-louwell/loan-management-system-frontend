@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function ChartCard({ label, count, scroll, children }) {
   const navigate = useNavigate();
   function goTo() {
-    navigate("/admin/dashboard/analytics");
+    navigate("/admin/app/analytics");
     setTimeout(() => {
       window.scrollTo({ top: scroll, behavior: "smooth" });
     }, 900);

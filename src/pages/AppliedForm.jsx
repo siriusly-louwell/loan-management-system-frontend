@@ -29,6 +29,8 @@ export default function AppliedForm() {
     if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
   }, [loanID, dispatch]);
 
+  console.log(application);
+
   return (
     <div className="w-full bg-gray-100 dark:bg-gray-900">
       <section className="max-w-3xl mx-auto p-4">

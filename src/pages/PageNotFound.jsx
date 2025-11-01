@@ -6,11 +6,11 @@ export default function PageNotFound() {
     <section className="bg-white flex items-center h-screen dark:bg-gray-800">
       <div className="px-4 mx-auto max-w-screen-xl lg:px-6">
         <div className="mx-auto max-w-screen-sm text-center">
-          <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-gray-500 dark:text-gray-400">
+          <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-gray-300 dark:text-gray-400">
             404
           </h1>
-          <p className="mb-4 text-3xl tracking-tight font-bold text-gray-500 md:text-4xl dark:text-gray-400">
-            Something's missing.
+          <p className="mb-4 text-3xl tracking-tight font-bold text-gray-400 md:text-4xl dark:text-gray-400">
+            Page Not Found
           </p>
           <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-500">
             Sorry, we can't find that page. You'll find lots to explore on the

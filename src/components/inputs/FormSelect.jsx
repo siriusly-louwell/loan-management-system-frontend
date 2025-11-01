@@ -27,7 +27,7 @@ export default function FormSelect({
       {loading ? (
         <section className="flex items-center gap-1">
           <SmallSpin size={20} />
-          <span className="text-sm text-rose-300 dark:text-rose-500/70">
+          <span className="text-sm text-rose-500 dark:text-rose-500/70">
             Fetching data...
           </span>
         </section>

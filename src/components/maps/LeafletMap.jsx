@@ -29,13 +29,22 @@ export default function LeafletMap({ display = false, coordinates }) {
   });
 
   useEffect(() => {
-    if ((display || role === "customer") && coordinates) {
+    if (role === "customer" && coordinates && coordinates.lat && coordinates.lng) {
       setCoords({
         lat: coordinates.lat,
         lng: coordinates.lng,
       });
     }
-  }, [display, role]);
+  }, [role]);
+
+  useEffect(() => {
+    if (display && coordinates && coordinates.lat && coordinates.lng) {
+      setCoords({
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+      });
+    }
+  }, [display, coordinates]);
 
   useEffect(() => {
     if (!display) {

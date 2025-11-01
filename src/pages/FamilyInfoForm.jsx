@@ -503,6 +503,7 @@ export default function FamilyInfoForm() {
               name="sp_region"
               label="Region"
               id="region"
+              loading={addressLoading}
               value={formData.address.sp_region}
               onchange={(e) => dispatchInput(e, "address")}>
               {regions.map((reg, i) => (
@@ -515,6 +516,7 @@ export default function FamilyInfoForm() {
               name="sp_province"
               label="Province"
               id="province"
+              loading={addressLoading}
               value={formData.address.sp_province}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.spouse}>
@@ -529,6 +531,7 @@ export default function FamilyInfoForm() {
               name="sp_city"
               label="Municipality/City"
               id="city"
+              loading={addressLoading}
               value={formData.address.sp_city}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.spouse}>
@@ -543,6 +546,7 @@ export default function FamilyInfoForm() {
               name="sp_brgy"
               label="Barangay"
               id="brgy"
+              loading={addressLoading}
               value={formData.address.sp_brgy}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.spouse}>
@@ -599,6 +603,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="sp_prev_region"
               id="region"
+              loading={copyLoading}
               value={formData.address.sp_prev_region}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
@@ -608,6 +613,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="sp_prev_province"
               id="province"
+              loading={copyLoading}
               value={formData.address.sp_prev_province}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
@@ -617,6 +623,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="sp_prev_city"
               id="city"
+              loading={copyLoading}
               value={formData.address.sp_prev_city}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
@@ -626,6 +633,7 @@ export default function FamilyInfoForm() {
               type="text"
               name="sp_prev_brgy"
               id="brgy"
+              loading={copyLoading}
               value={formData.address.sp_prev_brgy}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"

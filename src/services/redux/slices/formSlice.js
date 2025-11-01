@@ -120,6 +120,7 @@ const formSlice = createSlice({
         unitStock: {},
         unit: {},
         applicant: {},
+        comaker: {},
         address: {},
         createUser: { password: "password", status: "active" },
       };
@@ -165,13 +166,16 @@ const formSlice = createSlice({
       state.disabled = action.payload;
     },
 
-    disableAddress: (state, action) => {
+    disableAddress: (state) => {
+      const props = ["personal", "parent", "spouse", "comaker", "comake", "comaker_spouse"];
       const regions = [
         state.formData.address.region,
         state.formData.address.p_region,
         state.formData.address.sp_region,
+        state.formData.address.co_region,
+        state.formData.address.perm_region,
+        state.formData.address.co_sp_region,
       ];
-      const props = ["personal", "parent", "spouse"];
 
       regions.forEach((region, i) => {
         state.selectDisable[props[i]] =
@@ -246,7 +250,7 @@ const formSlice = createSlice({
           validId: ApplicationAPI.imgPath(data.valid_id),
           residenceImg: ApplicationAPI.imgPath(data.residence_proof),
           incomeImg: ApplicationAPI.imgPath(data.income_proof),
-        }
+        };
 
         state.formData.address = Object.fromEntries(
           Object.entries(data.address)

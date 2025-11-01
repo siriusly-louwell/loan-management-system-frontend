@@ -68,6 +68,40 @@ export const addressRepository = {
           address.sp_prev_lot_num
         );
 
+    // ? Comaker address
+    const comakerPres = address.keep_spouse
+      ? address.spouse_pres
+      : await this.fullAddress(
+          address.sp_region,
+          address.sp_province,
+          address.sp_city,
+          address.sp_brgy,
+          address.sp_purok,
+          address.sp_lot_num
+        );
+    const comakerPerm = address.keep_spouse
+      ? address.spouse_prev
+      : await this.fullAddress(
+          address.sp_prev_region,
+          address.sp_prev_province,
+          address.sp_prev_city,
+          address.sp_prev_brgy,
+          address.sp_prev_purok,
+          address.sp_prev_lot_num
+        );
+
+    // ? Comaker's spouse's parent address
+    const coSpouse = address.keep_spouse
+      ? address.spouse_pres
+      : await this.fullAddress(
+          address.sp_region,
+          address.sp_province,
+          address.sp_city,
+          address.sp_brgy,
+          address.sp_purok,
+          address.sp_lot_num
+        );
+
     return {
       personal_pres: personalPres,
       personal_prev: personalPrev,
@@ -75,6 +109,9 @@ export const addressRepository = {
       parent_prev: parentPrev,
       spouse_pres: spousePres,
       spouse_prev: spousePrev,
+      comaker_pres: comakerPres,
+      comaker_perm: comakerPerm,
+      co_spouse: coSpouse,
     };
   },
 

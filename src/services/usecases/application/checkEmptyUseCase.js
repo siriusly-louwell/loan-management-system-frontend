@@ -5,6 +5,7 @@ export function checkEmptyUseCase(pageNum, form, type = "applicant") {
     keep_personal: form.keep_personal || false,
     keep_parent: form.keep_parent || false,
     keep_spouse: form.keep_spouse || false,
+    keep_comaker: form.keep_comaker || false,
   };
 
   let hasEmpty = false;

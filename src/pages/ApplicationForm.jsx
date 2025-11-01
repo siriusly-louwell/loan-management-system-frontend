@@ -167,7 +167,7 @@ export default function ApplicationForm() {
   function toggleKeep(name, type) {
     const initial = !formData.address[name]
       ? "false"
-      : formData.address.keep_personal;
+      : formData.address[name];
     const bool = initial === "false" ? true : false;
 
     dispatch(handleChange({ name: name, value: bool, formType: type }));

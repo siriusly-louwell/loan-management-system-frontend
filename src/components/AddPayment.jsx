@@ -20,8 +20,8 @@ import { LoanEntity } from "../services/entities/Loan";
 
 export default function AddPayment() {
   const dispatch = useDispatch();
-  const { id, record_id } = useSelector(ApplicationEntity);
-  const { emi } = useSelector(LoanEntity);
+  const { id, record_id, user_id } = useSelector(ApplicationEntity);
+  const { emi, transactions } = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
   const now = new Date();
 
@@ -29,6 +29,8 @@ export default function AddPayment() {
     application_form_id: id,
     issued_at: "Rhean Motors Center",
     status: "on_time",
+    user_id: user_id,
+    total_amount: Number(transactions[0].motorcycle.price),
   });
 
   function handleChange(event) {
@@ -148,9 +150,7 @@ export default function AddPayment() {
             <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
               Amount Due
             </dt>
-            <dd className="text-base font-medium text-red-500">
-              ₱{emi}
-            </dd>
+            <dd className="text-base font-medium text-red-500">₱{emi}</dd>
           </dl>
 
           <dl className="gap-4 py-3">

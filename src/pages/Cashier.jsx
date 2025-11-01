@@ -16,11 +16,13 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import { LoanEntity } from "../services/entities/Loan";
 import { fetchPayment } from "../services/redux/slices/paymentSlice";
 import { PaymentEntity } from "../services/entities/Payment";
+import { fetchScore } from "../services/redux/slices/creditSlice";
 
 export default function Cashier() {
   const [id, setId] = useState({ search: "" });
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
+  const { creditScore, creditLoading } = useSelector((state) => state.credit);
   const { loan, loanLoading } = useSelector((state) => state.application);
   const { initialBalance, unitImage, emi } = useSelector(LoanEntity);
   const payment = useSelector(PaymentEntity);
@@ -29,10 +31,12 @@ export default function Cashier() {
   const emptyObj = Object.keys(loan).length === 0;
 
   useEffect(() => {
-    if (loan.id)
+    if (loan.id) {
+      dispatch(fetchScore({ id: loan.user_id }));
       dispatch(
         fetchPayment({ id: loan.id, by: "application_form_id", isLatest: true })
       );
+    }
     if (id.search !== "")
       dispatch(fetchLoan({ id: search, by: "record_id", stff: "record_id" }));
   }, [dispatch, search, loan.id]);
@@ -62,7 +66,7 @@ export default function Cashier() {
                 Account Details
               </h2>
 
-              {loanLoading && emptySearch ? (
+              {loanLoading && creditLoading && emptySearch ? (
                 <AccDetailSkeleton />
               ) : emptySearch && emptyObj ? (
                 <div className="flex w-full py-20 items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-600">
@@ -99,12 +103,8 @@ export default function Cashier() {
                       Credit Score:
                     </h2>
                     <h2 className="flex items-center text-xl font-bold leading-none text-green-400 sm:text-2xl">
-                      67
+                      {creditScore.score?.value}
                     </h2>
-                    <span className="ms-2 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                      <SmallUpArrow />
-                      15%
-                    </span>
                   </div>
                   <div className="grid gap-4 sm:col-span-2 sm:grid-cols-3">
                     <PfpLabel caption="Salary" label={loan.parsedSalary} />
@@ -196,7 +196,9 @@ export default function Cashier() {
                     Amount Due
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : `₱${parseFloat(emi).toLocaleString()}`}
+                    {emptyObj
+                      ? "- - -"
+                      : `₱${parseFloat(emi).toLocaleString()}`}
                   </dd>
                 </dl>
 

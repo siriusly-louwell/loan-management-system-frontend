@@ -5,6 +5,7 @@ export class Payment {
     application_form_id,
     application,
     amount_paid,
+    balance,
     cert_num,
     status,
     created_at,
@@ -13,13 +14,33 @@ export class Payment {
     this.application_form_id = application_form_id;
     this.application = application;
     this.amount_paid = amount_paid;
+    this.balance = balance;
     this.cert_num = cert_num;
     this.status = status;
     this.created_at = created_at;
   }
 
   get amount() {
-    return this.amount_paid ? `₱${parseFloat(this.amount_paid).toLocaleString()}` : "N/A";
+    return this.amount_paid
+      ? `₱${parseFloat(this.amount_paid).toLocaleString()}`
+      : "N/A";
+  }
+
+  get currentBalance() {
+    return this.balance
+      ? `₱${parseFloat(this.balance).toLocaleString()}`
+      : "N/A";
+  }
+
+  get date() {
+    if (!this.created_at) return "";
+    const date = new Date(this.created_at);
+
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
   get payStatus() {
@@ -28,19 +49,6 @@ export class Payment {
       : this.status === "late"
       ? ["Late", "red"]
       : ["N/A", "gray"];
-  }
-
-  get date() {
-    if(!this.created_at) return "N/A";
-    const date = new Date(this.created_at);
-
-    return (
-      date.getFullYear() +
-      "." +
-      String(date.getMonth() + 1).padStart(2, "0") +
-      "." +
-      String(date.getDate()).padStart(2, "0")
-    );
   }
 }
 

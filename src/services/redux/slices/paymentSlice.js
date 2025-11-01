@@ -107,15 +107,15 @@ const paymentSlice = createSlice({
 
       // ? Fetch all payments
       .addCase(fetchPayments.pending, (state) => {
-        state.paymentLoading = true;
+        state.paymentsLoading = true;
         state.paymentError = null;
       })
       .addCase(fetchPayments.fulfilled, (state, action) => {
-        state.paymentLoading = false;
+        state.paymentsLoading = false;
         state.payments = action.payload.data;
       })
       .addCase(fetchPayments.rejected, (state, action) => {
-        state.paymentLoading = false;
+        state.paymentsLoading = false;
         state.paymentError = action.payload;
       })
 

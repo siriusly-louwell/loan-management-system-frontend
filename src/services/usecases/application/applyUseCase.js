@@ -19,6 +19,9 @@ export async function applyUseCase(data) {
     parent_prev: fullAddress.parent_prev,
     spouse_pres: fullAddress.spouse_pres,
     spouse_prev: fullAddress.spouse_prev,
+    comaker_pres: fullAddress.comaker_pres,
+    comaker_perm: fullAddress.comaker_perm,
+    co_spouse: fullAddress.co_spouse,
     employer_address: address.employer_address,
     lat: address.lat,
     lng: address.lng,
@@ -27,6 +30,7 @@ export async function applyUseCase(data) {
   const response = await applyRepository.apply({
     applicant: applicant,
     unit: data.formData.unit,
+    comaker: data.formData.comaker,
     files: data.files,
   });
 

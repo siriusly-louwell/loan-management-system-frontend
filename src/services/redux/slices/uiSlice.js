@@ -30,8 +30,11 @@ const uiSlice = createSlice({
       state.pageNum = 0;
       state.stepIndex = null;
       state.pageRoute = null;
+      state.pageNum = 0;
       state.modals = {};
       state.modal = {};
+
+      formRepository.clearPage();
     },
 
     setAlert: (state, action) => {

@@ -58,6 +58,7 @@ const formSlice = createSlice({
       unitStock: {},
       unit: {},
       applicant: {},
+      comaker: {},
       address: {},
       createUser: { password: "password", status: "active" },
     },
@@ -167,7 +168,14 @@ const formSlice = createSlice({
     },
 
     disableAddress: (state) => {
-      const props = ["personal", "parent", "spouse", "comaker", "comake", "comaker_spouse"];
+      const props = [
+        "personal",
+        "parent",
+        "spouse",
+        "comaker",
+        "comake",
+        "comaker_spouse",
+      ];
       const regions = [
         state.formData.address.region,
         state.formData.address.p_region,
@@ -235,11 +243,12 @@ const formSlice = createSlice({
             .filter(
               ([key]) =>
                 key !== "id" &&
+                key !== "ci_id" &&
                 key !== "address" &&
                 key !== "created_at" &&
                 key !== "updated_at" &&
                 key !== "address_id" &&
-                key !== "ci_id"
+                key !== "isCancelled"
             )
             .map(([key, value]) => [key, value === null ? "" : value])
         );

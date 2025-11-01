@@ -5,14 +5,16 @@ import copy_icon from "../assets/images/copy_icon.png";
 import FileInput from "../components/inputs/FileInput";
 import FormSelect from "../components/inputs/FormSelect";
 import FormCheck from "../components/checkboxes/FormCheck";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserEntity } from "../services/entities/User";
 import { useOutletContext } from "react-router-dom";
+import { disableAddress, setType } from "../services/redux/slices/formSlice";
+import { useEffect } from "react";
 
 export default function ComakerInfo() {
-  const { toggleKeep, dispatchInput } = useOutletContext();
+  const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
-  // const [comaker, setComaker] = useState({});
+  const { toggleKeep, dispatchInput } = useOutletContext();
   const { formData, selectDisable } = useSelector((state) => state.form);
   const { addressLoading, regions, provinces, cities, barangays } = useSelector(
     (state) => state.address
@@ -21,23 +23,13 @@ export default function ComakerInfo() {
     formData.address.co_region !== undefined &&
     formData.address.co_region !== "__EMPTY__";
 
-  // function comakeChange(event) {
-  //   setComaker({
-  //     ...comaker,
-  //     [event.target.name]: event.target.value,
-  //   });
-  // }
+  useEffect(() => {
+    dispatch(setType("comaker"));
+  }, []);
 
-  // function copycomake() {
-  //   setComaker({
-  //     ...comaker,
-  //     perm_country: comaker.country,
-  //     perm_region: comaker.region,
-  //     perm_province: comaker.province,
-  //     perm_city: comaker.city,
-  //     perm_brgy: comaker.brgy,
-  //   });
-  // }
+  useEffect(() => {
+    dispatch(disableAddress());
+  }, [formData, dispatch]);
 
   return (
     <>
@@ -49,47 +41,89 @@ export default function ComakerInfo() {
           label="First name"
           type="text"
           name="first_name"
-          id="name"
+          id="first-name"
           placeholder="Type first name here"
-          onchange={() => {}}
+          value={formData.comaker.first_name}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Middle name"
           type="text"
           name="middle_name"
-          id="name"
+          id="middle-name"
           placeholder="Type middle name here"
-          onchange={() => {}}
+          value={formData.comaker.middle_name}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Last name"
           type="text"
           name="last_name"
-          id="name"
+          id="last-name"
           placeholder="Type last name here"
-          onchange={() => {}}
+          value={formData.comaker.last_name}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Date of Birth"
           type="date"
-          name="prod_name"
-          id="name"
-          onchange={() => {}}
+          name="birthdate"
+          id="birthdate"
+          value={formData.comaker.birthdate}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Place of Birth"
           type="text"
-          name="prod_name"
-          id="name"
+          name="birth_place"
+          id="birth-place"
           placeholder="Birth place address"
-          onchange={() => {}}
+          value={formData.comaker.birth_place}
+          onchange={(e) => dispatchInput(e)}
         />
-        <FormSelect name="gender" label="Sex" id="gender">
+        <FormSelect
+          label="Sex"
+          name="gender"
+          id="gender"
+          value={formData.comaker.gender}
+          onchange={(e) => dispatchInput(e)}>
           <option>Male</option>
           <option>Female</option>
           <option>Prefer not to say</option>
         </FormSelect>
-        <FormSelect name="status" label="Civil Status" id="status">
+        <FormInput
+          label="Contact Number"
+          type="text"
+          name="contact_num"
+          id="contact"
+          placeholder="Phone number here"
+          value={formData.comaker.contact_num}
+          onchange={(e) => dispatchInput(e)}
+        />
+        <FormInput
+          label="Email Address"
+          type="email"
+          name="email"
+          id="email"
+          placeholder="doe@gmail.com"
+          value={formData.comaker.email}
+          onchange={(e) => dispatchInput(e)}
+        />
+        <FormInput
+          label="Facebook Account"
+          type="text"
+          name="facebook"
+          id="facebook"
+          placeholder="Facebook name here"
+          value={formData.comaker.facebook}
+          onchange={(e) => dispatchInput(e)}
+        />
+        <FormSelect
+          label="Civil Status"
+          name="status"
+          id="status"
+          value={formData.comaker.status}
+          onchange={(e) => dispatchInput(e)}>
           <option>Single</option>
           <option>In a relationship</option>
           <option>Married</option>
@@ -99,18 +133,20 @@ export default function ComakerInfo() {
         <FormInput
           label="Religion"
           type="text"
-          name="prod_name"
-          id="name"
+          name="religion"
+          id="religion"
           placeholder="Catholic/INC"
-          onchange={() => {}}
+          value={formData.comaker.religion}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Tribe"
           type="text"
-          name="prod_name"
-          id="name"
+          name="tribe"
+          id="tribe"
           placeholder="Type tribe here"
-          onchange={() => {}}
+          value={formData.comaker.tribe}
+          onchange={(e) => dispatchInput(e)}
         />
       </div>
 
@@ -236,7 +272,7 @@ export default function ComakerInfo() {
           <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
             Permanent Address:
           </h3>
-          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3">
+          <div className="grid gap-4 mb-4 pb-2 sm:grid-cols-3 border-b border-gray-500">
             <FormSelect
               name="perm_region"
               label="Region"
@@ -317,142 +353,67 @@ export default function ComakerInfo() {
         </>
       )}
 
-      {/* <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
-        Permanent Address:
-      </h3>
-      <FormCheck
-        label="Copy Residential Address"
-        type="checkbox"
-        id="copy_address"
-        style="mb-4"
-        change={copycomake}
-      />
       <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-        <FormInput
-          label="Country"
-          type="text"
-          name="perm_country"
-          id="country"
-          value={comaker.perm_country}
-          onchange={comakeChange}
-          placeholder="Type country here"
-        />
-        <FormInput
-          label="Region"
-          type="text"
-          name="perm_region"
-          id="region"
-          value={comaker.perm_region}
-          onchange={comakeChange}
-          placeholder="Type region here"
-        />
-        <FormInput
-          label="Province"
-          type="text"
-          name="perm_province"
-          id="province"
-          value={comaker.perm_province}
-          onchange={comakeChange}
-          placeholder="Type province here"
-        />
-        <FormInput
-          label="City/Municipality"
-          type="text"
-          name="perm_city"
-          id="city"
-          value={comaker.perm_city}
-          onchange={comakeChange}
-          placeholder="Type city here"
-        />
-        <FormInput
-          label="Barangay"
-          type="text"
-          name="perm_brgy"
-          id="brgy"
-          value={comaker.perm_brgy}
-          onchange={comakeChange}
-          placeholder="Type barangay here"
-        />
-      </div> */}
-
-      <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-        <FormInput
-          label="Contact Number"
-          type="text"
-          name="contact_num"
-          id="name"
-          placeholder="Phone number here"
-          onchange={() => {}}
-        />
-        <FormInput
-          label="Email Address"
-          type="email"
-          name="email"
-          id="name"
-          placeholder="doe@gmail.com"
-          onchange={() => {}}
-        />
-        <FormInput
-          label="Facebook Account"
-          type="text"
-          name="facebook"
-          id="name"
-          placeholder="Facebook name here"
-          onchange={() => {}}
-        />
         <FormInput
           label="Citizenship"
           type="text"
           name="citizenship"
-          id="name"
+          id="citizenship"
           placeholder="Type citizenhip"
-          onchange={() => {}}
+          value={formData.comaker.citizenship}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Occupation"
           type="text"
           name="occupation"
-          id="name"
+          id="occupation"
           placeholder="Type occupation here"
-          onchange={() => {}}
+          value={formData.comaker.occupation}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Years of Service"
-          type="text"
+          type="number"
           name="yrs_in_service"
-          id="name"
+          id="yrs-service"
           placeholder="Type last name here"
-          onchange={() => {}}
+          value={formData.comaker.yrs_in_service}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Employment Status"
           type="date"
           name="employment_status"
-          id="name"
-          onchange={() => {}}
+          id="emp-status"
+          value={formData.comaker.employment_status}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Business Name/Employer"
           type="text"
           name="employer"
-          id="name"
+          id="employer"
           placeholder="Name of business or employer"
-          onchange={() => {}}
+          value={formData.comaker.employer}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Business/Employer Address"
           type="text"
           name="comaker_emp_address"
-          id="name"
+          id="co-emp-address"
           placeholder="Type business address here"
-          onchange={() => {}}
+          value={formData.comaker.comaker_emp_address}
+          onchange={(e) => dispatchInput(e)}
         />
         <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
           <FormSelect
-            name="educ_attain"
             label="Educ. Attainment"
-            id="educ_attain"
-            require={true}>
+            name="educ_attain"
+            id="educ-attain"
+            value={formData.comaker.educ_attain}
+            onchange={(e) => dispatchInput(e)}>
             <option>High School</option>
             <option>College Level</option>
             <option>College Graduate</option>
@@ -464,7 +425,6 @@ export default function ComakerInfo() {
             name="prod_name"
             id="name"
             placeholder="Others"
-            onchange={() => {}}
           />
         </div>
       </div>
@@ -477,65 +437,73 @@ export default function ComakerInfo() {
           label="First name"
           type="text"
           name="spouse_first"
-          id="name"
+          id="spouse-first"
           placeholder="Spouse first name here"
-          onchange={() => {}}
+          value={formData.comaker.spouse_first}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Middle name"
           type="text"
           name="spouse_middle"
-          id="name"
+          id="spouse-middle"
           placeholder="Spouse middle name here"
-          onchange={() => {}}
+          value={formData.comaker.spouse_middle}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Last name"
           type="text"
           name="spouse_last"
-          id="name"
+          id="spouse-last"
           placeholder="Spouse last name here"
-          onchange={() => {}}
+          value={formData.comaker.spouse_last}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Citizenship"
           type="text"
           name="sp_citizenship"
-          id="name"
+          id="sp-citizenship"
           placeholder="Type citizenhip"
-          onchange={() => {}}
+          value={formData.comaker.sp_citizenship}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Occupation"
           type="text"
           name="sp_occupation"
-          id="name"
+          id="sp-occupation"
           placeholder="Type occupation here"
-          onchange={() => {}}
+          value={formData.comaker.sp_occupation}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Years of Service"
-          type="text"
+          type="number"
           name="sp_yrs_in_service"
-          id="name"
+          id="sp-yrs-service"
           placeholder="Type last name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_yrs_in_service}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Employment Status"
           type="date"
           name="sp_emp_status"
-          id="name"
+          id="sp-emp-status"
           placeholder=""
-          onchange={() => {}}
+          value={formData.comaker.sp_emp_status}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Employment Address"
           type="text"
           name="spouse_emp_address"
-          id="name"
+          id="sp-emp-address"
           placeholder="Employer address here"
-          onchange={() => {}}
+          value={formData.comaker.spouse_emp_address}
+          onchange={(e) => dispatchInput(e)}
         />
         <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
           <FormInput
@@ -544,7 +512,6 @@ export default function ComakerInfo() {
             name="prod_name"
             id="name"
             placeholder="0"
-            onchange={() => {}}
           />
           <FormInput
             label="Dep. Children"
@@ -552,7 +519,6 @@ export default function ComakerInfo() {
             name="prod_name"
             id="name"
             placeholder="0"
-            onchange={() => {}}
           />
         </div>
       </div>
@@ -565,56 +531,62 @@ export default function ComakerInfo() {
           label="Father's First Name"
           type="text"
           name="sp_father_first"
-          id="name"
+          id="sp-f-first"
           placeholder="First name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_father_first}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Father's Middle Name"
           type="text"
           name="sp_father_middle"
-          id="name"
+          id="sp-f-middle"
           placeholder="Middle name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_father_middle}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Father's Last Name"
           type="text"
           name="sp_father_last"
-          id="name"
+          id="sp-f-last"
           placeholder="Last name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_father_last}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Mother's First Name"
           type="text"
           name="sp_mother_first"
-          id="name"
+          id="sp-m-first"
           placeholder="First name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_mother_first}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Mother's Middle Name"
           type="text"
           name="sp_mother_middle"
-          id="name"
+          id="sp-m-middle"
           placeholder="Middle name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_mother_middle}
+          onchange={(e) => dispatchInput(e)}
         />
         <FormInput
           label="Mother's maiden Name"
           type="text"
           name="sp_mother_last"
-          id="name"
+          id="sp-m-last"
           placeholder="Last name here"
-          onchange={() => {}}
+          value={formData.comaker.sp_mother_last}
+          onchange={(e) => dispatchInput(e)}
         />
       </div>
 
       {role === "customer" && (
         <>
           <FormCheck
-            label="Keep current spouse address"
+            label="Keep current spouse's parent address"
             type="checkbox"
             name="keep_comaker"
             id="keep-comaker"

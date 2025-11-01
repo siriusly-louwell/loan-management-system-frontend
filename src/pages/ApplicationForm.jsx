@@ -72,13 +72,7 @@ export default function ApplicationForm() {
   }, []);
 
   useEffect(() => {
-    dispatch(
-      fetchAddress({ type: "provinces", value: formData.address.region })
-    );
-    dispatch(
-      fetchAddress({ type: "cities", value: formData.address.province })
-    );
-    dispatch(fetchAddress({ type: "barangays", value: formData.address.city }));
+    fetchAllAddress(["region", "province", "city"]);
   }, [
     formData.address.region,
     formData.address.province,
@@ -86,15 +80,7 @@ export default function ApplicationForm() {
   ]);
 
   useEffect(() => {
-    dispatch(
-      fetchAddress({ type: "provinces", value: formData.address.p_region })
-    );
-    dispatch(
-      fetchAddress({ type: "cities", value: formData.address.p_province })
-    );
-    dispatch(
-      fetchAddress({ type: "barangays", value: formData.address.p_city })
-    );
+    fetchAllAddress(["p_region", "p_province", "p_city"]);
   }, [
     formData.address.p_region,
     formData.address.p_province,
@@ -102,19 +88,35 @@ export default function ApplicationForm() {
   ]);
 
   useEffect(() => {
-    dispatch(
-      fetchAddress({ type: "provinces", value: formData.address.sp_region })
-    );
-    dispatch(
-      fetchAddress({ type: "cities", value: formData.address.sp_province })
-    );
-    dispatch(
-      fetchAddress({ type: "barangays", value: formData.address.sp_city })
-    );
+    fetchAllAddress(["sp_region", "sp_province", "sp_city"]);
   }, [
     formData.address.sp_region,
     formData.address.sp_province,
     formData.address.sp_city,
+  ]);
+
+  useEffect(() => {
+    fetchAllAddress(["co_region", "co_province", "co_city"]);
+  }, [
+    formData.address.co_region,
+    formData.address.co_province,
+    formData.address.co_city,
+  ]);
+
+  useEffect(() => {
+    fetchAllAddress(["perm_region", "perm_province", "perm_city"]);
+  }, [
+    formData.address.perm_region,
+    formData.address.perm_province,
+    formData.address.perm_city,
+  ]);
+
+  useEffect(() => {
+    fetchAllAddress(["co_sp_region", "co_sp_province", "co_sp_city"]);
+  }, [
+    formData.address.co_sp_region,
+    formData.address.co_sp_province,
+    formData.address.co_sp_city,
   ]);
 
   // ? On-load / Refresh initializations
@@ -126,6 +128,18 @@ export default function ApplicationForm() {
       dispatch(getPageNum());
     }
   }, []);
+
+  function fetchAllAddress(names) {
+    dispatch(
+      fetchAddress({ type: "provinces", value: formData.address[names[0]] })
+    );
+    dispatch(
+      fetchAddress({ type: "cities", value: formData.address[names[1]] })
+    );
+    dispatch(
+      fetchAddress({ type: "barangays", value: formData.address[names[2]] })
+    );
+  }
 
   // ? Auto save form
   useEffect(() => {
@@ -165,9 +179,7 @@ export default function ApplicationForm() {
 
   // ? Keep address toggle
   function toggleKeep(name, type) {
-    const initial = !formData.address[name]
-      ? "false"
-      : formData.address[name];
+    const initial = !formData.address[name] ? "false" : formData.address[name];
     const bool = initial === "false" ? true : false;
 
     dispatch(handleChange({ name: name, value: bool, formType: type }));

@@ -83,6 +83,7 @@ export const applyRepository = {
     }
 
     submitData.append("transaction", JSON.stringify(data.unit));
+    submitData.append("comaker", JSON.stringify(data.comaker));
 
     Object.entries(data.files).forEach(([key, file]) => {
       submitData.append(key, file);

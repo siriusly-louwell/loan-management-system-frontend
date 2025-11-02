@@ -51,6 +51,7 @@ export default function FormRequirements() {
               label="Valid ID"
               name="valid_id"
               type="img"
+              accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}
             />
@@ -58,6 +59,7 @@ export default function FormRequirements() {
               label="2x2 Picture"
               name="id_pic"
               type="img"
+              accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}
             />
@@ -65,6 +67,7 @@ export default function FormRequirements() {
               label="Proof of Residence"
               name="residence_proof"
               type="img"
+              accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}
             />
@@ -72,6 +75,7 @@ export default function FormRequirements() {
               label="Proof of Income"
               name="income_proof"
               type="img"
+              accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}
             />

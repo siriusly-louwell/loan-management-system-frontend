@@ -14,7 +14,7 @@ import { useEffect } from "react";
 export default function ComakerInfo() {
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
-  const { toggleKeep, dispatchInput } = useOutletContext();
+  const { toggleKeep, dispatchInput, fileChange } = useOutletContext();
   const { formData, selectDisable } = useSelector((state) => state.form);
   const { addressLoading, regions, provinces, cities, barangays } = useSelector(
     (state) => state.address
@@ -695,111 +695,6 @@ export default function ComakerInfo() {
           </div>
         </>
       )}
-      {/* <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
-        Parent's Address:
-      </h3>
-      <div className="grid gap-4 mb-4 sm:grid-cols-3 pb-2 border-b dark:border-gray-500">
-        <FormSelect name="country" label="Country" id="country">
-          <option>Nigeria</option>
-          <option>Greece</option>
-          <option>USA</option>
-          <option>Philippines</option>
-          <option>Italy</option>
-          <option>Germany</option>
-          <option>Afganistan</option>
-          <option>India</option>
-          <option>Pakistan</option>
-          <option>Bulgaria</option>
-          <option>Bahrain</option>
-          <option>Botswana</option>
-          <option>France</option>
-          <option>Great Britain</option>
-        </FormSelect>
-        <FormSelect name="region" label="Region" id="region">
-          <option>Region I</option>
-          <option>Region II</option>
-          <option>Region III</option>
-          <option>Region IV</option>
-          <option>Region V</option>
-          <option>Region VI</option>
-          <option>Region VII</option>
-          <option>Region VIII</option>
-          <option>Region IX</option>
-          <option>Region X</option>
-          <option>Region XI</option>
-          <option>Region XII</option>
-          <option>Region XIII</option>
-          <option>Region XIV</option>
-        </FormSelect>
-        <FormSelect name="province" label="Province" id="province">
-          <option>Zamboanga del norte</option>
-          <option>Zamboanga del sur</option>
-          <option>Zamboanga sibugay</option>
-          <option>Davao del norte</option>
-          <option>Davao del sur</option>
-          <option>Davao de oro(Compostela Valley)</option>
-          <option>Davao oriental</option>
-          <option>Davao Occidental</option>
-          <option>Cotabato</option>
-          <option>Sarangani</option>
-          <option>South Cotabato</option>
-        </FormSelect>
-        <FormSelect name="city" label="Municipality/City" id="city">
-          <option>Davao City</option>
-          <option>Panabo City</option>
-          <option>Tagum City</option>
-          <option>Samal Island</option>
-          <option>Digos City</option>
-          <option>Mati City</option>
-          <option>Talaingod</option>
-          <option>San Isidro</option>
-          <option>Carmen</option>
-          <option>Kapalong</option>
-          <option>New Corilla</option>
-          <option>Sto. Tomas</option>
-        </FormSelect>
-        <FormSelect name="brgy" label="Barangay" id="brgy">
-          <option>A. O. Floriendo</option>
-          <option>Buenavista</option>
-          <option>Cacao</option>
-          <option>Cagangohan</option>
-          <option>Consolacion</option>
-          <option>Dapco</option>
-          <option>Datu Abdul Dadia</option>
-          <option>Gredu</option>
-          <option>J. P. Laurel</option>
-          <option>Kasilak</option>
-          <option>Katipunan</option>
-          <option>Katualan</option>
-          <option>Kiotoy</option>
-          <option>Little Panay</option>
-          <option>Lower Panaga</option>
-          <option>Mabunao</option>
-          <option>Maduao</option>
-          <option>Malativas</option>
-          <option>Manay</option>
-          <option>Nanyo</option>
-          <option>New Malaga</option>
-          <option>New Malitbog</option>
-          <option>New Pandan</option>
-          <option>New Visayas</option>
-          <option>Quezon</option>
-          <option>Salvacion</option>
-          <option>San Francisco</option>
-          <option>San Nicolas</option>
-          <option>San Pedro</option>
-          <option>San Roque</option>
-          <option>San Vicente</option>
-          <option>Santa Cruz</option>
-          <option>Santo Nino</option>
-          <option>Sindaton</option>
-          <option>Southern DAvao</option>
-          <option>Tagpore</option>
-          <option>Tibungol</option>
-          <option>Upper Licanan</option>
-          <option>Waterfall</option>
-        </FormSelect>
-      </div> */}
 
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
         <div className="grid gap-4 sm:grid-cols-4">
@@ -844,10 +739,34 @@ export default function ComakerInfo() {
       </div>
 
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-        <FileInput label="Sketch Image" type="img" />
-        <FileInput label="Valid ID" type="img" />
-        <FileInput label="2x2 ID picture" type="img" />
-        <FileInput label="Proof of Residence" type="img" />
+        <FileInput
+          label="Sketch Image"
+          type="img"
+          name="co_sketch"
+          accept=".jpg,.png,.pdf"
+          change={fileChange}
+        />
+        <FileInput
+          label="Valid ID"
+          type="img"
+          name="co_valid_id"
+          accept=".jpg,.png,.pdf"
+          change={fileChange}
+        />
+        <FileInput
+          label="2x2 ID picture"
+          type="img"
+          name="co_id_pic"
+          accept=".jpg,.png,.pdf"
+          change={fileChange}
+        />
+        <FileInput
+          label="Proof of Residence"
+          type="img"
+          name="co_residence_proof"
+          accept=".jpg,.png,.pdf"
+          change={fileChange}
+        />
       </div>
     </>
   );

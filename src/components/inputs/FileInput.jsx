@@ -5,6 +5,7 @@ export default function FileInput({
   type,
   change,
   name,
+  accept,
   require = false,
 }) {
   const fileType =
@@ -24,6 +25,7 @@ export default function FileInput({
         id={name}
         type="file"
         name={name}
+        accept={accept}
       />
       <p className="mt-1 text-sm text-gray-500 dark:text-gray-300">
         {fileType}

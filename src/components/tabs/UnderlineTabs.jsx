@@ -1,6 +1,4 @@
 import React from "react";
-import UlTab from "./UlTab";
-import { useLocation } from "react-router-dom";
 
 export default function UnderlineTabs({ children }) {
   // const location = useLocation();

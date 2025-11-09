@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Button from "./buttons/Button";
 import CloseBttn from "./buttons/CloseBttn";
-import Alert from "./Alert";
-import Spinner from "./loading components/Spinner";
 import FormInput from "./inputs/FormInput";
 import CustomBttn from "./buttons/CustomBttn";
 import BasicBttn from "./buttons/BasicBttn";

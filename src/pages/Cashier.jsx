@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Button from "../components/buttons/Button";
-import SmallUpArrow from "../assets/icons/SmallUpArrow";
 import LoanList from "../components/LoanList";
 import PfpLabel from "../components/PfpLabel";
 import Search from "../assets/icons/Search";

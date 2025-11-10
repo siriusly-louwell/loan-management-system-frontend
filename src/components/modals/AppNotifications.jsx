@@ -10,16 +10,19 @@ import PaymentRowSkeleton from "../loading components/PaymentRowSkeleton";
 import { saveLoan } from "../../services/redux/slices/applicationSlice";
 import { ApplicationEntity } from "../../services/entities/Application";
 import EmptySearch from "../empty states/EmptySearch";
+import { UserEntity } from "../../services/entities/User";
 
 export default function AppNotifications({ isCustomer = false }) {
   const dispatch = useDispatch();
+  const { id, role } = useSelector(UserEntity);
   const { user_id } = useSelector(ApplicationEntity);
   const payments = useSelector(PaymentEntities);
   const { paymentsLoading } = useSelector((state) => state.payment);
+  const customer = role === "customer" ? id : user_id;
 
   useEffect(() => {
-    dispatch(fetchPayments({ customer: isCustomer && user_id }));
-  }, [isCustomer, user_id, dispatch]);
+    dispatch(fetchPayments({ customer: isCustomer && customer }));
+  }, [isCustomer, customer, dispatch]);
 
   return (
     <section className="w-full h-full py-10">

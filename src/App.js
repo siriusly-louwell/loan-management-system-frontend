@@ -103,7 +103,7 @@ function App() {
             path="history"
             element={
               <ProtectedRoute type="customer">
-                <AppNotifications />
+                <AppNotifications isCustomer={true} />
               </ProtectedRoute>
             }
           />

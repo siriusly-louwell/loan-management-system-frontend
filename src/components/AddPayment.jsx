@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./buttons/Button";
 import CloseBttn from "./buttons/CloseBttn";
 import FormInput from "./inputs/FormInput";
@@ -30,6 +30,15 @@ export default function AddPayment() {
     user_id: user_id,
     total_amount: Number(transactions[0].motorcycle.price),
   });
+
+  useEffect(()=> {
+    setPayment({
+      ...payment,
+      application_form_id: id,
+      user_id: user_id,
+      total_amount: transactions[0].motorcycle.price
+    });
+  }, [id, user_id, transactions[0].motorcycle.price])
 
   function handleChange(event) {
     setPayment({

@@ -205,10 +205,6 @@ export default function LoanDetails({ setApproval }) {
                         text="Approve Application"
                         icon={<CheckCircle2 className="w-4 h-4 mr-2" />}
                         onclick={() => {
-                          // setApproval({
-                          //   label: "Do you want to approve this application?",
-                          //   text: "approved",
-                          // });
                           dispatch(
                             toggleModal({
                               name: "approveLoan",

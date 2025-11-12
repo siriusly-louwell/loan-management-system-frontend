@@ -511,6 +511,7 @@ export default function ComakerInfo() {
             type="text"
             name="prod_name"
             id="name"
+            value=""
             placeholder="0"
           />
           <FormInput
@@ -518,6 +519,7 @@ export default function ComakerInfo() {
             type="text"
             name="prod_name"
             id="name"
+            value=""
             placeholder="0"
           />
         </div>
@@ -719,6 +721,7 @@ export default function ComakerInfo() {
             type="text"
             name="prod_name"
             id="name"
+            value=""
             placeholder="Type school here"
             onchange={() => {}}
           />

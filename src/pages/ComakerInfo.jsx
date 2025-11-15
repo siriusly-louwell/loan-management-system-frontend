@@ -22,7 +22,12 @@ export default function ComakerInfo() {
   const comakeCondition =
     formData.address.co_region !== undefined &&
     formData.address.co_region !== "__EMPTY__";
-
+  const permCondition =
+    formData.address.perm_region !== undefined &&
+    formData.address.perm_region !== "__EMPTY__";
+  const spCondition =
+    formData.address.co_sp_region !== undefined &&
+    formData.address.co_sp_region !== "__EMPTY__";
   useEffect(() => {
     dispatch(setType("comaker"));
   }, []);
@@ -208,7 +213,7 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_region"
               label="Region"
-              id="region"
+              id="co-region"
               loading={addressLoading}
               value={formData.address.co_region}
               onchange={(e) => dispatchInput(e, "address")}
@@ -223,7 +228,7 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_province"
               label="Province"
-              id="province"
+              id="co-province"
               loading={addressLoading}
               value={formData.address.co_province}
               onchange={(e) => dispatchInput(e, "address")}
@@ -240,7 +245,7 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_city"
               label="Municipality/City"
-              id="city"
+              id="xo-city"
               loading={addressLoading}
               value={formData.address.co_city}
               onchange={(e) => dispatchInput(e, "address")}
@@ -257,7 +262,7 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_brgy"
               label="Barangay"
-              id="brgy"
+              id="co-brgy"
               loading={addressLoading}
               value={formData.address.co_brgy}
               onchange={(e) => dispatchInput(e, "address")}
@@ -300,7 +305,7 @@ export default function ComakerInfo() {
             <FormSelect
               name="perm_region"
               label="Region"
-              id="region"
+              id="perm-region"
               loading={addressLoading}
               value={formData.address.perm_region}
               onchange={(e) => dispatchInput(e, "address")}
@@ -315,14 +320,12 @@ export default function ComakerInfo() {
             <FormSelect
               name="perm_province"
               label="Province"
-              id="province"
+              id="perm-province"
               loading={addressLoading}
               value={formData.address.perm_province}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comake}
-              require={true}
-            >
-              {comakeCondition &&
+              disable={selectDisable.comake}>
+              {permCondition &&
                 provinces.map((prov, i) => (
                   <option key={i} value={prov.code}>
                     {prov.name}
@@ -332,14 +335,12 @@ export default function ComakerInfo() {
             <FormSelect
               name="perm_city"
               label="Municipality/City"
-              id="city"
+              id="perm-city"
               loading={addressLoading}
               value={formData.address.perm_city}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comake}
-              require={true}
-            >
-              {comakeCondition &&
+              disable={selectDisable.comake}>
+              {permCondition &&
                 cities.map((cit, i) => (
                   <option key={i} value={cit.code}>
                     {cit.name}
@@ -349,14 +350,12 @@ export default function ComakerInfo() {
             <FormSelect
               name="perm_brgy"
               label="Barangay"
-              id="brgy"
+              id="perm-brgy"
               loading={addressLoading}
               value={formData.address.perm_brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comake}
-              require={true}
-            >
-              {comakeCondition &&
+              disable={selectDisable.comake}>
+              {permCondition &&
                 barangays.map((bgy, i) => (
                   <option key={i} value={bgy.code}>
                     {bgy.name}
@@ -677,7 +676,7 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_sp_region"
               label="Region"
-              id="region"
+              id="sp-region"
               loading={addressLoading}
               value={formData.address.co_sp_region}
               onchange={(e) => dispatchInput(e, "address")}
@@ -692,14 +691,12 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_sp_province"
               label="Province"
-              id="province"
+              id="sp-province"
               loading={addressLoading}
               value={formData.address.co_sp_province}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comaker_spouse}
-              require={true}
-            >
-              {comakeCondition &&
+              disable={selectDisable.comaker_spouse}>
+              {spCondition &&
                 provinces.map((prov, i) => (
                   <option key={i} value={prov.code}>
                     {prov.name}
@@ -709,14 +706,12 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_sp_city"
               label="Municipality/City"
-              id="city"
+              id="sp-city"
               loading={addressLoading}
               value={formData.address.co_sp_city}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comaker_spouse}
-              require={true}
-            >
-              {comakeCondition &&
+              disable={selectDisable.comaker_spouse}>
+              {spCondition &&
                 cities.map((cit, i) => (
                   <option key={i} value={cit.code}>
                     {cit.name}
@@ -726,14 +721,12 @@ export default function ComakerInfo() {
             <FormSelect
               name="co_sp_brgy"
               label="Barangay"
-              id="brgy"
+              id="sp-brgy"
               loading={addressLoading}
               value={formData.address.co_sp_brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comaker_spouse}
-              require={true}
-            >
-              {comakeCondition &&
+              disable={selectDisable.comaker_spouse}>
+              {spCondition &&
                 barangays.map((bgy, i) => (
                   <option key={i} value={bgy.code}>
                     {bgy.name}

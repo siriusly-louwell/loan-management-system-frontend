@@ -43,6 +43,11 @@ export default function Profile() {
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-8">
       <div className="mx-auto max-w-screen-lg px-4 2xl:px-0">
+        <BttnwithIcon
+          click={() => (window.location = "../admin/accounts/customers")}
+        >
+          <ArrowBigLeftDash />
+        </BttnwithIcon>
         <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl md:mb-6">
           Profile Information
         </h2>
@@ -158,7 +163,8 @@ export default function Profile() {
           </div>
           <CustomBttn
             text="Edit profile"
-            classname="inline-flex w-full items-center justify-center rounded-lg bg-rose-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800 sm:w-auto">
+            classname="inline-flex w-full items-center justify-center rounded-lg bg-rose-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800 sm:w-auto"
+          >
             <Edit />
           </CustomBttn>
         </div>

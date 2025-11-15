@@ -248,10 +248,18 @@ export default function ApplicationForm() {
     fileChange,
     toggleKeep,
   };
-
+  const redirect = () => {
+    window.location = "/";
+  };
   return (
     <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:min-h-screen">
       <Stepper>
+        <Step
+          label="Go Back"
+          click={() => {
+            redirect();
+          }}
+        />
         <Step
           label="1. Loan Setup"
           status={stepCheck(0)}
@@ -314,7 +322,8 @@ export default function ApplicationForm() {
               <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
                 <Check color="green" size={7} />
               </div>
-            }>
+            }
+          >
             <h2 className="text-gray-600 dark:text-white">
               Your Record ID:{" "}
               <strong className="text-rose-500">{modal.id}</strong>

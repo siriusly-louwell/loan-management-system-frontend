@@ -18,7 +18,7 @@ export default function CRUDformat({
   setPage,
   filterComponent,
   pagination,
-  itemName
+  itemName,
 }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
@@ -27,9 +27,14 @@ export default function CRUDformat({
     <>
       <section className="bg-gray-200 dark:bg-gray-800 w-full py-3 sm:p-5 antialiased">
         <div className="mx-auto px-4 lg:px-4">
+          <BttnwithIcon click={() => (window.location = url)}>
+            <ArrowBigLeftDash />
+          </BttnwithIcon>
           <div className="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-              <h1 className="dark:text-gray-100 font-medium text-2xl">{title}</h1>
+              <h1 className="dark:text-gray-100 font-medium text-2xl">
+                {title}
+              </h1>
             </div>
             <div className="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
               <div className="w-full md:w-1/2">
@@ -57,7 +62,8 @@ export default function CRUDformat({
                           value: modals[modalName],
                         })
                       )
-                    }>
+                    }
+                  >
                     <Plus />
                   </CustomBttn>
                 )}
@@ -70,7 +76,8 @@ export default function CRUDformat({
                     dispatch(
                       toggleModal({ name: "actions", value: modals?.actions })
                     )
-                  }>
+                  }
+                >
                   {modals.actions && (
                     <DropdownMenu>
                       <MenuLink pathName="Mass Edit" />
@@ -84,7 +91,11 @@ export default function CRUDformat({
 
             <div className="overflow-x-auto min-h-40">{children}</div>
 
-            <PageNav pagination={pagination} changePage={setPage} itemName={itemName} />
+            <PageNav
+              pagination={pagination}
+              changePage={setPage}
+              itemName={itemName}
+            />
           </div>
         </div>
       </section>

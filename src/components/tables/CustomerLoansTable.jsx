@@ -16,6 +16,7 @@ import InvoiceRowSkeleton from "../../components/loading components/InvoiceRowSk
 import { UserEntity } from "../../services/entities/User";
 import ApplicationFilter from "../../components/filters/ApplicationFilter";
 import InfoButton from "../buttons/InfoButton";
+import { toggleModal } from "../../services/redux/slices/uiSlice";
 
 export default function CustomerLoansTable({
   headText,
@@ -25,6 +26,7 @@ export default function CustomerLoansTable({
 }) {
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
+  const { modals } = useSelector((state) => state.ui);
   const { applications, appsLoading, pagination } = useSelector(
     (state) => state.application
   );
@@ -66,7 +68,13 @@ export default function CustomerLoansTable({
               <ApplicationFilter setPage={setPage} />
             </section>
             <div className="mt-6 gap-x-6 space-y-4 lg:w-1/2 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
-              <InfoButton />
+              <InfoButton
+                click={() =>
+                  dispatch(
+                    toggleModal({ name: "legend", value: modals.legend })
+                  )
+                }
+              />
               <SearchInput
                 id="invoice_search"
                 name="log_search"

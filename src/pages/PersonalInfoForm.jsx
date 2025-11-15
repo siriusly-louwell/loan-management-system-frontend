@@ -83,7 +83,8 @@ export default function PersonalInfoForm() {
           id="gender"
           value={formData.applicant.gender}
           onchange={(e) => dispatchInput(e)}
-          require={true}>
+          require={true}
+        >
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="other">Prefer not to say</option>
@@ -115,7 +116,8 @@ export default function PersonalInfoForm() {
           id="status"
           value={formData.applicant.status}
           onchange={(e) => dispatchInput(e)}
-          require={true}>
+          require={true}
+        >
           <option value="single">Single</option>
           <option value="relationship">In a relationship</option>
           <option value="married">Married</option>
@@ -151,7 +153,8 @@ export default function PersonalInfoForm() {
             id="educ_attain"
             value={formData.applicant.educ_attain}
             onchange={(e) => dispatchInput(e)}
-            require={true}>
+            require={true}
+          >
             <option value="highschool">High School</option>
             <option value="college">College Level</option>
             <option value="graduate">College Graduate</option>
@@ -173,7 +176,8 @@ export default function PersonalInfoForm() {
             id="residence"
             value={formData.applicant.residence}
             onchange={(e) => dispatchInput(e)}
-            require={true}>
+            require={true}
+          >
             <option value="owned">Owned</option>
             <option value="mortgaged">Owned(Mortgaged)</option>
             <option value="rented">Rented</option>
@@ -285,7 +289,8 @@ export default function PersonalInfoForm() {
               require={true}
               loading={addressLoading}
               value={formData.address.region}
-              onchange={(e) => dispatchInput(e, "address")}>
+              onchange={(e) => dispatchInput(e, "address")}
+            >
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -300,7 +305,8 @@ export default function PersonalInfoForm() {
               loading={addressLoading}
               value={formData.address.province}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.personal}>
+              disable={selectDisable.personal}
+            >
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
                 provinces.map((prov, i) => (
@@ -317,7 +323,8 @@ export default function PersonalInfoForm() {
               loading={addressLoading}
               value={formData.address.city}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.personal}>
+              disable={selectDisable.personal}
+            >
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
                 cities.map((cit, i) => (
@@ -334,7 +341,8 @@ export default function PersonalInfoForm() {
               loading={addressLoading}
               value={formData.address.brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.personal}>
+              disable={selectDisable.personal}
+            >
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
                 barangays.map((bgy, i) => (
@@ -493,7 +501,8 @@ export default function PersonalInfoForm() {
           <BttnwithIcon
             text="Add row"
             type="button"
-            click={() => setUnitApplied(unitApplied + 1)}>
+            click={() => setUnitApplied(unitApplied + 1)}
+          >
             <Plus />
           </BttnwithIcon>
         </div>

@@ -5,7 +5,7 @@ import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
 import { FORM_LABELS } from "../constants/formFields";
 import ProfileHeader from "../components/cards/ProfileHeader";
 import FileButton from "../components/buttons/FileButton";
-import { ComakerEntity } from "../services/entities/ComakerEntity";
+import { ComakerEntity } from "../services/entities/ComakerInfo";
 import { ApplicationEntity } from "../services/entities/Application";
 import {
   fetchLoan,
@@ -14,8 +14,8 @@ import {
 
 export default function CoMakerForm() {
   const dispatch = useDispatch();
-  const { address } = useSelector(ApplicationEntity);
   const comaker = useSelector(ComakerEntity);
+  const { address } = useSelector(ApplicationEntity);
   const { loanID, loanLoading } = useSelector((state) => state.application);
 
   useEffect(() => {

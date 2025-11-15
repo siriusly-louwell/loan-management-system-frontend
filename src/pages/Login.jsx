@@ -12,6 +12,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginData, setLogin] = useState({});
+  const [showPass, setShowPass] = useState(false);
 
   function handleChange(event) {
     setLogin({
@@ -64,7 +65,7 @@ export default function Login() {
                 />
                 <TextInput
                   name="password"
-                  type="password"
+                  type={showPass ? "text" : "password"}
                   id="password"
                   caption="Password"
                   value={loginData.password}
@@ -74,10 +75,10 @@ export default function Login() {
                 />
                 <div className="flex items-center justify-between">
                   <Checkbox
-                    name=""
-                    id="show_pass"
+                    name="show_pass"
+                    id="show-pass"
                     text="Show password"
-                    required={false}
+                    change={() => setShowPass(!showPass)}
                   />
                   <Link className="font-medium text-rose-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">
                     Forgot Password

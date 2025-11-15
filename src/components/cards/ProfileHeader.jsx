@@ -24,7 +24,7 @@ export default function ProfileHeader({
               className="w-full h-full object-cover rounded-full"
             />
           ) : (
-            "LJ"
+            "Cmk"
           )}
         </div>
         <div className="flex-1 min-w-0">

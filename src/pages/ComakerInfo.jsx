@@ -72,9 +72,9 @@ export default function ComakerInfo() {
         <FormInput
           label="Date of Birth"
           type="date"
-          name="birthdate"
+          name="birth_day"
           id="birthdate"
-          value={formData.comaker.birthdate}
+          value={formData.comaker.birth_day}
           onchange={(e) => dispatchInput(e)}
         />
         <FormInput

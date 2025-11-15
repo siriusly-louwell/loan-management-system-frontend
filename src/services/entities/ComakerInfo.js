@@ -38,7 +38,7 @@ export class ComakerInfo {
     co_sketch,
     co_valid_id,
     co_id_pic,
-    co_residence_proof
+    co_residence_proof,
   }) {
     this.id = id;
     this.first_name = first_name;
@@ -84,14 +84,20 @@ export class ComakerInfo {
   }
 
   get imgURL() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.co_valid_id}`;
+    return this.co_valid_id
+      ? `${process.env.REACT_APP_API_URL}/storage/${this.co_valid_id}`
+      : false;
   }
 
   get sketch() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.co_sketch}`;
+    return this.co_sketch
+      ? `${process.env.REACT_APP_API_URL}/storage/${this.co_sketch}`
+      : false;
   }
   get residenceImg() {
-    return `${process.env.REACT_APP_API_URL}/storage/${this.co_residence_proof}`;
+    return this.co_residence_proof
+      ? `${process.env.REACT_APP_API_URL}/storage/${this.co_residence_proof}`
+      : false;
   }
 
   get birthDate() {

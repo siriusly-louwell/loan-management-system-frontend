@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import CloseBttn from "../buttons/CloseBttn";
 import ColorLabel from "../ColorLabel";
 import CustomBttn from "../buttons/CustomBttn";
@@ -18,12 +19,16 @@ import { CheckCircle2, ClipboardCheck, FileSearch } from "lucide-react";
 import { UserEntity } from "../../services/entities/User";
 import CategoryCard from "../cards/CategoryCard";
 import DataRow from "../tables/DataRow";
+import AppliedForm from "../../pages/AppliedForm";
+import AppliedFormMini from "../AppliedFormMini";
+
 
 export default function Eligibility() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
   const loan = useSelector(LoanEntity);
+  const [isVisible, setIsVisible] = useState(false);
   const { stability, loanDecision, loanResult } = useSelector(
     (state) => state.application
   );
@@ -50,8 +55,8 @@ export default function Eligibility() {
   return (
     <PopAnimate
       modalName={modals.eligibility}
-      classStyle="w-full max-w-5xl mt-20 bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      classStyle="w-full max-w-5xl mt-4 max-h-[90vh] overflow-y-auto bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
+      <div className="sticky top-0 z-20 px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Loan Eligibility Assessment
         </h2>
@@ -125,8 +130,22 @@ export default function Eligibility() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Final Assessment
             </h3>
-            <LargeBadge type={loanDecision} />
+            <LargeBadge type={loanDecision} 
+              loadId={loan.id} 
+              role={role} 
+              onViewDetails={() => {
+                setIsVisible(!isVisible);
+              }} 
+            />
+            <div
+              className={`transition-all duration-300 ${
+                isVisible ? "opacity-100 max-h-[1000px]" : "opacity-0 max-h-0 overflow-hidden"
+              }`}
+            >
+              <AppliedFormMini />
+            </div>
             <div className="flex flex-wrap gap-4 items-center justify-between">
+                          
               <div className="flex gap-3">
                 <div className="flex items-center gap-1">
                   <ColorLabel size={3} style="green" />
@@ -163,7 +182,7 @@ export default function Eligibility() {
                       }
                     />
                     <CustomBttn
-                      text="Manual Review"
+                      text="Manual Reviews"
                       onclick={() =>
                         dispatch(
                           toggleModal({
@@ -192,7 +211,7 @@ export default function Eligibility() {
                     />
                   </div>
                 )}
-                <CustomBttn
+                {/* <CustomBttn
                   text="View Details"
                   onclick={() =>
                     navigate(`/${role}/application`, {
@@ -201,7 +220,7 @@ export default function Eligibility() {
                   }
                   classname="inline-flex items-center gap-2 px-4 py-2 font-medium text-white bg-rose-600 border border-rose-600 rounded-lg hover:bg-rose-500 dark:bg-rose-600 dark:border-rose-500 dark:hover:bg-rose-700 transition-colors duration-200"
                   icon={<FileSearch size={18} className="text-white" />}
-                />
+                /> */}
               </div>
             </div>
           </div>

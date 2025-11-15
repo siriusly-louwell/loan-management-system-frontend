@@ -58,6 +58,12 @@ export default function AppliedForm() {
     <>
       <div className="w-full bg-gray-100 dark:bg-gray-900">
         <section className="max-w-3xl mx-auto p-4">
+          <BttnwithIcon
+            click={() => (window.location = "../admin/accounts/applicants")}
+          >
+            <ArrowBigLeftDash />
+          </BttnwithIcon>
+          <br />
           <ProfileHeader
             name={application.fullName}
             gender={application.getGender}
@@ -66,7 +72,8 @@ export default function AppliedForm() {
             contact={application.contact_num}
             img={application.imgURL}
             loading={loanLoading}
-            address={application.address?.personal_pres}>
+            address={application.address?.personal_pres}
+          >
             {loanLoading ? (
               <div className="flex space-x-3">
                 <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />

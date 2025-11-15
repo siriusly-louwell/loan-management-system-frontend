@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Dialog from "../components/modals/Dialog";
 import Check from "../assets/icons/Check";
 import SaveButton from "../components/buttons/SaveButton";
+import EmailDraftButton from "../components/buttons/EmailDraftButton";
 import { UserEntity } from "../services/entities/User";
 import { fetchAddress } from "../services/redux/slices/addressSlice";
 import {
@@ -291,7 +292,10 @@ export default function ApplicationForm() {
                 ? "COMAKER FORM"
                 : "APPLICATION FORM"}
             </h3>
-            <SaveButton trigger={() => dispatch(draftForm())} />
+            <div className="flex items-center gap-2">
+              <SaveButton trigger={() => dispatch(draftForm())} />
+              <EmailDraftButton />
+            </div>
           </div>
           <form onSubmit={handleSubmit}>
             <Outlet context={outletContext} />
@@ -314,7 +318,8 @@ export default function ApplicationForm() {
               <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
                 <Check color="green" size={7} />
               </div>
-            }>
+            }
+          >
             <h2 className="text-gray-600 dark:text-white">
               Your Record ID:{" "}
               <strong className="text-rose-500">{modal.id}</strong>

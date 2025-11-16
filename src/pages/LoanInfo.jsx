@@ -22,6 +22,8 @@ import UnitRecommendation from "../components/UnitRecommendation";
 import LoanDetails from "../components/LoanDetails";
 import TextDialog from "../components/modals/TextDialog";
 import ApproveLoan from "../components/ApproveLoan";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
+import { ArrowBigLeftDash } from "lucide-react";
 
 export default function LoanInfo() {
   const dispatch = useDispatch();
@@ -105,6 +107,12 @@ export default function LoanInfo() {
 
   return (
     <section className="bg-gray-200 py-8 antialiased dark:bg-gray-900 md:py-16">
+      <div className="mx-10 my-2">
+        {" "}
+        <BttnwithIcon click={() => (window.location = "../admin/loans")}>
+          <ArrowBigLeftDash />
+        </BttnwithIcon>
+      </div>
       <LoanDetails setApproval={setApproval} />
       {(loan.status === "declined" || loan.status === "denied") && (
         <UnitRecommendation />

@@ -16,10 +16,11 @@ import FileButton from "../components/buttons/FileButton";
 import DeclineApplicant from "../components/DeclineApplicant";
 import AssignCI from "../components/AssignCI";
 import CustomBttn from "../components/buttons/CustomBttn";
-import { CheckCircle2, ClipboardCheck } from "lucide-react";
+import { ArrowBigLeftDash, CheckCircle2, ClipboardCheck } from "lucide-react";
 import { UserEntity } from "../services/entities/User";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import Dialog from "../components/modals/Dialog";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
 
 export default function AppliedForm() {
   const dispatch = useDispatch();

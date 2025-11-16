@@ -8,6 +8,8 @@ import MenuLink from "../components/links/MenuLink";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import PageNav from "./PageNav";
+import BttnwithIcon from "./buttons/BttnwithIcon";
+import { ArrowBigLeftDash } from "lucide-react";
 
 export default function CRUDformat({
   children,
@@ -19,6 +21,7 @@ export default function CRUDformat({
   filterComponent,
   pagination,
   itemName,
+  url = "",
 }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
@@ -27,9 +30,12 @@ export default function CRUDformat({
     <>
       <section className="bg-gray-200 dark:bg-gray-800 w-full py-3 sm:p-5 antialiased">
         <div className="mx-auto px-4 lg:px-4">
-          <BttnwithIcon click={() => (window.location = url)}>
-            <ArrowBigLeftDash />
-          </BttnwithIcon>
+          {url !== "" && (
+            <BttnwithIcon click={() => (window.location = url)}>
+              <ArrowBigLeftDash />
+            </BttnwithIcon>
+          )}
+
           <div className="bg-white w-full dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
               <h1 className="dark:text-gray-100 font-medium text-2xl">

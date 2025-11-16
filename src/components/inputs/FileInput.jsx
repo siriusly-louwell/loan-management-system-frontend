@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AcceptedDocumentsModal from "../modals/AcceptedDocumentsModal";
+import { useRef } from "react";
+import BttnwithIcon from "../buttons/BttnwithIcon";
+import Plus from "../../assets/icons/Plus";
 
 export default function FileInput({
   label,
@@ -13,7 +16,7 @@ export default function FileInput({
 }) {
   const cameraInputRef = useRef(null);
   const fileInputRef = useRef(null);
-  
+
   const [preview, setPreview] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -111,9 +114,8 @@ export default function FileInput({
         ) : null}
       </div>
 
-
       {/* Accepted Documents Modal */}
-      <AcceptedDocumentsModal 
+      <AcceptedDocumentsModal
         open={showModal}
         onClose={() => setShowModal(false)}
         title={label}

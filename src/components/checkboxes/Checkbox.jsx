@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Checkbox({ text, id, name, required }) {
+export default function Checkbox({ text, id, name, required, onChange }) {
   return (
     <div className="flex items-start">
       <div className="flex items-center h-5">

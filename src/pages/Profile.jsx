@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ImageSkeleton from "../components/loading components/ImageSkeleton";
 import { ApplicationEntity } from "../services/entities/Application";
 import { fetchScore } from "../services/redux/slices/creditSlice";
-import { Ban, Clock } from "lucide-react";
+import { ArrowBigLeftDash, Ban, Clock } from "lucide-react";
 import CustomBadge from "./../components/badges/CustomBadge";
 import {
   fetchApplicants,
@@ -19,6 +19,7 @@ import {
   saveLoan,
 } from "../services/redux/slices/applicationSlice";
 import InvoiceRowSkeleton from "../components/loading components/InvoiceRowSkeleton";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
 
 export default function Profile() {
   const loan = useSelector(ApplicationEntity);

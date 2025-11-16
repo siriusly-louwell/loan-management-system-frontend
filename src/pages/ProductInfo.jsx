@@ -222,7 +222,7 @@ export default function ProductInfo({ staff = false }) {
                     .map(([key, value]) => (
                       <div
                         key={key}
-                        className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-200 dark:bg-gray-900/50 p-4 shadow-sm hover:shadow-md transition">
+                        className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-200 dark:bg-gray-700/50 p-4 shadow-sm hover:shadow-md transition">
                         <p className="text-sm text-gray-700 dark:text-gray-400">
                           {SPECS[key]}
                         </p>

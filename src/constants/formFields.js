@@ -37,6 +37,24 @@ export const FIELD_NAMES = [
     "father_first",
   ],
   [],
+  [
+    "first_name",
+    "last_name",
+    "birth_day",
+    "birth_place",
+    "gender",
+    "contact_num",
+    "email",
+    "facebook",
+    "status",
+    "citizenship",
+    "occupation",
+    "yrs_in_service",
+    "employment_status",
+    "employer",
+    "educ_attain",
+    
+  ],
 ];
 
 export const ADDRESS_NAMES = [
@@ -126,7 +144,7 @@ export const FORM_LABELS = {
     comaker_pres: "Present Address",
     comaker_perm: "Permanent Address",
     sp_parent_pres: "Parent's Present Address",
-    sp_parent_prev: "Parent's Previous Address"
+    sp_parent_prev: "Parent's Previous Address",
   },
   other: {
     comm_standing: "Community Standing",

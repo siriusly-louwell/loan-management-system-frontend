@@ -53,6 +53,7 @@ export default function ApplicationForm() {
   useEffect(() => {
     if (pageType === "next" && pageComplete) dispatch(nextPage());
     if (pageType === "step" && pageComplete) dispatch(goToStep(stepIndex));
+    if (pageType === "submit" && pageComplete) handleSubmit();
     if (pageType === "prev") navigate(pageRoute);
 
     if (!pageComplete && pageComplete !== null)
@@ -309,7 +310,14 @@ export default function ApplicationForm() {
                 <Button text="Back" bttnType="button" onclick={handlePrev} />
               )}
               {location.pathname === "/customer/apply/comakerform" ? (
-                <Button text="Done" bttnType="submit" />
+                <Button
+                  text="Done"
+                  bttnType="button"
+                  onclick={() => {
+                    setPageType("submit");
+                    dispatch(formCheck(pageNum));
+                  }}
+                />
               ) : (
                 <Button text="Next" bttnType="button" onclick={handleNext} />
               )}
@@ -322,8 +330,7 @@ export default function ApplicationForm() {
               <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
                 <Check color="green" size={7} />
               </div>
-            }
-          >
+            }>
             <h2 className="text-gray-600 dark:text-white">
               Your Record ID:{" "}
               <strong className="text-rose-500">{modal.id}</strong>

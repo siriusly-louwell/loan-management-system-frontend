@@ -25,6 +25,7 @@ import EmploymentInfoForm from "./pages/EmploymentInfoForm";
 import FamilyInfoForm from "./pages/FamilyInfoForm";
 import FormRequirements from "./pages/FormRequirements";
 import ComakerInfo from "./pages/ComakerInfo";
+import BillingStatement from "./pages/BillingStatement";
 import CINav from "./components/navigations/CINav";
 import CIReport from "./pages/CIReport";
 import ReportReview from "./pages/ReportReview";
@@ -83,7 +84,8 @@ function App() {
         {/* Customer Routes */}
         <Route
           path="/customer"
-          element={<PageLayout links={<ApplicantNav />} path="/customer" />}>
+          element={<PageLayout links={<ApplicantNav />} path="/customer" />}
+        >
           <Route
             path="app"
             element={
@@ -105,6 +107,14 @@ function App() {
             element={
               <ProtectedRoute type="customer">
                 <AppNotifications isCustomer={true} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="billing"
+            element={
+              <ProtectedRoute type="customer">
+                <BillingStatement />
               </ProtectedRoute>
             }
           />
@@ -253,7 +263,8 @@ function App() {
         {/* Staff Routes */}
         <Route
           path="/staff"
-          element={<PageLayout links={<StaffNav />} path="/staff" />}>
+          element={<PageLayout links={<StaffNav />} path="/staff" />}
+        >
           <Route
             path="app"
             element={
@@ -347,14 +358,16 @@ function App() {
         {/* Admin Routes */}
         <Route
           path="/admin"
-          element={<PageLayout links={<AdminNav />} path="/admin" />}>
+          element={<PageLayout links={<AdminNav />} path="/admin" />}
+        >
           <Route
             path="app"
             element={
               <ProtectedRoute type="admin">
                 <Dashboard />
               </ProtectedRoute>
-            }>
+            }
+          >
             <Route
               index
               element={
@@ -409,10 +422,7 @@ function App() {
             path="loans"
             element={
               <ProtectedRoute type="admin">
-                <InvoiceList
-                  headText="Loan Applications"
-                  path="/admin/loan"
-                />
+                <InvoiceList headText="Loan Applications" path="/admin/loan" />
               </ProtectedRoute>
             }
           />
@@ -515,7 +525,8 @@ function App() {
               <ProtectedRoute type="admin">
                 <Accounts />
               </ProtectedRoute>
-            }>
+            }
+          >
             <Route
               index
               element={

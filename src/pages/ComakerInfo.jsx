@@ -50,6 +50,7 @@ export default function ComakerInfo() {
           placeholder="Type first name here"
           value={formData.comaker.first_name}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Middle name"
@@ -59,6 +60,7 @@ export default function ComakerInfo() {
           placeholder="Type middle name here"
           value={formData.comaker.middle_name}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Last name"
@@ -68,6 +70,7 @@ export default function ComakerInfo() {
           placeholder="Type last name here"
           value={formData.comaker.last_name}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Date of Birth"
@@ -76,6 +79,7 @@ export default function ComakerInfo() {
           id="birthdate"
           value={formData.comaker.birth_day}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Place of Birth"
@@ -85,13 +89,16 @@ export default function ComakerInfo() {
           placeholder="Birth place address"
           value={formData.comaker.birth_place}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormSelect
           label="Sex"
           name="gender"
           id="gender"
           value={formData.comaker.gender}
-          onchange={(e) => dispatchInput(e)}>
+          onchange={(e) => dispatchInput(e)}
+          require={true}
+        >
           <option>Male</option>
           <option>Female</option>
           <option>Prefer not to say</option>
@@ -104,6 +111,7 @@ export default function ComakerInfo() {
           placeholder="Phone number here"
           value={formData.comaker.contact_num}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Email Address"
@@ -113,6 +121,7 @@ export default function ComakerInfo() {
           placeholder="doe@gmail.com"
           value={formData.comaker.email}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Facebook Account"
@@ -122,13 +131,16 @@ export default function ComakerInfo() {
           placeholder="Facebook name here"
           value={formData.comaker.facebook}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormSelect
           label="Civil Status"
           name="status"
           id="status"
           value={formData.comaker.status}
-          onchange={(e) => dispatchInput(e)}>
+          onchange={(e) => dispatchInput(e)}
+          require={true}
+        >
           <option>Single</option>
           <option>In a relationship</option>
           <option>Married</option>
@@ -143,6 +155,7 @@ export default function ComakerInfo() {
           placeholder="Catholic/INC"
           value={formData.comaker.religion}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Tribe"
@@ -152,6 +165,7 @@ export default function ComakerInfo() {
           placeholder="Type tribe here"
           value={formData.comaker.tribe}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
       </div>
 
@@ -202,7 +216,9 @@ export default function ComakerInfo() {
               id="co-region"
               loading={addressLoading}
               value={formData.address.co_region}
-              onchange={(e) => dispatchInput(e, "address")}>
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+            >
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -216,7 +232,9 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.co_province}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comaker}>
+              disable={selectDisable.comaker}
+              require={true}
+            >
               {comakeCondition &&
                 provinces.map((prov, i) => (
                   <option key={i} value={prov.code}>
@@ -231,7 +249,9 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.co_city}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comaker}>
+              disable={selectDisable.comaker}
+              require={true}
+            >
               {comakeCondition &&
                 cities.map((cit, i) => (
                   <option key={i} value={cit.code}>
@@ -246,7 +266,9 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.co_brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comaker}>
+              disable={selectDisable.comaker}
+              require={true}
+            >
               {comakeCondition &&
                 barangays.map((bgy, i) => (
                   <option key={i} value={bgy.code}>
@@ -262,6 +284,7 @@ export default function ComakerInfo() {
               value={formData.address.co_purok}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
+              require={true}
             />
             <FormInput
               label="Lot/House Number"
@@ -271,6 +294,7 @@ export default function ComakerInfo() {
               value={formData.address.co_lot_num}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
+              require={true}
             />
           </div>
 
@@ -284,7 +308,9 @@ export default function ComakerInfo() {
               id="perm-region"
               loading={addressLoading}
               value={formData.address.perm_region}
-              onchange={(e) => dispatchInput(e, "address")}>
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+            >
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -344,6 +370,7 @@ export default function ComakerInfo() {
               value={formData.address.perm_purok}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
+              require={true}
             />
             <FormInput
               label="Lot/House Number"
@@ -353,6 +380,7 @@ export default function ComakerInfo() {
               value={formData.address.perm_lot_num}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
+              require={true}
             />
           </div>
         </>
@@ -367,6 +395,7 @@ export default function ComakerInfo() {
           placeholder="Type citizenhip"
           value={formData.comaker.citizenship}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Occupation"
@@ -376,6 +405,7 @@ export default function ComakerInfo() {
           placeholder="Type occupation here"
           value={formData.comaker.occupation}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Years of Service"
@@ -385,6 +415,7 @@ export default function ComakerInfo() {
           placeholder="Type last name here"
           value={formData.comaker.yrs_in_service}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Employment Status"
@@ -393,6 +424,7 @@ export default function ComakerInfo() {
           id="emp-status"
           value={formData.comaker.employment_status}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Business Name/Employer"
@@ -402,6 +434,7 @@ export default function ComakerInfo() {
           placeholder="Name of business or employer"
           value={formData.comaker.employer}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Business/Employer Address"
@@ -411,6 +444,7 @@ export default function ComakerInfo() {
           placeholder="Type business address here"
           value={formData.comaker.comaker_emp_address}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
           <FormSelect
@@ -418,7 +452,9 @@ export default function ComakerInfo() {
             name="educ_attain"
             id="educ-attain"
             value={formData.comaker.educ_attain}
-            onchange={(e) => dispatchInput(e)}>
+            onchange={(e) => dispatchInput(e)}
+            require={true}
+          >
             <option>High School</option>
             <option>College Level</option>
             <option>College Graduate</option>
@@ -446,6 +482,7 @@ export default function ComakerInfo() {
           placeholder="Spouse first name here"
           value={formData.comaker.spouse_first}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Middle name"
@@ -455,6 +492,7 @@ export default function ComakerInfo() {
           placeholder="Spouse middle name here"
           value={formData.comaker.spouse_middle}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Last name"
@@ -464,6 +502,7 @@ export default function ComakerInfo() {
           placeholder="Spouse last name here"
           value={formData.comaker.spouse_last}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Citizenship"
@@ -473,6 +512,7 @@ export default function ComakerInfo() {
           placeholder="Type citizenhip"
           value={formData.comaker.sp_citizenship}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Occupation"
@@ -482,6 +522,7 @@ export default function ComakerInfo() {
           placeholder="Type occupation here"
           value={formData.comaker.sp_occupation}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Years of Service"
@@ -491,6 +532,7 @@ export default function ComakerInfo() {
           placeholder="Type last name here"
           value={formData.comaker.sp_yrs_in_service}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Employment Status"
@@ -500,6 +542,7 @@ export default function ComakerInfo() {
           placeholder=""
           value={formData.comaker.sp_emp_status}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Employment Address"
@@ -509,6 +552,7 @@ export default function ComakerInfo() {
           placeholder="Employer address here"
           value={formData.comaker.spouse_emp_address}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
           <FormInput
@@ -542,6 +586,7 @@ export default function ComakerInfo() {
           placeholder="First name here"
           value={formData.comaker.sp_father_first}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Father's Middle Name"
@@ -551,6 +596,7 @@ export default function ComakerInfo() {
           placeholder="Middle name here"
           value={formData.comaker.sp_father_middle}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Father's Last Name"
@@ -560,6 +606,7 @@ export default function ComakerInfo() {
           placeholder="Last name here"
           value={formData.comaker.sp_father_last}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Mother's First Name"
@@ -569,6 +616,7 @@ export default function ComakerInfo() {
           placeholder="First name here"
           value={formData.comaker.sp_mother_first}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Mother's Middle Name"
@@ -578,6 +626,7 @@ export default function ComakerInfo() {
           placeholder="Middle name here"
           value={formData.comaker.sp_mother_middle}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
         <FormInput
           label="Mother's maiden Name"
@@ -587,6 +636,7 @@ export default function ComakerInfo() {
           placeholder="Last name here"
           value={formData.comaker.sp_mother_last}
           onchange={(e) => dispatchInput(e)}
+          require={true}
         />
       </div>
 
@@ -629,7 +679,9 @@ export default function ComakerInfo() {
               id="sp-region"
               loading={addressLoading}
               value={formData.address.co_sp_region}
-              onchange={(e) => dispatchInput(e, "address")}>
+              onchange={(e) => dispatchInput(e, "address")}
+              require={true}
+            >
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -689,6 +741,7 @@ export default function ComakerInfo() {
               value={formData.address.co_sp_purok}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
+              require={true}
             />
             <FormInput
               label="Lot/House Number"
@@ -698,6 +751,7 @@ export default function ComakerInfo() {
               value={formData.address.co_sp_lot_num}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
+              require={true}
             />
           </div>
         </>
@@ -706,7 +760,7 @@ export default function ComakerInfo() {
       <div className="grid gap-4 mb-4 sm:grid-cols-1 pb-2 border-b dark:border-gray-500">
         <div className="grid gap-4 sm:grid-cols-4">
           <FormInput
-            label="Name of the Child"
+            label="Name of the child"
             type="text"
             name="prod_name"
             id="name"

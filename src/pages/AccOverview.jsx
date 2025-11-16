@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { ProfileEntity, UserEntity } from "../services/entities/User";
+import { ArrowBigLeftDash } from "lucide-react";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
 
 export default function AccOverview() {
   const profile = useSelector(ProfileEntity);
@@ -24,6 +26,10 @@ export default function AccOverview() {
   return (
     <div className="flex justify-center items-center min-h-[92vh] bg-gray-50 dark:bg-gray-900 py-8">
       <div className="w-full max-w-4xl">
+        <BttnwithIcon click={() => (window.location = "../admin/accounts/cis")}>
+          <ArrowBigLeftDash />
+        </BttnwithIcon>
+        <br />
         <section className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-4">
           <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
             <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-3xl font-bold text-primary-700 dark:text-white">
@@ -61,7 +67,8 @@ export default function AccOverview() {
                         account.statusName === "Active"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
-                      }`}>
+                      }`}
+                    >
                       {account.statusName}
                     </span>
                   </>
@@ -70,7 +77,8 @@ export default function AccOverview() {
             </div>
             <button
               onClick={handleEditProfile}
-              className="ml-auto mt-4 sm:mt-0 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-medium shadow focus:outline-none focus:ring-2 focus:ring-rose-400">
+              className="ml-auto mt-4 sm:mt-0 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-medium shadow focus:outline-none focus:ring-2 focus:ring-rose-400"
+            >
               Edit Profile
             </button>
           </div>
@@ -147,7 +155,8 @@ export default function AccOverview() {
                 className={`w-12 h-6 flex items-center rounded-full p-1 duration-300 focus:outline-none ${
                   darkMode ? "bg-rose-600" : "bg-gray-300"
                 }`}
-                aria-label="Toggle dark mode">
+                aria-label="Toggle dark mode"
+              >
                 <div
                   className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ${
                     darkMode ? "translate-x-6" : ""
@@ -167,7 +176,8 @@ export default function AccOverview() {
               </div>
               <button
                 onClick={handleChangePassword}
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium shadow">
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium shadow"
+              >
                 Change
               </button>
             </div>

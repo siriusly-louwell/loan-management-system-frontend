@@ -6,6 +6,9 @@ import { UserEntity } from "../services/entities/User";
 import FormCheck from "../components/checkboxes/FormCheck";
 import copy_icon from "../assets/images/copy_icon.png";
 import FileButton from "../components/buttons/FileButton";
+import twoByTwo from '../assets/images/2x2.webp';
+import proofOfResidency from '../assets/images/proofofresidency.webp';
+import proofOfIncome from '../assets/images/proofofincome.webp';
 
 export default function FormRequirements() {
   const { fileChange, toggleKeep } = useOutletContext();
@@ -16,6 +19,9 @@ export default function FormRequirements() {
       ? { lat: formData.address.lat, lng: formData.address.lng }
       : { lat: 7.3081, lng: 125.6842 };
 
+  if (!formData?.applicant) {
+    return <div className="text-gray-500">Loading requirements...</div>;
+  }
   return (
     <>
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
@@ -45,13 +51,20 @@ export default function FormRequirements() {
         </div>
       )}
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-        {!formData.applicant.keep_files && (
+        {!formData.applicant?.keep_files && (
           <>
             <FileInput
               label="Valid ID"
               name="valid_id"
               type="img"
               accept=".jpg,.png,.pdf"
+              documents={[
+                "Student ID",
+                "Passport",
+                "Driver's License",
+                "National ID",
+                "Voter's id"
+              ]}
               change={fileChange}
               require={true}
             />
@@ -59,6 +72,9 @@ export default function FormRequirements() {
               label="2x2 Picture"
               name="id_pic"
               type="img"
+              documents={[
+                twoByTwo
+              ]}
               accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}
@@ -67,6 +83,9 @@ export default function FormRequirements() {
               label="Proof of Residence"
               name="residence_proof"
               type="img"
+              documents={[
+                proofOfResidency
+              ]}
               accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}
@@ -75,6 +94,9 @@ export default function FormRequirements() {
               label="Proof of Income"
               name="income_proof"
               type="img"
+              documents={[
+                proofOfIncome
+              ]}
               accept=".jpg,.png,.pdf"
               change={fileChange}
               require={true}

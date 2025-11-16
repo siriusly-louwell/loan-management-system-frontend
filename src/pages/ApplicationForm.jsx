@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Dialog from "../components/modals/Dialog";
 import Check from "../assets/icons/Check";
 import SaveButton from "../components/buttons/SaveButton";
+import EmailDraftButton from "../components/buttons/EmailDraftButton";
 import { UserEntity } from "../services/entities/User";
 import { fetchAddress } from "../services/redux/slices/addressSlice";
 import {
@@ -74,49 +75,49 @@ export default function ApplicationForm() {
   useEffect(() => {
     fetchAllAddress(["region", "province", "city"]);
   }, [
-    formData.address.region,
-    formData.address.province,
-    formData.address.city,
+    formData.address?.region,
+    formData.address?.province,
+    formData.address?.city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["p_region", "p_province", "p_city"]);
   }, [
-    formData.address.p_region,
-    formData.address.p_province,
-    formData.address.p_city,
+    formData.address?.p_region,
+    formData.address?.p_province,
+    formData.address?.p_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["sp_region", "sp_province", "sp_city"]);
   }, [
-    formData.address.sp_region,
-    formData.address.sp_province,
-    formData.address.sp_city,
+    formData.address?.sp_region,
+    formData.address?.sp_province,
+    formData.address?.sp_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["co_region", "co_province", "co_city"]);
   }, [
-    formData.address.co_region,
-    formData.address.co_province,
-    formData.address.co_city,
+    formData.address?.co_region,
+    formData.address?.co_province,
+    formData.address?.co_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["perm_region", "perm_province", "perm_city"]);
   }, [
-    formData.address.perm_region,
-    formData.address.perm_province,
-    formData.address.perm_city,
+    formData.address?.perm_region,
+    formData.address?.perm_province,
+    formData.address?.perm_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["co_sp_region", "co_sp_province", "co_sp_city"]);
   }, [
-    formData.address.co_sp_region,
-    formData.address.co_sp_province,
-    formData.address.co_sp_city,
+    formData.address?.co_sp_region,
+    formData.address?.co_sp_province,
+    formData.address?.co_sp_city,
   ]);
 
   // ? On-load / Refresh initializations
@@ -130,15 +131,11 @@ export default function ApplicationForm() {
   }, []);
 
   function fetchAllAddress(names) {
-    dispatch(
-      fetchAddress({ type: "provinces", value: formData.address[names[0]] })
-    );
-    dispatch(
-      fetchAddress({ type: "cities", value: formData.address[names[1]] })
-    );
-    dispatch(
-      fetchAddress({ type: "barangays", value: formData.address[names[2]] })
-    );
+    const addr = formData.address || {};
+
+    dispatch(fetchAddress({ type: "provinces", value: addr[names[0]] }));
+    dispatch(fetchAddress({ type: "cities", value: addr[names[1]] }));
+    dispatch(fetchAddress({ type: "barangays", value: addr[names[2]] }));
   }
 
   // ? Auto save form
@@ -248,10 +245,18 @@ export default function ApplicationForm() {
     fileChange,
     toggleKeep,
   };
-
+  const redirect = () => {
+    window.location = "/";
+  };
   return (
     <div className="overflow-y-auto overflow-x-hidden sm:flex flex-start bg-gray-300 p-4 dark:bg-gray-700 top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] md:min-h-screen">
       <Stepper>
+        <Step
+          label="Go Back"
+          click={() => {
+            redirect();
+          }}
+        />
         <Step
           label="1. Loan Setup"
           status={stepCheck(0)}
@@ -291,7 +296,10 @@ export default function ApplicationForm() {
                 ? "COMAKER FORM"
                 : "APPLICATION FORM"}
             </h3>
-            <SaveButton trigger={() => dispatch(draftForm())} />
+            <div className="flex items-center gap-2">
+              <SaveButton trigger={() => dispatch(draftForm())} />
+              <EmailDraftButton />
+            </div>
           </div>
           <form onSubmit={handleSubmit}>
             <Outlet context={outletContext} />
@@ -314,7 +322,8 @@ export default function ApplicationForm() {
               <div className="mx-auto mb-4 w-14 h-14 border border-green-500 border-4 p-3 rounded-full">
                 <Check color="green" size={7} />
               </div>
-            }>
+            }
+          >
             <h2 className="text-gray-600 dark:text-white">
               Your Record ID:{" "}
               <strong className="text-rose-500">{modal.id}</strong>

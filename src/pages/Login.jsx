@@ -39,11 +39,16 @@ export default function Login() {
     }
   }
 
+  const redirect = () => {
+    window.location = "/";
+  };
   return (
     <>
       <section className="bg-gray-200 h-screen dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
+          <div
+            onClick={() => redirect()}
+            className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
             <img src={RMCI} className="h-8 mr-2" alt="Rhean Motor Logo" />
             Rhean Motor Center
           </div>
@@ -78,7 +83,8 @@ export default function Login() {
                     name="show_pass"
                     id="show-pass"
                     text="Show password"
-                    change={() => setShowPass(!showPass)}
+                    required={false}
+                    onChange={() => showPass((prev) => !prev)}
                   />
                   <Link className="font-medium text-rose-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">
                     Forgot Password

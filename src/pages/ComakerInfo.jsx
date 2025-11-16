@@ -96,8 +96,7 @@ export default function ComakerInfo() {
           id="gender"
           value={formData.comaker.gender}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-        >
+          require={true}>
           <option>Male</option>
           <option>Female</option>
           <option>Prefer not to say</option>
@@ -137,8 +136,7 @@ export default function ComakerInfo() {
           id="status"
           value={formData.comaker.status}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-        >
+          require={true}>
           <option>Single</option>
           <option>In a relationship</option>
           <option>Married</option>
@@ -213,8 +211,7 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.co_region}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
-            >
+              require={true}>
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -229,8 +226,7 @@ export default function ComakerInfo() {
               value={formData.address.co_province}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.comaker}
-              require={true}
-            >
+              require={true}>
               {comakeCondition &&
                 provinces.map((prov, i) => (
                   <option key={i} value={prov.code}>
@@ -246,8 +242,7 @@ export default function ComakerInfo() {
               value={formData.address.co_city}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.comaker}
-              require={true}
-            >
+              require={true}>
               {comakeCondition &&
                 cities.map((cit, i) => (
                   <option key={i} value={cit.code}>
@@ -263,8 +258,7 @@ export default function ComakerInfo() {
               value={formData.address.co_brgy}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.comaker}
-              require={true}
-            >
+              require={true}>
               {comakeCondition &&
                 barangays.map((bgy, i) => (
                   <option key={i} value={bgy.code}>
@@ -305,8 +299,7 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.perm_region}
               onchange={(e) => dispatchInput(e, "address")}
-              require={true}
-            >
+              require={true}>
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -320,7 +313,8 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.perm_province}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comake}>
+              disable={selectDisable.comake}
+              require={true}>
               {permCondition &&
                 provinces.map((prov, i) => (
                   <option key={i} value={prov.code}>
@@ -335,7 +329,8 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.perm_city}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comake}>
+              disable={selectDisable.comake}
+              require={true}>
               {permCondition &&
                 cities.map((cit, i) => (
                   <option key={i} value={cit.code}>
@@ -350,7 +345,8 @@ export default function ComakerInfo() {
               loading={addressLoading}
               value={formData.address.perm_brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.comake}>
+              disable={selectDisable.comake}
+              require={true}>
               {permCondition &&
                 barangays.map((bgy, i) => (
                   <option key={i} value={bgy.code}>
@@ -438,8 +434,8 @@ export default function ComakerInfo() {
           name="comaker_emp_address"
           id="co-emp-address"
           placeholder="Type business address here"
-          value={formData.comaker.comaker_emp_address}
-          onchange={(e) => dispatchInput(e)}
+          value={formData.address.comaker_emp_address}
+          onchange={(e) => dispatchInput(e, "address")}
           require={true}
         />
         <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
@@ -449,8 +445,7 @@ export default function ComakerInfo() {
             id="educ-attain"
             value={formData.comaker.educ_attain}
             onchange={(e) => dispatchInput(e)}
-            require={true}
-          >
+            require={true}>
             <option>High School</option>
             <option>College Level</option>
             <option>College Graduate</option>
@@ -462,6 +457,7 @@ export default function ComakerInfo() {
             name="prod_name"
             id="name"
             placeholder="Others"
+            onchange={() => {}}
           />
         </div>
       </div>
@@ -550,6 +546,7 @@ export default function ComakerInfo() {
             id="name"
             value=""
             placeholder="0"
+            onchange={() => {}}
           />
           <FormInput
             label="Dep. Children"
@@ -558,6 +555,7 @@ export default function ComakerInfo() {
             id="name"
             value=""
             placeholder="0"
+            onchange={() => {}}
           />
         </div>
       </div>
@@ -661,8 +659,7 @@ export default function ComakerInfo() {
               id="sp-region"
               loading={addressLoading}
               value={formData.address.co_sp_region}
-              onchange={(e) => dispatchInput(e, "address")}
-            >
+              onchange={(e) => dispatchInput(e, "address")}>
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}

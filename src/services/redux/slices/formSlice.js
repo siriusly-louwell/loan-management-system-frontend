@@ -200,11 +200,6 @@ const formSlice = createSlice({
         index,
         state.formData[state.formType]
       );
-      const comaker = checkEmptyUseCase(
-        index,
-        state.formData.comaker,
-        "comaker"
-      );
       const address = checkEmptyUseCase(
         index,
         state.formData.address,
@@ -213,7 +208,6 @@ const formSlice = createSlice({
 
       state.isChecked = Date.now();
       state.formData[state.formType] = applicant.form;
-      state.formData.comaker = comaker.form;
       state.formData.address = address.form;
       state.pageComplete =
         index !== 0 && index !== 2 && index !== 4

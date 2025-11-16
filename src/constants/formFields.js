@@ -53,7 +53,6 @@ export const FIELD_NAMES = [
     "employment_status",
     "employer",
     "educ_attain",
-    
   ],
 ];
 
@@ -89,6 +88,21 @@ export const ADDRESS_NAMES = [
     "p_region",
   ],
   [],
+  [
+    "co_region",
+    "co_province",
+    "co_city",
+    "co_brgy",
+    "co_purok",
+    "co_lot_num",
+    "perm_region",
+    "perm_province",
+    "perm_city",
+    "perm_brgy",
+    "perm_purok",
+    "perm_lot_num",
+    "comaker_emp_address"
+  ],
 ];
 
 export const FORM_LABELS = {

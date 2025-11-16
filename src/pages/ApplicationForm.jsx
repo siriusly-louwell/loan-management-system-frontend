@@ -198,7 +198,7 @@ export default function ApplicationForm() {
 
   // ? Submission
   async function handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
     dispatch(
       setLoading({
         isActive: true,

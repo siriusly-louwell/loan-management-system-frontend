@@ -50,6 +50,7 @@ import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
 import Analytics from "./pages/Analytics";
 import CreditHistory from "./components/modals/CreditHistory";
+import CustomerPaymentHIstoryDetails from "./pages/CustomerPaymentHIstoryDetails";
 import CoMakerForm from "./pages/CoMakerForm";
 
 function App() {
@@ -397,6 +398,14 @@ function App() {
               element={
                 <ProtectedRoute type="admin">
                   <AppNotifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="invoices/user-details/:userId"
+              element={
+                <ProtectedRoute type="admin"> 
+                  <CustomerPaymentHIstoryDetails />
                 </ProtectedRoute>
               }
             />

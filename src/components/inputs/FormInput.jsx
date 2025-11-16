@@ -6,6 +6,7 @@ export default function FormInput({
   type = "text",
   name,
   min,
+  maxLength,
   value = "",
   onchange,
   placeholder,
@@ -15,9 +16,9 @@ export default function FormInput({
   disable = false,
   ...rest
 }) {
-  const color = value === "__EMPTY__" ? "red" : "gray";
+  const color = value === "__EMPTY__" ? "bg-gray-700" : "gray";
   const darkRed =
-    value === "__EMPTY__" ? "dark:bg-red-700/30" : `dark:bg-${color}-700`;
+    value === "__EMPTY__" ? "bg-gray-700" : `dark:bg-${color}-900`;
 
   return (
     <div>
@@ -41,6 +42,7 @@ export default function FormInput({
           min={min}
           name={name}
           id={id}
+          maxLength={type == 'text' ? maxLength : ''}
           value={value !== "__EMPTY__" ? value : ""}
           onChange={onchange}
           placeholder={placeholder}

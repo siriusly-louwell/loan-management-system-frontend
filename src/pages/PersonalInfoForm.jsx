@@ -32,6 +32,8 @@ export default function PersonalInfoForm() {
   const { regions, provinces, cities, barangays } = useSelector(
     (state) => state.address
   );
+  const [contactNumber, setContactNumber] = useState(formData.applicant?.contact_num);
+
 
   useEffect(() => {
     dispatch(setType("applicant"));
@@ -42,6 +44,14 @@ export default function PersonalInfoForm() {
     dispatch(disableAddress());
   }, [formData, dispatch]);
 
+  // Apply dispatchInput, at the same, limits the character length
+  function onChangeContact(event){
+      const input = event.target.value.replace(/\D/g, ""); // removes non-numeric chars
+      if (input.length <= 12) {
+        setContactNumber(input);
+        dispatchInput({ target: { name: "contact_num", value: input } });
+      }
+  }
   return (
     <>
       <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
@@ -53,7 +63,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="first_name"
           id="first_name"
-          value={formData.applicant.first_name}
+          value={formData.applicant?.first_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type first name"
           require={true}
@@ -63,7 +73,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="middle_name"
           id="mid_name"
-          value={formData.applicant.middle_name}
+          value={formData.applicant?.middle_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type middle name"
         />
@@ -72,7 +82,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="last_name"
           id="last_name"
-          value={formData.applicant.last_name}
+          value={formData.applicant?.last_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type last name"
           require={true}
@@ -81,7 +91,7 @@ export default function PersonalInfoForm() {
           name="gender"
           label="Sex"
           id="gender"
-          value={formData.applicant.gender}
+          value={formData.applicant?.gender}
           onchange={(e) => dispatchInput(e)}
           require={true}
         >
@@ -91,12 +101,12 @@ export default function PersonalInfoForm() {
         </FormSelect>
         <FormInput
           label="Contact Number"
-          type="number"
+          type="text"
           name="contact_num"
-          min={99999999999}
+          maxLength={12}
           id="contact_num"
-          value={formData.applicant.contact_num}
-          onchange={(e) => dispatchInput(e)}
+          value={contactNumber}
+          onchange={onChangeContact}
           placeholder="+63 912 3456 789"
           require={true}
         />
@@ -106,7 +116,7 @@ export default function PersonalInfoForm() {
           name="email"
           id="email"
           require={true}
-          value={formData.applicant.email}
+          value={formData.applicant?.email}
           onchange={(e) => dispatchInput(e)}
           placeholder="doe@gmail.com"
         />
@@ -114,7 +124,7 @@ export default function PersonalInfoForm() {
           name="status"
           label="Marital Status"
           id="status"
-          value={formData.applicant.status}
+          value={formData.applicant?.status}
           onchange={(e) => dispatchInput(e)}
           require={true}
         >
@@ -129,7 +139,7 @@ export default function PersonalInfoForm() {
           type="date"
           name="birth_day"
           id="bday"
-          value={formData.applicant.birth_day}
+          value={formData.applicant?.birth_day}
           onchange={(e) => dispatchInput(e)}
           require={true}
         />
@@ -138,7 +148,7 @@ export default function PersonalInfoForm() {
           type="text"
           name="birth_place"
           id="bplace"
-          value={formData.applicant.birth_place}
+          value={formData.applicant?.birth_place}
           onchange={(e) => dispatchInput(e)}
           placeholder="Birth place address"
           require={true}
@@ -151,7 +161,7 @@ export default function PersonalInfoForm() {
             name="educ_attain"
             label="Educ. Attainment"
             id="educ_attain"
-            value={formData.applicant.educ_attain}
+            value={formData.applicant?.educ_attain}
             onchange={(e) => dispatchInput(e)}
             require={true}
           >
@@ -174,7 +184,7 @@ export default function PersonalInfoForm() {
             name="residence"
             label="Residential Status"
             id="residence"
-            value={formData.applicant.residence}
+            value={formData.applicant?.residence}
             onchange={(e) => dispatchInput(e)}
             require={true}
           >
@@ -197,7 +207,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="amortization"
           id="amortization"
-          value={formData.applicant.amortization}
+          value={formData.applicant?.amortization}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱5,000"
           require={true}
@@ -207,7 +217,7 @@ export default function PersonalInfoForm() {
           type="number"
           name="rent"
           id="rent"
-          value={formData.applicant.rent}
+          value={formData.applicant?.rent}
           onchange={(e) => dispatchInput(e)}
           placeholder="₱500"
           require={true}
@@ -217,16 +227,17 @@ export default function PersonalInfoForm() {
           type="number"
           name="sss"
           id="sss"
-          value={formData.applicant.sss}
+          value={formData.applicant?.sss}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type SSS/GSIS number"
+          require={false}
         />
         <FormInput
           label="TIN #"
           type="number"
           name="tin"
           id="tin"
-          value={formData.applicant.tin}
+          value={formData.applicant?.tin}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type TIN number"
         />
@@ -234,7 +245,7 @@ export default function PersonalInfoForm() {
           name="comm_standing"
           id="comm_standing"
           label="Community Standing"
-          value={formData.applicant.comm_standing}
+          value={formData.applicant?.comm_standing}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write community standing here"
           require={true}
@@ -261,7 +272,7 @@ export default function PersonalInfoForm() {
                 Present Address:
               </label>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {formData.address.personal_pres}
+                {formData.address?.personal_pres}
               </span>
             </div>
             <div>
@@ -269,14 +280,14 @@ export default function PersonalInfoForm() {
                 Previous Address:
               </label>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {formData.address.personal_prev}
+                {formData.address?.personal_prev}
               </span>
             </div>
           </div>
         </>
       )}
 
-      {!formData.address.keep_personal && (
+      {!formData.address?.keep_personal && (
         <>
           <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
             Present Address:
@@ -288,9 +299,8 @@ export default function PersonalInfoForm() {
               id="region"
               require={true}
               loading={addressLoading}
-              value={formData.address.region}
-              onchange={(e) => dispatchInput(e, "address")}
-            >
+              value={formData.address?.region}
+              onchange={(e) => dispatchInput(e, "address")}>
               {regions.map((reg, i) => (
                 <option key={i} value={reg.code}>
                   {reg.name}
@@ -303,7 +313,7 @@ export default function PersonalInfoForm() {
               id="province"
               require={true}
               loading={addressLoading}
-              value={formData.address.province}
+              value={formData.address?.province}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.personal}
             >
@@ -321,7 +331,7 @@ export default function PersonalInfoForm() {
               id="city"
               require={true}
               loading={addressLoading}
-              value={formData.address.city}
+              value={formData.address?.city}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.personal}
             >
@@ -339,7 +349,7 @@ export default function PersonalInfoForm() {
               id="brgy"
               require={true}
               loading={addressLoading}
-              value={formData.address.brgy}
+              value={formData.address?.brgy}
               onchange={(e) => dispatchInput(e, "address")}
               disable={selectDisable.personal}
             >
@@ -356,7 +366,7 @@ export default function PersonalInfoForm() {
               type="text"
               name="purok"
               id="purok"
-              value={formData.address.purok}
+              value={formData.address?.purok}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type purok number here"
               require={true}
@@ -366,10 +376,10 @@ export default function PersonalInfoForm() {
               type="text"
               name="lot_num"
               id="lot_num"
-              value={formData.address.lot_num}
+              value={formData.address?.lot_num}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
-              require={true}
+              require={false}
             />
           </div>
 
@@ -385,10 +395,10 @@ export default function PersonalInfoForm() {
               dispatch(
                 copyAddress({
                   addressType: "personal",
-                  region: formData.address.region,
-                  province: formData.address.province,
-                  city: formData.address.city,
-                  barangay: formData.address.brgy,
+                  region: formData.address?.region,
+                  province: formData.address?.province,
+                  city: formData.address?.city,
+                  barangay: formData.address?.brgy,
                 })
               )
             }
@@ -401,7 +411,7 @@ export default function PersonalInfoForm() {
               name="prev_region"
               id="region"
               loading={copyLoading}
-              value={formData.address.prev_region}
+              value={formData.address?.prev_region}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type region here"
               require={true}
@@ -412,7 +422,7 @@ export default function PersonalInfoForm() {
               name="prev_province"
               id="province"
               loading={copyLoading}
-              value={formData.address.prev_province}
+              value={formData.address?.prev_province}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type province here"
               require={true}
@@ -423,7 +433,7 @@ export default function PersonalInfoForm() {
               name="prev_city"
               id="city"
               loading={copyLoading}
-              value={formData.address.prev_city}
+              value={formData.address?.prev_city}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type city here"
               require={true}
@@ -434,7 +444,7 @@ export default function PersonalInfoForm() {
               name="prev_brgy"
               id="brgy"
               loading={copyLoading}
-              value={formData.address.prev_brgy}
+              value={formData.address?.prev_brgy}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type barangay here"
               require={true}
@@ -444,7 +454,7 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_purok"
               id="purok"
-              value={formData.address.prev_purok}
+              value={formData.address?.prev_purok}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
               require={true}
@@ -454,10 +464,10 @@ export default function PersonalInfoForm() {
               type="text"
               name="prev_lot_num"
               id="prev_lot_num"
-              value={formData.address.prev_lot_num}
+              value={formData.address?.prev_lot_num}
               onchange={(e) => dispatchInput(e, "address")}
               placeholder="Type House number here"
-              require={true}
+              require={false}
             />
           </div>
         </>
@@ -468,7 +478,7 @@ export default function PersonalInfoForm() {
           name="home_description"
           id="home_description"
           label="Brief description of place of residence and home"
-          value={formData.applicant.home_description}
+          value={formData.applicant?.home_description}
           onchange={(e) => dispatchInput(e)}
           placeholder="Write residence description here"
           require={true}

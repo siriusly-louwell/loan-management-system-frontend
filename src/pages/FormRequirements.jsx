@@ -122,6 +122,13 @@ export default function FormRequirements() {
           <LeafletMap coordinates={coords} />
         </div>
       </div>
+
+      {/* <AcceptedDocumentsModal
+              open={showModal}
+              onClose={() => setShowModal(false)}
+              title={label}
+              documents={documents}
+            /> */}
     </>
   );
 }

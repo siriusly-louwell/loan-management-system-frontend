@@ -1,8 +1,8 @@
 import CreditHistoryAPI from "../api/CreditHistoryAPI";
 
 export const creditRepository = {
-  async fetchAll() {
-    const response = await CreditHistoryAPI.fetchAll();
+  async fetchAll(data) {
+    const response = await CreditHistoryAPI.fetchAll(data);
 
     if (!response)
       return {

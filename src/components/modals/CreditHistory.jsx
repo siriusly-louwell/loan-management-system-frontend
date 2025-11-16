@@ -8,13 +8,16 @@ import {
 } from "../../services/redux/slices/applicationSlice";
 import { ApplicationEntity } from "../../services/entities/Application";
 import EmptySearch from "../empty states/EmptySearch";
-import CreditHistorySkeleton from './../loading components/CreditHistorySkeleton';
+import CreditHistorySkeleton from "./../loading components/CreditHistorySkeleton";
 
 export default function CreditHistory() {
   const dispatch = useDispatch();
   const { user_id } = useSelector(ApplicationEntity);
   const { loanID } = useSelector((state) => state.application);
   const { credits, creditsLoading } = useSelector((state) => state.credit);
+  const fullName = (first, last) => {
+    return first ? `${first} ${last}` : "";
+  };
 
   useEffect(() => {
     dispatch(getLoanId());
@@ -46,7 +49,10 @@ export default function CreditHistory() {
                 data={{
                   date: credit.due_date,
                   id: credit.application.record_id,
-                  name: credit.user.first_name + " " + credit.user.last_name,
+                  name: fullName(
+                    credit.user?.first_name,
+                    credit.user?.last_name
+                  ),
                   amount: credit.amount,
                   status: credit.status,
                   paid_date: credit.paid_date,

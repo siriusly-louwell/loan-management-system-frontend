@@ -20,6 +20,8 @@ export default function LoanDetails({ setApproval }) {
   const statusCondition =
     loan.status === "evaluated" ||
     loan.status === "approved" ||
+    loan.status === "incomplete" ||
+    loan.status === "paid" ||
     loan.status === "declined";
 
   return (

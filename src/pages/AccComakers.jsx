@@ -13,7 +13,7 @@ import { getToken } from "../services/redux/slices/authSlice";
 import UserFilter from "../components/filters/UserFilter";
 import {
   fetchCustomers,
-  fetchLoan,
+  saveLoan,
 } from "../services/redux/slices/applicationSlice";
 import RowSkeleton from "../components/loading components/RowSkeleton";
 
@@ -45,7 +45,8 @@ export default function AccComakers() {
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
   const viewAccount = (id) => {
-    dispatch(fetchLoan({ id, by: "id" }));
+    console.log(id);
+    dispatch(saveLoan(id));
     navigate("/admin/overview");
   };
 

@@ -113,8 +113,7 @@ export default function CreateProduct() {
       <PopAnimate
         modalName={modals.createUnit}
         overflow={true}
-        classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto"
-      >
+        classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto">
         <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -183,8 +182,7 @@ export default function CreateProduct() {
                     id="brand"
                     value={formData.createUnit.brand || ""}
                     require={true}
-                    onchange={dispatchInput}
-                  >
+                    onchange={dispatchInput}>
                     {brands.map((brand, i) => (
                       <option key={i} value={brand}>
                         {brand}
@@ -563,8 +561,7 @@ export default function CreateProduct() {
                 <BttnwithIcon
                   type="button"
                   text="Add Image"
-                  click={() => setColorRows([...colorRows, ""])}
-                >
+                  click={() => setColorRows([...colorRows, ""])}>
                   <Plus />
                 </BttnwithIcon>
               </section>
@@ -573,8 +570,7 @@ export default function CreateProduct() {
                   <section key={i} className="border-b border-gray-400 pb-2">
                     <label
                       htmlFor={`dropzone_${i}`}
-                      className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer"
-                    >
+                      className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
                       <div className="self-end mb-1">
                         <CloseBttn trigger={() => removeFile(i, "files")} />
                       </div>
@@ -609,13 +605,15 @@ export default function CreateProduct() {
                       />
                     </label>
                     <div className="flex justify-between items-center mt-3">
-                      <div className="flex items-center space-x-2">
-                        <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                          Color:
-                        </p>
-                        {colors.length > 0 && colors[i] && (
-                          <ColorLabel style={colors[i]} />
-                        )}
+                      <div className="items-center space-x-2">
+                        <div className="flex items-center mb-2 space-x-4">
+                          <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
+                            Color:
+                          </p>
+                          {colors.length > 0 && colors[i] && (
+                            <ColorLabel style={colors[i]} />
+                          )}
+                        </div>
                         <CustomBttn
                           text="Select Color"
                           onclick={() => {
@@ -650,8 +648,7 @@ export default function CreateProduct() {
                   <BttnwithIcon
                     type="button"
                     text="Add Angle"
-                    click={() => setAngleRows([...angleRows, ""])}
-                  >
+                    click={() => setAngleRows([...angleRows, ""])}>
                     <Plus />
                   </BttnwithIcon>
                 </section>
@@ -659,12 +656,10 @@ export default function CreateProduct() {
                   {angleRows.map((_, i) => (
                     <section
                       key={i}
-                      className="border-b border-gray-400 mb-2 pb-2"
-                    >
+                      className="border-b border-gray-400 mb-2 pb-2">
                       <label
                         htmlFor={`angle_${i}`}
-                        className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer"
-                      >
+                        className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
                         <div className="self-end mb-1">
                           <CloseBttn trigger={() => removeFile(i, "angles")} />
                         </div>
@@ -764,8 +759,7 @@ function ColorAvailability() {
         <BttnwithIcon
           type="button"
           text="Add Color Availability"
-          click={addColorSection}
-        >
+          click={addColorSection}>
           <Plus />
         </BttnwithIcon>
       </div>
@@ -784,8 +778,7 @@ function ColorSection({ data, onUpdate, onImagesUpload, onRemove }) {
       {/* Remove button */}
       <button
         className="absolute right-2 top-2 text-lg"
-        onClick={() => onRemove(data.id)}
-      >
+        onClick={() => onRemove(data.id)}>
         ✕
       </button>
 
@@ -842,8 +835,7 @@ function ColorSection({ data, onUpdate, onImagesUpload, onRemove }) {
               className="px-3 py-1 border rounded"
               onClick={() =>
                 onUpdate(data.id, "quantity", Math.max(1, data.quantity - 1))
-              }
-            >
+              }>
               -
             </button>
 
@@ -851,8 +843,7 @@ function ColorSection({ data, onUpdate, onImagesUpload, onRemove }) {
 
             <button
               className="px-3 py-1 border rounded"
-              onClick={() => onUpdate(data.id, "quantity", data.quantity + 1)}
-            >
+              onClick={() => onUpdate(data.id, "quantity", data.quantity + 1)}>
               +
             </button>
           </div>

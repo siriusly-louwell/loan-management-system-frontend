@@ -126,7 +126,7 @@ export const addressRepository = {
 
   getFields(pageNum, type, keepFlags) {
     const fields =
-      type === "applicant" ? FIELD_NAMES[pageNum] : ADDRESS_NAMES[pageNum];
+      type !== "address" ? FIELD_NAMES[pageNum] : ADDRESS_NAMES[pageNum];
 
     if (type !== "address") return fields;
     if (keepFlags.keep_personal && pageNum === 1)

@@ -6,21 +6,27 @@ import { FORM_LABELS } from "../constants/formFields";
 import { ApplicationEntity } from "../services/entities/Application";
 import { EmploymentEntity } from "../services/entities/EmploymentInfo";
 import { FamilyEntity } from "../services/entities/FamilyInfo";
-import {
-  fetchLoan,
-  getLoanId,
-} from "../services/redux/slices/applicationSlice";
 import ProfileHeader from "../components/cards/ProfileHeader";
 import LeafletMap from "../components/maps/LeafletMap";
 import FileButton from "../components/buttons/FileButton";
 import DeclineApplicant from "../components/DeclineApplicant";
 import AssignCI from "../components/AssignCI";
 import CustomBttn from "../components/buttons/CustomBttn";
-import { ArrowBigLeftDash, CheckCircle2, ClipboardCheck } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowBigLeftDash,
+  CheckCircle2,
+  ClipboardCheck,
+} from "lucide-react";
 import { UserEntity } from "../services/entities/User";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import Dialog from "../components/modals/Dialog";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
+import { Link } from "react-router-dom";
+import {
+  fetchLoan,
+  getLoanId,
+} from "../services/redux/slices/applicationSlice";
 
 export default function AppliedForm() {
   const dispatch = useDispatch();
@@ -60,8 +66,7 @@ export default function AppliedForm() {
       <div className="w-100 bg-gray-100 dark:bg-gray-900">
         <section className="max-w-3xl mx-auto p-4">
           <BttnwithIcon
-            click={() => (window.location = "../admin/accounts/applicants")}
-          >
+            click={() => (window.location = "../admin/accounts/applicants")}>
             <ArrowBigLeftDash />
           </BttnwithIcon>
           <br />
@@ -73,23 +78,34 @@ export default function AppliedForm() {
             contact={application.contact_num}
             img={application.imgURL}
             loading={loanLoading}
-            address={application.address?.personal_pres}
-          >
+            address={application.address?.personal_pres}>
             {loanLoading ? (
-              <div className="flex space-x-3">
-                <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
-                <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+              <div className="flex justify-between">
+                <div className="flex space-x-3">
+                  <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                  <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                </div>
                 <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
               </div>
             ) : (
-              <>
-                <FileButton name="Valid ID" link={application.validID} />
-                <FileButton name="ID Picture" link={application.imgURL} />
-                <FileButton
-                  name="Proof of Residence"
-                  link={application.residenceImg}
-                />
-              </>
+              <section className="flex justify-between">
+                <div>
+                  <FileButton name="Valid ID" link={application.validID} />
+                  <FileButton name="ID Picture" link={application.imgURL} />
+                  <FileButton
+                    name="Proof of Residence"
+                    link={application.residenceImg}
+                  />
+                </div>
+
+                <Link
+                  to={`/${role}/comaker`}
+                  className="inline-flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-100 hover:bg-rose-600 focus:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200 dark:text-gray-400 dark:hover:text-white dark:focus:text-rose-500 dark:hover:bg-gray-700">
+                  <span className="truncate max-w-[200px]">Comaker Form</span>
+                  <ArrowRight size={16} />
+                </Link>
+              </section>
             )}
           </ProfileHeader>
 

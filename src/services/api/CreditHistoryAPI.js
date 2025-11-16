@@ -3,8 +3,10 @@ import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const CreditHistoryAPI = {
-  async fetchAll() {
-    const response = await axios.get(`${API_URL}/api/credit`);
+  async fetchAll(params) {
+    const response = await axios.get(`${API_URL}/api/credit`, {
+      params: { ...params },
+    });
     return response.data;
   },
 
@@ -37,10 +39,7 @@ const CreditHistoryAPI = {
   },
 
   async patch(data, id) {
-    const response = await axios.patch(
-      `${API_URL}/api/credit/${id}`,
-      data
-    );
+    const response = await axios.patch(`${API_URL}/api/credit/${id}`, data);
     return response.data;
   },
 };

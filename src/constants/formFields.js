@@ -37,6 +37,23 @@ export const FIELD_NAMES = [
     "father_first",
   ],
   [],
+  [
+    "first_name",
+    "last_name",
+    "birth_day",
+    "birth_place",
+    "gender",
+    "contact_num",
+    "email",
+    "facebook",
+    "status",
+    "citizenship",
+    "occupation",
+    "yrs_in_service",
+    "employment_status",
+    "employer",
+    "educ_attain",
+  ],
 ];
 
 export const ADDRESS_NAMES = [
@@ -71,6 +88,21 @@ export const ADDRESS_NAMES = [
     "p_region",
   ],
   [],
+  [
+    "co_region",
+    "co_province",
+    "co_city",
+    "co_brgy",
+    "co_purok",
+    "co_lot_num",
+    "perm_region",
+    "perm_province",
+    "perm_city",
+    "perm_brgy",
+    "perm_purok",
+    "perm_lot_num",
+    "comaker_emp_address"
+  ],
 ];
 
 export const FORM_LABELS = {
@@ -123,6 +155,10 @@ export const FORM_LABELS = {
     parent_prev: "Parent's Previous Address",
     spouse_pres: "Spouse's Present Address",
     spouse_prev: "Spouse's Previous Address",
+    comaker_pres: "Present Address",
+    comaker_perm: "Permanent Address",
+    sp_parent_pres: "Parent's Present Address",
+    sp_parent_prev: "Parent's Previous Address",
   },
   other: {
     comm_standing: "Community Standing",
@@ -133,6 +169,35 @@ export const FORM_LABELS = {
     mother_first: "First name",
     mother_middle: "Middle name",
     mother_last: "Last name",
+    sp_father_first: "Firsth Name",
+    sp_father_middle: "Middle Name",
+    sp_father_last: "Last Name",
+    sp_mother_first: "First Name",
+    sp_mother_middle: "Middle Name",
+    sp_mother_last: "Last Name",
+  },
+  comaker: {
+    facebook: "Facebook",
+    birth_day: "Birth Day",
+    birth_place: "Birth Place",
+    religion: "Religion",
+    tribe: "Tribe",
+    educ_attain: "Educational Attainment",
+    citizenship: "Citizenship",
+    occupation: "Occupation",
+    yrs_in_service: "Years in Service",
+    employment_status: "Employment Status",
+    employer: "Employer",
+  },
+  comaker_spouse: {
+    spouse_first: "First Name",
+    spouse_middle: "Middle Name",
+    spouse_last: "Last Name",
+    sp_citizenship: "Citizenship",
+    sp_occupation: "Occupation",
+    sp_yrs_in_service: "Years in Service",
+    sp_emp_status: "Employment Status",
+    sp_employer: "Employer",
   },
 };
 

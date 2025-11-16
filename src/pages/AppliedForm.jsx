@@ -56,7 +56,7 @@ export default function AppliedForm() {
 
   return (
     <>
-      <div className="w-full bg-gray-100 dark:bg-gray-900">
+      <div className="w-100 bg-gray-100 dark:bg-gray-900">
         <section className="max-w-3xl mx-auto p-4">
           <BttnwithIcon
             click={() => (window.location = "../admin/accounts/applicants")}

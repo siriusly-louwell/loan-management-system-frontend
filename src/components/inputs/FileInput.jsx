@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import AcceptedDocumentsModal from "../modals/AcceptedDocumentsModal";
 
 export default function FileInput({
   label,
@@ -6,13 +8,16 @@ export default function FileInput({
   change,
   name,
   accept,
+  documents,
   require = false,
 }) {
   const cameraInputRef = useRef(null);
   const fileInputRef = useRef(null);
-
+  
   const [preview, setPreview] = useState(null);
   const [fileName, setFileName] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const fileType =
     type === "img"
       ? "SVG, PNG, or JPG (MAX. 2MB 800x400px)"
@@ -34,9 +39,9 @@ export default function FileInput({
   };
 
   return (
-    <>
+    <div className="mb-4">
       <div className="flex flex-col">
-        <div className="mb-4">
+        <div className="flex justify-between mb-1">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             htmlFor={name}
@@ -44,48 +49,49 @@ export default function FileInput({
             {label}{" "}
             {require ? <strong className="text-rose-500">*</strong> : ""}
           </label>
-
-          <input
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-            className="block w-full text-sm text-gray-900 cursor-pointer border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id={name}
-            type="file"
-            ref={fileInputRef}
-            name={name}
-            accept={accept}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            ref={cameraInputRef}
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-          />
-
-          <div className="flex gap-4">
-            <BttnwithIcon
-              click={() => cameraInputRef.current.click()}
-              type="button"
-              text="Take a Picture"
-            >
-              <Plus />
-            </BttnwithIcon>
-            <BttnwithIcon
-              click={() => fileInputRef.current.click()}
-              type="button"
-              text="Choose from file"
-            >
-              <Plus />
-            </BttnwithIcon>
-          </div>
-
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-300">
-            {fileType}
-          </p>
+          <button type="button" onClick={() => setShowModal(true)}>
+            <HelpOutlineIcon sx={{ color: "#ddddddff" }} />
+          </button>
         </div>
-        {/* Preview Section */}
+        <input
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+          className="block w-full text-sm text-gray-900 cursor-pointer border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          id={name}
+          type="file"
+          ref={fileInputRef}
+          name={name}
+          accept={accept}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          ref={cameraInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
+        <div className="flex gap-4">
+          <BttnwithIcon
+            click={() => cameraInputRef.current.click()}
+            type="button"
+            text="Take a Picture"
+          >
+            <Plus />
+          </BttnwithIcon>
+          <BttnwithIcon
+            click={() => fileInputRef.current.click()}
+            type="button"
+            text="Choose from file"
+          >
+            <Plus />
+          </BttnwithIcon>
+        </div>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-300">
+          {fileType}
+        </p>
+      </div>
+      <div>
         {preview ? (
           <div className="mt-3">
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -104,6 +110,15 @@ export default function FileInput({
           </div>
         ) : null}
       </div>
-    </>
+
+
+      {/* Accepted Documents Modal */}
+      <AcceptedDocumentsModal 
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        title={label}
+        documents={documents}
+      />
+    </div>
   );
 }

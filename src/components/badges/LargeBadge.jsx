@@ -1,6 +1,9 @@
-import React from "react";
+import React,  {useState} from "react";
+import CustomBttn from "../buttons/CustomBttn";
+import { useNavigate } from "react-router-dom";
+import { CheckCircle2, ClipboardCheck, FileSearch } from "lucide-react";
 
-export default function LargeBadge({ type, subtext = true }) {
+export default function LargeBadge({ type, subtext = true, loanId, role, onViewDetails }) { 
   let color;
 
   switch (type) {
@@ -42,6 +45,14 @@ export default function LargeBadge({ type, subtext = true }) {
             : "The application needs to be manually reviewed"}
         </span>
       )}
+      <CustomBttn
+        text="Click to show details"
+        onclick={() => {
+          if (onViewDetails) onViewDetails(role, loanId);
+        }}
+        classname="inline-flex items-center gap-2 px-4 text-sm py-2 font-medium text-white bg-rose-600 border border-rose-600 rounded-lg hover:bg-rose-500 dark:bg-rose-600 dark:border-rose-500 dark:hover:bg-rose-700 transition-colors duration-200"
+        icon={<FileSearch size={18} className="text-white" />}
+      />
     </div>
   );
 }

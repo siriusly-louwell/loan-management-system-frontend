@@ -57,7 +57,9 @@ export default function AccAdmins() {
       setPage={setPage}
       pagination={pagination}
       itemName="accounts"
-      label="User">
+      label="User"
+      url={window.location.href}
+    >
       <div className="min-h-[65vh] border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         <Table>
           <TableHead
@@ -91,7 +93,8 @@ export default function AccAdmins() {
                       <CustomBttn
                         onclick={() => viewAccount(account.id)}
                         text="View"
-                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        classname="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      >
                         <Eye />
                       </CustomBttn>
                       <CustomBttn

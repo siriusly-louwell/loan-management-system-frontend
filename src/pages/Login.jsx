@@ -12,6 +12,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginData, setLogin] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleChange(event) {
     setLogin({
@@ -38,11 +39,17 @@ export default function Login() {
     }
   }
 
+  const redirect = () => {
+    window.location = "/";
+  };
   return (
     <>
       <section className="bg-gray-200 h-screen dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white">
+          <div
+            onClick={() => redirect()}
+            className="flex items-center mb-6 text-2xl font-semibold space-x-4 text-gray-900 dark:text-white"
+          >
             <img src={RMCI} className="h-8 mr-2" alt="Rhean Motor Logo" />
             Rhean Motor Center
           </div>
@@ -64,7 +71,7 @@ export default function Login() {
                 />
                 <TextInput
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   caption="Password"
                   value={loginData.password}
@@ -78,6 +85,7 @@ export default function Login() {
                     id="show_pass"
                     text="Show password"
                     required={false}
+                    onChange={() => setShowPassword((prev) => !prev)}
                   />
                   <Link className="font-medium text-rose-500 text-sm hover:underline dark:text-primary-500 cursor-pointer">
                     Forgot Password
@@ -88,7 +96,8 @@ export default function Login() {
                   Is your application approved?
                   <Link
                     to="/register"
-                    className="font-medium text-rose-500 hover:underline ml-1 dark:text-primary-500 cursor-pointer">
+                    className="font-medium text-rose-500 hover:underline ml-1 dark:text-primary-500 cursor-pointer"
+                  >
                     Register here
                   </Link>
                 </p>

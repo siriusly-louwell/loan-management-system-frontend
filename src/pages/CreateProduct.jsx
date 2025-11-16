@@ -113,7 +113,8 @@ export default function CreateProduct() {
       <PopAnimate
         modalName={modals.createUnit}
         overflow={true}
-        classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto">
+        classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto"
+      >
         <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -182,7 +183,8 @@ export default function CreateProduct() {
                     id="brand"
                     value={formData.createUnit.brand || ""}
                     require={true}
-                    onchange={dispatchInput}>
+                    onchange={dispatchInput}
+                  >
                     {brands.map((brand, i) => (
                       <option key={i} value={brand}>
                         {brand}
@@ -547,7 +549,12 @@ export default function CreateProduct() {
                 </div>
               </div>
             </section>
-
+            {/* Temporary Code -> need to be tested */}
+            {false && (
+              <section className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
+                <ColorAvailability />
+              </section>
+            )}
             <section className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
               <section className="flex w-full justify-between">
                 <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
@@ -556,7 +563,8 @@ export default function CreateProduct() {
                 <BttnwithIcon
                   type="button"
                   text="Add Image"
-                  click={() => setColorRows([...colorRows, ""])}>
+                  click={() => setColorRows([...colorRows, ""])}
+                >
                   <Plus />
                 </BttnwithIcon>
               </section>
@@ -565,7 +573,8 @@ export default function CreateProduct() {
                   <section key={i} className="border-b border-gray-400 pb-2">
                     <label
                       htmlFor={`dropzone_${i}`}
-                      className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
+                      className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer"
+                    >
                       <div className="self-end mb-1">
                         <CloseBttn trigger={() => removeFile(i, "files")} />
                       </div>
@@ -641,7 +650,8 @@ export default function CreateProduct() {
                   <BttnwithIcon
                     type="button"
                     text="Add Angle"
-                    click={() => setAngleRows([...angleRows, ""])}>
+                    click={() => setAngleRows([...angleRows, ""])}
+                  >
                     <Plus />
                   </BttnwithIcon>
                 </section>
@@ -649,10 +659,12 @@ export default function CreateProduct() {
                   {angleRows.map((_, i) => (
                     <section
                       key={i}
-                      className="border-b border-gray-400 mb-2 pb-2">
+                      className="border-b border-gray-400 mb-2 pb-2"
+                    >
                       <label
                         htmlFor={`angle_${i}`}
-                        className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
+                        className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer"
+                      >
                         <div className="self-end mb-1">
                           <CloseBttn trigger={() => removeFile(i, "angles")} />
                         </div>
@@ -700,5 +712,152 @@ export default function CreateProduct() {
       </PopAnimate>
       {modals?.colorModal && <ColorModal colors={colors} />}
     </>
+  );
+}
+
+function ColorAvailability() {
+  const [colors, setColors] = useState([]);
+
+  const addColorSection = () => {
+    setColors([
+      ...colors,
+      {
+        id: Date.now(),
+        color: "",
+        quantity: 1,
+        images: [],
+      },
+    ]);
+  };
+
+  const updateColor = (id, field, value) => {
+    setColors(colors.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
+  };
+
+  const handleImagesUpload = (id, files) => {
+    setColors(
+      colors.map((c) =>
+        c.id === id ? { ...c, images: [...c.images, ...files] } : c
+      )
+    );
+  };
+
+  const removeColorSection = (id) => {
+    setColors(colors.filter((c) => c.id !== id));
+  };
+  return (
+    <>
+      {" "}
+      <div className="space-y-6">
+        <h3 className="text-xl font-semibold">Unit Images</h3>
+
+        {colors.map((item) => (
+          <ColorSection
+            key={item.id}
+            data={item}
+            onUpdate={updateColor}
+            onImagesUpload={handleImagesUpload}
+            onRemove={removeColorSection}
+          />
+        ))}
+
+        <BttnwithIcon
+          type="button"
+          text="Add Color Availability"
+          click={addColorSection}
+        >
+          <Plus />
+        </BttnwithIcon>
+      </div>
+    </>
+  );
+}
+
+function ColorSection({ data, onUpdate, onImagesUpload, onRemove }) {
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    onImagesUpload(data.id, files);
+  };
+
+  return (
+    <div className="border rounded-md p-4 space-y-4 relative">
+      {/* Remove button */}
+      <button
+        className="absolute right-2 top-2 text-lg"
+        onClick={() => onRemove(data.id)}
+      >
+        ✕
+      </button>
+
+      {/* Upload Box */}
+      <label className="w-full border-2 border-dashed rounded-md p-6 flex flex-col items-center cursor-pointer">
+        <span>Click to upload or drag and drop</span>
+        <span className="text-sm text-gray-500">
+          SVG, PNG or JPG (MAX. 800×400)
+        </span>
+        <input
+          type="file"
+          multiple
+          className="hidden"
+          onChange={handleFileChange}
+        />
+      </label>
+
+      {/* List uploaded images */}
+      {data.images.length > 0 && (
+        <div className="flex flex-wrap gap-3 mt-2">
+          {data.images.map((file, index) => (
+            <div key={index} className="w-20 h-20">
+              <img
+                alt="images"
+                src={URL.createObjectURL(file)}
+                className="w-full h-full object-cover rounded"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Color + Quantity Row */}
+      <div className="flex items-center gap-6">
+        {/* Color Picker */}
+        <div>
+          <label className="text-sm font-semibold">Color</label>
+          <div className="flex items-center gap-2 mt-1">
+            <input
+              type="color"
+              className="w-8 h-8 rounded border"
+              value={data.color}
+              onChange={(e) => onUpdate(data.id, "color", e.target.value)}
+            />
+            <span>{data.color || "No color selected"}</span>
+          </div>
+        </div>
+
+        {/* Quantity */}
+        <div>
+          <label className="text-sm font-semibold">Quantity</label>
+          <div className="flex items-center gap-2 mt-1">
+            <button
+              className="px-3 py-1 border rounded"
+              onClick={() =>
+                onUpdate(data.id, "quantity", Math.max(1, data.quantity - 1))
+              }
+            >
+              -
+            </button>
+
+            <span>{data.quantity}</span>
+
+            <button
+              className="px-3 py-1 border rounded"
+              onClick={() => onUpdate(data.id, "quantity", data.quantity + 1)}
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

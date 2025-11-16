@@ -9,6 +9,11 @@ import FileButton from "../components/buttons/FileButton";
 import twoByTwo from '../assets/images/2x2.webp';
 import proofOfResidency from '../assets/images/proofofresidency.webp';
 import proofOfIncome from '../assets/images/proofofincome.webp';
+import { BadgeInfo } from "lucide-react";
+
+import UploadPhotoInfo from "./PageComponents/UploadPhotoInfoModal";
+import { useState } from "react";
+
 
 export default function FormRequirements() {
   const { fileChange, toggleKeep } = useOutletContext();
@@ -18,15 +23,20 @@ export default function FormRequirements() {
     role === "customer"
       ? { lat: formData.address.lat, lng: formData.address.lng }
       : { lat: 7.3081, lng: 125.6842 };
-
+  const [openInfo, setOpenInfo] = useState(false);
   if (!formData?.applicant) {
     return <div className="text-gray-500">Loading requirements...</div>;
   }
   return (
     <>
-      <h3 className="text-lg font-semibold text-gray-900 pb-3 dark:text-white">
-        Other Requirements:
-      </h3>
+      <UploadPhotoInfo open={openInfo} onClose={() => setOpenInfo(false)} />
+
+      <div className="flex items-center gap-2 pb-2">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Other Requirements:
+        </h3>
+        <BadgeInfo className="text-white cursor-pointer" onClick={() => setOpenInfo(true)} />
+      </div>
       {role === "customer" && (
         <div className="flex mb-8 items-center">
           <FormCheck

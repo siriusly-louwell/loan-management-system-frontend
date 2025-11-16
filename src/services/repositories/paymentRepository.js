@@ -26,6 +26,18 @@ export const paymentRepository = {
     return await response;
   },
 
+  async fetchUserPayments(userId) {
+    const response = await PaymentAPI.fetchUserPayments(userId);
+
+    if (!response)
+      return {
+        message: "Failed to fetch user payment",
+        type: "error",
+      };
+
+    return await response;
+  },
+
   async fetchPage({ page = 1, perPage = 8, ...params }) {
     const response = await PaymentAPI.paginate(page, perPage, params);
 

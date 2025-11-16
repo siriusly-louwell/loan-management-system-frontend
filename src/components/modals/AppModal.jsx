@@ -31,10 +31,10 @@ export default function AppModal({ open, onClose, title, children }) {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}>
-              
+
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">{title}</h2>
-              <button
+              <button type="button"
                 onClick={onClose}
                 className="p-2 hover:bg-white/10 rounded-full transition">
                 <X size={20} />
@@ -44,7 +44,7 @@ export default function AppModal({ open, onClose, title, children }) {
             <div className="text-gray-300 text-sm leading-relaxed">
               {children}
             </div>
-            
+
           </motion.div>
 
         </motion.div>

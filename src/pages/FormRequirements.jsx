@@ -23,11 +23,10 @@ export default function FormRequirements() {
     role === "customer"
       ? { lat: formData.address.lat, lng: formData.address.lng }
       : { lat: 7.3081, lng: 125.6842 };
-
+  const [openInfo, setOpenInfo] = useState(false);
   if (!formData?.applicant) {
     return <div className="text-gray-500">Loading requirements...</div>;
   }
-  const [openInfo, setOpenInfo] = useState(false);
   return (
     <>
       <UploadPhotoInfo open={openInfo} onClose={() => setOpenInfo(false)} />

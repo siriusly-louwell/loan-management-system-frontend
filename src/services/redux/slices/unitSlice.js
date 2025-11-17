@@ -168,13 +168,18 @@ const UnitSlice = createSlice({
         state.unitLoading = false;
         state.unit = action.payload;
 
-        state.images = [];
-        state.unit.images.forEach((file, i) => {
-          state.images[i] = {
-            url: UnitAPI.imgPath(file.path),
-            type: file.image_type,
-          };
-        });
+        // Reset color image structure
+        state.colorImages = [];
+
+        // Build images per color
+        if (state.unit?.colors?.length > 0) {
+          state.unit.colors.forEach((color, index) => {
+            state.colorImages[index] = color.images.map((img) => ({
+              url: UnitAPI.imgPath(img.path),
+              color: color.hex_value,
+            }));
+          });
+        }
       })
       .addCase(fetchUnit.rejected, (state, action) => {
         state.unitLoading = false;

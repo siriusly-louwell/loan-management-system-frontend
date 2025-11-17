@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import EMICalculator from "./EMICalculator";
@@ -25,11 +25,15 @@ export default function ProductInfo({ staff = false }) {
   const { unitId, unitLoading, images } = useSelector((state) => state.unit);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
-
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  useEffect(() => {
+    console.log(selectedColorIndex);
+  });
   useEffect(() => {
     dispatch(fetchUnit());
   }, [unitId, dispatch]);
 
+  console.log(unit);
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">
       <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">
@@ -39,41 +43,62 @@ export default function ProductInfo({ staff = false }) {
             <>
               <section className="flex flex-col space-y-2">
                 <div className="relative w-full h-[70vh] max-h-[70vh] space-y-4 lg:max-w-3xl mx-auto rounded-xl overflow-hidden">
-                  <BasicCarousel
-                    length={images.filter((f) => f.type === "color").length}>
-                    {unitLoading ? (
-                      //   <div className="w-full h-10 bg-gray-200 dark:bg-gray-500 animate-pulse rounded-md"></div>
-                      <div className="flex justify-center items-center w-full h-full">
-                        <ImageSkeleton />
-                      </div>
-                    ) : (
-                      images
-                        .filter((f) => f.type === "color")
-                        .map((src, i) => (
-                          <img
-                            key={i}
-                            src={src.url}
-                            alt={`Slide ${i + 1}`}
-                            className="w-full h-full object-contain flex-shrink-0 rounded-xl bg-gray-200 dark:bg-gray-600"
-                          />
-                        ))
+                  {unit &&
+                    unit.colors &&
+                    unit.colors[selectedColorIndex] &&
+                    unit.colors[selectedColorIndex].images &&
+                    unit.colors.length > 0 && (
+                      <BasicCarousel
+                        length={unit.colors[0]?.images?.length || 0}
+                      >
+                        {(unit.colors[selectedColorIndex]?.images || []).map(
+                          (img, i) => (
+                            <img
+                              key={i}
+                              src={`${process.env.REACT_APP_API_URL}/storage/${img.path}`}
+                              alt="motor"
+                              className="w-full h-full object-contain rounded-xl"
+                            />
+                          )
+                        )}
+                      </BasicCarousel>
                     )}
-                  </BasicCarousel>
+                  {(!unit ||
+                    !unit.colors ||
+                    !unit.colors[selectedColorIndex] ||
+                    !unit.colors[selectedColorIndex].images ||
+                    unit.colors.length === 0) && (
+                    <BasicCarousel length={0}>
+                      {[].map((img, i) => (
+                        <img
+                          key={i}
+                          src={"https://placehold.co/600x400"}
+                          alt="motor"
+                          className="w-full h-full object-contain rounded-xl"
+                        />
+                      ))}
+                    </BasicCarousel>
+                  )}
                 </div>
                 <section className="flex w-full space-x-2 overflow-x-auto rounded-lg">
-                  {images
-                    .filter((f) => f.type === "angle")
-                    .map((img, i) => (
+                  {unit &&
+                    unit.colors &&
+                    unit.colors.length > 0 &&
+                    unit?.colors[selectedColorIndex]?.images?.map((img, i) => (
                       <img
                         key={i}
-                        src={img.url}
-                        alt="angle"
+                        src={`${process.env.REACT_APP_API_URL}/storage/${img.path}`}
+                        alt="motor"
                         onClick={() => {
-                          dispatch(setPreview(img.url));
+                          dispatch(
+                            setPreview(
+                              `${process.env.REACT_APP_API_URL}/storage/${img.path}`
+                            )
+                          );
                           dispatch(
                             toggleModal({
                               name: "previewModal",
-                              value: modals?.previewModal,
+                              value: modals.previewModal,
                             })
                           );
                         }}
@@ -102,22 +127,19 @@ export default function ProductInfo({ staff = false }) {
                   )}
                   <div className="flex space-x-2">
                     <div className="grid grid-cols-10 gap-y-2">
-                      {!unitLoading &&
-                        unit.colors.map((color, i) => (
-                          <div key={i}>
-                            <label htmlFor={`${i}_${color.color}`}>
-                              <ColorLabel key={i} style={color.color} />
-                            </label>
-                            <input
-                              type="button"
-                              id={`${i}_${color.color}`}
-                              className="hidden"
-                              onClick={() => {
-                                dispatch(toggleSlide({ value: i }));
-                              }}
-                            />
-                          </div>
-                        ))}
+                      {unit.colors?.map((color, i) => (
+                        <div key={i}>
+                          <input
+                            type="button"
+                            onClick={(e) => setSelectedColorIndex(i)}
+                          />
+                          <div
+                            onClick={(e) => setSelectedColorIndex(i)}
+                            style={{ background: color.hex_value }}
+                            className="w-6 h-6 rounded-full border cursor-pointer"
+                          ></div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -173,7 +195,8 @@ export default function ProductInfo({ staff = false }) {
                       width="24"
                       height="24"
                       fill="none"
-                      viewBox="0 0 24 24">
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         stroke="currentColor"
                         strokeLinecap="round"
@@ -222,7 +245,8 @@ export default function ProductInfo({ staff = false }) {
                     .map(([key, value]) => (
                       <div
                         key={key}
-                        className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-200 dark:bg-gray-900/50 p-4 shadow-sm hover:shadow-md transition">
+                        className="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-200 dark:bg-gray-900/50 p-4 shadow-sm hover:shadow-md transition"
+                      >
                         <p className="text-sm text-gray-700 dark:text-gray-400">
                           {SPECS[key]}
                         </p>

@@ -30,8 +30,12 @@ const UnitAPI = {
   },
 
   async add(data) {
-    const response = await axios.post(`${API_URL}/api/motorcycle/`, data);
-
+    const response = await axios.post(`${API_URL}/api/motorcycle/`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(response);
     return response.data;
   },
 

@@ -50,6 +50,8 @@ import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
 import Analytics from "./pages/Analytics";
 import CreditHistory from "./components/modals/CreditHistory";
+import CustomerPaymentHIstoryDetails from "./pages/CustomerPaymentHIstoryDetails";
+import CoMakerForm from "./pages/CoMakerForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -249,6 +251,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="comaker"
+            element={
+              <ProtectedRoute type="ci">
+                <CoMakerForm />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Staff Routes */}
@@ -312,7 +322,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="application"
             element={
@@ -321,7 +330,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="review"
             element={
@@ -330,7 +338,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="comaker"
+            element={
+              <ProtectedRoute type="staff">
+                <CoMakerForm />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="invoice"
             element={
@@ -383,6 +398,14 @@ function App() {
               element={
                 <ProtectedRoute type="admin">
                   <AppNotifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="invoices/user-details/:userId"
+              element={
+                <ProtectedRoute type="admin"> 
+                  <CustomerPaymentHIstoryDetails />
                 </ProtectedRoute>
               }
             />
@@ -493,6 +516,14 @@ function App() {
             element={
               <ProtectedRoute type="admin">
                 <ReportReview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="comaker"
+            element={
+              <ProtectedRoute type="admin">
+                <CoMakerForm />
               </ProtectedRoute>
             }
           />

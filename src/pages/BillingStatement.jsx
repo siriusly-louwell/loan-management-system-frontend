@@ -43,7 +43,7 @@ export default function BillingStatement() {
 
   return (
     <section className="w-full h-full py-10">
-      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg px-6 py-10 print:shadow-none print:bg-white">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 border border-gray-500 rounded-xl shadow-lg px-6 py-10 print:shadow-none print:bg-white">
         <header className="flex items-start justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -127,7 +127,7 @@ export default function BillingStatement() {
                   return (
                     <tr
                       key={p.id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                      className="hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                     >
                       <Td>{p.date}</Td>
                       <Td>{p.cert_num}</Td>
@@ -166,8 +166,8 @@ export default function BillingStatement() {
 function SummaryCard({ label, value, highlight = false }) {
   return (
     <div
-      className={`rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900 shadow-sm ${
-        highlight ? "ring-2 ring-rose-400" : ""
+      className={`rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-700 shadow-sm ${
+        highlight ? "ring-2 ring-rose-400 dark:ring-rose-500" : ""
       }`}
     >
       <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-1">

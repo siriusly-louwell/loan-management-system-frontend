@@ -24,6 +24,20 @@ export const fetchPayment = createAsyncThunk(
   }
 );
 
+export const fetchUserPayments = createAsyncThunk(
+  "payment/fetchUserPayments",
+  async (userId, thunkAPI) =>{
+    try{
+      const data = await paymentRepository.fetchUserPayments(userId);
+      // console.log(data)
+      return data
+    }catch(e){
+      console.log("error")
+      return thunkAPI.rejectWithValue(e.message)      
+    }
+  }
+)
+
 export const fetchPayments = createAsyncThunk(
   "payment/fetchPayments",
   async (page, thunkAPI) => {
@@ -104,7 +118,19 @@ const paymentSlice = createSlice({
         state.paymentLoading = false;
         state.paymentError = action.payload;
       })
-
+      // ? Fetch user payments
+      .addCase(fetchUserPayments.pending, (state) => {
+        state.paymentsLoading = true;
+        state.paymentError = null;
+      })
+      .addCase(fetchUserPayments.fulfilled, (state, action) => {
+        state.paymentsLoading = false;
+        state.payments = action.payload; 
+      })
+      .addCase(fetchUserPayments.rejected, (state, action) => {
+        state.paymentsLoading = false;
+        state.paymentError = action.payload;
+      })
       // ? Fetch all payments
       .addCase(fetchPayments.pending, (state) => {
         state.paymentsLoading = true;

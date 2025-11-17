@@ -22,6 +22,13 @@ const PaymentAPI = {
     return response.data;
   },
 
+   async fetchUserPayments({ userId, ...params }) {
+    const response = await axios.get(`${API_URL}/api/payment?customer=${userId}`, {
+      params: { ...params },
+    });
+    return response.data;
+  },
+
   async count(params) {
     const response = await axios.get(`${API_URL}/api/payment/count`, {
       params: { ...params },

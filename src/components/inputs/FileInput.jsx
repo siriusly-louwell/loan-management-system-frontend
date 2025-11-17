@@ -29,7 +29,6 @@ export default function FileInput({
     const file = e.target.files[0];
     change(e); // Call parent handler
     if (!file) return;
-    console.log(file);
     setFileName(file.name);
 
     if (file.type.startsWith("image/")) {
@@ -42,7 +41,7 @@ export default function FileInput({
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-4 max-w-[42vh]">
       <div className="flex flex-col">
         <div className="flex justify-between mb-1">
           <label
@@ -53,7 +52,7 @@ export default function FileInput({
             {require ? <strong className="text-rose-500">*</strong> : ""}
           </label>
           <button type="button" onClick={() => setShowModal(true)}>
-            <HelpOutlineIcon sx={{ color: "#ddddddff" }} />
+            <HelpOutlineIcon sx={{ color: "#909090ff" }} />
           </button>
         </div>
         <input

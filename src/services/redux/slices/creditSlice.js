@@ -29,7 +29,7 @@ export const fetchCredits = createAsyncThunk(
   "credit/fetchCredits",
   async (credit, thunkAPI) => {
     try {
-      return await creditRepository.fetchAll();
+      return await creditRepository.fetchAll(credit);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

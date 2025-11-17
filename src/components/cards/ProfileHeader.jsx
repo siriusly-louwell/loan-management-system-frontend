@@ -1,3 +1,4 @@
+import Image from "../../assets/icons/Image";
 import ImageSkeleton from "../loading components/ImageSkeleton";
 
 export default function ProfileHeader({
@@ -24,7 +25,7 @@ export default function ProfileHeader({
               className="w-full h-full object-cover rounded-full"
             />
           ) : (
-            "LJ"
+            <Image size={10} />
           )}
         </div>
         <div className="flex-1 min-w-0">

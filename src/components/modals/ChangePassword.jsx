@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import CloseBttn from "./../buttons/CloseBttn";
 import PopAnimate from "./../animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../../services/redux/slices/userSlice";
 import FormInput from "./../inputs/FormInput";
 import Button from "./../buttons/Button";
-import { resetInput } from "../../services/redux/slices/formSlice";
 import { ArrowRight, KeyRound } from "lucide-react";
 import CustomBttn from "../buttons/CustomBttn";
+import { UserEntity } from "../../services/entities/User";
+import { changePassword } from "../../services/redux/slices/authSlice";
 import {
   setAlert,
   setLoading,
@@ -16,22 +16,32 @@ import {
 
 export default function ChangePassword() {
   const dispatch = useDispatch();
+  const { id } = useSelector(UserEntity);
   const { modals } = useSelector((state) => state.ui);
-  const { formData } = useSelector((state) => state.form);
-  const [newPass, setNewPass] = useState({ password: "", confirm_pass: "" });
+  const [newPass, setNewPass] = useState({
+    current_password: "",
+    new_password: "",
+  });
 
   async function handleSubmit(event) {
     event.preventDefault();
-    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
+    dispatch(setLoading({ isActive: true, text: "Updating your password..." }));
 
     try {
-      const form = formData.createUser;
-      const response = await dispatch(addUser({ form })).unwrap();
+      const response = await dispatch(
+        changePassword({ ...newPass, user: id })
+      ).unwrap();
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       if (response.type === "success") {
-        dispatch(resetInput());
+        setNewPass({})
+        dispatch(
+          toggleModal({
+            name: "changePass",
+            value: modals?.changePass,
+          })
+        );
       }
     } catch (error) {
       console.error("Error: ", error);
@@ -50,7 +60,7 @@ export default function ChangePassword() {
 
   return (
     <PopAnimate
-      modalName={modals.changePass}
+      modalName={true}
       classStyle="relative p-4 w-full max-w-xl h-full md:h-auto">
       <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
         <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -82,20 +92,30 @@ export default function ChangePassword() {
             <FormInput
               label="Current Password"
               type="text"
-              value={newPass.password}
-              onchange={(e) => handleChange(e, "password")}
-              name="password"
+              value={newPass.current_password}
+              onchange={(e) => handleChange(e, "current_password")}
+              name="current_password"
               id="password"
+              placeholder="••••••••"
+              require={true}
+            />
+            <FormInput
+              label="New Password"
+              type="text"
+              name="new_password"
+              id="new-pass"
+              value={newPass.new_password}
+              onchange={(e) => handleChange(e, "new_password")}
               placeholder="••••••••"
               require={true}
             />
             <FormInput
               label="Confirm Password"
               type="text"
-              name="confirm_pass"
+              name="new_password_confirmation"
               id="confirm-pass"
-              value={newPass.confirm_pass}
-              onchange={(e) => handleChange(e, "confirm_pass")}
+              value={newPass.new_password_confirmation}
+              onchange={(e) => handleChange(e, "new_password_confirmation")}
               placeholder="••••••••"
               require={true}
             />

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import AcceptedDocumentsModal from "../modals/AcceptedDocumentsModal";
 import { useRef } from "react";
 import BttnwithIcon from "../buttons/BttnwithIcon";
 import Plus from "../../assets/icons/Plus";
@@ -11,7 +10,7 @@ export default function FileInput({
   change,
   name,
   accept,
-  documents,
+  popUpClick,
   require = false,
 }) {
   const cameraInputRef = useRef(null);
@@ -19,7 +18,6 @@ export default function FileInput({
 
   const [preview, setPreview] = useState(null);
   const [fileName, setFileName] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
   const fileType =
     type === "img"
@@ -51,7 +49,7 @@ export default function FileInput({
             {label}{" "}
             {require ? <strong className="text-rose-500">*</strong> : ""}
           </label>
-          <button type="button" onClick={() => setShowModal(true)}>
+          <button type="button" onClick={popUpClick}>
             <HelpOutlineIcon sx={{ color: "#909090ff" }} />
           </button>
         </div>
@@ -112,14 +110,6 @@ export default function FileInput({
           </div>
         ) : null}
       </div>
-
-      {/* Accepted Documents Modal */}
-      <AcceptedDocumentsModal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        title={label}
-        documents={documents}
-      />
     </div>
   );
 }

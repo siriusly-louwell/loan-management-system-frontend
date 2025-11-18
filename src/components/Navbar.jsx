@@ -84,7 +84,7 @@ export default function Navbar({ links, path }) {
             {user?.role === "guest" ? (
               <Button text="Login" onclick={() => navigate("/login")} />
             ) : (
-              <div>
+              <div className="relative">
                 <AvatarBttn
                   pfp={user?.imgURL || user?.initials}
                   dropMenu={() =>

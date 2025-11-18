@@ -168,8 +168,6 @@ const formSlice = createSlice({
     },
 
     disableAddress: (state) => {
-      const address = state.formData.address || {};
-
       const props = [
         "personal",
         "parent",
@@ -179,12 +177,12 @@ const formSlice = createSlice({
         "comaker_spouse",
       ];
       const regions = [
-        address.region,
-        address.p_region,
-        address.sp_region,
-        address.co_region,
-        address.perm_region,
-        address.co_sp_region,
+        state.formData.address.region,
+        state.formData.address.p_region,
+        state.formData.address.sp_region,
+        state.formData.address.co_region,
+        state.formData.address.perm_region,
+        state.formData.address.co_sp_region,
       ];
 
       regions.forEach((region, i) => {

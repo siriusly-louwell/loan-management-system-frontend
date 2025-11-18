@@ -1,5 +1,5 @@
 import React from "react";
-import CloseIcon from "@mui/icons-material/Close";
+import AppModal from "./AppModal"; // adjust path if needed
 
 export default function AcceptedDocumentsModal({
   open,
@@ -7,81 +7,45 @@ export default function AcceptedDocumentsModal({
   title,
   documents,
 }) {
-  if (!open) return null;
+  const isImage = (file) =>
+    typeof file === "string" &&
+    (file.endsWith(".jpg") ||
+      file.endsWith(".jpeg") ||
+      file.endsWith(".png") ||
+      file.endsWith(".webp"));
 
-  // Close when clicking outside modal
-  const handleBackgroundClick = (e) => {
-    if (e.target === e.currentTarget) onClose();
-  };
-
-  const hasImage = documents?.some(
-    (item) => 
-        typeof item === "string" &&
-        (item.endsWith(".jpg") ||
-        item.endsWith(".jpeg") ||
-        item.endsWith(".png") ||
-        item.endsWith(".webp"))
-  )
+  const hasImage = documents.some(isImage);
 
   return (
-    <div
-      onClick={handleBackgroundClick}
-      className="fixed overflow-y-auto inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn"
-    >
-      <div className="bg-gray-800 rounded-2xl p-12 w-full max-w-md shadow-2xl animate-slideUp relative">
-        
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition"
-        >
-          <CloseIcon fontSize="small" />
-        </button>
+    <AppModal open={open} onClose={onClose} title={`Accepted Documents for ${title}`}>
+      <div className="space-y-6 text-gray-300">
 
-        {/* Title */}
-        <h2 className="text-xl font-semibold text-gray-100 mb-3">
-          Accepted Documents for <span className="text-red-600">{title}</span>
-        </h2>
-
-        <p className="text-sm text-gray-400 mb-4">
-          You may upload any of the following valid file types:
+        {/* Description */}
+        <p className="text-sm text-gray-400">
+          You may upload any of the following accepted file types or formats.
         </p>
 
-        {/* Documents List */}
-        {
-            hasImage ? (
-            <div className="flex flex-col items-center space-y-4">
-                {documents.map((img, i) => (
+        {/* Document List or Images */}
+        {hasImage ? (
+          <div className="w-full h-64 md:h-80">
+            {documents.map((img, idx) => (
+              <div key={idx} className="text-center">
                 <img
-                    key={i}
-                    src={img}
-                    alt="accepted format"
-                    className="bg-gray-100 w-50 h-50 object-cover rounded-lg shadow-md border"
+                  src={img}
+                  alt="Accepted format example"
+                  className="w-full h-full object-cover rounded-lg border border-white/10 shadow-md py-4 px-2"
                 />
-                ))}
-            </div>
-            ) : (
-            <ul className="list-disc pl-6 text-gray-300 space-y-2">
-                {documents?.map((doc, index) => (
-                    <li key={index} className="text-sm">
-                    {doc}
-                    </li>
-                ))}
-            </ul>
-            )
-        }
-
-
-        {/* Footer */}
-        <div className="mt-6 flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-sm"
-          >
-            Got it
-          </button>
-        </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ul className="list-disc list-inside space-y-1 text-gray-300 text-sm">
+            {documents.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        )}
       </div>
-    </div>
+    </AppModal>
   );
 }

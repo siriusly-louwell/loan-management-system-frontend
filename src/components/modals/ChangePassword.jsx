@@ -13,6 +13,7 @@ import {
   setLoading,
   toggleModal,
 } from "../../services/redux/slices/uiSlice";
+import PasswordRequirements from "../texts/PasswordRequirements";
 
 export default function ChangePassword() {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ export default function ChangePassword() {
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       if (response.type === "success") {
-        setNewPass({})
+        setNewPass({});
         dispatch(
           toggleModal({
             name: "changePass",
@@ -96,7 +97,7 @@ export default function ChangePassword() {
               onchange={(e) => handleChange(e, "current_password")}
               name="current_password"
               id="password"
-              placeholder="••••••••"
+              placeholder="Enter your current password"
               require={true}
             />
             <FormInput
@@ -106,9 +107,25 @@ export default function ChangePassword() {
               id="new-pass"
               value={newPass.new_password}
               onchange={(e) => handleChange(e, "new_password")}
-              placeholder="••••••••"
+              placeholder="Enter your new password"
               require={true}
             />
+            <div
+              className={`transition-all duration-300 ${
+                newPass.new_password !== ""
+                  ? "opacity-100 mb-10"
+                  : "opacity-0 max-h-0 overflow-hidden"
+              }`}>
+              <PasswordRequirements
+                rules={[
+                  { label: "At least 8 characters long", isValid: false },
+                  { label: "Contains an uppercase letter", isValid: true },
+                  { label: "Contains a lowercase letter", isValid: false },
+                  { label: "Includes a number", isValid: true },
+                  { label: "Password confirmed", isValid: false },
+                ]}
+              />
+            </div>
             <FormInput
               label="Confirm Password"
               type="text"

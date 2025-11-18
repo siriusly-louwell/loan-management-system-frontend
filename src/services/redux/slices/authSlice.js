@@ -3,7 +3,10 @@ import { loginUseCase } from "../../usecases/auth/loginUseCase";
 import { authRepository } from "./../../repositories/authRepository";
 import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
 import { userRepository } from "../../repositories/userRepository";
-import { changePassUseCase } from "../../usecases/auth/changePassUseCase";
+import {
+  changePassUseCase,
+  validatePassword,
+} from "../../usecases/auth/changePassUseCase";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -55,6 +58,7 @@ const authSlice = createSlice({
     user: {},
     profile: {},
     token: null,
+    validation: {},
     isAuthenticated: false,
     authorized: false,
     loggedOut: false,
@@ -71,6 +75,11 @@ const authSlice = createSlice({
 
     getToken: (state) => {
       state.token = authRepository.getToken();
+    },
+
+    validatePassword: (state, action) => {
+      const data = action.payload;
+      const validation = validatePassword(...data);
     },
 
     clearAuth: (state) => {

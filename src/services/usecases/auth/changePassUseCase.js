@@ -1,33 +1,46 @@
 import { authRepository } from "../../repositories/authRepository";
 
 export async function changePassUseCase(data) {
-  const passwordError = validatePassword(
+  const error = validatePassword(
     data.new_password,
     data.new_password_confirmation
   );
 
-  if (passwordError) return { type: "warn", message: passwordError };
+  if (error) return { type: "warn", message: error.message };
 
   const response = await authRepository.changePassword(data);
   return response;
 }
 
-function validatePassword(password, confirm) {
+export function validatePassword(password, confirm) {
   if (!password) return "Password is required.";
 
   if (password.length < 8)
-    return "Password must be at least 8 characters long.";
+    return {
+      type: "length",
+      message: "Password must be at least 8 characters long.",
+    };
 
   if (!/[A-Z]/.test(password))
-    return "Password must contain at least one uppercase letter.";
+    return {
+      type: "uppercase",
+      message: "Password must contain at least one uppercase letter.",
+    };
 
   if (!/[a-z]/.test(password))
-    return "Password must contain at least one lowercase letter.";
+    return {
+      type: "lowercase",
+      message: "Password must contain at least one lowercase letter.",
+    };
 
   if (!/[0-9]/.test(password))
-    return "Password must contain at least one number.";
+    return {
+      type: "number",
+      message: "Password must contain at least one number.",
+    };
 
-  if (password !== confirm) return "Passwords do not match";
+  if (password !== confirm)
+    return { type: "match", message: "Passwords do not match" };
 
   return null;
 }

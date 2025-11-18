@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CloseBttn from "../buttons/CloseBttn";
 import ColorLabel from "../ColorLabel";
@@ -15,16 +14,13 @@ import {
   assessResult,
   calculateStability,
 } from "../../services/redux/slices/applicationSlice";
-import { CheckCircle2, ClipboardCheck, FileSearch } from "lucide-react";
+import { CheckCircle2, ClipboardCheck } from "lucide-react";
 import { UserEntity } from "../../services/entities/User";
 import CategoryCard from "../cards/CategoryCard";
 import DataRow from "../tables/DataRow";
-import AppliedForm from "../../pages/AppliedForm";
 import AppliedFormMini from "../AppliedFormMini";
 
-
 export default function Eligibility() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
   const loan = useSelector(LoanEntity);
@@ -130,22 +126,23 @@ export default function Eligibility() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Final Assessment
             </h3>
-            <LargeBadge type={loanDecision} 
-              loadId={loan.id} 
-              role={role} 
+            <LargeBadge
+              type={loanDecision}
+              loadId={loan.id}
+              role={role}
               onViewDetails={() => {
                 setIsVisible(!isVisible);
-              }} 
+              }}
             />
             <div
               className={`transition-all duration-300 ${
-                isVisible ? "opacity-100 max-h-[1000px]" : "opacity-0 max-h-0 overflow-hidden"
-              }`}
-            >
+                isVisible
+                  ? "opacity-100 max-h-[1000px]"
+                  : "opacity-0 max-h-0 overflow-hidden"
+              }`}>
               <AppliedFormMini />
             </div>
             <div className="flex flex-wrap gap-4 items-center justify-between">
-                          
               <div className="flex gap-3">
                 <div className="flex items-center gap-1">
                   <ColorLabel size={3} style="green" />

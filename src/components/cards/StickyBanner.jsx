@@ -6,7 +6,7 @@ export default function StickyBanner() {
   return (
     <div
       id="sticky-banner"
-      className="sticky z-40 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-4 mb-3 bg-white border border-gray-100 rounded-lg shadow-xs lg:max-w-7xl top-6 dark:bg-gray-700 dark:border-gray-600">
+      className="sticky z-30 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-4 mb-3 bg-white border border-gray-100 rounded-lg shadow-xs lg:max-w-7xl top-6 dark:bg-gray-700 dark:border-gray-600">
       <div className="flex flex-col items-start mb-3 me-4 md:items-center md:flex-row md:mb-0">
         <a
           href="https://flowbite.com/"

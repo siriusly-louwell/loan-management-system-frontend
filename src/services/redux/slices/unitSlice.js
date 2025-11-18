@@ -174,7 +174,7 @@ const UnitSlice = createSlice({
         // Build images per color
         if (state.unit?.colors?.length > 0) {
           state.unit.colors.forEach((color, index) => {
-            state.colorImages[index] = color.images.map((img) => ({
+            state.colorImages[index] = color.images?.map((img) => ({
               url: UnitAPI.imgPath(img.path),
               color: color.hex_value,
             }));

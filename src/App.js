@@ -65,7 +65,7 @@ function App() {
     <BrowserRouter>
       <GlobalLoading />
       <Alert />
-      {/* <ChangePassword /> */}
+      <ChangePassword />
       <Routes>
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />

@@ -35,12 +35,9 @@ export default function ChangePassword() {
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       if (response.type === "success") {
-        setNewPass({})
+        setNewPass({});
         dispatch(
-          toggleModal({
-            name: "changePass",
-            value: modals?.changePass,
-          })
+          toggleModal({ name: "changePass", value: modals?.changePass })
         );
       }
     } catch (error) {
@@ -60,7 +57,7 @@ export default function ChangePassword() {
 
   return (
     <PopAnimate
-      modalName={true}
+      modalName={modals.changePass}
       classStyle="relative p-4 w-full max-w-xl h-full md:h-auto">
       <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
         <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -70,10 +67,7 @@ export default function ChangePassword() {
           <CloseBttn
             trigger={() =>
               dispatch(
-                toggleModal({
-                  name: "changePass",
-                  value: modals?.changePass,
-                })
+                toggleModal({ name: "changePass", value: modals?.changePass })
               )
             }
           />
@@ -124,12 +118,11 @@ export default function ChangePassword() {
             <Button text="Save Password" type="submit" />
             <CustomBttn
               classname="flex items-center whitespace-nowrap bg-white text-rose-700 hover:text-white border hover:bg-rose-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900"
-              text="Skip for now"
+              text="Not now"
               onclick={() =>
-                toggleModal({
-                  name: "changePass",
-                  value: modals?.changePass,
-                })
+                dispatch(
+                  toggleModal({ name: "changePass", value: modals?.changePass })
+                )
               }>
               <ArrowRight size={20} />
             </CustomBttn>

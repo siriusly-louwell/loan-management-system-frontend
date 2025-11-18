@@ -314,6 +314,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+            <Route
+              path="history/user-details/:userId"
+              element={
+                <ProtectedRoute type="staff">
+                  <CustomerPaymentHIstoryDetails />
+                </ProtectedRoute>
+              }
+            />
           <Route
             path="profile"
             element={

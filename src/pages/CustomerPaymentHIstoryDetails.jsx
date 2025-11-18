@@ -29,7 +29,7 @@ const CustomerPaymentHIstoryDetails = () => {
         <section className="w-full h-full py-10">
             <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg px-4 py-10">
                 <div className="flex items-center mb-6 gap-2">
-                    <ArrowLeft className="text-white size-7 cursor-pointer" onClick={() => navigate('/admin/app/invoices')} />
+                    <ArrowLeft className="text-white size-7 cursor-pointer" onClick={() => navigate(-1)} />
                     <h2 className="text-xl font-bold text-gray-800 dark:text-white ">
                         Payment History for User {userId}
                     </h2>

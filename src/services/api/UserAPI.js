@@ -33,6 +33,15 @@ const UserAPI = {
     return response.data;
   },
 
+  async changePass(data) {
+    console.log(data);
+    const response = await axios.patch(
+      `${API_URL}/api/account/${data.user}`,
+      data
+    );
+    return response.data;
+  },
+
   async login(credentials) {
     const response = await axios.post(`${API_URL}/api/login`, credentials);
     return response.data;

@@ -52,6 +52,7 @@ import Analytics from "./pages/Analytics";
 import CreditHistory from "./components/modals/CreditHistory";
 import CustomerPaymentHIstoryDetails from "./pages/CustomerPaymentHIstoryDetails";
 import CoMakerForm from "./pages/CoMakerForm";
+import ChangePassword from "./components/modals/ChangePassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function App() {
     <BrowserRouter>
       <GlobalLoading />
       <Alert />
+      {/* <ChangePassword /> */}
       <Routes>
         {/* Outside Routes */}
         <Route path="/login" element={<Login />} />
@@ -85,8 +87,7 @@ function App() {
         {/* Customer Routes */}
         <Route
           path="/customer"
-          element={<PageLayout links={<ApplicantNav />} path="/customer" />}
-        >
+          element={<PageLayout links={<ApplicantNav />} path="/customer" />}>
           <Route
             path="app"
             element={
@@ -264,8 +265,7 @@ function App() {
         {/* Staff Routes */}
         <Route
           path="/staff"
-          element={<PageLayout links={<StaffNav />} path="/staff" />}
-        >
+          element={<PageLayout links={<StaffNav />} path="/staff" />}>
           <Route
             path="app"
             element={
@@ -314,6 +314,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+            <Route
+              path="history/user-details/:userId"
+              element={
+                <ProtectedRoute type="staff">
+                  <CustomerPaymentHIstoryDetails />
+                </ProtectedRoute>
+              }
+            />
           <Route
             path="profile"
             element={
@@ -359,16 +367,14 @@ function App() {
         {/* Admin Routes */}
         <Route
           path="/admin"
-          element={<PageLayout links={<AdminNav />} path="/admin" />}
-        >
+          element={<PageLayout links={<AdminNav />} path="/admin" />}>
           <Route
             path="app"
             element={
               <ProtectedRoute type="admin">
                 <Dashboard />
               </ProtectedRoute>
-            }
-          >
+            }>
             <Route
               index
               element={
@@ -404,7 +410,7 @@ function App() {
             <Route
               path="invoices/user-details/:userId"
               element={
-                <ProtectedRoute type="admin"> 
+                <ProtectedRoute type="admin">
                   <CustomerPaymentHIstoryDetails />
                 </ProtectedRoute>
               }
@@ -534,8 +540,7 @@ function App() {
               <ProtectedRoute type="admin">
                 <Accounts />
               </ProtectedRoute>
-            }
-          >
+            }>
             <Route
               index
               element={

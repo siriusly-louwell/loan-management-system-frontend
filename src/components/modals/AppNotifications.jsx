@@ -67,7 +67,7 @@ export default function AppNotifications() {
   }, [pagination.currentPage]); 
 
   const handleUserClick = (userId) => {
-    navigate(`/admin/app/invoices/user-details/${userId}`);
+    navigate(`user-details/${userId}`);
   };
 
   const handlePageChange = (page) => {
@@ -101,7 +101,7 @@ export default function AppNotifications() {
               <UserRow
                 key={user.id}
                 data={{
-                  pfp:user.pfp,
+                  // pfp:user.pfp,
                   name: user.name,
                   email: user.email,
                   role: user.role,
@@ -113,7 +113,6 @@ export default function AppNotifications() {
           )}
         </div>
 
-        {/* Pagination Controls */}
         <div className="mt-4 flex justify-between">
           <button
             onClick={() => handlePageChange(pagination.currentPage - 1)}
@@ -122,7 +121,7 @@ export default function AppNotifications() {
           >
             Previous
           </button>
-          <span>Page {pagination.currentPage} of {pagination.totalPages}</span>
+          <span className="text-white">Page {pagination.currentPage} of {pagination.totalPages}</span>
           <button
             onClick={() => handlePageChange(pagination.currentPage + 1)}
             disabled={pagination.currentPage >= pagination.totalPages}

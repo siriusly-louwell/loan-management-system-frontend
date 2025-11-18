@@ -3,12 +3,24 @@ import { loginUseCase } from "../../usecases/auth/loginUseCase";
 import { authRepository } from "./../../repositories/authRepository";
 import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
 import { userRepository } from "../../repositories/userRepository";
+import { changePassUseCase } from "../../usecases/auth/changePassUseCase";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, thunkAPI) => {
     try {
       return await loginUseCase(credentials);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (password, thunkAPI) => {
+    try {
+      return await changePassUseCase(password);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

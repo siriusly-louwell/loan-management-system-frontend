@@ -24,6 +24,18 @@ export const authRepository = {
     return await response;
   },
 
+  // ? Change password
+  async changePassword(password) {
+    const response = await UserAPI.changePass({
+      ...password,
+      _method: "PATCH",
+      type: "password"
+    });
+
+    if (!response) throw new Error("Unable to save password");
+    return await response;
+  },
+
   saveToken(token) {
     localStorage.setItem("token", token);
   },
@@ -37,11 +49,12 @@ export const authRepository = {
   },
 
   generateRandomString(length = 12) {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567891-_.";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-}
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567891-_.";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  },
 };

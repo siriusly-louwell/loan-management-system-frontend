@@ -3,8 +3,6 @@ import FormInput from "../components/inputs/FormInput";
 import FormSelect from "../components/inputs/FormSelect";
 import Button from "../components/buttons/Button";
 import CloseBttn from "../components/buttons/CloseBttn";
-import Spinner from "../components/loading components/Spinner";
-import Alert from "../components/Alert";
 import PopAnimate from "../components/animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -153,29 +151,6 @@ export default function CreateUser({ userType }) {
             <Button text="Add user" type="submit" />
           </div>
         </form>
-        <Spinner id="saving_data" text="Saving data..." />
-        <Alert id="alertUser" text={alert.text} icon={alert.icon}>
-          {alert.icon !== "warn" ? (
-            <>
-              <h2 className="text-gray-600 dark:text-white">
-                {alert.name} has been notified through email.
-              </h2>
-              <p className="text-gray-600 dark:text-white mb-5">
-                The user's credentials along with the temporary password will be
-                sent through{" "}
-                <strong className="text-rose-500">{alert.email}</strong>.
-              </p>
-            </>
-          ) : (
-            ""
-          )}
-          <Button
-            text="Ok"
-            onclick={() =>
-              (document.getElementById("alertUser").style.display = "none")
-            }
-          />
-        </Alert>
       </div>
     </PopAnimate>
   );

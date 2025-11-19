@@ -76,49 +76,49 @@ export default function ApplicationForm() {
   useEffect(() => {
     fetchAllAddress(["region", "province", "city"]);
   }, [
-    formData.address?.region,
-    formData.address?.province,
-    formData.address?.city,
+    formData.address.region,
+    formData.address.province,
+    formData.address.city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["p_region", "p_province", "p_city"]);
   }, [
-    formData.address?.p_region,
-    formData.address?.p_province,
-    formData.address?.p_city,
+    formData.address.p_region,
+    formData.address.p_province,
+    formData.address.p_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["sp_region", "sp_province", "sp_city"]);
   }, [
-    formData.address?.sp_region,
-    formData.address?.sp_province,
-    formData.address?.sp_city,
+    formData.address.sp_region,
+    formData.address.sp_province,
+    formData.address.sp_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["co_region", "co_province", "co_city"]);
   }, [
-    formData.address?.co_region,
-    formData.address?.co_province,
-    formData.address?.co_city,
+    formData.address.co_region,
+    formData.address.co_province,
+    formData.address.co_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["perm_region", "perm_province", "perm_city"]);
   }, [
-    formData.address?.perm_region,
-    formData.address?.perm_province,
-    formData.address?.perm_city,
+    formData.address.perm_region,
+    formData.address.perm_province,
+    formData.address.perm_city,
   ]);
 
   useEffect(() => {
     fetchAllAddress(["co_sp_region", "co_sp_province", "co_sp_city"]);
   }, [
-    formData.address?.co_sp_region,
-    formData.address?.co_sp_province,
-    formData.address?.co_sp_city,
+    formData.address.co_sp_region,
+    formData.address.co_sp_province,
+    formData.address.co_sp_city,
   ]);
 
   // ? On-load / Refresh initializations
@@ -132,11 +132,15 @@ export default function ApplicationForm() {
   }, []);
 
   function fetchAllAddress(names) {
-    const addr = formData.address || {};
-
-    dispatch(fetchAddress({ type: "provinces", value: addr[names[0]] }));
-    dispatch(fetchAddress({ type: "cities", value: addr[names[1]] }));
-    dispatch(fetchAddress({ type: "barangays", value: addr[names[2]] }));
+    dispatch(
+      fetchAddress({ type: "provinces", value: formData.address[names[0]] })
+    );
+    dispatch(
+      fetchAddress({ type: "cities", value: formData.address[names[1]] })
+    );
+    dispatch(
+      fetchAddress({ type: "barangays", value: formData.address[names[2]] })
+    );
   }
 
   // ? Auto save form
@@ -269,12 +273,12 @@ export default function ApplicationForm() {
           click={() => stepNavCheck(1)}
         />
         <Step
-          label="4. Employment, Properties, & Income/Expenses"
+          label="3. Employment, Properties, & Income/Expenses"
           status={stepCheck(2)}
           click={() => stepNavCheck(2)}
         />
         <Step
-          label="3. Family/Relative Information"
+          label="4. Family/Relative Information"
           status={stepCheck(3)}
           click={() => stepNavCheck(3)}
         />

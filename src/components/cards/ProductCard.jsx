@@ -15,7 +15,8 @@ export default function ProductCard({ unit }) {
     <>
       <label
         type="button"
-        className="rounded-lg border hover:bg-gray-200 dark:hover:bg-gray-600 p-6 shadow-sm border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-700">
+        className="rounded-lg border hover:bg-gray-200 dark:hover:bg-gray-600 p-6 shadow-sm border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-700"
+      >
         <div className="h-56 w-full rounded-lg">
           <img
             className="mx-auto rounded-lg object-contain h-full"
@@ -32,7 +33,8 @@ export default function ProductCard({ unit }) {
             <div className="flex items-center justify-end gap-1">
               <button
                 type="button"
-                className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
                 <span className="sr-only"> Quick look </span>
                 <svg
                   className="h-5 w-5"
@@ -41,7 +43,8 @@ export default function ProductCard({ unit }) {
                   width="24"
                   height="24"
                   fill="none"
-                  viewBox="0 0 24 24">
+                  viewBox="0 0 24 24"
+                >
                   <path
                     stroke="currentColor"
                     strokeWidth="2"
@@ -57,19 +60,22 @@ export default function ProductCard({ unit }) {
               <div
                 id="tooltip-quick-look"
                 role="tooltip"
-                className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
+              >
                 Quick look
                 <div className="tooltip-arrow"></div>
               </div>
               <button
                 type="button"
-                className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
                 <span className="sr-only"> Add to Favorites </span>
                 <svg
                   className="h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
-                  viewBox="0 0 24 24">
+                  viewBox="0 0 24 24"
+                >
                   <path
                     stroke="currentColor"
                     strokeLinecap="round"
@@ -82,7 +88,8 @@ export default function ProductCard({ unit }) {
               <div
                 id="tooltip-add-to-favorites"
                 role="tooltip"
-                className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
+              >
                 Add to favorites
                 <div className="tooltip-arrow"></div>
               </div>
@@ -104,7 +111,7 @@ export default function ProductCard({ unit }) {
             </p>
             <div className="grid grid-cols-10 gap-y-2">
               {unit.colors.map((color, i) => (
-                <ColorLabel key={i} style={color.color} />
+                <ColorLabel key={i} style={color.hex_value} />
               ))}
             </div>
           </div>

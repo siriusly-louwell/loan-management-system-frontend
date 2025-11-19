@@ -3,7 +3,9 @@ import Check from "../assets/icons/Check";
 
 export default function ColorLabel({ style, size = 4, selected = "" }) {
   let colStyle;
-
+  if (!style) {
+    return;
+  }
   if (
     style.includes("#") &&
     style !== "#fefefe" &&
@@ -39,7 +41,8 @@ export default function ColorLabel({ style, size = 4, selected = "" }) {
 
   return (
     <div
-      className={`h-${size} w-${size} ${colStyle} ${selected} rounded-full inline-block mr-1 hover:opacity-70 flex justify-center items-center px-1`}>
+      className={`h-${size} w-${size} ${colStyle} ${selected} rounded-full inline-block mr-1 hover:opacity-70 flex justify-center items-center px-1`}
+    >
       {selected !== "" ? <Check /> : ""}
     </div>
   );

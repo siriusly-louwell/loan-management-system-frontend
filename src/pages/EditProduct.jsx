@@ -40,121 +40,138 @@ export default function EditProduct() {
   const dispatch = useDispatch();
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
+
   const { brands } = useSelector((state) => state.unit);
   const { modals } = useSelector((state) => state.ui);
-  const { colors, formData } = useSelector((state) => state.form);
-  const [files, setFiles] = useState([]);
-  const [angles, setAngles] = useState([]);
-  const [quantity, setQuantity] = useState([]);
+  const {
+    colors: reduxColors,
+    formData,
+    colorIndex,
+  } = useSelector((state) => state.form);
+
+  // colorGroups: same shape as CreateProduct
+  const [colorGroups, setColorGroups] = useState([]);
+  // track ids of old images user removed
+  const [imagesToDelete, setImagesToDelete] = useState([]);
 
   useEffect(() => {
-    if (modals.editUnit) {
-      const { colors, ...unitRest } = unit;
-      const { images, ...specRest } = specs;
-      const colorArr = colors.map((i) => i.color);
-      const quant = colors.map((i) => i.quantity);
+    if (!modals.editUnit) return;
 
-      setQuantity(quant);
-      dispatch(setColors(colorArr));
-      dispatch(setType("editUnit"));
-      dispatch(initialForm({ ...unitRest, ...specRest }));
+    // 1. Set type only once
+    dispatch(setType("editUnit"));
+
+    // 2. Initialize form using the unit/specs snapshot AT THE MOMENT the modal opened
+    const { colors: _colors, images, ...unitRest } = unit;
+    const { images: specImages, ...specRest } = specs;
+    dispatch(initialForm({ ...unitRest, ...specRest }));
+
+    // 3. Build color groups only once per open
+    if (Array.isArray(unit.colors)) {
+      const groups = unit.colors.map((c) => {
+        const imgs = Array.isArray(c.images)
+          ? c.images.map((img) => ({
+              id: img.id,
+              path: img.path,
+              preview: img.path ? `/${img.path}` : null,
+              status: "keep",
+            }))
+          : [];
+
+        return {
+          color: c.hex_value,
+          quantity: c.quantity,
+          images: imgs,
+          color_id: c.id,
+        };
+      });
+
+      setColorGroups(groups);
+      dispatch(setColors(unit.colors.map((c) => c.hex_value)));
+    } else {
+      setColorGroups([]);
     }
-  }, [modals.editUnit]);
 
-  useEffect(() => {
-    if (Object.keys(specs).length > 0 && specs.images) {
-      const images = specs.images.map((img, i) => ({
-        id: img.id,
-        type: img.image_type,
-        url: specs.imgURL(i),
-        file: null,
-        status: "keep",
-      }));
-      const angles = images.filter((file) => file.type === "angle");
-      const colors = images.filter((file) => file.type === "color");
+    // 4. Reset deleted images list
+    setImagesToDelete([]);
 
-      setFiles(colors);
-      setAngles(angles);
-    }
-  }, [specs?.images?.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modals.editUnit]); // 👈 ONLY depend on modal open/close
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    dispatch(setLoading({ isActive: true, text: "Updating data..." }));
+  if (!modals.editUnit || !unit) return null;
 
-    try {
-      const form = formData.editUnit;
-      const response = await dispatch(
-        editUnit({
-          form,
-          files,
-          angles,
-          colors,
-          id: unit.id,
-          totalQuantity: quantity,
-          type: "edit",
-        })
-      ).unwrap();
+  // Helpers (mirrors CreateProduct)
+  function addColorRow() {
+    setColorGroups((prev) => [...prev, { color: "", quantity: 1, images: [] }]);
+  }
 
-      dispatch(setAlert({ message: response.message, type: response.type }));
-      dispatch(setLoading({ isActive: false }));
-      if (response.type === "success") {
-        dispatch(fetchUnits({ page: 1 }));
-        closeModal();
+  function updateColorValue(index, field, value) {
+    setColorGroups((prev) => {
+      const updated = [...prev];
+      // guard: ensure row exists
+      if (!updated[index]) return prev;
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  }
+
+  function handleFileUpload(event, index) {
+    const uploadedFiles = Array.from(event.target.files);
+    if (!uploadedFiles.length) return;
+
+    setColorGroups((prev) => {
+      const updated = [...prev];
+      if (!updated[index]) return prev;
+      if (!updated[index].images) updated[index].images = [];
+
+      // convert each File to an object with file + preview + status
+      const newFiles = uploadedFiles
+        .filter(
+          (file) =>
+            !updated[index].images.some(
+              (f) =>
+                // If existing image is 'new', compare by name; for 'keep' compare by id/path
+                (f.status === "new" && f.file && f.file.name === file.name) ||
+                (f.status === "keep" && f.path && f.path.includes(file.name))
+            )
+        )
+        .map((file) => ({
+          file,
+          preview: URL.createObjectURL(file),
+          status: "new",
+        }));
+
+      updated[index].images = [...updated[index].images, ...newFiles];
+      return updated;
+    });
+  }
+
+  function removeImage(colorIndex, imageIndex) {
+    setColorGroups((prev) => {
+      const updated = [...prev];
+      if (!updated[colorIndex]) return prev;
+      const image = updated[colorIndex].images[imageIndex];
+      if (!image) return prev;
+
+      // if it's an existing image (status keep and has id), track for deletion
+      if (image.status === "keep" && image.id) {
+        setImagesToDelete((prevDel) => [...prevDel, image.id]);
       }
-    } catch (error) {
-      console.error("Error: ", error);
-      dispatch(setLoading({ isActive: false }));
-      dispatch(
-        setAlert({
-          message: "Unexpected error. Something went wrong.",
-          type: "error",
-        })
+
+      // remove from array
+      updated[colorIndex].images = updated[colorIndex].images.filter(
+        (_, i) => i !== imageIndex
       );
-    }
+      return updated;
+    });
   }
 
-  function fileChange(event, i, type) {
-    const file = event.target.files[0];
-
-    if (file !== undefined) {
-      const updatedFiles = type === "color" ? [...files] : [...angles];
-      updatedFiles[i] = {
-        id: null,
-        type: type,
-        url: URL.createObjectURL(file),
-        file: file,
-        status: "new",
-      };
-
-      if (type === "color") {
-        const quant = [...quantity];
-        quant[i] = 1;
-
-        setQuantity(quant);
-        setFiles(updatedFiles);
-      } else setAngles(updatedFiles);
-    }
+  function removeColorRow(index) {
+    setColorGroups((prev) => prev.filter((_, i) => i !== index));
+    // also remove corresponding redux color if present
+    dispatch(removeColor(index));
   }
 
-  function removeFile(index, type) {
-    let fileArr;
-    const images = type === "color" ? files : angles;
-
-    if (images[index].status === "keep") {
-      fileArr = [...images];
-      fileArr[index] = { ...fileArr[index], status: "delete" };
-    } else fileArr = images.filter((_, i) => i !== index);
-
-    if (type === "color") {
-      const quant = quantity.filter((_, i) => index !== i);
-
-      setQuantity(quant);
-      dispatch(removeColor(index));
-      setFiles(fileArr);
-    } else setAngles(fileArr);
-  }
-
+  // dispatch form input
   function dispatchInput(event) {
     dispatch(
       handleChange({
@@ -171,12 +188,98 @@ export default function EditProduct() {
     dispatch(toggleModal({ name: "editUnit", value: modals?.editUnit }));
   }
 
+  // Submit similar to CreateProduct but includes imagesToDelete and unit id
+  async function handleSubmit(event) {
+    event.preventDefault();
+    dispatch(setLoading({ isActive: true, text: "Updating data..." }));
+
+    try {
+      const form = formData.editUnit;
+      const formDataToSend = new FormData();
+
+      // Append simple fields
+      Object.entries(form).forEach(([key, value]) => {
+        // arrays should be appended differently - but we keep simple fields as strings
+        formDataToSend.append(key, value ?? "");
+      });
+      console.log("here: 1");
+
+      // Append colors & images
+      colorGroups.forEach((group, index) => {
+        if (!group.color)
+          throw new Error(`Color selection is required for row ${index + 1}`);
+        if (!group.images) group.images = [];
+        if (!group.quantity) group.quantity = 1;
+
+        formDataToSend.append(`colors[${index}][hex_value]`, group.color);
+        formDataToSend.append(
+          `colors[${index}][quantity]`,
+          String(group.quantity)
+        );
+
+        console.log("here: 2");
+
+        // Append only new files for upload
+        (group.images || []).forEach((img) => {
+          if (img.status === "new" && img.file) {
+            formDataToSend.append(`colors[${index}][images][]`, img.file);
+          }
+        });
+
+        // If you want to send color_id for existing color rows, include it (optional)
+        if (group.color_id) {
+          formDataToSend.append(`colors[${index}][id]`, String(group.color_id));
+        }
+      });
+      console.log("here: 3");
+
+      // Append IDs of images to delete (existing images user removed)
+      imagesToDelete.forEach((id) => {
+        formDataToSend.append("imagesToDelete[]", String(id));
+      });
+
+      // Include unit id and type so the backend knows we are editing
+      formDataToSend.append("id", String(unit.id));
+      formDataToSend.append("type", "edit");
+
+      // Optional: totalQuantity (sum of quantities) — backend may expect integer
+      const totalQuantity = colorGroups.reduce(
+        (sum, g) => sum + (Number(g.quantity) || 0),
+        0
+      );
+      formDataToSend.append("totalQuantity", String(totalQuantity));
+      console.log("here: 4");
+
+      const response = await dispatch(editUnit(formDataToSend)).unwrap();
+
+      dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
+      console.log("here: 5");
+
+      if (response.type === "success") {
+        console.log("here : 6");
+        dispatch(fetchUnits({ page: 1 }));
+        closeModal();
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+      dispatch(setLoading({ isActive: false }));
+      dispatch(
+        setAlert({
+          message: "Unexpected error. Something went wrong.",
+          type: "error",
+        })
+      );
+    }
+  }
+
   return (
     <PopAnimate
       modalName={modals.editUnit}
       overflow={true}
-      classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto">
-      {modals.editUnit && (
+      classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto"
+    >
+      {modals.editUnit && unit && (
         <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -184,6 +287,7 @@ export default function EditProduct() {
             </h3>
             <CloseBttn trigger={closeModal} />
           </div>
+
           <form onSubmit={handleSubmit} className="w-full">
             <section className="lg:pr-3">
               <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
@@ -233,8 +337,9 @@ export default function EditProduct() {
                     label="Brand Name"
                     name="brand"
                     id="brand"
-                    value={formData.createUnit.brand || ""}
-                    onchange={dispatchInput}>
+                    value={formData.editUnit.brand || ""}
+                    onchange={dispatchInput}
+                  >
                     {brands.map((brand, i) => (
                       <option key={i}>{brand}</option>
                     ))}
@@ -290,464 +395,162 @@ export default function EditProduct() {
               </div>
             </section>
 
-            <section className="lg:pl-3">
-              <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
-                Specifications
-              </h3>
-              <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                <FormInput
-                  label="Engine"
-                  type="text"
-                  value={formData.editUnit.engine || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="engine"
-                  id="name"
-                />
-                <FormInput
-                  label="Compression Ratio"
-                  type="text"
-                  value={formData.editUnit.compression || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="compression"
-                  id="name"
-                />
-                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                  <FormInput
-                    label="Displacement (cc)"
-                    type="text"
-                    value={formData.editUnit.displacement || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="displacement"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Horsepower (hp)"
-                    type="text"
-                    value={formData.editUnit.horsepower || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="horsepower"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Torque (Nm)"
-                    type="text"
-                    value={formData.editUnit.torque || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="torque"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Fuel System"
-                    type="text"
-                    value={formData.editUnit.fuel || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="fuel"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Final Drive"
-                    type="text"
-                    value={formData.editUnit.drive || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="drive"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Transmission"
-                    type="text"
-                    value={formData.editUnit.transmission || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="transmission"
-                    id="name"
-                  />
-                </div>
-                <FormInput
-                  label="Cooling System"
-                  type="text"
-                  value={formData.editUnit.cooling || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="cooling"
-                  id="name"
-                />
-              </div>
-              <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                <FormInput
-                  label="Front Suspension"
-                  type="text"
-                  value={formData.editUnit.front_suspension || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="front_suspension"
-                  id="name"
-                />
-                <FormInput
-                  label="Rear Suspension"
-                  type="text"
-                  value={formData.editUnit.rear_suspension || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="rear_suspension"
-                  id="name"
-                />
-                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                  <FormInput
-                    label="Frame Type"
-                    type="text"
-                    value={formData.editUnit.frame || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="frame"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Front/Rear Travel (mm/in)"
-                    type="text"
-                    value={formData.editUnit.travel || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="travel"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Swingarm Type"
-                    type="text"
-                    value={formData.editUnit.swingarm || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="swingarm"
-                    id="name"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                  <FormInput
-                    label="Dry Weight"
-                    type="text"
-                    value={formData.editUnit.dry_weight || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="dry_weight"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Wet weight"
-                    type="text"
-                    value={formData.editUnit.wet_weight || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="wet_weight"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Seat Height (mm/in)"
-                    type="text"
-                    value={formData.editUnit.seat || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="seat"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Wheelbase"
-                    type="text"
-                    value={formData.editUnit.wheelbase || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="wheelbase"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Fuel Tank Capacity"
-                    type="text"
-                    value={formData.editUnit.fuel_tank || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="fuel_tank"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Ground Clearance"
-                    type="text"
-                    value={formData.editUnit.clearance || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="clearance"
-                    id="name"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 mb-5 pb-2 border-b sm:grid-cols-2">
-                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                  <FormInput
-                    label="Tire Size"
-                    type="text"
-                    value={formData.editUnit.tires || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="tires"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Wheel Type"
-                    type="text"
-                    value={formData.editUnit.wheel || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="wheel"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Brakes"
-                    type="text"
-                    value={formData.editUnit.brakes || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="brakes"
-                    id="name"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-4 mb-5 pb-2 sm:grid-cols-2">
-                <FormInput
-                  label="ABS"
-                  type="text"
-                  value={formData.editUnit.abs || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="abs"
-                  id="name"
-                />
-                <FormInput
-                  label="Traction Control"
-                  type="text"
-                  value={formData.editUnit.traction || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="traction"
-                  id="name"
-                />
-                <FormInput
-                  label="TFT Display"
-                  type="text"
-                  value={formData.editUnit.tft || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="tft"
-                  id="name"
-                />
-                <FormInput
-                  label="Lighting"
-                  type="text"
-                  value={formData.editUnit.lighting || ""}
-                  onchange={(e) => dispatchInput(e)}
-                  name="lighting"
-                  id="name"
-                />
-                <div className="grid gap-4 sm:col-span-2 md:gap-6 sm:grid-cols-3">
-                  <FormInput
-                    label="Riding Modes"
-                    type="text"
-                    value={formData.editUnit.ride_mode || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="ride_mode"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Quickshifter"
-                    type="text"
-                    value={formData.editUnit.quickshifter || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="quickshifter"
-                    id="name"
-                  />
-                  <FormInput
-                    label="Cruise Control"
-                    type="text"
-                    value={formData.editUnit.cruise || ""}
-                    onchange={(e) => dispatchInput(e)}
-                    name="cruise"
-                    id="name"
-                  />
-                </div>
-              </div>
-            </section>
+            <section className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
+              <div className="space-y-6">
+                <section className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Unit Images</h3>
+                  <BttnwithIcon
+                    type="button"
+                    text="Add Color Availability"
+                    click={() => addColorRow()}
+                  >
+                    <Plus />
+                  </BttnwithIcon>
+                </section>
 
-            <section className="mb-4 grid grid-cols-1 gap-y-2 border-t border-gray-300 pt-5">
-              <section className="flex w-full justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
-                  Images & Colors
-                </h3>
-                <BttnwithIcon
-                  type="button"
-                  text="Add Color"
-                  click={() =>
-                    setFiles([
-                      ...files,
-                      {
-                        id: null,
-                        type: "color",
-                        url: null,
-                        file: null,
-                        status: "ignore",
-                      },
-                    ])
-                  }>
-                  <Plus />
-                </BttnwithIcon>
-              </section>
+                {colorGroups.map((group, i) => (
+                  <div
+                    key={i}
+                    className="border rounded-md p-4 space-y-4 relative"
+                  >
+                    <button
+                      type="button"
+                      className="absolute right-2 top-2 text-lg"
+                      onClick={() => removeColorRow(i)}
+                    >
+                      ✕
+                    </button>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {files.map(
-                  (file, i) =>
-                    file.status !== "delete" && (
-                      <section
-                        key={i}
-                        className="border-b border-gray-400 mb-2">
-                        <label
-                          htmlFor={`file_${i}`}
-                          className={`flex flex-col justify-center items-center rounded-2xl w-full ${
-                            file.status !== "keep" && "cursor-pointer"
-                          }`}>
-                          <div className="self-end mb-1">
-                            <CloseBttn trigger={() => removeFile(i, "color")} />
-                          </div>
-                          {file.status !== "ignore" ? (
+                    {/* Upload Box */}
+                    <label className="w-full border-2 border-dashed rounded-md p-6 flex flex-col items-center cursor-pointer">
+                      <span>Click to upload or drag and drop</span>
+                      <span className="text-sm text-gray-500">
+                        SVG, PNG or JPG (MAX. 800×400)
+                      </span>
+                      <input
+                        type="file"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => handleFileUpload(e, i)}
+                      />
+                    </label>
+
+                    {/* List uploaded / existing images */}
+                    {group.images && group.images.length > 0 && (
+                      <div className="flex flex-wrap gap-3 mt-2">
+                        {group.images.map((img, index) => (
+                          <div key={index} className="w-20 h-20 relative">
                             <img
-                              className={`w-auto h-[15vh] object-contain rounded-2xl flex-shrink-0 ${
-                                file.status !== "keep" && "hover:opacity-80"
-                              }`}
-                              src={file.url}
-                              alt="unit"
+                              alt="images"
+                              src={
+                                `${process.env.REACT_APP_API_URL}/storage${img.preview}` ||
+                                (img.path
+                                  ? `${process.env.REACT_APP_API_URL}/storage/${img.path}`
+                                  : "")
+                              }
+                              className="w-full h-full object-cover rounded"
                             />
-                          ) : (
-                            <div className="flex flex-col justify-center items-center w-full h-[15vh] bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                              <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                <Cloud />
-                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                  <span className="font-semibold">
-                                    Click to upload{" "}
-                                  </span>
-                                  or drag and drop
-                                </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
-                                  SVG, PNG or JPG (MAX. 800x400px)
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                          {file.status !== "keep" && (
-                            <input
-                              id={`file_${i}`}
-                              name={`file_${i}`}
-                              type="file"
-                              className="hidden"
-                              onChange={(e) => fileChange(e, i, "color")}
-                            />
-                          )}
-                        </label>
-                        <div className="sm:flex space-x-2 justify-between mt-3 mb-2">
-                          <div className="flex items-center space-x-2">
-                            <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                              Color:
-                            </p>
-                            {colors.length > 0 && colors[i] && (
-                              <ColorLabel style={colors[i]} />
-                            )}
-                            <CustomBttn
-                              text="Select Color"
-                              onclick={() => {
-                                dispatch(setColorIndex(i));
-                                dispatch(
-                                  toggleModal({
-                                    name: "colorModal",
-                                    value: modals?.colorModal,
-                                  })
-                                );
-                              }}
-                              classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
-                            />
+                            <button
+                              type="button"
+                              className="absolute -top-1 -right-1 bg-white rounded-full p-0.5"
+                              onClick={() => removeImage(i, index)}
+                            >
+                              ✕
+                            </button>
                           </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Color + Quantity Row */}
+                    <div className="flex items-center gap-6">
+                      <div>
+                        <label className="text-sm font-semibold">Color</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          {colorGroups.length > 0 && colorGroups[i] && (
+                            <ColorLabel style={colorGroups[i].color} />
+                          )}
+                          <CustomBttn
+                            text="Select Color"
+                            onclick={() => {
+                              dispatch(setColorIndex(i));
+                              dispatch(
+                                toggleModal({
+                                  name: "colorModal",
+                                  value: modals?.colorModal,
+                                })
+                              );
+                            }}
+                            classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
+                          />
                         </div>
-                      </section>
-                    )
-                )}
-              </div>
-            </section>
+                      </div>
 
-            <section className="mb-4 grid grid-cols-1 gap-y-2 pt-5">
-              <section className="flex w-full justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
-                  Motorcycle Angles
-                </h3>
-                <BttnwithIcon
-                  type="button"
-                  text="Add Angle"
-                  click={() =>
-                    setAngles([
-                      ...angles,
-                      {
-                        id: null,
-                        type: "angle",
-                        url: null,
-                        file: null,
-                        status: "ignore",
-                      },
-                    ])
-                  }>
-                  <Plus />
-                </BttnwithIcon>
-              </section>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {angles.map(
-                  (file, i) =>
-                    file.status !== "delete" && (
-                      <section
-                        key={i}
-                        className="border-b border-gray-400 mb-2">
-                        <label
-                          htmlFor={`angle_${i}`}
-                          className={`flex flex-col justify-center items-center rounded-2xl w-full ${
-                            file.status !== "keep" && "cursor-pointer"
-                          }`}>
-                          <div className="self-end mb-1">
-                            <CloseBttn
-                              trigger={() => removeFile(i, "angles")}
-                            />
-                          </div>
-                          {file.status !== "ignore" ? (
-                            <img
-                              className={`w-auto h-[15vh] object-contain rounded-2xl flex-shrink-0 ${
-                                file.status !== "keep" && "hover:opacity-80"
-                              }`}
-                              src={file.url}
-                              alt="unit"
-                            />
-                          ) : (
-                            <div className="flex flex-col justify-center items-center w-full h-[15vh] bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                              <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                                <Cloud />
-                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                  <span className="font-semibold">
-                                    Click to upload{" "}
-                                  </span>
-                                  or drag and drop
-                                </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">
-                                  SVG, PNG or JPG (MAX. 800x400px)
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                          {file.status !== "keep" && (
-                            <input
-                              id={`angle_${i}`}
-                              name={`angle_${i}`}
-                              type="file"
-                              className="hidden"
-                              onChange={(e) => fileChange(e, i, "angles")}
-                            />
-                          )}
+                      <div>
+                        <label className="text-sm font-semibold">
+                          Quantity
                         </label>
-                      </section>
-                    )
-                )}
-              </div>
-              <div className="flex items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                <Button text="Save Changes" bttnType="submit" />
-                <CustomBttn
-                  text="Move to Archive"
-                  classname="flex items-center whitespace-nowrap text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900">
-                  <Ex className="mr-1 -ml-1 w-5 h-5" />
-                </CustomBttn>
+                        <div className="flex items-center gap-2 mt-1">
+                          <button
+                            type="button"
+                            className="px-3 py-1 border rounded"
+                            onClick={() =>
+                              updateColorValue(
+                                i,
+                                "quantity",
+                                (Number(group.quantity) || 1) - 1
+                              )
+                            }
+                          >
+                            -
+                          </button>
+                          <span>{group.quantity}</span>
+                          <button
+                            type="button"
+                            className="px-3 py-1 border rounded"
+                            onClick={() =>
+                              updateColorValue(
+                                i,
+                                "quantity",
+                                (Number(group.quantity) || 1) + 1
+                              )
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </section>
+
+            <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
+              <Button text="Save Changes" bttnType="submit" />
+              <CustomBttn
+                text="Move to Archive"
+                classname="flex items-center whitespace-nowrap text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900"
+              >
+                <Ex className="mr-1 -ml-1 w-5 h-5" />
+              </CustomBttn>
+            </div>
           </form>
-          {modals.colorModal && <ColorModal colors={colors} />}
+
+          {modals.colorModal && (
+            <ColorModal
+              colors={colorGroups}
+              onSelectColor={(hex) => {
+                if (typeof colorIndex === "number") {
+                  updateColorValue(colorIndex, "color", hex);
+                } else {
+                  console.warn(
+                    "colorIndex is undefined — cannot update colorGroups"
+                  );
+                }
+              }}
+            />
+          )}
         </div>
       )}
     </PopAnimate>

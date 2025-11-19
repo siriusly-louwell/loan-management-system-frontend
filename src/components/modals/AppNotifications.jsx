@@ -34,7 +34,7 @@ export default function AppNotifications() {
 
   const [error, setError] = useState(null);
 
-  const params = { role: "customer" }; 
+  const params = { role: "customer" };
 
   // Fetch users whenever page changes
   useEffect(() => {
@@ -45,10 +45,10 @@ export default function AppNotifications() {
       try {
         const data = await fetchUsers({
           page: pagination.currentPage,
-          perPage: 8, 
+          perPage: 8,
           params,
         });
-        
+
         // console.log(data)
         setUsers(data.data || []);
         setPagination((prev) => ({
@@ -64,14 +64,14 @@ export default function AppNotifications() {
     };
 
     loadUsers();
-  }, [pagination.currentPage]); 
+  }, [pagination.currentPage]);
 
   const handleUserClick = (userId) => {
     navigate(`user-details/${userId}`);
   };
 
   const handlePageChange = (page) => {
-    if (page !== pagination.currentPage) { 
+    if (page !== pagination.currentPage) {
       setPagination((prev) => ({
         ...prev,
         currentPage: page,
@@ -102,7 +102,7 @@ export default function AppNotifications() {
                 key={user.id}
                 data={{
                   // pfp:user.pfp,
-                  name: user.name,
+                  name: user.first_name + " " + (user.middle_name ? user.middle_name.charAt(0) + "." : "") + " " + user.last_name,
                   email: user.email,
                   role: user.role,
                   id: user.id,

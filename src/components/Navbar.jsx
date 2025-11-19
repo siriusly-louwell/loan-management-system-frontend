@@ -59,6 +59,7 @@ export default function Navbar({ links, path }) {
       dispatch(clearPayment());
       dispatch(clearPageNum());
       dispatch(setLoading({ isActive: false }));
+      localStorage.clear() 
     }, 2000);
 
     setTimeout(() => {

@@ -53,12 +53,14 @@ export default function ProductInfo({ staff = false }) {
                       >
                         {(unit.colors[selectedColorIndex]?.images || []).map(
                           (img, i) => (
-                            <img
-                              key={i}
-                              src={`${process.env.REACT_APP_API_URL}/storage/${img.path}`}
-                              alt="motor"
-                              className="w-full h-full object-contain rounded-xl"
-                            />
+                            <div className="w-full h-full flex justify-center items-center overflow-hidden">
+                              <img
+                                key={i}
+                                src={`${process.env.REACT_APP_API_URL}/storage/${img.path}`}
+                                alt="motor"
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
                           )
                         )}
                       </BasicCarousel>

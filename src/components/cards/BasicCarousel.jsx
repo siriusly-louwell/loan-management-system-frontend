@@ -19,13 +19,13 @@ export default function BasicCarousel({ children, length, loop = false }) {
   return (
     <>
       <div
-        className={`flex transition-transform duration-500 ease-out ${
+        className={`flex transition-transform duration-500 ease-out  ${
           !loop ? "h-full" : ""
         }`}
         style={{ transform: `translateX(-${carouselSlide * 100}%)` }}
       >
         {React.Children.map(children, (child) => (
-          <div className="min-w-full flex-shrink-0 flex justify-center items-center">
+          <div className="min-w-full h-full flex-shrink-0 flex justify-center items-center overflow-hidden max-w-5">
             {child}
           </div>
         ))}

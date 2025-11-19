@@ -6,7 +6,7 @@ import CloseBttn from "../buttons/CloseBttn";
 import { AnimatePresence, motion } from "framer-motion";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
 
-export default function ColorModal({ colors }) {
+export default function ColorModal({ colors, onSelectColor }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
 
@@ -19,7 +19,8 @@ export default function ColorModal({ colors }) {
           transition={{
             duration: 0.2,
             ease: "easeOut",
-          }}>
+          }}
+        >
           <div className="relative p-2 w-full max-w-xl h-full md:h-auto">
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 sm:py-4 border border-gray-500">
               <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
@@ -52,8 +53,11 @@ export default function ColorModal({ colors }) {
                           name: "colorModal",
                           value: modals?.colorModal,
                         })
-                      );
+                      ); // update form slice (if used in other places)
                       dispatch(changeColor(e));
+
+                      // update the colorGroups in parent
+                      onSelectColor(e); // <-- THIS FIXES THE ISSUE
                     }}
                     colorType="ofc"
                   />
@@ -71,8 +75,11 @@ export default function ColorModal({ colors }) {
                           name: "colorModal",
                           value: modals?.colorModal,
                         })
-                      );
+                      ); // update form slice (if used in other places)
                       dispatch(changeColor(e));
+
+                      // update the colorGroups in parent
+                      onSelectColor(e); // <-- THIS FIXES THE ISSUE
                     }}
                   />
                 </section>

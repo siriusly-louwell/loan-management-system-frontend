@@ -4,13 +4,18 @@ import Button from "../components/buttons/Button";
 import TextInput from "../components/inputs/TextInput";
 import Checkbox from "../components/checkboxes/Checkbox";
 import RMCI from "../assets/images/RMCI.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/redux/slices/authSlice";
-import { setAlert, setLoading } from "../services/redux/slices/uiSlice";
+import {
+  setAlert,
+  setLoading,
+  toggleModal,
+} from "../services/redux/slices/uiSlice";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { modals } = useSelector((state) => state.ui);
   const [loginData, setLogin] = useState({});
   const [showPass, setShowPass] = useState(false);
 
@@ -29,7 +34,14 @@ export default function Login() {
       const response = await dispatch(loginUser(loginData)).unwrap();
 
       dispatch(setLoading({ isActive: false }));
-      if (response.type === "success") navigate(`/${response.user.role}/app`);
+      if (response.type === "success") {
+        navigate(`/${response.user.role}/app`);
+        
+        if (loginData.password.includes("temp_"))
+          dispatch(
+            toggleModal({ name: "changePass", value: modals?.changePass })
+          );
+      }
       dispatch(setAlert({ message: response.message, type: response.type }));
     } catch (error) {
       console.error(error.response);
@@ -44,7 +56,7 @@ export default function Login() {
       <section className="bg-gray-200 h-screen dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <Link
-            to={'/'}
+            to={"/"}
             className="flex items-center mb-6 text-2xl font-semibold space-x-4 cursor-pointer text-gray-900 dark:text-white">
             <img src={RMCI} className="h-8 mr-2" alt="Rhean Motor Logo" />
             Rhean Motor Center

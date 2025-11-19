@@ -52,7 +52,7 @@ export default function InventoryTable() {
                 data={[
                   <div className="flex items-center mr-3 space-x-2">
                     <img
-                      src={motor.imgURL()}
+                      src={"" + motor.imgURL()}
                       alt="unit"
                       className="h-8 w-10 mr-3 rounded-md object-cover"
                     />
@@ -64,7 +64,7 @@ export default function InventoryTable() {
                   </span>,
                   <div className="grid grid-cols-4 gap-y-2">
                     {motor.colors.map((color, i) => (
-                      <ColorLabel key={i} style={color.color} />
+                      <ColorLabel key={i} style={color.hex_value} />
                     ))}
                   </div>,
                   "₱" + parseFloat(motor.price).toLocaleString(),
@@ -76,13 +76,15 @@ export default function InventoryTable() {
                     <CustomBttn
                       text="Edit"
                       onclick={() => unitModal(motor.id, "editUnit")}
-                      classname="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-rose-600 rounded-lg hover:bg-rose-600 focus:ring-4 focus:outline-none focus:ring-rose-600 dark:bg-rose-600 dark:hover:bg-rose-500 dark:focus:bg-rose-700 dark:focus:ring-rose-600">
+                      classname="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-rose-600 rounded-lg hover:bg-rose-600 focus:ring-4 focus:outline-none focus:ring-rose-600 dark:bg-rose-600 dark:hover:bg-rose-500 dark:focus:bg-rose-700 dark:focus:ring-rose-600"
+                    >
                       <Edit />
                     </CustomBttn>
                     <CustomBttn
                       text="Manage Stock"
                       classname="flex items-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-rose-500 dark:text-rose-500 dark:bg-rose-200 dark:hover:text-white dark:hover:bg-rose-600 dark:focus:ring-rose-900"
-                      onclick={() => unitModal(motor.id, "unitStock")}>
+                      onclick={() => unitModal(motor.id, "unitStock")}
+                    >
                       <Plus />
                     </CustomBttn>
                   </div>,

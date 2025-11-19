@@ -27,21 +27,69 @@ import {
   setType,
 } from "../services/redux/slices/formSlice";
 import FormCheck from "../components/checkboxes/FormCheck";
+import { number } from "framer-motion";
 
 export default function CreateProduct() {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
   const { brands } = useSelector((state) => state.unit);
-  const { colors, formData, formType } = useSelector((state) => state.form);
-  const [colorRows, setColorRows] = useState([""]);
-  const [angleRows, setAngleRows] = useState([""]);
-  const [files, setFiles] = useState([]);
-  const [angles, setAngle] = useState([]);
+  const { colors, formData, formType, colorIndex } = useSelector(
+    (state) => state.form
+  );
+
+  const [selectedColor, setSelectedColor] = useState({
+    index: 0,
+    field: "",
+    value: "",
+  });
+
+  const [colorGroups, setColorGroups] = useState([]);
+  // Example:
+  // [
+  //   { color: "#FF0000", quantity: 3, images: [] }
+  // ]
+  function addColorRow() {
+    setColorGroups((prev) => [...prev, { color: "", quantity: 1, images: [] }]);
+  }
+  function updateColorValue(index, field, value) {
+    console.log("updateColorValue called with:", index, field, value);
+
+    setColorGroups((prev) => {
+      const updated = [...prev];
+      updated[index][field] = value;
+      return updated;
+    });
+  }
+
+  function handleFileUpload(event, index) {
+    const uploadedFiles = Array.from(event.target.files);
+
+    setColorGroups((prev) => {
+      const updated = [...prev];
+      if (!updated[index].images) updated[index].images = [];
+
+      // Avoid duplicate uploads
+      const newFiles = uploadedFiles.filter(
+        (file) => !updated[index].images.some((f) => f.name === file.name)
+      );
+
+      updated[index].images = [...updated[index].images, ...newFiles];
+
+      return updated;
+    });
+  }
+
+  useEffect(() => {
+    console.log(colorGroups);
+  }, [colorGroups]);
 
   useEffect(() => {
     if (modals.createUnit) {
       dispatch(setType("createUnit"));
       dispatch(initialForm({ quantity: [1], unit_type: "new" }));
+
+      // Reset colors & images
+      setColorGroups([]);
     }
   }, [modals.createUnit]);
 
@@ -51,18 +99,43 @@ export default function CreateProduct() {
 
     try {
       const form = formData[formType];
-      const response = await dispatch(
-        addUnit({ form, files, angles, colors })
-      ).unwrap();
+      const formDataToSend = new FormData();
+      // Append simple fields
+      Object.entries(form).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+      console.log("not here: 1");
+      // Append colors & images
+
+      colorGroups.forEach((group, index) => {
+        if (!group.color)
+          throw new Error(`Color selection is required for row ${index + 1}`);
+        if (!group.images) group.images = [];
+        if (!group.quantity) group.quantity = 1;
+
+        formDataToSend.append(`colors[${index}][hex_value]`, group.color);
+        formDataToSend.append(`colors[${index}][quantity]`, group.quantity);
+
+        // Append each image correctly
+        group.images.forEach((file) => {
+          // Important: Use "colors[index][images][]" NOT "colors[index][images][i]"
+          formDataToSend.append(`colors[${index}][images][]`, file);
+        });
+      });
+      console.log("not here: 2");
+
+      // Make API call using your thunk
+      const response = await dispatch(addUnit(formDataToSend)).unwrap();
+      console.log("not here: 3");
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
       if (response.type === "success") {
         dispatch(resetInput());
-        setFiles([]);
-        setAngle([]);
+        setColorGroups([]);
         dispatch(fetchUnits({ page: 1 }));
       }
+      console.log("not here: 4");
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -75,29 +148,15 @@ export default function CreateProduct() {
     }
   }
 
-  function fileChange(event, i, type) {
-    const updatedFiles = type === "files" ? [...files] : [...angles];
-    updatedFiles[i] = event.target.files[0];
-
-    if (type === "files") setFiles(updatedFiles);
-    else setAngle(updatedFiles);
+  function removeImage(colorIndex, imageIndex) {
+    setColorGroups((prev) => {
+      const updated = [...prev];
+      updated[colorIndex].images = updated[colorIndex].images.filter(
+        (_, i) => i !== imageIndex
+      );
+      return updated;
+    });
   }
-
-  function removeFile(index, type) {
-    const arrType = type === "files" ? files : angles;
-    const rowType = type === "files" ? colorRows : angleRows;
-    const fileArr = arrType.filter((_, i) => i !== index);
-    const rowArr = rowType.filter((_, i) => i !== index);
-
-    if (type === "files") {
-      setColorRows(rowArr);
-      setFiles(fileArr);
-    } else {
-      setAngle(fileArr);
-      setAngleRows(rowArr);
-    }
-  }
-
   function dispatchInput(event) {
     dispatch(
       handleChange({
@@ -107,13 +166,23 @@ export default function CreateProduct() {
       })
     );
   }
-
+  function removeColorRow(index) {
+    setColorGroups((prev) => prev.filter((_, i) => i !== index));
+  }
+  const saveColor = (colorIndex, selectedColor) => {
+    updateColorValue({
+      index: colorIndex,
+      field: "color",
+      value: selectedColor, // value picked in modal
+    });
+  };
   return (
     <>
       <PopAnimate
         modalName={modals.createUnit}
         overflow={true}
-        classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto">
+        classStyle="relative p-4 w-full lg:w-[120vh] h-full md:h-auto"
+      >
         <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 border border-gray-500">
           <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -182,7 +251,8 @@ export default function CreateProduct() {
                     id="brand"
                     value={formData.createUnit.brand || ""}
                     require={true}
-                    onchange={dispatchInput}>
+                    onchange={dispatchInput}
+                  >
                     {brands.map((brand, i) => (
                       <option key={i} value={brand}>
                         {brand}
@@ -548,307 +618,156 @@ export default function CreateProduct() {
               </div>
             </section>
             {/* Temporary Code -> need to be tested */}
-            {false && (
+            {true && (
               <section className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
-                <ColorAvailability />
-              </section>
-            )}
-            <section className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
-              <section className="flex w-full justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
-                  Images & Colors
-                </h3>
-                <BttnwithIcon
-                  type="button"
-                  text="Add Image"
-                  click={() => setColorRows([...colorRows, ""])}>
-                  <Plus />
-                </BttnwithIcon>
-              </section>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {colorRows.map((_, i) => (
-                  <section key={i} className="border-b border-gray-400 pb-2">
-                    <label
-                      htmlFor={`dropzone_${i}`}
-                      className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
-                      <div className="self-end mb-1">
-                        <CloseBttn trigger={() => removeFile(i, "files")} />
-                      </div>
-                      {files.length > 0 && files[i] ? (
-                        <img
-                          className="w-auto h-[15vh] object-contain rounded-lg flex-shrink-0 hover:opacity-80"
-                          src={URL.createObjectURL(files[i])}
-                          alt="unit"
-                        />
-                      ) : (
-                        <div className="flex flex-col justify-center items-center w-full h-[15vh] bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                          <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                            <Cloud />
-                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                              <span className="font-semibold">
-                                Click to upload{" "}
-                              </span>
-                              or drag and drop
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              SVG, PNG or JPG (MAX. 800x400px)
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                      <input
-                        id={`dropzone_${i}`}
-                        name={`file_${i}`}
-                        type="file"
-                        className="hidden"
-                        onChange={(e) => fileChange(e, i, "files")}
-                      />
-                    </label>
-                    <div className="flex justify-between items-center mt-3">
-                      <div className="items-center space-x-2">
-                        <div className="flex items-center mb-2 space-x-4">
-                          <p className="text-sm font-medium whitespace-nowrap text-gray-900 dark:text-white">
-                            Color:
-                          </p>
-                          {colors.length > 0 && colors[i] && (
-                            <ColorLabel style={colors[i]} />
-                          )}
-                        </div>
-                        <CustomBttn
-                          text="Select Color"
-                          onclick={() => {
-                            dispatch(setColorIndex(i));
-                            dispatch(
-                              toggleModal({
-                                name: "colorModal",
-                                value: modals?.colorModal,
-                              })
-                            );
-                          }}
-                          classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
-                        />
-                      </div>
-                      <QuantityInput
-                        label="Quantity"
-                        index={i}
-                        type="create-unit"
-                      />
-                    </div>
-                  </section>
-                ))}
-              </div>
-            </section>
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold text-gray-200">Unit Images</h3>
 
-            <section>
-              <div className="mb-4 gap-y-2 pt-5">
-                <section className="flex w-full justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-5 dark:text-white">
-                    Motorcycle Angles
-                  </h3>
-                  <BttnwithIcon
-                    type="button"
-                    text="Add Angle"
-                    click={() => setAngleRows([...angleRows, ""])}>
-                    <Plus />
-                  </BttnwithIcon>
-                </section>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {angleRows.map((_, i) => (
-                    <section
-                      key={i}
-                      className="border-b border-gray-400 mb-2 pb-2">
-                      <label
-                        htmlFor={`angle_${i}`}
-                        className="flex flex-col justify-center items-center rounded-lg w-full cursor-pointer">
-                        <div className="self-end mb-1">
-                          <CloseBttn trigger={() => removeFile(i, "angles")} />
-                        </div>
-                        {angles.length > 0 && angles[i] ? (
-                          <img
-                            className="w-auto h-[15vh] object-contain rounded-lg flex-shrink-0 hover:opacity-80"
-                            src={URL.createObjectURL(angles[i])}
-                            alt="unit"
+                  {colorGroups.map((_, i) => (
+                    <>
+                      <div className="border rounded-md p-4 space-y-4 relative">
+                        {/* Remove button */}
+                        <button
+                          className="absolute right-2 top-2 text-lg"
+                          onClick={() => removeColorRow(i)}
+                        >
+                          ✕
+                        </button>
+                        {/* Upload Box */}
+                        <label className="w-full border-2 border-dashed rounded-md p-6 flex flex-col items-center cursor-pointer">
+                          <span>Click to upload or drag and drop</span>
+                          <span className="text-sm text-gray-500">
+                            SVG, PNG or JPG (MAX. 800×400)
+                          </span>
+                          <input
+                            type="file"
+                            multiple
+                            className="hidden"
+                            onChange={(e) => handleFileUpload(e, i)}
                           />
-                        ) : (
-                          <div className="flex flex-col justify-center items-center w-full h-[15vh] bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                              <Cloud />
-                              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                <span className="font-semibold">
-                                  Click to upload{" "}
-                                </span>
-                                or drag and drop
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                SVG, PNG or JPG (MAX. 800x400px)
-                              </p>
+                        </label>
+                        {/* List uploaded images */}
+                        {colorGroups[i]?.images &&
+                          colorGroups[i].images.length > 0 && (
+                            <div className="flex flex-wrap gap-3 mt-2">
+                              {colorGroups[i].images.map((file, index) => (
+                                <div key={index} className="w-20 h-20">
+                                  <img
+                                    alt="images"
+                                    src={URL.createObjectURL(file)}
+                                    className="w-full h-full object-cover rounded"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        {/* Color + Quantity Row */}
+                        <div className="flex items-center gap-6">
+                          {/* Color Picker */}
+                          <div>
+                            <label className="text-sm font-semibold">
+                              Color
+                            </label>
+                            <div className="flex items-center gap-2 mt-1">
+                              {colorGroups.length > 0 && colorGroups[i] && (
+                                <ColorLabel style={colorGroups[i].color} />
+                              )}
+                              <CustomBttn
+                                text="Select Color"
+                                onclick={() => {
+                                  // store which row we are editing
+                                  dispatch(setColorIndex(i));
+
+                                  // open modal
+                                  dispatch(
+                                    toggleModal({
+                                      name: "colorModal",
+                                      value: modals?.colorModal,
+                                    })
+                                  );
+                                }}
+                                classname="flex items-center justify-center text-rose-700 hover:text-white border border-rose-700 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:bg-rose-600 dark:border-rose-500 dark:text-rose-200 dark:hover:text-white dark:hover:bg-rose-800 dark:focus:ring-rose-900"
+                              />
                             </div>
                           </div>
-                        )}
-                        <input
-                          id={`angle_${i}`}
-                          name={`angle_${i}`}
-                          type="file"
-                          className="hidden"
-                          onChange={(e) => fileChange(e, i, "angles")}
-                        />
-                      </label>
-                    </section>
-                  ))}
-                </div>
-              </div>
 
-              <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                <Button text="Add Unit" bttnType="submit" />
-              </div>
-            </section>
+                          {/* Quantity */}
+                          <div>
+                            <label className="text-sm font-semibold">
+                              Quantity
+                            </label>
+                            <div className="flex items-center gap-2 mt-1">
+                              <button
+                                type="button"
+                                className="px-3 py-1 border rounded"
+                                onClick={(e) =>
+                                  updateColorValue(
+                                    i,
+                                    "quantity",
+                                    colorGroups[i].quantity - 1
+                                  )
+                                }
+                              >
+                                -
+                              </button>
+
+                              {/* <span>{data.quantity} 1</span> */}
+                              <span> 1</span>
+                              <button
+                                type="button"
+                                className="px-3 py-1 border rounded"
+                                onClick={(e) =>
+                                  updateColorValue(
+                                    i,
+                                    "quantity",
+                                    colorGroups[i].quantity + 1
+                                  )
+                                }
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ))}
+
+                  <BttnwithIcon
+                    type="button"
+                    text="Add Color Availability"
+                    click={() => {
+                      addColorRow();
+                    }}
+                  >
+                    <Plus />
+                  </BttnwithIcon>
+                </div>{" "}
+              </section>
+            )}
+
+            <div className="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
+              <Button text="Add Unit" bttnType="submit" />
+            </div>
           </form>
         </div>
       </PopAnimate>
-      {modals?.colorModal && <ColorModal colors={colors} />}
-    </>
-  );
-}
-
-function ColorAvailability() {
-  const [colors, setColors] = useState([]);
-
-  const addColorSection = () => {
-    setColors([
-      ...colors,
-      {
-        id: Date.now(),
-        color: "",
-        quantity: 1,
-        images: [],
-      },
-    ]);
-  };
-
-  const updateColor = (id, field, value) => {
-    setColors(colors.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
-  };
-
-  const handleImagesUpload = (id, files) => {
-    setColors(
-      colors.map((c) =>
-        c.id === id ? { ...c, images: [...c.images, ...files] } : c
-      )
-    );
-  };
-
-  const removeColorSection = (id) => {
-    setColors(colors.filter((c) => c.id !== id));
-  };
-  return (
-    <>
-      {" "}
-      <div className="space-y-6">
-        <h3 className="text-xl font-semibold">Unit Images</h3>
-
-        {colors.map((item) => (
-          <ColorSection
-            key={item.id}
-            data={item}
-            onUpdate={updateColor}
-            onImagesUpload={handleImagesUpload}
-            onRemove={removeColorSection}
-          />
-        ))}
-
-        <BttnwithIcon
-          type="button"
-          text="Add Color Availability"
-          click={addColorSection}>
-          <Plus />
-        </BttnwithIcon>
-      </div>
-    </>
-  );
-}
-
-function ColorSection({ data, onUpdate, onImagesUpload, onRemove }) {
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    onImagesUpload(data.id, files);
-  };
-
-  return (
-    <div className="border rounded-md p-4 space-y-4 relative">
-      {/* Remove button */}
-      <button
-        className="absolute right-2 top-2 text-lg"
-        onClick={() => onRemove(data.id)}>
-        ✕
-      </button>
-
-      {/* Upload Box */}
-      <label className="w-full border-2 border-dashed rounded-md p-6 flex flex-col items-center cursor-pointer">
-        <span>Click to upload or drag and drop</span>
-        <span className="text-sm text-gray-500">
-          SVG, PNG or JPG (MAX. 800×400)
-        </span>
-        <input
-          type="file"
-          multiple
-          className="hidden"
-          onChange={handleFileChange}
+      {modals?.colorModal && (
+        <ColorModal
+          colors={colorGroups}
+          onSelectColor={(hex) => {
+            // colorIndex comes from redux (set earlier when opening modal)
+            // guard: if undefined, do nothing (avoid runtime error)
+            if (typeof colorIndex === "number") {
+              updateColorValue(colorIndex, "color", hex);
+            } else {
+              console.warn(
+                "colorIndex is undefined — cannot update colorGroups"
+              );
+            }
+          }}
         />
-      </label>
-
-      {/* List uploaded images */}
-      {data.images.length > 0 && (
-        <div className="flex flex-wrap gap-3 mt-2">
-          {data.images.map((file, index) => (
-            <div key={index} className="w-20 h-20">
-              <img
-                alt="images"
-                src={URL.createObjectURL(file)}
-                className="w-full h-full object-cover rounded"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Color + Quantity Row */}
-      <div className="flex items-center gap-6">
-        {/* Color Picker */}
-        <div>
-          <label className="text-sm font-semibold">Color</label>
-          <div className="flex items-center gap-2 mt-1">
-            <input
-              type="color"
-              className="w-8 h-8 rounded border"
-              value={data.color}
-              onChange={(e) => onUpdate(data.id, "color", e.target.value)}
-            />
-            <span>{data.color || "No color selected"}</span>
-          </div>
-        </div>
-
-        {/* Quantity */}
-        <div>
-          <label className="text-sm font-semibold">Quantity</label>
-          <div className="flex items-center gap-2 mt-1">
-            <button
-              className="px-3 py-1 border rounded"
-              onClick={() =>
-                onUpdate(data.id, "quantity", Math.max(1, data.quantity - 1))
-              }>
-              -
-            </button>
-
-            <span>{data.quantity}</span>
-
-            <button
-              className="px-3 py-1 border rounded"
-              onClick={() => onUpdate(data.id, "quantity", data.quantity + 1)}>
-              +
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+      )}{" "}
+    </>
   );
 }

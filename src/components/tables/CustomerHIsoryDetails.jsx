@@ -19,7 +19,8 @@ const UserDetails = () => {
         <section className="w-full h-full py-10">
             <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg px-4 py-10">
                 <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6">
-                    Payment History for User {userId}
+                    Payment History 
+                    {/* for User {userId} */}
                 </h2>
                 <div className="divide-y divide-gray-200 dark:divide-gray-700">
                     {paymentsLoading ? (

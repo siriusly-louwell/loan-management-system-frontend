@@ -105,13 +105,13 @@ function App() {
             }
           />
           <Route
-            path="history"
-            element={
-              <ProtectedRoute type="customer">
-                <AppNotifications isCustomer={true} />
-              </ProtectedRoute>
-            }
-          />
+              path={`history/user-details/:userId`}
+              element={
+                <ProtectedRoute type="customer">
+                  <CustomerPaymentHIstoryDetails />
+                </ProtectedRoute>
+              }
+            />
           <Route
             path="billing"
             element={

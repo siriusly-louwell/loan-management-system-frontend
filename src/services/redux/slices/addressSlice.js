@@ -11,14 +11,11 @@ export const fetchAddress = createAsyncThunk(
         case "provinces":
           return await AddressAPI.provinces(address.value);
         case "cities":
-          // return await AddressAPI.cities(address.value);
-          return await AddressAPI.cities_municipalities(address.value)
+          return await AddressAPI.cities(address.value);
         case "municipalities":
           return await AddressAPI.municipalities(address.value);
         case "barangays":
           return await AddressAPI.barangays(address.value);
-        case "cities-municipalities":
-          return await AddressAPI.cities_municipalities(address.value)
       }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

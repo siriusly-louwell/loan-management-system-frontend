@@ -40,12 +40,20 @@ const UnitAPI = {
   },
 
   async edit(data, id) {
-    const response = await axios.post(`${API_URL}/api/motorcycle/${id}`, data);
+    const response = await axios.post(`${API_URL}/api/motorcycle/${id}`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   },
 
   async patch(data, id) {
-    const response = await axios.patch(`${API_URL}/api/motorcycle/${id}`, data);
+    const response = await axios.post(
+      `${API_URL}/api/motorcycle/${id}?_method=PATCH`,
+      data,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
     return response.data;
   },
 

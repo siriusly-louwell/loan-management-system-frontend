@@ -107,7 +107,7 @@ export default function PersonalInfoForm() {
           label="Contact Number"
           type="text"
           name="contact_num"
-          maxLength={12}
+          maxLength={11}
           id="contact_num"
           value={contactNumber}
           onchange={onChangeContact}

@@ -25,7 +25,7 @@ export default function BasicCarousel({ children, length, loop = false }) {
         style={{ transform: `translateX(-${carouselSlide * 100}%)` }}
       >
         {React.Children.map(children, (child) => (
-          <div className="min-w-full h-full flex-shrink-0 flex justify-center items-center overflow-hidden max-w-5">
+          <div className="min-w-full h-full flex justify-center items-center overflow-hidden">
             {child}
           </div>
         ))}

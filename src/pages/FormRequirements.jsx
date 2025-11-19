@@ -27,6 +27,7 @@ export default function FormRequirements() {
   const [openInfo, setOpenInfo] = useState(false);
   const [docType, setdocType] = useState("");
   let documents = [];
+  let samplePic = [];
 
   const titles = {
     valid_ids: "Valid ID",
@@ -36,16 +37,20 @@ export default function FormRequirements() {
   };
   switch (docType) {
     case "valid_ids":
-      documents = ["National Id", "Driver's License"];
+      documents = ["National Id", "Driver's License", "Passport", "Postal ID", "NBI or Police Clearance", "PRC ID", "TIN", "GSIS"];
+      samplePic = [];
       break;
     case "two_by_two":
       documents = [twoByTwo];
+      samplePic = [];
       break;
     case "proof_of_residence":
-      documents = [proofOfResidency];
+      documents = ["Lease Contract/Rental Agreement (if renting)", "Barangay Certificate"];
+      samplePic = [proofOfResidency];
       break;
     case "proof_of_income":
-      documents = [proofOfIncome];
+      documents = ["COE", "Payslip", "Bank Statement","Financial Statements"];
+      samplePic = [proofOfIncome]
       break;
     default:
       break;
@@ -141,6 +146,7 @@ export default function FormRequirements() {
         onClose={() => setdocType("")}
         title={titles[docType]}
         documents={documents}
+        samplePic={samplePic}
       />
     </>
   );

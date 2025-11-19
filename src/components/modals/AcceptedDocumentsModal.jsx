@@ -6,6 +6,7 @@ export default function AcceptedDocumentsModal({
   onClose,
   title,
   documents,
+  samplePic
 }) {
   const isImage = (file) =>
     typeof file === "string" &&
@@ -15,6 +16,7 @@ export default function AcceptedDocumentsModal({
       file.endsWith(".webp"));
 
   const hasImage = documents.some(isImage);
+  const sampleImage = samplePic.some(isImage);
 
   return (
     <AppModal open={open} onClose={onClose} title={`Accepted Documents for ${title}`}>
@@ -45,6 +47,24 @@ export default function AcceptedDocumentsModal({
             ))}
           </ul>
         )}
+          {
+            sampleImage && (
+              <div className="w-full h-64 md:h-80">
+                <h1 className="text-gray-300 font-bold text-lg mb-2">
+                  Sample Image
+                </h1>
+                {samplePic.map((img, idx) => (
+                  <div key={idx} className="text-center">
+                    <img
+                      src={img}
+                      alt="Accepted format example"
+                      className="w-full h-full object-cover rounded-lg border border-white/10 shadow-md py-4 px-2"
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          }
       </div>
     </AppModal>
   );

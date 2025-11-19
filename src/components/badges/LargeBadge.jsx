@@ -1,7 +1,5 @@
-import React,  {useState} from "react";
 import CustomBttn from "../buttons/CustomBttn";
-import { useNavigate } from "react-router-dom";
-import { CheckCircle2, ClipboardCheck, FileSearch } from "lucide-react";
+import { FileSearch } from "lucide-react";
 
 export default function LargeBadge({ type, subtext = true, loanId, role, onViewDetails }) { 
   let color;

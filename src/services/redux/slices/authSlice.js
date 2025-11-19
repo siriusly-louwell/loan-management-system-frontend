@@ -3,7 +3,10 @@ import { loginUseCase } from "../../usecases/auth/loginUseCase";
 import { authRepository } from "./../../repositories/authRepository";
 import { tokenLoginUseCase } from "../../usecases/auth/tokenLoginUseCase";
 import { userRepository } from "../../repositories/userRepository";
-import { changePassUseCase } from "../../usecases/auth/changePassUseCase";
+import {
+  changePassUseCase,
+  validatePassword,
+} from "../../usecases/auth/changePassUseCase";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -55,6 +58,13 @@ const authSlice = createSlice({
     user: {},
     profile: {},
     token: null,
+    validation: {
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      number: false,
+      match: false,
+    },
     isAuthenticated: false,
     authorized: false,
     loggedOut: false,
@@ -71,6 +81,22 @@ const authSlice = createSlice({
 
     getToken: (state) => {
       state.token = authRepository.getToken();
+    },
+
+    validatePass: (state, action) => {
+      const payload = action.payload || {};
+      const newPass = payload.new || "";
+      const confirm = payload.confirm || "";
+
+      const validation = {
+        length: validatePassword(newPass, confirm, "length"),
+        uppercase: validatePassword(newPass, confirm, "uppercase"),
+        lowercase: validatePassword(newPass, confirm, "lowercase"),
+        number: validatePassword(newPass, confirm, "number"),
+        match: validatePassword(newPass, confirm, "match"),
+      };
+
+      state.validation = validation;
     },
 
     clearAuth: (state) => {
@@ -134,5 +160,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearAuth, getToken } = authSlice.actions;
+export const { logout, validatePass, clearAuth, getToken } = authSlice.actions;
 export default authSlice.reducer;

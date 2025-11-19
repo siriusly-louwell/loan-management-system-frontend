@@ -46,6 +46,10 @@ export default function ProductList() {
     fetch(1);
   }, [dispatch, filter, unitType]);
 
+  useEffect(() => {
+    console.log(user);
+  })
+
   async function toggleFilter(brand) {
     dispatch(toggleModal({ name: "filter", value: modals?.filter }));
     dispatch(setFilter(brand));

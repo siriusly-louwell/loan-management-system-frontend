@@ -44,10 +44,6 @@ export default function PersonalInfoForm() {
     dispatch(disableAddress());
   }, [formData, dispatch]);
 
-  useEffect(() => {
-    console.log(formData.applicant);
-  })
-
   // Apply dispatchInput, at the same, limits the character length
   function onChangeContact(event){
       const input = event.target.value.replace(/\D/g, ""); // removes non-numeric chars
@@ -80,6 +76,7 @@ export default function PersonalInfoForm() {
           value={formData.applicant.middle_name}
           onchange={(e) => dispatchInput(e)}
           placeholder="Type middle name"
+          require={false}
         />
         <FormInput
           label="Last Name"
@@ -174,15 +171,17 @@ export default function PersonalInfoForm() {
             <option value="graduate">College Graduate</option>
             <option value="post">Post Graduate</option>
           </FormSelect>
-          <FormInput
+          {/* <FormInput
             label="Others"
             type="text"
             name="prod_name"
             id="name"
             placeholder="Others"
             require={false}
-            onchange={() => {}}
-          />
+            onchange={(e) => {
+              console.log(e.target.value)
+            }}
+          /> */}
         </div>
         <div className="grid gap-4 sm:col-span-1 md:gap-6 sm:grid-cols-2">
           <FormSelect
@@ -198,15 +197,17 @@ export default function PersonalInfoForm() {
             <option value="rented">Rented</option>
             <option value="staying">Staying/Relative</option>
           </FormSelect>
-          <FormInput
+          {/* <FormInput
             label="Others"
             type="text"
             name="prod_name"
             id="name"
             require={false}
-            onchange={() => {}}
+            onchange={(e) => {
+              console.log(e.target.value)
+            }}
             placeholder="Other reason"
-          />
+          /> */}
         </div>
         <FormInput
           label="Amortization Monthly"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CloseBttn from "./../buttons/CloseBttn";
 import PopAnimate from "./../animations/popAnimate";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,10 @@ import Button from "./../buttons/Button";
 import { ArrowRight, KeyRound } from "lucide-react";
 import CustomBttn from "../buttons/CustomBttn";
 import { UserEntity } from "../../services/entities/User";
-import { changePassword } from "../../services/redux/slices/authSlice";
+import {
+  changePassword,
+  validatePass,
+} from "../../services/redux/slices/authSlice";
 import {
   setAlert,
   setLoading,
@@ -18,11 +21,21 @@ import PasswordRequirements from "../texts/PasswordRequirements";
 export default function ChangePassword() {
   const dispatch = useDispatch();
   const { id } = useSelector(UserEntity);
+  const { validation } = useSelector((state) => state.auth);
   const { modals } = useSelector((state) => state.ui);
   const [newPass, setNewPass] = useState({
     current_password: "",
     new_password: "",
   });
+
+  useEffect(() => {
+    dispatch(
+      validatePass({
+        new: newPass.new_password,
+        confirm: newPass.new_password_confirmation,
+      })
+    );
+  }, [newPass.new_password, newPass.new_password_confirmation]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -112,11 +125,20 @@ export default function ChangePassword() {
               }`}>
               <PasswordRequirements
                 rules={[
-                  { label: "At least 8 characters long", isValid: false },
-                  { label: "Contains an uppercase letter", isValid: true },
-                  { label: "Contains a lowercase letter", isValid: false },
-                  { label: "Includes a number", isValid: true },
-                  { label: "Password confirmed", isValid: false },
+                  {
+                    label: "At least 8 characters long",
+                    isValid: validation.length,
+                  },
+                  {
+                    label: "Contains an uppercase letter",
+                    isValid: validation.uppercase,
+                  },
+                  {
+                    label: "Contains a lowercase letter",
+                    isValid: validation.lowercase,
+                  },
+                  { label: "Includes a number", isValid: validation.number },
+                  { label: "Password confirmed", isValid: validation.match },
                 ]}
               />
             </div>

@@ -58,7 +58,13 @@ const authSlice = createSlice({
     user: {},
     profile: {},
     token: null,
-    validation: {},
+    validation: {
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      number: false,
+      match: false,
+    },
     isAuthenticated: false,
     authorized: false,
     loggedOut: false,
@@ -77,9 +83,20 @@ const authSlice = createSlice({
       state.token = authRepository.getToken();
     },
 
-    validatePassword: (state, action) => {
-      const data = action.payload;
-      const validation = validatePassword(...data);
+    validatePass: (state, action) => {
+      const payload = action.payload || {};
+      const newPass = payload.new || "";
+      const confirm = payload.confirm || "";
+
+      const validation = {
+        length: validatePassword(newPass, confirm, "length"),
+        uppercase: validatePassword(newPass, confirm, "uppercase"),
+        lowercase: validatePassword(newPass, confirm, "lowercase"),
+        number: validatePassword(newPass, confirm, "number"),
+        match: validatePassword(newPass, confirm, "match"),
+      };
+
+      state.validation = validation;
     },
 
     clearAuth: (state) => {
@@ -143,5 +160,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearAuth, getToken } = authSlice.actions;
+export const { logout, validatePass, clearAuth, getToken } = authSlice.actions;
 export default authSlice.reducer;

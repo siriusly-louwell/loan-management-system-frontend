@@ -27,7 +27,6 @@ import {
   setType,
 } from "../services/redux/slices/formSlice";
 import FormCheck from "../components/checkboxes/FormCheck";
-import { number } from "framer-motion";
 
 export default function CreateProduct() {
   const dispatch = useDispatch();
@@ -37,11 +36,11 @@ export default function CreateProduct() {
     (state) => state.form
   );
 
-  const [selectedColor, setSelectedColor] = useState({
-    index: 0,
-    field: "",
-    value: "",
-  });
+  // const [selectedColor, setSelectedColor] = useState({
+  //   index: 0,
+  //   field: "",
+  //   value: "",
+  // });
 
   const [colorGroups, setColorGroups] = useState([]);
   // Example:
@@ -52,7 +51,6 @@ export default function CreateProduct() {
     setColorGroups((prev) => [...prev, { color: "", quantity: 1, images: [] }]);
   }
   function updateColorValue(index, field, value) {
-    console.log("updateColorValue called with:", index, field, value);
 
     setColorGroups((prev) => {
       const updated = [...prev];
@@ -80,10 +78,6 @@ export default function CreateProduct() {
   }
 
   useEffect(() => {
-    console.log(colorGroups);
-  }, [colorGroups]);
-
-  useEffect(() => {
     if (modals.createUnit) {
       dispatch(setType("createUnit"));
       dispatch(initialForm({ quantity: [1], unit_type: "new" }));
@@ -104,7 +98,6 @@ export default function CreateProduct() {
       Object.entries(form).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
-      console.log("not here: 1");
       // Append colors & images
 
       colorGroups.forEach((group, index) => {
@@ -122,11 +115,9 @@ export default function CreateProduct() {
           formDataToSend.append(`colors[${index}][images][]`, file);
         });
       });
-      console.log("not here: 2");
 
       // Make API call using your thunk
       const response = await dispatch(addUnit(formDataToSend)).unwrap();
-      console.log("not here: 3");
 
       dispatch(setLoading({ isActive: false }));
       dispatch(setAlert({ message: response.message, type: response.type }));
@@ -135,7 +126,6 @@ export default function CreateProduct() {
         setColorGroups([]);
         dispatch(fetchUnits({ page: 1 }));
       }
-      console.log("not here: 4");
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));

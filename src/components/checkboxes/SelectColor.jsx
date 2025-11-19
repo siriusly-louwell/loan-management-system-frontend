@@ -21,7 +21,7 @@ export default function SelectColor({
       </p>
       <div className="grid grid-cols-10 lg:grid-cols-9 gap-x-7 mt-4 sm:mt-0 sm:gap-y-3 sm:gap-x-10">
         {spectrum.map((color, i) => {
-          const newColor = bool ? color.color : color;
+          const newColor = bool ? color.hex_value : color;
           const including = bool
             ? colors === newColor
             : colors.includes(`${newColor}`);

@@ -621,7 +621,9 @@ export default function CreateProduct() {
             {true && (
               <section className="mb-4 gap-y-2 border-t border-gray-300 pt-5">
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-200">Unit Images</h3>
+                  <h3 className="text-xl font-semibold text-gray-200">
+                    Unit Images
+                  </h3>
 
                   {colorGroups.map((_, i) => (
                     <>
@@ -712,7 +714,7 @@ export default function CreateProduct() {
                               </button>
 
                               {/* <span>{data.quantity} 1</span> */}
-                              <span> 1</span>
+                              <span> {colorGroups[i].quantity}</span>
                               <button
                                 type="button"
                                 className="px-3 py-1 border rounded"

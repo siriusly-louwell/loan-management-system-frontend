@@ -24,14 +24,19 @@ import TextDialog from "../components/modals/TextDialog";
 import ApproveLoan from "../components/ApproveLoan";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import { ArrowBigLeftDash } from "lucide-react";
+import { UserEntity } from "../services/entities/User";
+import { useNavigate } from "react-router-dom";
+
 
 export default function LoanInfo() {
   const dispatch = useDispatch();
+  const user = useSelector(UserEntity);
   const [approval, setApproval] = useState();
   const loan = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanID } = useSelector((state) => state.application);
 
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getLoanId());
   }, []);
@@ -97,6 +102,21 @@ export default function LoanInfo() {
     }
   }
 
+  // Gi add nako para maka redirect ang mga different roles balik
+  function redirectByRole(role){
+    console.log(role);
+    if (role === 'admin') {
+      navigate("/admin/loans");
+    }
+    else if(role === 'staff'){
+      navigate("/staff/app");
+    }
+    // Add more else-ifs kung napay roles na need ani
+    else{
+      navigate("/unauthorized");
+    }
+  }
+
   function staffAction(string) {
     dispatch(toggleModal({ name: "eligibility", value: modals.eligibility }));
     dispatch(
@@ -109,7 +129,7 @@ export default function LoanInfo() {
     <section className="bg-gray-200 py-8 antialiased dark:bg-gray-900 md:py-16">
       <div className="mx-10 my-2">
         {" "}
-        <BttnwithIcon click={() => (window.location = "../admin/loans")}>
+        <BttnwithIcon click={() => redirectByRole(user.role)}>
           <ArrowBigLeftDash />
         </BttnwithIcon>
       </div>

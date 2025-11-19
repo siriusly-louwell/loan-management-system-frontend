@@ -12,6 +12,7 @@ import proofOfIncome from '../assets/images/proofofincome.webp';
 import { BadgeInfo } from "lucide-react";
 
 import UploadPhotoInfo from "./PageComponents/UploadPhotoInfoModal";
+import AcceptedDocumentsModal from "../components/modals/AcceptedDocumentsModal";
 import { useState } from "react";
 
 
@@ -24,9 +25,32 @@ export default function FormRequirements() {
       ? { lat: formData.address.lat, lng: formData.address.lng }
       : { lat: 7.3081, lng: 125.6842 };
   const [openInfo, setOpenInfo] = useState(false);
-  if (!formData?.applicant) {
-    return <div className="text-gray-500">Loading requirements...</div>;
+  const [docType, setdocType] = useState("");
+  let documents = [];
+
+  const titles = {
+    valid_ids: "Valid ID",
+    two_by_two: "2x2 Picture",
+    proof_of_residence: "Proof of Residence",
+    proof_of_income: "Proof of Income",
+  };
+  switch (docType) {
+    case "valid_ids":
+      documents = ["National Id", "Driver's License"];
+      break;
+    case "two_by_two":
+      documents = [twoByTwo];
+      break;
+    case "proof_of_residence":
+      documents = [proofOfResidency];
+      break;
+    case "proof_of_income":
+      documents = [proofOfIncome];
+      break;
+    default:
+      break;
   }
+
   return (
     <>
       <UploadPhotoInfo open={openInfo} onClose={() => setOpenInfo(false)} />
@@ -61,54 +85,42 @@ export default function FormRequirements() {
         </div>
       )}
       <div className="grid gap-4 mb-4 sm:grid-cols-2 pb-2 border-b dark:border-gray-500">
-        {!formData.applicant?.keep_files && (
+        {!formData.applicant.keep_files && (
           <>
             <FileInput
               label="Valid ID"
               name="valid_id"
               type="img"
               accept=".jpg,.png,.pdf"
-              documents={[
-                "Student ID",
-                "Passport",
-                "Driver's License",
-                "National ID",
-                "Voter's id"
-              ]}
               change={fileChange}
+              popUpClick={() => setdocType("valid_ids")}
               require={true}
             />
             <FileInput
               label="2x2 Picture"
               name="id_pic"
               type="img"
-              documents={[
-                twoByTwo
-              ]}
               accept=".jpg,.png,.pdf"
               change={fileChange}
+              popUpClick={() => setdocType("two_by_two")}
               require={true}
             />
             <FileInput
               label="Proof of Residence"
               name="residence_proof"
               type="img"
-              documents={[
-                proofOfResidency
-              ]}
               accept=".jpg,.png,.pdf"
               change={fileChange}
+              popUpClick={() => setdocType("proof_of_residence")}
               require={true}
             />
             <FileInput
               label="Proof of Income"
               name="income_proof"
               type="img"
-              documents={[
-                proofOfIncome
-              ]}
               accept=".jpg,.png,.pdf"
               change={fileChange}
+              popUpClick={() => setdocType("proof_of_income")}
               require={true}
             />
           </>
@@ -123,12 +135,13 @@ export default function FormRequirements() {
         </div>
       </div>
 
-      {/* <AcceptedDocumentsModal
-              open={showModal}
-              onClose={() => setShowModal(false)}
-              title={label}
-              documents={documents}
-            /> */}
+      {/* AcceptedDocumentsModal Component */}
+      <AcceptedDocumentsModal
+        open={docType !== ""}
+        onClose={() => setdocType("")}
+        title={titles[docType]}
+        documents={documents}
+      />
     </>
   );
 }

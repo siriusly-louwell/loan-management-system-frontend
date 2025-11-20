@@ -11,7 +11,7 @@ export default function UnitRecommendation() {
   return (
     <div className="bg-gray-100 dark:bg-gray-900 px-3 py-1 mx-5 mt-3 rounded-lg">
       <h2 className="mt-5 pl-5 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-        {units.length > 0 ? "Recommendations" : "No Recommendations"}
+        {units.length > 0 ? "Recommendations based on the applicant's eligibility results" : "No Recommendations"}
       </h2>
       <section className="my-4 px-5 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-4 xl:grid-cols-4">
         {unitsLoading ? (

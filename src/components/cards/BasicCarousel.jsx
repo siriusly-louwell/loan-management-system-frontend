@@ -23,7 +23,11 @@ export default function BasicCarousel({ children, length, loop = false }) {
           !loop ? "h-full" : ""
         }`}
         style={{ transform: `translateX(-${carouselSlide * 100}%)` }}>
-        {children}
+        {React.Children.map(children, (child) => (
+          <div className="min-w-full h-full flex justify-center items-center overflow-hidden">
+            {child}
+          </div>
+        ))}
       </div>
 
       <button

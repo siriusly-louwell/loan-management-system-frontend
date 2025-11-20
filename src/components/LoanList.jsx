@@ -7,8 +7,12 @@ export default function LoanList({
   price,
   downpayment,
   img,
-  name,
+  units,
+  tenure,
+  due_date,
+  amortization,
   color,
+  motorcycle,
   load,
 }) {
   return (
@@ -33,12 +37,57 @@ export default function LoanList({
             <>
               <ColorLabel style={color} />
               <span className="min-w-0 font-medium text-gray-900 cursor-pointer hover:underline dark:text-white">
-                {name}
+                {motorcycle.name}
               </span>
             </>
           )}
         </div>
       </div>
+
+      <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+        <span className="font-medium mr-2 text-gray-900 dark:text-white">
+          Quantity:
+        </span>
+        {load ? <SmallSpin size={20} /> : units}
+      </p>
+      <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+        <span className="font-medium mr-2 text-gray-900 dark:text-white">
+          Tenure:
+        </span>
+        {load ? <SmallSpin size={20} /> : `${tenure} year/s`}
+      </p>
+      <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+        <span className="font-medium mr-2 text-gray-900 dark:text-white">
+          Rebate value:
+        </span>
+        {load ? (
+          <SmallSpin size={20} />
+        ) : (
+          `₱${parseFloat(motorcycle.rebate).toLocaleString()}`
+        )}
+      </p>
+      <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+        <span className="font-medium mr-2 text-gray-900 dark:text-white">
+          Due date:
+        </span>
+        {load ? <SmallSpin size={20} /> : due_date}
+      </p>
+      <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+        <span className="font-medium mr-2 text-gray-900 dark:text-white">
+          Interest rate:
+        </span>
+        {load ? <SmallSpin size={20} /> : `${motorcycle.interest}%`}
+      </p>
+      <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
+        <span className="font-medium mr-2 text-gray-900 dark:text-white">
+          Amortization:
+        </span>
+        {load ? (
+          <SmallSpin size={20} />
+        ) : (
+          `₱${parseFloat(amortization).toLocaleString()}`
+        )}
+      </p>
 
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">

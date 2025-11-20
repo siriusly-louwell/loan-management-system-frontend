@@ -3,7 +3,7 @@ import honda from "../../assets/images/honda.jpg";
 
 export default function SpecialOfferBanner() {
   return (
-    <div className="min-w-full bg-white grid sm:grid-cols-2 items-center max-sm:gap-10 py-10 border-y-8 border-rose-400">
+    <div className="w-full md:min-w-full bg-white grid sm:grid-cols-2 items-center max-sm:gap-10 py-10 border-y-8 border-rose-400">
       <div className="text-center px-6">
         <h3 className="font-extrabold text-5xl text-rose-500 leading-tight">
           <span className="text-slate-900">Special</span> Offer

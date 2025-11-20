@@ -64,9 +64,9 @@ export default function ProductList() {
   }
 
   return (
-    <section className="bg-gray-100 py-8 justify-items-center antialiased dark:bg-gray-800 md:py-12">
+    <section className="bg-gray-100 py-8 justify-items-center dark:bg-gray-800 md:py-12">
       {user?.role !== "customer" && <StickyBanner />}
-      <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div className="mx-auto lg:max-w-screen-xl px-4 2xl:px-0">
         <div className="relative w-full space-y-4 lg:max-w-6xl mb-3 mx-auto rounded-xl overflow-hidden">
           <BasicCarousel length={3} loop={true}>
             <BasicBanner

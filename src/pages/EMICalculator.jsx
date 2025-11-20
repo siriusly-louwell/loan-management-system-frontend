@@ -126,11 +126,11 @@ export default function EMICalculator({ staff }) {
               />
               {unitLoading ? (
                 <>
-                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
-                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
-                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
-                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
-                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse"></div>
+                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse" />
+                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse" />
+                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse" />
+                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse" />
+                  <div className="bg-gray-300 dark:bg-gray-500 py-4 px-3 rounded-lg text-sm font-medium transition animate-pulse" />
                 </>
               ) : (
                 [...Array(unit?.tenure)].map((_, i) => (

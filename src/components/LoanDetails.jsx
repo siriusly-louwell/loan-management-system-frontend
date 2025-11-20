@@ -81,8 +81,11 @@ export default function LoanDetails({ setApproval }) {
                 color={trans.color}
                 price={trans.motorcycle.price}
                 units={trans.quantity}
+                tenure={trans.tenure}
+                amortization={loan.amortization}
                 img={loan.unitImage}
                 name={trans.motorcycle.name}
+                motorcycle={trans.motorcycle}
               />
             ))}
 

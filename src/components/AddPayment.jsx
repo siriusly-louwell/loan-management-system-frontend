@@ -15,6 +15,7 @@ import { addPayment } from "../services/redux/slices/paymentSlice";
 import { ApplicationEntity } from "../services/entities/Application";
 import Dialog from "./modals/Dialog";
 import { LoanEntity } from "../services/entities/Loan";
+import { CheckCircle } from "lucide-react";
 
 export default function AddPayment() {
   const dispatch = useDispatch();
@@ -28,17 +29,18 @@ export default function AddPayment() {
     issued_at: "Rhean Motors Center",
     status: "on_time",
     user_id: user_id,
+    amount_paid: emi,
     total_amount: Number(transactions[0].motorcycle.price),
   });
 
-  useEffect(()=> {
+  useEffect(() => {
     setPayment({
       ...payment,
       application_form_id: id,
       user_id: user_id,
-      total_amount: transactions[0].motorcycle.price
+      total_amount: transactions[0].motorcycle.price,
     });
-  }, [id, user_id, transactions[0].motorcycle.price])
+  }, [id, user_id, transactions[0].motorcycle.price]);
 
   function handleChange(event) {
     setPayment({
@@ -170,6 +172,10 @@ export default function AddPayment() {
               placeholder="₱10,000"
               onchange={(e) => handleChange(e)}
             />
+            <div className="text-green-500 flex space-x-2 items-center mt-1">
+              <CheckCircle size={15} />
+              <span>No rebate penalties</span>
+            </div>
           </dl>
 
           <dl className="mt-5">

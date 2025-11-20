@@ -30,7 +30,7 @@ const ApplicationAPI = {
   },
 
   async apply(data) {
-    const response = await axios.post(`${API_URL}/api/applications`, data);
+    const response = await axios.post(`${API_URL}/api/application`, data);
     return response.data;
   },
 

@@ -10,16 +10,15 @@ export const fetchAddress = createAsyncThunk(
           return await AddressAPI.regions();
         case "provinces":
           return await AddressAPI.provinces(address.value);
-        case "cities": //isahon nalang, gikapoy kog manual
-          const cities = await AddressAPI.cities(address.value);
-          const municipalities = await AddressAPI.municipalities(address.value);
-
-          return [...cities, ...municipalities];
+        case "cities":
           // return await AddressAPI.cities(address.value);
+          return await AddressAPI.cities_municipalities(address.value)
         case "municipalities":
           return await AddressAPI.municipalities(address.value);
         case "barangays":
           return await AddressAPI.barangays(address.value);
+        // case "cities-municipalities":
+        //   return await AddressAPI.cities_municipalities(address.value)
       }
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

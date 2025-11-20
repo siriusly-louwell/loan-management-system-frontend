@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import AddtoCartBttn from "../components/buttons/AddtoCartBttn";
 import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import EMICalculator from "./EMICalculator";
-import ColorLabel from "../components/ColorLabel";
 import SmallLabel from "../components/texts/SmallLabel";
 import SmallSpin from "../components/loading components/SmallSpin";
-import ImageSkeleton from "../components/loading components/ImageSkeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnit } from "../services/redux/slices/unitSlice";
 import { UnitEntity } from "../services/entities/Unit";
@@ -13,7 +11,6 @@ import { UnitSpecsEntity } from "../services/entities/UnitSpecs";
 import {
   setPreview,
   toggleModal,
-  toggleSlide,
 } from "../services/redux/slices/uiSlice";
 import BasicCarousel from "../components/cards/BasicCarousel";
 import { SPECS } from "../constants/motorSpecs";
@@ -22,18 +19,15 @@ import ImageModal from "../components/modals/ImageModal";
 export default function ProductInfo({ staff = false }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
-  const { unitId, unitLoading, images } = useSelector((state) => state.unit);
+  const { unitId, unitLoading } = useSelector((state) => state.unit);
   const unit = useSelector(UnitEntity);
   const specs = useSelector(UnitSpecsEntity);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-  useEffect(() => {
-    console.log(selectedColorIndex);
-  });
+
   useEffect(() => {
     dispatch(fetchUnit());
   }, [unitId, dispatch]);
 
-  console.log(unit);
   return (
     <section className="pb-6 bg-gray-100 md:pb-10 md:pt-2 dark:bg-gray-800 antialiased">
       <div className="max-w-screen-xl mt-10 px-4 pb-6 mx-auto 2xl:px-0">

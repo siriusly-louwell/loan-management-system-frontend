@@ -97,7 +97,7 @@ export default function StockModal() {
                   className="grid col-span-2 grid-cols-3 border-t border-gray-400">
                   <p className="mt-5 dark:text-white">Color:</p>
                   <div className="mt-5">
-                    <ColorLabel style={color.color} size={7} />
+                    <ColorLabel style={color.hex_value} size={7} />
                   </div>
                   <QuantityInput max={200} index={i} initial={color.quantity} />
                 </div>

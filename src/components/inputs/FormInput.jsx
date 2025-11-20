@@ -11,7 +11,7 @@ export default function FormInput({
   onchange,
   placeholder,
   loading,
-  require = false,
+  require,
   styling,
   disable = false,
   ...rest

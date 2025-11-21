@@ -67,7 +67,7 @@ export default function BillingStatement() {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Field
               label="Monthly Amortization"
-              value={currency(payments[0].application.amorization)}
+              value={currency(payments[0]?.application?.amorization)}
             />
             <Field label="Interest" value={currency(loan.interest)} />
             <Field label="Monthly Rebate" value={currency(loan.rebate)} />

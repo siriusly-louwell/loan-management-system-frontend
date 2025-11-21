@@ -16,7 +16,8 @@ export default function BillingStatement() {
   // Fetch customer payments (reuses repository filter param 'customer')
   useEffect(() => {
     if (user?.id) dispatch(fetchPayments({ customer: user.id }));
-    if (payments[0]?.application?.id) dispatch(fetchLoan({ id: payments[0].application.id, by: "id" }));
+    if (payments[0]?.application?.id)
+      dispatch(fetchLoan({ id: payments[0].application.id, by: "id" }));
   }, [user?.id, payments[0]?.application?.id, dispatch]);
 
   // Derived totals
@@ -38,8 +39,6 @@ export default function BillingStatement() {
   function currency(num) {
     return `₱${parseFloat(num || 0).toLocaleString()}`;
   }
-
-  console.log(payments);
 
   return (
     <section className="w-full h-full py-10 print:py-0">
@@ -73,9 +72,22 @@ export default function BillingStatement() {
               label="Monthly Amortization"
               value={currency(loan.amortization)}
             />
-            <Field label="Interest" value={loan.id && currency(loan.transactions[0].motorcycle.interest)} />
-            <Field label="Monthly Rebate" value={loan.id && currency(loan.transactions[0].motorcycle.rebate)} />
-            <Field label="Payment Due Date" value={loan.due_date || "2025-11-21"} />
+            <Field
+              label="Interest"
+              value={
+                loan.id && currency(loan.transactions[0].motorcycle.interest)
+              }
+            />
+            <Field
+              label="Monthly Rebate"
+              value={
+                loan.id && currency(loan.transactions[0].motorcycle.rebate)
+              }
+            />
+            <Field
+              label="Payment Due Date"
+              value={loan.due_date || "2025-11-21"}
+            />
           </div>
         </Section>
 

@@ -88,10 +88,11 @@ export default function Eligibility() {
             </CategoryCard>
 
             <CategoryCard
-              title="Existing loans/debts"
+              title="Existing Loans/Debts"
               status={stability.debt}
               result={loanResult.debt}>
               <DataRow label="Monthly Rent" value={loan.getRent} />
+              <DataRow label="Other existing loans" value={0} />
               <DataRow label="Amortization" value={loan.getAmortization} />
               <DataRow
                 label="Total EMI"

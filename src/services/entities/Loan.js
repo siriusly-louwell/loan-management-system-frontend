@@ -8,6 +8,7 @@ import {
 export class Loan {
   constructor({
     id,
+    user_id,
     record_id,
     first_name,
     last_name,
@@ -27,6 +28,7 @@ export class Loan {
   }) {
     this.id = id;
     this.record_id = record_id;
+    this.user_id = user_id;
     this.first_name = first_name;
     this.last_name = last_name;
     this.transactions = transactions;

@@ -19,11 +19,16 @@ import { UserEntity } from "../../services/entities/User";
 import CategoryCard from "../cards/CategoryCard";
 import DataRow from "../tables/DataRow";
 import AppliedFormMini from "../AppliedFormMini";
+import { fetchCredits } from "../../services/redux/slices/creditSlice";
+import CreditHistorySkeleton from "../loading components/CreditHistorySkeleton";
+import EmptySearch from "../empty states/EmptySearch";
+import CreditsRow from "../tables/CreditsRow";
 
 export default function Eligibility() {
   const dispatch = useDispatch();
   const { role } = useSelector(UserEntity);
   const loan = useSelector(LoanEntity);
+  const { credits, creditsLoading } = useSelector((state) => state.credit);
   const [isVisible, setIsVisible] = useState(false);
   const { stability, loanDecision, loanResult } = useSelector(
     (state) => state.application
@@ -32,13 +37,19 @@ export default function Eligibility() {
 
   useEffect(() => {
     if (loan.id) {
+      if (loan.user_id)
+        dispatch(fetchCredits({ mode: "page", customer: loan.user_id }));
       dispatch(
         calculateStability({ dti: loan.dti, ndi: loan.ndi, emi: loan.emi })
       );
       dispatch(assessDecision());
       dispatch(assessResult());
     }
-  }, [modals.eligibility]);
+  }, [modals.eligibility, loan.id]);
+
+  const fullName = (first, last) => {
+    return first ? `${first} ${last}` : "";
+  };
 
   function decideAction() {
     dispatch(toggleModal({ name: "eligibility", value: modals.eligibility }));
@@ -92,7 +103,6 @@ export default function Eligibility() {
               status={stability.debt}
               result={loanResult.debt}>
               <DataRow label="Monthly Rent" value={loan.getRent} />
-              <DataRow label="Other existing loans" value={0} />
               <DataRow label="Amortization" value={loan.getAmortization} />
               <DataRow
                 label="Total EMI"
@@ -123,7 +133,38 @@ export default function Eligibility() {
             </CategoryCard>
           </div>
 
-          <div className="mt-6 bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
+            Credit History
+          </h2>
+          <div className="divide-y divide-gray-200 dark:divide-gray-700 mb-5">
+            {creditsLoading ? (
+              <CreditHistorySkeleton num={5} />
+            ) : credits.length === 0 ? (
+              <EmptySearch
+                label="No such data has been found"
+                context="It's quite empty in here"
+              />
+            ) : (
+              credits.map((credit, i) => (
+                <CreditsRow
+                  key={i}
+                  data={{
+                    date: credit.due_date,
+                    id: credit.application.record_id,
+                    name: fullName(
+                      credit.user?.first_name,
+                      credit.user?.last_name
+                    ),
+                    amount: credit.amount,
+                    status: credit.status,
+                    paid_date: credit.paid_date,
+                  }}
+                />
+              ))
+            )}
+          </div>
+
+          <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Final Assessment
             </h3>

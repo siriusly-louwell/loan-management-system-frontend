@@ -126,7 +126,7 @@ export default function Cashier() {
                         key={trans.id}
                         downpayment={trans.downpayment}
                         color={trans.color}
-                        due_date={loan.schedules[0].due_date}
+                        due_date={loan.schedules[0]?.due_date}
                         price={trans.motorcycle.price}
                         units={trans.quantity}
                         amortization={loan.amortization}
@@ -215,10 +215,14 @@ export default function Cashier() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-bold text-gray-900 dark:text-white">
-                    Amount Paid
+                    Amount Paid {payment.amount === "N/A" && "(Down Payment)"}
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : payment.amount}
+                    {emptyObj
+                      ? "- - -"
+                      : payment.amount !== "N/A"
+                      ? payment.amount
+                      : loan.transactions[0].downpayment}
                   </dd>
                 </dl>
 

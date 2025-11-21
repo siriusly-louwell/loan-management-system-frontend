@@ -36,8 +36,8 @@ export const APPLICATION_STATUS = {
   evaluated: "Evaluated",
   approved: "Approved",
   declined: "Declined",
-  claimed: "Claimed",
-  not_claimed: "To Claim",
+  // claimed: "Claimed",
+  // not_claimed: "To Claim",
   incomplete: "Incomplete",
   paid: "Paid",
   canceled: "Canceled",
@@ -60,14 +60,14 @@ export const STATUS_TEXT = {
     label: "Approved",
     description: "The application has passed the investigation",
   },
-  claimed: {
-    label: "Claimed",
-    description: "The unit has been claimed by the customer",
-  },
-  not_claimed: {
-    label: "To Claim",
-    description: "The customer has not claimed the unit yet",
-  },
+  // claimed: {
+  //   label: "Claimed",
+  //   description: "The unit has been claimed by the customer",
+  // },
+  // not_claimed: {
+  //   label: "To Claim",
+  //   description: "The customer has not claimed the unit yet",
+  // },
 };
 
 export const STATUS_GROUPS = {
@@ -79,10 +79,10 @@ export const STATUS_GROUPS = {
     positive: "approved",
     negative: "declined",
   },
-  claim: {
-    positive: "claimed",
-    negative: "not_claimed",
-  },
+  // claim: {
+  //   positive: "claimed",
+  //   negative: "not_claimed",
+  // },
 };
 
 // ? This object defines the stage's status behavior, base on the children status properties
@@ -94,10 +94,9 @@ export const STATUS_MAP = {
     evaluated: STATUS_STYLES.done,
     approved: STATUS_STYLES.done,
     declined: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.done,
-    not_claimed: STATUS_STYLES.done,
+    // claimed: STATUS_STYLES.done,
+    // not_claimed: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.done,
     pending: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     default: STATUS_STYLES.done,
@@ -109,8 +108,8 @@ export const STATUS_MAP = {
     evaluated: STATUS_STYLES.done,
     approved: STATUS_STYLES.done,
     declined: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.done,
-    not_claimed: STATUS_STYLES.done,
+    // claimed: STATUS_STYLES.done,
+    // not_claimed: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     pending: STATUS_STYLES.current,
@@ -121,8 +120,8 @@ export const STATUS_MAP = {
     evaluated: STATUS_STYLES.done,
     approved: STATUS_STYLES.done,
     declined: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.done,
-    not_claimed: STATUS_STYLES.done,
+    // claimed: STATUS_STYLES.done,
+    // not_claimed: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     accepted: STATUS_STYLES.current,
@@ -132,28 +131,27 @@ export const STATUS_MAP = {
   approve: {
     declined: STATUS_STYLES.deny,
     approved: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.done,
-    not_claimed: STATUS_STYLES.done,
+    // claimed: STATUS_STYLES.done,
+    // not_claimed: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     evaluated: STATUS_STYLES.current,
     default: STATUS_STYLES.pend,
   },
   // ? claim stage
-  claim: {
-    claimed: STATUS_STYLES.done,
-    not_claimed: STATUS_STYLES.deny,
-    incomplete: STATUS_STYLES.done,
-    paid: STATUS_STYLES.done,
-    approved: STATUS_STYLES.current,
-    default: STATUS_STYLES.pend,
-  },
+  // claim: {
+  //   claimed: STATUS_STYLES.done,
+  //   not_claimed: STATUS_STYLES.deny,
+  //   incomplete: STATUS_STYLES.done,
+  //   paid: STATUS_STYLES.done,
+  //   approved: STATUS_STYLES.current,
+  //   default: STATUS_STYLES.pend,
+  // },
   // ? payment stage
   incomplete: {
     incomplete: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
-    claimed: STATUS_STYLES.current,
+    // claimed: STATUS_STYLES.current,
     default: STATUS_STYLES.pend,
   },
   // ? paid stage

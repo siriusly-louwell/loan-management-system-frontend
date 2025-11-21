@@ -4,6 +4,7 @@ import { fetchPayments } from "../services/redux/slices/paymentSlice";
 import { PaymentEntities } from "../services/entities/Payment";
 import { LoanEntity } from "../services/entities/Loan";
 import { UserEntity } from "../services/entities/User";
+import { fetchLoan } from "../services/redux/slices/applicationSlice";
 
 export default function BillingStatement() {
   const dispatch = useDispatch();
@@ -15,7 +16,8 @@ export default function BillingStatement() {
   // Fetch customer payments (reuses repository filter param 'customer')
   useEffect(() => {
     if (user?.id) dispatch(fetchPayments({ customer: user.id }));
-  }, [user?.id, dispatch]);
+    if (payments[0]?.application?.id) dispatch(fetchLoan({ id: payments[0].application.id, by: "id" }));
+  }, [user?.id, payments[0]?.application?.id, dispatch]);
 
   // Derived totals
   const totals = useMemo(() => {
@@ -36,6 +38,8 @@ export default function BillingStatement() {
   function currency(num) {
     return `₱${parseFloat(num || 0).toLocaleString()}`;
   }
+
+  console.log(payments);
 
   return (
     <section className="w-full h-full py-10 print:py-0">
@@ -67,11 +71,11 @@ export default function BillingStatement() {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Field
               label="Monthly Amortization"
-              value={currency(payments[0]?.application?.amorization)}
+              value={currency(loan.amortization)}
             />
-            <Field label="Interest" value={currency(loan.interest)} />
-            <Field label="Monthly Rebate" value={currency(loan.rebate)} />
-            <Field label="Payment Due Date" value={loan.due_date || "—"} />
+            <Field label="Interest" value={loan.id && currency(loan.transactions[0].motorcycle.interest)} />
+            <Field label="Monthly Rebate" value={loan.id && currency(loan.transactions[0].motorcycle.rebate)} />
+            <Field label="Payment Due Date" value={loan.due_date || "2025-11-21"} />
           </div>
         </Section>
 

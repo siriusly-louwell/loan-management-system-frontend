@@ -36,6 +36,8 @@ export const APPLICATION_STATUS = {
   evaluated: "Evaulated",
   approved: "Approved",
   declined: "Declined",
+  claimed: "Claimed",
+  incomplete: "Initial Payment",
   paid: "Paid",
   canceled: "Canceled",
 };
@@ -57,6 +59,14 @@ export const STATUS_TEXT = {
     label: "Approved",
     description: "The application has passed the investigation",
   },
+  not_claimed: {
+    label: "Not Claimed",
+    description: "The unit has not been claimed yet.",
+  },
+  claimed: {
+    label: "Claimed",
+    description: "The customer has claimed the unit.",
+  },
 };
 
 export const STATUS_GROUPS = {
@@ -68,6 +78,10 @@ export const STATUS_GROUPS = {
     positive: "approved",
     negative: "declined",
   },
+  receiving: {
+    positive: "claimed",
+    negative: "not_claimed",
+  },
 };
 
 export const STATUS_MAP = {
@@ -78,6 +92,7 @@ export const STATUS_MAP = {
     approved: STATUS_STYLES.done,
     declined: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
+    claimed: STATUS_STYLES.done,
     pending: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     default: STATUS_STYLES.done,
@@ -88,6 +103,7 @@ export const STATUS_MAP = {
     evaluated: STATUS_STYLES.done,
     approved: STATUS_STYLES.done,
     declined: STATUS_STYLES.done,
+    claimed: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     pending: STATUS_STYLES.current,
@@ -97,6 +113,7 @@ export const STATUS_MAP = {
     evaluated: STATUS_STYLES.done,
     approved: STATUS_STYLES.done,
     declined: STATUS_STYLES.done,
+    claimed: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     accepted: STATUS_STYLES.current,
@@ -106,14 +123,22 @@ export const STATUS_MAP = {
     declined: STATUS_STYLES.deny,
     approved: STATUS_STYLES.done,
     incomplete: STATUS_STYLES.done,
+    claimed: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
     evaluated: STATUS_STYLES.current,
+    default: STATUS_STYLES.pend,
+  },
+  claimed: {
+    claimed: STATUS_STYLES.done,
+    incomplete: STATUS_STYLES.done,
+    paid: STATUS_STYLES.done,
+    approved: STATUS_STYLES.current,
     default: STATUS_STYLES.pend,
   },
   incomplete: {
     incomplete: STATUS_STYLES.done,
     paid: STATUS_STYLES.done,
-    approved: STATUS_STYLES.current,
+    claimed: STATUS_STYLES.current,
     default: STATUS_STYLES.pend,
   },
   paid: {

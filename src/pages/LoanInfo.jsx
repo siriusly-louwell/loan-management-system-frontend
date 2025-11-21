@@ -128,7 +128,6 @@ export default function LoanInfo() {
   return (
     <section className="bg-gray-200 py-8 antialiased dark:bg-gray-900 md:py-16">
       <div className="mx-10 my-2">
-        {" "}
         <BttnwithIcon click={() => redirectByRole(user.role)}>
           <ArrowBigLeftDash />
         </BttnwithIcon>

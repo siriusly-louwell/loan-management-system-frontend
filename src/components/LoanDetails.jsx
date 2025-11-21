@@ -169,6 +169,12 @@ export default function LoanDetails({ setApproval }) {
                 extra={loan.status === "declined" && <SubtleIconBttn />}
               />
               <TrackList
+                label={loan.statusLabel("approval", 0)}
+                sublabel={loan.statusLabel("approval", 1)}
+                status={loan.trackStatus("approve")}
+                extra={loan.status === "claimed" && <SubtleIconBttn />}
+              />
+              <TrackList
                 label="Initial Payment"
                 sublabel="The loan application has been successful"
                 status={loan.trackStatus("incomplete")}

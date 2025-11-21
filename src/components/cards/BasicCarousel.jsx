@@ -22,7 +22,8 @@ export default function BasicCarousel({ children, length, loop = false }) {
         className={`flex transition-transform duration-500 ease-out ${
           !loop ? "h-full" : ""
         }`}
-        style={{ transform: `translateX(-${carouselSlide * 100}%)` }}>
+        style={{ transform: `translateX(-${carouselSlide * 100}%)` }}
+      >
         {React.Children.map(children, (child) => (
           <div className="min-w-full h-full flex justify-center items-center overflow-hidden">
             {child}
@@ -34,7 +35,8 @@ export default function BasicCarousel({ children, length, loop = false }) {
         onClick={() => {
           dispatch(toggleSlide({ type: "prev", limit: length }));
         }}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full hover:bg-gray-600 active:bg-rose-600">
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full hover:bg-gray-600 active:bg-rose-600"
+      >
         <span className="text-2xl">
           <svg
             className="shrink-0 size-5"
@@ -46,7 +48,8 @@ export default function BasicCarousel({ children, length, loop = false }) {
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
-            strokeLinejoin="round">
+            strokeLinejoin="round"
+          >
             <path d="m15 18-6-6 6-6"></path>
           </svg>
         </span>
@@ -55,7 +58,8 @@ export default function BasicCarousel({ children, length, loop = false }) {
         onClick={() => {
           dispatch(toggleSlide({ type: "next", limit: length }));
         }}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full hover:bg-gray-600 active:bg-rose-600">
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 opacity-60 text-white p-2 rounded-full hover:bg-gray-600 active:bg-rose-600"
+      >
         <span className="text-2xl">
           <svg
             className="shrink-0 size-5"
@@ -67,7 +71,8 @@ export default function BasicCarousel({ children, length, loop = false }) {
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
-            strokeLinejoin="round">
+            strokeLinejoin="round"
+          >
             <path d="m9 18 6-6-6-6"></path>
           </svg>
         </span>

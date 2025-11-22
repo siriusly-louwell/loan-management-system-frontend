@@ -37,7 +37,7 @@ const AddressAPI = {
   //   return response.data;
   // },
 
-  async barangays(code =1102318000) {//
+  async barangays(code =1102318000) {// 1102318000//tomas ? meaning baranggays in sto tomas (cities-municipalities code)
     const response = await axios.get(`${PSG_URL}/v2/cities-municipalities/${code}/barangays`);
     return response.data.data;
   },
@@ -53,9 +53,10 @@ const AddressAPI = {
     return response.data;
   },
 
-  async city(code) {
-    const response = await axios.get(`${PSG_URL}/cities/${code}`);
-    return response.data;
+  async city(code) { //cities-municipalities na dapat ni. kapoy change
+    // const response = await axios.get(`${PSG_URL}/cities/${code}`);
+    const response = await axios.get(`${PSG_URL}/v2/cities-municipalities/${code}`);
+    return response.data.data;
   },
 
   async municipality(code) {

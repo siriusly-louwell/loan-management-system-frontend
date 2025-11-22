@@ -9,11 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
 import { LoanEntity } from "../../services/entities/Loan";
 import { useEffect } from "react";
-import {
-  assessDecision,
-  assessResult,
-  calculateStability,
-} from "../../services/redux/slices/applicationSlice";
 import { CheckCircle2, ClipboardCheck } from "lucide-react";
 import { UserEntity } from "../../services/entities/User";
 import CategoryCard from "../cards/CategoryCard";
@@ -21,8 +16,13 @@ import DataRow from "../tables/DataRow";
 import AppliedFormMini from "../AppliedFormMini";
 import { fetchCredits } from "../../services/redux/slices/creditSlice";
 import CreditHistorySkeleton from "../loading components/CreditHistorySkeleton";
-import EmptySearch from "../empty states/EmptySearch";
 import CreditsRow from "../tables/CreditsRow";
+import EmptyRow from "../empty states/EmptyRow";
+import {
+  assessDecision,
+  assessResult,
+  calculateStability,
+} from "../../services/redux/slices/applicationSlice";
 
 export default function Eligibility() {
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ export default function Eligibility() {
   return (
     <PopAnimate
       modalName={modals.eligibility}
-      classStyle="w-full max-w-5xl mt-4 max-h-[90vh] overflow-y-auto bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
+      classStyle="w-full max-w-5xl mt-4 mt-80 overflow-y-auto bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
       <div className="sticky top-0 z-20 px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Loan Eligibility Assessment
@@ -99,7 +99,7 @@ export default function Eligibility() {
             </CategoryCard>
 
             <CategoryCard
-              title="Existing Loans/Debts (based on Credit History)"
+              title="Existing Loans/Debts"
               status={stability.debt}
               result={loanResult.debt}>
               <DataRow label="Monthly Rent" value={loan.getRent} />
@@ -136,14 +136,11 @@ export default function Eligibility() {
           <h2 className="text-xl font-bold text-gray-800 dark:text-white">
             Credit History
           </h2>
-          <div className="divide-y divide-gray-200 dark:divide-gray-700 mb-5">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700 pb-8 border-b border-gray-500">
             {creditsLoading ? (
               <CreditHistorySkeleton num={5} />
             ) : credits.length === 0 ? (
-              <EmptySearch
-                label="No such data has been found"
-                context="It's quite empty in here"
-              />
+              <EmptyRow label="No payments made" />
             ) : (
               credits.map((credit, i) => (
                 <CreditsRow
@@ -155,7 +152,7 @@ export default function Eligibility() {
                       credit.user?.first_name,
                       credit.user?.last_name
                     ),
-                    amount: credit.amount,
+                    amount: `₱${parseFloat(credit.amount).toLocaleString()}`,
                     status: credit.status,
                     paid_date: credit.paid_date,
                   }}

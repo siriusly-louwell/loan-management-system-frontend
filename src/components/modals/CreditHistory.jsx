@@ -53,7 +53,7 @@ export default function CreditHistory() {
                     credit.user?.first_name,
                     credit.user?.last_name
                   ),
-                  amount: credit.amount,
+                  amount: `₱${parseFloat(credit.amount).toLocaleString()}`,
                   status: credit.status,
                   paid_date: credit.paid_date,
                 }}

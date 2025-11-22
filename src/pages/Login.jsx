@@ -34,15 +34,15 @@ export default function Login() {
       const response = await dispatch(loginUser(loginData)).unwrap();
 
       dispatch(setLoading({ isActive: false }));
+      dispatch(setAlert({ message: response.message, type: response.type }));
       if (response.type === "success") {
         navigate(`/${response.user.role}/app`);
-        
+
         if (loginData.password.includes("temp_"))
           dispatch(
             toggleModal({ name: "changePass", value: modals?.changePass })
           );
       }
-      dispatch(setAlert({ message: response.message, type: response.type }));
     } catch (error) {
       console.error(error.response);
 

@@ -12,10 +12,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, thunkAPI) => {
     try {
-      const userCred =  await loginUseCase(credentials);
-      localStorage.setItem("user_id", userCred.user.id)//// for temp solution
-      // console.log(userCred)
-      return userCred
+      return await loginUseCase(credentials);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

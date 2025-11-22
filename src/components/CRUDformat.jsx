@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CustomBttn from "../components/buttons/CustomBttn";
 import Plus from "../assets/icons/Plus";
 import DropdownBttn from "../components/buttons/DropdownBttn";
@@ -10,6 +10,8 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import PageNav from "./PageNav";
 import BttnwithIcon from "./buttons/BttnwithIcon";
 import { ArrowBigLeftDash } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function CRUDformat({
   children,
@@ -27,6 +29,24 @@ export default function CRUDformat({
 }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);
+  const location = useLocation();
+  const [showExportButton, setShowExportButton] = useState(false);
+
+  // if (navigate === 'accounts') {
+  //   setShowExportButton(true);
+  // }
+  // else{
+  //   setShowExportButton(false);
+  // }
+  useEffect(() => {
+    if (location.pathname === '/admin/accounts') {
+      setShowExportButton(false);
+    } 
+    // Add else-if if there are more routes na need i exclude ang buttons
+    else {
+      setShowExportButton(true);
+    }
+  }, [location.pathname])
 
   return (
     <>
@@ -95,22 +115,29 @@ export default function CRUDformat({
                 </DropdownBttn>
 
                 {/* Added a button for printing a PDF/CSV */}
-                <CustomBttn 
-                  text="Print PDF"
-                  classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                    onclick={() => {
-                      printMode("pdf");
-                      showOptionsModal();
-                    }}
-                />
-                <CustomBttn 
-                  text="Print CSV"
-                  classname="flex items-center justify-center text-white bg-green-600 hover:bg-green-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                    onclick={() => {
-                      printMode("csv");
-                      showOptionsModal();
-                    }}
-                />
+                {
+                  showExportButton && (
+                    <div className="flex gap-2">
+                      <CustomBttn 
+                        text="Print PDF"
+                        classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                          onclick={() => {
+                            printMode("pdf");
+                            showOptionsModal();
+                          }}
+                      />
+                      <CustomBttn 
+                        text="Print CSV"
+                        classname="flex items-center justify-center text-white bg-green-600 hover:bg-green-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                          onclick={() => {
+                            printMode("csv");
+                            showOptionsModal();
+                          }}
+                      />
+                    </div>
+                  )
+                }
+
                 <div className="flex items-center space-x-3 w-full md:w-auto"></div>
               </div>
             </div>

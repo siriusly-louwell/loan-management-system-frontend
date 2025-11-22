@@ -28,6 +28,7 @@ export default function ComakerInfo() {
   const spCondition =
     formData.address.co_sp_region !== undefined &&
     formData.address.co_sp_region !== "__EMPTY__";
+
   useEffect(() => {
     dispatch(setType("comaker"));
   }, []);

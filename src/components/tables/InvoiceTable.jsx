@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LogList from "../../components/LogList";
 import LogRow from "../../components/tables/LogRow";
 import PageNav from "../../components/PageNav";
@@ -17,6 +17,12 @@ import { UserEntity } from "../../services/entities/User";
 import ApplicationFilter from "../../components/filters/ApplicationFilter";
 import InfoButton from "./../buttons/InfoButton";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
+import { useReactToPrint } from "react-to-print";
+import LoansPrint from "../../components/LoansPrint";
+// Replaced dual export buttons with single modal-driven export
+import { downloadCSV } from "../../utils/csv";
+import ShowOptionModal from "../../components/modals/showOptionModal";
+import ExportSelectModal from "../../components/modals/ExportSelectModal";
 
 export default function InvoiceTable({
   headText,
@@ -34,6 +40,7 @@ export default function InvoiceTable({
   const { applications, appsLoading, pagination } = useSelector(
     (state) => state.application
   );
+  const printRef = useRef();
   const statuses =
     (isAdmin && !isDashboard) || (role === "ci" && bttnText !== "Evaluate")
       ? [
@@ -55,8 +62,8 @@ export default function InvoiceTable({
   }, []);
 
   useEffect(() => {
-    console.log(applications)
-  })
+    console.log(applications);
+  });
 
   useEffect(() => {
     dispatch(
@@ -74,6 +81,37 @@ export default function InvoiceTable({
   }, [dispatch, navPage.page, navPage.type, max, min, search, role, bttnText]);
 
   const setPage = (obj) => setNavPage({ ...navPage, ...obj });
+
+  const [showOption, setShowOption] = useState(false); // timeframe selection
+  const [showExportSelect, setShowExportSelect] = useState(false); // choose Print or CSV
+  const [printType, setPrintType] = useState("all");
+
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: `${headText || "Loans"} Report - ${printType}`,
+  });
+
+  const handleSelectOption = (type) => {
+    setPrintType(type);
+    setShowOption(false);
+    setTimeout(() => handlePrint(), 100);
+  };
+
+  const handleCsv = () => {
+    const columns = [
+      { header: "Record ID", accessor: "record_id" },
+      { header: "Name", accessor: "fullName" },
+      { header: "Applied At", accessor: "applied_at" },
+      { header: "Status", accessor: (row) => row?.status?.text || "" },
+    ];
+    downloadCSV({ rows: applications, columns, filename: "loans.csv" });
+    setShowExportSelect(false);
+  };
+
+  const openPrintFlow = () => {
+    setShowExportSelect(false);
+    setShowOption(true);
+  };
 
   return (
     <div className="mx-auto max-w-screen-x 2xl:px-0">
@@ -94,6 +132,13 @@ export default function InvoiceTable({
                   )
                 }
               />
+              <button
+                type="button"
+                className="inline-flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2"
+                onClick={() => setShowExportSelect(true)}
+              >
+                Export
+              </button>
               <SearchInput
                 id="invoice_search"
                 name="log_search"
@@ -139,6 +184,27 @@ export default function InvoiceTable({
           pagination={pagination}
           changePage={setPage}
           itemName="applications"
+        />
+
+        {/* Hidden printable component */}
+        <div className="hidden">
+          <LoansPrint
+            ref={printRef}
+            loans={applications}
+            title={headText}
+            filterType={printType}
+          />
+        </div>
+        <ShowOptionModal
+          open={showOption}
+          onClose={() => setShowOption(false)}
+          onSelect={handleSelectOption}
+        />
+        <ExportSelectModal
+          open={showExportSelect}
+          onClose={() => setShowExportSelect(false)}
+          onPrint={openPrintFlow}
+          onCsv={handleCsv}
         />
       </div>
     </div>

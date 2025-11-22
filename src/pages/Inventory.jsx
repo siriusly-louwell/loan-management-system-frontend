@@ -8,11 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUnits } from "../services/redux/slices/unitSlice";
 import useDebounce from "../hooks/useDebounce";
 import UnitFilter from "../components/filters/UnitFilter";
-import ShowOptionModal from "../components/modals/showOptionModal";
 import { useReactToPrint } from "react-to-print";
-import InventoryPrint from "../components/InventoryPrint";
 import { CSVLink } from "react-csv";
 import { UnitEntities } from "../services/entities/Unit";
+
+// Added showOptionModal for showing different time options
+// and InventoryPrint for PDF
+// Importing filterUnitSwitch for reusable na component
+import ShowOptionModal from "../components/modals/showOptionModal";
+import InventoryPrint from "../components/InventoryPrint";
+import { filterUnitSwitch, generateCSV, handleSelectOptionHelper, totalInventoryCost } from "../utils/exportHelper";
+
 
 export default function Inventory() {
   const dispatch = useDispatch();
@@ -28,20 +34,7 @@ export default function Inventory() {
   const [printMode, setPrintMode] = useState("pdf");
 
   // FILTER BASED ON PRINT TYPE for CSV Export
-  const filteredUnits = (() => {
-    switch (printType) {
-      case "daily":
-        return units.filter(u => u.isCreatedToday());
-      case "weekly":
-        return units.filter(u => u.isCreatedThisWeek());
-      case "monthly":
-        return units.filter(u => u.isCreatedThisMonth());
-      case "yearly":
-        return units.filter(u => u.isCreatedThisYear());
-      default:
-        return units;
-    }
-  })();
+  const filteredUnits = filterUnitSwitch(printType, units);
 
   // Use Ref
   const printRef = useRef();
@@ -52,39 +45,15 @@ export default function Inventory() {
     documentTitle: `Inventory Report - ${printType}`,
   });
 
-  const generateCSV = (filteredUnits) => {
-    const rows = filteredUnits.flatMap(unit =>
-      unit.colors.map(color => ({
-        model: unit.name,
-        brand: unit.brand,
-        color: color.hex_value,
-        quantity: color.quantity,
-        price: unit.price,
-        total: unit.price * color.quantity
-      }))
-    );
-
-    return rows;
-  };
-
   const handleSelectOption = (type) => {
-    setPrintType(type);
-    setShowOption(false);
-
-    // wait for component to update then print
-    if (printMode === "pdf") {
-      // wait for component to render then print
-      setTimeout(() => handlePrint(), 100);
-    }
-
-    // CSV MODE
-    if (printMode === "csv") {
-      setTimeout(() => {
-        if (csvRef.current) {
-          csvRef.current.link.click();
-        }
-      }, 100);
-    }
+    handleSelectOptionHelper({
+      type,
+      setPrintType,
+      setShowOption,
+      printMode,
+      handlePrint,
+      csvRef
+    });
   };
 
   useEffect(() => {
@@ -111,6 +80,7 @@ export default function Inventory() {
       modalName="createUnit"
       addModal={<CreateProduct />}
       // Added showOptionsModal to show options of printing
+      // Added printMode para maka differentiate if pdf ba or csv
       showOptionsModal={() => setShowOption(true)}
       printMode={setPrintMode}
       filterComponent={<UnitFilter setPage={setPage} />}>
@@ -130,24 +100,24 @@ export default function Inventory() {
       <div className="hidden">
         <InventoryPrint ref={printRef} filterType={printType} />
       </div>
-      <div className="hidden">
-        <CSVLink
-          data={generateCSV(filteredUnits)}
-          headers={[
-            { label: "Unit Model", key: "model" },
-            { label: "Brand", key: "brand" },
-            { label: "Color", key: "color" },
-            { label: "Quantity", key: "quantity" },
-            { label: "Unit Cost", key: "price" },
-            { label: "Total Cost", key: "total" }
-          ]}
-          filename={`inventory_${printType}.csv`}
-          className="hidden"
-          ref={csvRef}
-        >
-          Download CSV
-        </CSVLink>
-      </div>
+      {/* Kani nga component, built-in ni siya sa react-csv */}
+      <CSVLink
+        data={generateCSV(filteredUnits)}
+        headers={[
+          { label: "Unit Model", key: "model" },
+          { label: "Brand", key: "brand" },
+          { label: "Color", key: "color" },
+          { label: "Quantity", key: "quantity" },
+          { label: "Unit Cost", key: "price" },
+          { label: "Total Cost", key: "total" },
+          { label: "Total Inventory Cost", key: "total_inventory_cost"}
+        ]}
+        filename={`inventory_${printType}.csv`}
+        className="hidden"
+        ref={csvRef}
+      >
+        Download CSV
+      </CSVLink>
 
     </CRUDformat>
   );

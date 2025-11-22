@@ -23,7 +23,7 @@ export default function CRUDformat({
   itemName,
   url = "",
   showOptionsModal,
-  printMode
+  printMode,
 }) {
   const dispatch = useDispatch();
   const { modals } = useSelector((state) => state.ui);

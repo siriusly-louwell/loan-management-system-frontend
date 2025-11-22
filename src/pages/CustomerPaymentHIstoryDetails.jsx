@@ -8,16 +8,18 @@ import { ArrowLeft } from "lucide-react";
 import { saveLoan } from "../services/redux/slices/applicationSlice";
 import { savePayment } from "../services/redux/slices/paymentSlice";
 import { PaymentEntities } from "../services/entities/Payment";
+import { UserEntity } from "../services/entities/User";
+import EmptySearch from "../components/empty states/EmptySearch";
 
-const CustomerPaymentHIstoryDetails = () => {
+export default function CustomerPaymentHIstoryDetails() {
   const { userId } = useParams();
+  const { fullName } = useSelector(UserEntity);
   const dispatch = useDispatch();
   const payments = useSelector(PaymentEntities);
   const { paymentsLoading } = useSelector((state) => state.payment);
 
   useEffect(() => {
-    const user_payments = fetchUserPayments({ userId });
-    dispatch(user_payments);
+    dispatch(fetchUserPayments({ userId }));
   }, [userId, dispatch]);
 
   const navigate = useNavigate();
@@ -31,17 +33,17 @@ const CustomerPaymentHIstoryDetails = () => {
             onClick={() => navigate(-1)}
           />
           <h2 className="text-xl font-bold text-gray-800 dark:text-white ">
-            Payment History for User {userId}
+            Payment History of {fullName}
           </h2>
         </div>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {paymentsLoading ? (
             <PaymentRowSkeleton num={5} />
-          ) : !payments || !payments || payments.length === 0 ? (
-            <div className="empty-search">
-              <h2>No payments found</h2>
-              <p>This user has no payment history.</p>
-            </div>
+          ) : !payments || payments.length === 0 ? (
+            <EmptySearch
+              label="No payments found"
+              context="This user has no payment history"
+            />
           ) : (
             payments.map((pay, i) => (
               <InvoiceRow
@@ -51,10 +53,7 @@ const CustomerPaymentHIstoryDetails = () => {
                   id: pay.application?.record_id,
                   amount: pay.amount,
                   balance: pay.currentBalance,
-                  status: [
-                    pay.status,
-                    pay.status === "on_time" ? "green" : "red",
-                  ],
+                  status: pay.payStatus,
                   cert_num: pay.cert_num,
                 }}
                 click={() => {
@@ -68,6 +67,4 @@ const CustomerPaymentHIstoryDetails = () => {
       </div>
     </section>
   );
-};
-
-export default CustomerPaymentHIstoryDetails;
+}

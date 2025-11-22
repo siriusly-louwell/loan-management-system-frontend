@@ -5,7 +5,28 @@
     dire pud ang generateCSV for Inventory, idk akoa rasad, murag lahi sad na work ang
     tong sa Loans, pero hopefully maapply pati sa Loans
 */
+import { LoanDateHelper } from "./loanDateHelper";
 
+// Para sa loan
+export function filterLoanSwitch(type, loans) {
+  return loans.filter((loan) => {
+    const loanDate = new LoanDateHelper(loan);
+
+    switch (type) {
+      case "daily":
+        return loanDate.isToday();
+      case "weekly":
+        return loanDate.isThisWeek();
+      case "monthly":
+        return loanDate.isThisMonth();
+      case "yearly":
+        return loanDate.isThisYear();
+      default:
+        return true;
+    }
+  });
+}
+// Para sa inventory
 export function filterUnitSwitch(type, units){
     switch (type) {
       case "daily":

@@ -55,6 +55,10 @@ export default function InvoiceTable({
   }, []);
 
   useEffect(() => {
+    console.log(applications)
+  })
+
+  useEffect(() => {
     dispatch(
       fetchApplicants({
         page: navPage.page,

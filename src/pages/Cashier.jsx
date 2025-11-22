@@ -126,7 +126,7 @@ export default function Cashier() {
                         key={trans.id}
                         downpayment={trans.downpayment}
                         color={trans.color}
-                        due_date={loan.schedules[0].due_date}
+                        due_date={loan.schedules[0]?.due_date}
                         price={trans.motorcycle.price}
                         units={trans.quantity}
                         amortization={loan.amortization}

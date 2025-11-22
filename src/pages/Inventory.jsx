@@ -11,10 +11,13 @@ import UnitFilter from "../components/filters/UnitFilter";
 import ShowOptionModal from "../components/modals/showOptionModal";
 import { useReactToPrint } from "react-to-print";
 import InventoryPrint from "../components/InventoryPrint";
+import { CSVLink } from "react-csv";
+import { UnitEntities } from "../services/entities/Unit";
 
 export default function Inventory() {
   const dispatch = useDispatch();
   const { pagination } = useSelector((state) => state.unit);
+  const units = useSelector(UnitEntities);
   const [navPage, setNavPage] = useState({});
   const search = useDebounce(navPage.search, 500);
   const min = useDebounce(navPage.min, 1000);
@@ -22,21 +25,66 @@ export default function Inventory() {
 
   const [showOption, setShowOption] = useState(false);
   const [printType, setPrintType] = useState(null);
+  const [printMode, setPrintMode] = useState("pdf");
+
+  // FILTER BASED ON PRINT TYPE for CSV Export
+  const filteredUnits = (() => {
+    switch (printType) {
+      case "daily":
+        return units.filter(u => u.isCreatedToday());
+      case "weekly":
+        return units.filter(u => u.isCreatedThisWeek());
+      case "monthly":
+        return units.filter(u => u.isCreatedThisMonth());
+      case "yearly":
+        return units.filter(u => u.isCreatedThisYear());
+      default:
+        return units;
+    }
+  })();
 
   // Use Ref
   const printRef = useRef();
+  const csvRef = useRef();
   // PRINT HANDLER
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: `Inventory Report - ${printType}`,
   });
 
+  const generateCSV = (filteredUnits) => {
+    const rows = filteredUnits.flatMap(unit =>
+      unit.colors.map(color => ({
+        model: unit.name,
+        brand: unit.brand,
+        color: color.hex_value,
+        quantity: color.quantity,
+        price: unit.price,
+        total: unit.price * color.quantity
+      }))
+    );
+
+    return rows;
+  };
+
   const handleSelectOption = (type) => {
     setPrintType(type);
     setShowOption(false);
 
     // wait for component to update then print
-    setTimeout(() => handlePrint(), 100);
+    if (printMode === "pdf") {
+      // wait for component to render then print
+      setTimeout(() => handlePrint(), 100);
+    }
+
+    // CSV MODE
+    if (printMode === "csv") {
+      setTimeout(() => {
+        if (csvRef.current) {
+          csvRef.current.link.click();
+        }
+      }, 100);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +112,7 @@ export default function Inventory() {
       addModal={<CreateProduct />}
       // Added showOptionsModal to show options of printing
       showOptionsModal={() => setShowOption(true)}
+      printMode={setPrintMode}
       filterComponent={<UnitFilter setPage={setPage} />}>
       <InventoryTable />
       
@@ -80,6 +129,24 @@ export default function Inventory() {
       {/* Hidden Print Component */}
       <div className="hidden">
         <InventoryPrint ref={printRef} filterType={printType} />
+      </div>
+      <div className="hidden">
+        <CSVLink
+          data={generateCSV(filteredUnits)}
+          headers={[
+            { label: "Unit Model", key: "model" },
+            { label: "Brand", key: "brand" },
+            { label: "Color", key: "color" },
+            { label: "Quantity", key: "quantity" },
+            { label: "Unit Cost", key: "price" },
+            { label: "Total Cost", key: "total" }
+          ]}
+          filename={`inventory_${printType}.csv`}
+          className="hidden"
+          ref={csvRef}
+        >
+          Download CSV
+        </CSVLink>
       </div>
 
     </CRUDformat>

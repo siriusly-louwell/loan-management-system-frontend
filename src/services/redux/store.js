@@ -9,6 +9,7 @@ import reportReducer from "./slices/reportSlice";
 import paymentReducer from "./slices/paymentSlice";
 import addressReducer from "./slices/addressSlice";
 import creditReducer from "./slices/creditSlice";
+import scheduleReducer from "./slices/scheduleSlice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     payment: paymentReducer,
     address: addressReducer,
     credit: creditReducer,
+    schedule: scheduleReducer
   },
 });
 

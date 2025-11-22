@@ -15,12 +15,17 @@ import { addPayment } from "../services/redux/slices/paymentSlice";
 import { ApplicationEntity } from "../services/entities/Application";
 import Dialog from "./modals/Dialog";
 import { LoanEntity } from "../services/entities/Loan";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
+import { fetchSchedule } from "../services/redux/slices/scheduleSlice";
+import CustomBadge from "./badges/CustomBadge";
+import { PaymentEntity } from "../services/entities/Payment";
 
 export default function AddPayment() {
   const dispatch = useDispatch();
+  const { due_date } = useSelector((state) => state.schedule.schedule);
   const { id, record_id, user_id } = useSelector(ApplicationEntity);
   const { emi, transactions } = useSelector(LoanEntity);
+  const { cert_num } = useSelector(PaymentEntity);
   const { modals } = useSelector((state) => state.ui);
   const now = new Date();
 
@@ -32,6 +37,10 @@ export default function AddPayment() {
     amount_paid: emi,
     total_amount: Number(transactions[0].motorcycle.price),
   });
+
+  useEffect(() => {
+    if (id) dispatch(fetchSchedule({ id: id }));
+  }, [id]);
 
   useEffect(() => {
     setPayment({
@@ -61,6 +70,16 @@ export default function AddPayment() {
       dispatch(
         toggleModal({ name: "confirmPayment", value: modals.confirmPayment })
       );
+  }
+
+  function checkRebate(date) {
+    const today = new Date();
+    const dueDate = new Date(date);
+
+    today.setHours(0, 0, 0, 0);
+    dueDate.setHours(0, 0, 0, 0);
+
+    return today <= dueDate;
   }
 
   async function handleSubmit(event) {
@@ -124,7 +143,7 @@ export default function AddPayment() {
               Res. Certificate number
             </dt>
             <dd className="text-base font-medium text-gray-900 dark:text-white">
-              {payment.cert_num}
+              {cert_num}
             </dd>
           </dl>
 
@@ -133,7 +152,10 @@ export default function AddPayment() {
               Status
             </dt>
             <dd className="text-base font-medium text-gray-900 dark:text-white">
-              On time
+              <CustomBadge
+                text={checkRebate(due_date) ? "On Time" : "Late"}
+                color={checkRebate(due_date) ? "green" : "red"}
+              />
             </dd>
           </dl>
 
@@ -159,7 +181,9 @@ export default function AddPayment() {
             <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
               Amount Due
             </dt>
-            <dd className="text-base font-medium text-red-500">₱{emi}</dd>
+            <dd className="text-base font-medium text-red-500">
+              ₱{parseFloat(emi).toLocaleString()}
+            </dd>
           </dl>
 
           <dl className="gap-4 py-3">
@@ -172,10 +196,20 @@ export default function AddPayment() {
               placeholder="₱10,000"
               onchange={(e) => handleChange(e)}
             />
-            <div className="text-green-500 flex space-x-2 items-center mt-1">
-              <CheckCircle size={15} />
-              <span>No rebate penalties</span>
-            </div>
+            {checkRebate(due_date) ? (
+              <div className="text-green-500 flex space-x-2 items-center mt-1">
+                <CheckCircle size={15} />
+                <span>Rebate value can be applied</span>
+              </div>
+            ) : (
+              <div className="text-red-500 flex space-x-2 items-center mt-1">
+                <XCircle size={15} />
+                <span>
+                  Rebate will not be applied (Customer must pay the exact
+                  monthly payment or more)
+                </span>
+              </div>
+            )}
           </dl>
 
           <dl className="mt-5">

@@ -1,42 +1,36 @@
-import React from "react";
+import React, {useEffect} from "react";
 import RMCI from "../assets/images/RMCI.png";
+import { filterLoanSwitch } from "../utils/exportHelper";
+import { LoanEntity } from "../services/entities/Loan";
+import { useSelector } from "react-redux";
 
 const LoansPrint = React.forwardRef(
   ({ loans = [], title = "Loans Report", filterType = "all" }, ref) => {
+
+    /*
+      Try unta kog connect sa units, pero naglisod ko
+      wala may nagpakita sa JSON data about units gud each loans
+    */
+    // const unitLoaned = useSelector(LoanEntity);
     const dateString = new Date().toISOString().slice(0, 10);
+    const filteredLoans = filterLoanSwitch(filterType, loans);
 
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    // Monday as start of week
-    startOfWeek.setDate(today.getDate() - ((today.getDay() + 6) % 7));
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    // Count for notes, gikapoy nako, kapoy nag modularize ani
+    const totalLengthOfLoans = filteredLoans.length;
+    const pendingCount = filteredLoans.filter(l => l.apply_status === "pending").length;
+    const deniedCount = filteredLoans.filter(l => l.apply_status === "denied").length;
+    const acceptedCount = filteredLoans.filter(l => l.apply_status === "accepted").length;
+    const evaluatedCount = filteredLoans.filter(l => l.apply_status === "evaluated").length;
+    const approvedCount = filteredLoans.filter(l => l.apply_status === "approved").length;
+    const incompleteCount = filteredLoans.filter(l => l.apply_status === "incomplete").length;
 
-    const filteredLoans = loans.filter((loan) => {
-      if (!loan.applied_at) return false;
-      const d = new Date(loan.applied_at);
-      if (isNaN(d.getTime())) return false;
-      switch (filterType) {
-        case "daily":
-          return (
-            d.getFullYear() === today.getFullYear() &&
-            d.getMonth() === today.getMonth() &&
-            d.getDate() === today.getDate()
-          );
-        case "weekly":
-          return d >= startOfWeek && d <= endOfWeek;
-        case "monthly":
-          return (
-            d.getFullYear() === today.getFullYear() &&
-            d.getMonth() === today.getMonth()
-          );
-        case "yearly":
-          return d.getFullYear() === today.getFullYear();
-        default:
-          return true;
-      }
-    });
-
+    useEffect(() => {
+      console.log("type is now:", filterType);
+      console.log("loans:", loans);
+      console.log("filtered loans:", filteredLoans);
+      // console.log("Units:", unitLoaned)
+    }, [filterType, loans]);
+    
     return (
       <div ref={ref} className="p-4 bg-white w-full text-black">
         <div className="mb-5 pb-5 flex flex-col sm:flex-row sm:items-end sm:justify-between border-b border-rose-500">
@@ -55,19 +49,41 @@ const LoansPrint = React.forwardRef(
             <tr className="bg-gray-100">
               <th className="border p-2 text-left">Record ID</th>
               <th className="border p-2 text-left">Name</th>
-              <th className="border p-2 text-left">Applied At</th>
               <th className="border p-2 text-left">Status</th>
+              <th className="border p-2 text-left">Date Filed</th>
             </tr>
           </thead>
           <tbody>
-            {filteredLoans.map((loan) => (
-              <tr key={loan.id}>
+            {filteredLoans.map((loan, index) => (
+              <tr key={index}>
                 <td className="border p-2">{loan.record_id}</td>
                 <td className="border p-2">{loan.fullName}</td>
-                <td className="border p-2">{loan.applied_at}</td>
                 <td className="border p-2">{loan?.status?.text}</td>
+                <td className="border p-2">{loan.applied_at}</td>
               </tr>
             ))}
+
+              <tr>
+                <td>Total Applications: {totalLengthOfLoans}</td>
+              </tr>
+              <tr>
+                <td><strong>Pending:</strong> {pendingCount || '0'}</td>
+              </tr>
+              <tr>
+                <td><strong>Denied:</strong> {deniedCount || '0'}</td>
+              </tr>
+              <tr>
+                <td><strong>Accepted:</strong> {acceptedCount || '0'}</td>
+              </tr>
+              <tr>
+                <td><strong>Evaluated:</strong> {evaluatedCount || '0'}</td>
+              </tr>
+              <tr>
+                <td><strong>Approved:</strong> {approvedCount || '0'}</td>
+              </tr>
+              <tr>
+                <td><strong>Incomplete</strong> {incompleteCount || '0'}</td>
+              </tr>
           </tbody>
         </table>
       </div>

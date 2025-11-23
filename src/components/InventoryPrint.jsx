@@ -2,46 +2,23 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { UnitEntities } from "../services/entities/Unit";
 import RMCI from "../assets/images/RMCI.png";
+import { filterUnitSwitch, totalInventoryCost } from "../utils/exportHelper";
 
 const InventoryPrint = React.forwardRef(({ filterType }, ref) => {
   const units = useSelector(UnitEntities);
-
   const dateString = new Date().toISOString().slice(0, 10);
-
-  // FILTER BASED ON PRINT TYPE
-  const filteredUnits = (() => {
-    switch (filterType) {
-      case "daily":
-        return units.filter(u => u.isCreatedToday());
-      case "weekly":
-        return units.filter(u => u.isCreatedThisWeek());
-      case "monthly":
-        return units.filter(u => u.isCreatedThisMonth());
-      case "yearly":
-        return units.filter(u => u.isCreatedThisYear());
-      default:
-        return units;
-    }
-  })();
-
+  // Added reusable code
+  const filteredUnits = filterUnitSwitch(filterType, units);
   // Total quantity of all units (optional)
   const totalQty = filteredUnits.reduce((acc, unit) => acc + unit.quantity, 0);
-
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-PH', {
       style: 'currency',
       currency: 'PHP',
     }).format(amount);
   };
-
   // Total inventory value (correct calculation)
-  const totalInvValue = filteredUnits.reduce((unitAcc, unit) => {
-    const colorValue = unit.colors.reduce((colorAcc, color) => {
-      return colorAcc + (color.quantity * unit.price);
-    }, 0);
-
-    return unitAcc + colorValue;
-  }, 0);
+  const totalInvValue = totalInventoryCost(filteredUnits);
 
   return (
     <div ref={ref} className="p-4 bg-white w-full">

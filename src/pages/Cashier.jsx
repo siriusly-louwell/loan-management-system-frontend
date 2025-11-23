@@ -26,11 +26,11 @@ export default function Cashier() {
   const loan = useSelector(ApplicationEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
+  const { initialBalance, unitImage, emi, transactions } =
+    useSelector(LoanEntity);
   const { due_date, amount_due } = useSelector(
     (state) => state.schedule.schedule
   );
-  const { initialBalance, unitImage, emi, transactions } =
-    useSelector(LoanEntity);
   const { creditScore, creditLoading } = useSelector((state) => state.credit);
   const search = useDebounce(id.search, 500);
   const emptySearch = search !== "";

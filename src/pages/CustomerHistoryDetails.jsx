@@ -11,7 +11,7 @@ import { PaymentEntities } from "../services/entities/Payment";
 import { UserEntity } from "../services/entities/User";
 import EmptySearch from "../components/empty states/EmptySearch";
 
-export default function CustomerPaymentHIstoryDetails() {
+export default function CustomerHistoryDetails() {
   const { userId } = useParams();
   const { fullName } = useSelector(UserEntity);
   const dispatch = useDispatch();

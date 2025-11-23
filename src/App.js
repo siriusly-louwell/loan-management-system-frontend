@@ -50,7 +50,7 @@ import AccOverview from "./pages/AccOverview";
 import InvoicePage from "./pages/InvoicePage";
 import Analytics from "./pages/Analytics";
 import CreditHistory from "./components/modals/CreditHistory";
-import CustomerPaymentHIstoryDetails from "./pages/CustomerPaymentHIstoryDetails";
+import CustomerHistoryDetails from "./pages/CustomerHistoryDetails";
 import CoMakerForm from "./pages/CoMakerForm";
 import ChangePassword from "./components/modals/ChangePassword";
 
@@ -108,7 +108,7 @@ function App() {
               path={`history/user-details/:userId`}
               element={
                 <ProtectedRoute type="customer">
-                  <CustomerPaymentHIstoryDetails />
+                  <CustomerHistoryDetails />
                 </ProtectedRoute>
               }
             />
@@ -318,7 +318,7 @@ function App() {
               path="history/user-details/:userId"
               element={
                 <ProtectedRoute type="staff">
-                  <CustomerPaymentHIstoryDetails />
+                  <CustomerHistoryDetails />
                 </ProtectedRoute>
               }
             />
@@ -411,7 +411,7 @@ function App() {
               path="invoices/user-details/:userId"
               element={
                 <ProtectedRoute type="admin">
-                  <CustomerPaymentHIstoryDetails />
+                  <CustomerHistoryDetails />
                 </ProtectedRoute>
               }
             />

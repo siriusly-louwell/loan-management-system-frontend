@@ -140,7 +140,7 @@ export default function Eligibility() {
             {creditsLoading ? (
               <CreditHistorySkeleton num={3} />
             ) : credits.length === 0 ? (
-              <EmptyRow label="No payments made" />
+              <EmptyRow label="The applicant does not have any prior loan history with RHEAN." />
             ) : (
               credits.map((credit, i) => (
                 <CreditsRow

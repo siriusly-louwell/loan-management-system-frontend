@@ -77,16 +77,16 @@ export default function LoanList({ data, load }) {
       </section>
 
       <div className="flex items-center justify-between gap-4">
-        <p className="text-sm font-normal flex space-x-2 text-gray-500 dark:text-gray-400">
-          <span className="font-medium mr-2 text-gray-900 dark:text-white">
-            Downpayment:
-          </span>
-          {load ? (
-            <SmallSpin size={20} />
-          ) : (
-            `₱${parseFloat(data.downpayment).toLocaleString()}`
-          )}
-        </p>
+          <p className="text-sm font-normal flex space-x-2 text-rose-500">
+            <span className="font-medium mr-2 text-gray-900 dark:text-white">
+              Monnthly Payment:
+            </span>
+            {load ? (
+              <SmallSpin size={20} />
+            ) : (
+              `₱${parseFloat(data.amount_due).toLocaleString()}`
+            )}
+          </p>
 
         <div className="flex items-center justify-end gap-4">
           {load ? (

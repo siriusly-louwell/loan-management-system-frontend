@@ -14,7 +14,7 @@ export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loan = useSelector(LoanEntity);
-  const { due_date } = useSelector((state) => state.schedule.schedule);
+  const { due_date, amount_due } = useSelector((state) => state.schedule.schedule);
   const { isAdmin, role } = useSelector(UserEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
@@ -82,6 +82,7 @@ export default function LoanDetails({ setApproval }) {
                   name: trans.motorcycle.name,
                   img: loan.unitImage,
                   due_date: due_date,
+                  amount_due: amount_due,
                   downpayment: trans.downpayment,
                   color: trans.color,
                   price: trans.motorcycle.price,

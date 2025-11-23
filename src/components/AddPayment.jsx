@@ -22,11 +22,14 @@ import { PaymentEntity } from "../services/entities/Payment";
 
 export default function AddPayment() {
   const dispatch = useDispatch();
-  const { due_date } = useSelector((state) => state.schedule.schedule);
   const { id, record_id, user_id } = useSelector(ApplicationEntity);
   const { emi, transactions } = useSelector(LoanEntity);
   const { cert_num } = useSelector(PaymentEntity);
   const { modals } = useSelector((state) => state.ui);
+  const { due_date, amount_due } = useSelector(
+    (state) => state.schedule.schedule
+  );
+  const [rebate, setRebate] = useState({});
   const now = new Date();
   const emptyTrans = transactions.length === 0;
 
@@ -36,12 +39,16 @@ export default function AddPayment() {
     status: "on_time",
     user_id: user_id,
     amount_paid: emi,
-    // total_amount: Number(transactions[0].motorcycle.price),
   });
 
   useEffect(() => {
     if (id) dispatch(fetchSchedule({ id: id }));
-  }, [id]);
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (due_date) checkRebate(due_date);
+    if (rebate.onTime) afterRebate();
+  }, [due_date, rebate.onTime]);
 
   useEffect(() => {
     if (!emptyTrans)
@@ -81,7 +88,16 @@ export default function AddPayment() {
     today.setHours(0, 0, 0, 0);
     dueDate.setHours(0, 0, 0, 0);
 
-    return today <= dueDate;
+    setRebate({ ...rebate, onTime: today <= dueDate });
+  }
+
+  function afterRebate() {
+    const required = amount_due - transactions[0].motorcycle.rebate;
+
+    setRebate({
+      ...rebate,
+      amount: `₱${parseFloat(required).toLocaleString()}`,
+    });
   }
 
   async function handleSubmit(event) {
@@ -155,8 +171,8 @@ export default function AddPayment() {
             </dt>
             <dd className="text-base font-medium text-gray-900 dark:text-white">
               <CustomBadge
-                text={checkRebate(due_date) ? "On Time" : "Late"}
-                color={checkRebate(due_date) ? "green" : "red"}
+                text={rebate.onTime ? "On Time" : "Late"}
+                color={rebate.onTime ? "green" : "red"}
               />
             </dd>
           </dl>
@@ -198,10 +214,10 @@ export default function AddPayment() {
               placeholder="₱10,000"
               onchange={(e) => handleChange(e)}
             />
-            {checkRebate(due_date) ? (
+            {rebate.onTime ? (
               <div className="text-green-500 flex space-x-2 items-center mt-1">
                 <CheckCircle size={15} />
-                <span>Rebate value can be applied</span>
+                <span>Required Amount: {rebate.amount} (After rebate)</span>
               </div>
             ) : (
               <div className="text-red-500 flex space-x-2 items-center mt-1">

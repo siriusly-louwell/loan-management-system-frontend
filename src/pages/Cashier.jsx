@@ -27,7 +27,8 @@ export default function Cashier() {
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
   const { due_date } = useSelector((state) => state.schedule.schedule);
-  const { initialBalance, emi, transactions } = useSelector(LoanEntity);
+  const { initialBalance, unitImage, emi, transactions } =
+    useSelector(LoanEntity);
   const { creditScore, creditLoading } = useSelector((state) => state.credit);
   const search = useDebounce(id.search, 500);
   const emptySearch = search !== "";
@@ -131,7 +132,7 @@ export default function Cashier() {
                         key={trans.id}
                         data={{
                           name: trans.motorcycle.name,
-                          img: loan.imgURL,
+                          img: unitImage,
                           due_date: due_date,
                           downpayment: trans.downpayment,
                           color: trans.color,

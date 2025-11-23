@@ -6,6 +6,7 @@
     tong sa Loans, pero hopefully maapply pati sa Loans
 */
 import { LoanDateHelper } from "./loanDateHelper";
+import { InventoryDateHelper } from "./inventoryDateHelper";
 
 // Para sa loan
 export function filterLoanSwitch(type, loans) {
@@ -28,18 +29,22 @@ export function filterLoanSwitch(type, loans) {
 }
 // Para sa inventory
 export function filterUnitSwitch(type, units){
+  return units.filter((unit) => {
+    const inventoryDate = new InventoryDateHelper(unit);
+
     switch (type) {
       case "daily":
-        return units.filter(u => u.isCreatedToday());
+        return inventoryDate.isCreatedToday();
       case "weekly":
-        return units.filter(u => u.isCreatedThisWeek());
+        return inventoryDate.isCreatedThisWeek();
       case "monthly":
-        return units.filter(u => u.isCreatedThisMonth());
+        return inventoryDate.isCreatedThisMonth();
       case "yearly":
-        return units.filter(u => u.isCreatedThisYear());
+        return inventoryDate.isCreatedThisYear();
       default:
         return units;
     }
+  })
 }
 
 export function generateCSV(units){

@@ -43,7 +43,6 @@ export default function BillingStatement() {
   return (
     <section className="w-full h-full py-10 print:py-0">
       <div className="max-w-5xl mx-auto bg-white border border-gray-400 rounded-lg shadow-md p-8 print:shadow-none print:border-none print:p-0">
-        {/* HEADER */}
         <header className="mb-10 flex justify-between items-start">
           <div>
             <h1 className="text-3xl font-bold tracking-wide text-rose-600">
@@ -65,7 +64,6 @@ export default function BillingStatement() {
           </button>
         </header>
 
-        {/* CURRENT BILLING */}
         <Section title="CURRENT BILLING">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Field
@@ -76,12 +74,6 @@ export default function BillingStatement() {
               label="Interest"
               value={
                 loan.id && currency(loan.transactions[0].motorcycle.interest)
-              }
-            />
-            <Field
-              label="Monthly Rebate"
-              value={
-                loan.id && currency(loan.transactions[0].motorcycle.rebate)
               }
             />
             <Field
@@ -97,7 +89,6 @@ export default function BillingStatement() {
           </div>
         </Section>
 
-        {/* STATEMENT SUMMARY */}
         <Section title="STATEMENT SUMMARY">
           <div className="grid grid-cols-3 gap-4">
             <SummaryBox
@@ -116,7 +107,6 @@ export default function BillingStatement() {
           </div>
         </Section>
 
-        {/* PAYMENT HISTORY */}
         <Section title="LATEST PAYMENT DETAILS">
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm border border-gray-300">

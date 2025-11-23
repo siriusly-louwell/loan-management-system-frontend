@@ -72,7 +72,7 @@ export default function LoanList({ data, load }) {
           <span className="font-medium mr-2 text-gray-900 dark:text-white">
             Amortization:
           </span>
-          {load ? <SmallSpin size={20} /> : data.amortization}
+          {load ? <SmallSpin size={20} /> : `₱${parseFloat(data.amortization).toLocaleString()}`}
         </p>
       </section>
 

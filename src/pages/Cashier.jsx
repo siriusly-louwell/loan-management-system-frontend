@@ -26,12 +26,12 @@ export default function Cashier() {
   const loan = useSelector(ApplicationEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
+  const { creditScore, creditLoading } = useSelector((state) => state.credit);
   const { initialBalance, unitImage, emi, transactions } =
     useSelector(LoanEntity);
   const { due_date, amount_due } = useSelector(
     (state) => state.schedule.schedule
   );
-  const { creditScore, creditLoading } = useSelector((state) => state.credit);
   const search = useDebounce(id.search, 500);
   const emptySearch = search !== "";
   const emptyObj = transactions.length === 0;
@@ -44,8 +44,7 @@ export default function Cashier() {
         fetchPayment({ id: loan.id, by: "application_form_id", isLatest: true })
       );
     }
-    if (id.search !== "")
-      dispatch(fetchLoan({ id: search, by: "record_id", stff: "record_id" }));
+    if (id.search !== "") dispatch(fetchLoan({ id: search, by: "search" }));
   }, [dispatch, search, loan.id]);
 
   return (
@@ -73,11 +72,11 @@ export default function Cashier() {
                 Account Details
               </h2>
 
-              {loanLoading && creditLoading && emptySearch ? (
+              {(loanLoading || creditLoading) && emptySearch ? (
                 <AccDetailSkeleton />
               ) : emptySearch && emptyObj ? (
                 <div className="flex w-full py-20 items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-600">
-                  <p className="text-gray-400 dark:text-gray-700 text-lg font-small">
+                  <p className="text-gray-400 dark:text-gray-400 text-lg font-small">
                     Record doesn't exist
                   </p>
                 </div>
@@ -142,7 +141,7 @@ export default function Cashier() {
                           price: trans.motorcycle.price,
                           quantity: trans.quantity,
                           tenure: trans.tenure,
-                          amortization: loan.getAmortization,
+                          amortization: emi,
                           motorcycle: trans.motorcycle,
                         }}
                         load={loanLoading}
@@ -208,7 +207,7 @@ export default function Cashier() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Amount Due
+                    Monthly Due
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
                     {emptyObj
@@ -228,7 +227,7 @@ export default function Cashier() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-bold text-gray-900 dark:text-white">
-                    Amount Paid {payment.amount === "N/A" && "(Down Payment)"}
+                    {payment.amount === "N/A" ? "Down Payment" : "Amount Paid"}
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
                     {emptyObj

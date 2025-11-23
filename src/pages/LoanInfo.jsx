@@ -26,7 +26,7 @@ import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import { ArrowBigLeftDash } from "lucide-react";
 import { UserEntity } from "../services/entities/User";
 import { useNavigate } from "react-router-dom";
-
+import { fetchSchedule } from "../services/redux/slices/scheduleSlice";
 
 export default function LoanInfo() {
   const dispatch = useDispatch();
@@ -35,15 +35,18 @@ export default function LoanInfo() {
   const loan = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanID } = useSelector((state) => state.application);
-
   const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getLoanId());
   }, []);
 
   useEffect(() => {
-    if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
-  }, [loanID, dispatch]);
+    if (loanID) {
+      dispatch(fetchLoan({ id: loanID, by: "id" }));
+      dispatch(fetchSchedule({ id: loanID }));
+    }
+  }, [loanID, loan.user_id, dispatch]);
 
   useEffect(() => {
     if (loan.ndi && (loan.status === "denied" || loan.status === "declined"))
@@ -76,43 +79,41 @@ export default function LoanInfo() {
     }
   }
 
-  async function cancelApplication(event) {
-    event.preventDefault();
-    dispatch(setLoading({ isActive: true, text: "Saving data..." }));
-    dispatch(toggleModal({ name: "cancelApp", value: modals.cancelApp }));
+  // async function cancelApplication(event) {
+  //   event.preventDefault();
+  //   dispatch(setLoading({ isActive: true, text: "Saving data..." }));
+  //   dispatch(toggleModal({ name: "cancelApp", value: modals.cancelApp }));
 
-    try {
-      const response = await dispatch(
-        updateStatus({ apply_status: approval.text, id: loan.id })
-      ).unwrap();
+  //   try {
+  //     const response = await dispatch(
+  //       updateStatus({ apply_status: approval.text, id: loan.id })
+  //     ).unwrap();
 
-      dispatch(setLoading({ isActive: false }));
-      dispatch(setAlert({ message: response.message, type: response.type }));
-      if (response.type === "success")
-        dispatch(fetchLoan({ id: loan.id, by: "id" }));
-    } catch (error) {
-      console.error("Error: ", error);
-      dispatch(setLoading({ isActive: false }));
-      dispatch(
-        setAlert({
-          message: "Something went wrong. Please try again",
-          type: "error",
-        })
-      );
-    }
-  }
+  //     dispatch(setLoading({ isActive: false }));
+  //     dispatch(setAlert({ message: response.message, type: response.type }));
+  //     if (response.type === "success")
+  //       dispatch(fetchLoan({ id: loan.id, by: "id" }));
+  //   } catch (error) {
+  //     console.error("Error: ", error);
+  //     dispatch(setLoading({ isActive: false }));
+  //     dispatch(
+  //       setAlert({
+  //         message: "Something went wrong. Please try again",
+  //         type: "error",
+  //       })
+  //     );
+  //   }
+  // }
 
   // Gi add nako para maka redirect ang mga different roles balik
-  function redirectByRole(role){
-    console.log(role);
-    if (role === 'admin') {
+  function redirectByRole(role) {
+    if (role === "admin") {
       navigate("/admin/loans");
-    }
-    else if(role === 'staff'){
+    } else if (role === "staff") {
       navigate("/staff/app");
     }
     // Add more else-ifs kung napay roles na need ani
-    else{
+    else {
       navigate("/unauthorized");
     }
   }

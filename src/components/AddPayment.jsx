@@ -28,6 +28,7 @@ export default function AddPayment() {
   const { cert_num } = useSelector(PaymentEntity);
   const { modals } = useSelector((state) => state.ui);
   const now = new Date();
+  const emptyTrans = transactions.length === 0;
 
   const [payment, setPayment] = useState({
     application_form_id: id,
@@ -35,7 +36,7 @@ export default function AddPayment() {
     status: "on_time",
     user_id: user_id,
     amount_paid: emi,
-    total_amount: Number(transactions[0].motorcycle.price),
+    // total_amount: Number(transactions[0].motorcycle.price),
   });
 
   useEffect(() => {
@@ -43,13 +44,14 @@ export default function AddPayment() {
   }, [id]);
 
   useEffect(() => {
-    setPayment({
-      ...payment,
-      application_form_id: id,
-      user_id: user_id,
-      total_amount: transactions[0].motorcycle.price,
-    });
-  }, [id, user_id, transactions[0].motorcycle.price]);
+    if (!emptyTrans)
+      setPayment({
+        ...payment,
+        application_form_id: id,
+        user_id: user_id,
+        total_amount: transactions[0].motorcycle.price,
+      });
+  }, [id, user_id, emptyTrans]);
 
   function handleChange(event) {
     setPayment({

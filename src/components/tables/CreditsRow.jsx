@@ -17,7 +17,7 @@ export default function CreditsRow({ data }) {
           Due Date:
         </dt>
         <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-          {data.due_date}
+          {data.date}
         </dd>
       </dl>
       <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">

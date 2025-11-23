@@ -14,10 +14,10 @@ import { UserEntity } from "../../services/entities/User";
 import CategoryCard from "../cards/CategoryCard";
 import DataRow from "../tables/DataRow";
 import AppliedFormMini from "../AppliedFormMini";
-import { fetchCredits } from "../../services/redux/slices/creditSlice";
 import CreditHistorySkeleton from "../loading components/CreditHistorySkeleton";
 import CreditsRow from "../tables/CreditsRow";
 import EmptyRow from "../empty states/EmptyRow";
+import { fetchCredits } from "../../services/redux/slices/creditSlice";
 import {
   assessDecision,
   assessResult,
@@ -45,7 +45,7 @@ export default function Eligibility() {
       dispatch(assessDecision());
       dispatch(assessResult());
     }
-  }, [modals.eligibility, loan.id]);
+  }, [modals.eligibility, loan.id, loan.user_id]);
 
   const fullName = (first, last) => {
     return first ? `${first} ${last}` : "";
@@ -58,7 +58,7 @@ export default function Eligibility() {
       dispatch(toggleModal({ name: "addCI", value: modals.addCI }));
     else dispatch(toggleModal({ name: "declineApp", value: modals.decideApp }));
   }
-
+  
   return (
     <PopAnimate
       modalName={modals.eligibility}
@@ -138,7 +138,7 @@ export default function Eligibility() {
           </h2>
           <div className="divide-y divide-gray-200 dark:divide-gray-700 pb-8 border-b border-gray-500">
             {creditsLoading ? (
-              <CreditHistorySkeleton num={5} />
+              <CreditHistorySkeleton num={3} />
             ) : credits.length === 0 ? (
               <EmptyRow label="No payments made" />
             ) : (

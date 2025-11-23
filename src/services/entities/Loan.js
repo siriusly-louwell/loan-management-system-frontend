@@ -12,7 +12,7 @@ export class Loan {
     record_id,
     first_name,
     last_name,
-    transactions,
+    transactions = [],
     rate,
     bills,
     living_exp,
@@ -61,7 +61,9 @@ export class Loan {
   }
 
   get getAmortization() {
-    return `₱${parseFloat(this.amortization).toLocaleString()}`;
+    return this.amortization
+      ? `₱${parseFloat(this.amortization).toLocaleString()}`
+      : "N/A";
   }
 
   get getRent() {

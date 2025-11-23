@@ -26,7 +26,9 @@ export default function Cashier() {
   const loan = useSelector(ApplicationEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
-  const { due_date } = useSelector((state) => state.schedule.schedule);
+  const { due_date, amount_due } = useSelector(
+    (state) => state.schedule.schedule
+  );
   const { initialBalance, unitImage, emi, transactions } =
     useSelector(LoanEntity);
   const { creditScore, creditLoading } = useSelector((state) => state.credit);
@@ -37,7 +39,7 @@ export default function Cashier() {
   useEffect(() => {
     if (loan.id) {
       dispatch(fetchScore({ id: loan.user_id }));
-      dispatch(fetchSchedule({ id: loan.user_id }));
+      dispatch(fetchSchedule({ id: loan.id }));
       dispatch(
         fetchPayment({ id: loan.id, by: "application_form_id", isLatest: true })
       );
@@ -134,6 +136,7 @@ export default function Cashier() {
                           name: trans.motorcycle.name,
                           img: unitImage,
                           due_date: due_date,
+                          amount_due: amount_due,
                           downpayment: trans.downpayment,
                           color: trans.color,
                           price: trans.motorcycle.price,
@@ -231,7 +234,9 @@ export default function Cashier() {
                       ? "- - -"
                       : payment.amount !== "N/A"
                       ? payment.amount
-                      : transactions[0].downpayment}
+                      : `₱${parseFloat(
+                          transactions[0].downpayment
+                        ).toLocaleString()}`}
                   </dd>
                 </dl>
 

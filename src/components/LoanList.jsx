@@ -79,7 +79,7 @@ export default function LoanList({ data, load }) {
       <div className="flex items-center justify-between gap-4">
           <p className="text-sm font-normal flex space-x-2 text-rose-500">
             <span className="font-medium mr-2 text-gray-900 dark:text-white">
-              Monnthly Payment:
+              Monthly Payment:
             </span>
             {load ? (
               <SmallSpin size={20} />

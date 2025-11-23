@@ -9,12 +9,14 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 import { UserEntity } from "../services/entities/User";
 import SubtleIconBttn from "./buttons/SubtleIconBttn";
+import GoBackButton from "./buttons/GoBackButton";
 
 export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAdmin, role } = useSelector(UserEntity);
   const loan = useSelector(LoanEntity);
+  const { due_date, amount_due } = useSelector((state) => state.schedule.schedule);
+  const { isAdmin, role } = useSelector(UserEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
   const statusCondition =
@@ -26,7 +28,8 @@ export default function LoanDetails({ setApproval }) {
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <div className="flex justify-between w-full">
+      <div className="flex w-full space-x-3 items-center">
+        <GoBackButton />
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
           Track the loan {loan.record_id}
         </h2>
@@ -77,15 +80,20 @@ export default function LoanDetails({ setApproval }) {
             {loan.transactions.map((trans) => (
               <LoanList
                 key={trans.id}
-                downpayment={trans.downpayment}
-                color={trans.color}
-                price={trans.motorcycle.price}
-                units={trans.quantity}
-                tenure={trans.tenure}
-                amortization={loan.amortization}
-                img={loan.unitImage}
-                name={trans.motorcycle.name}
-                motorcycle={trans.motorcycle}
+                data={{
+                  name: trans.motorcycle.name,
+                  img: loan.unitImage,
+                  due_date: due_date,
+                  amount_due: amount_due,
+                  downpayment: trans.downpayment,
+                  color: trans.color,
+                  price: trans.motorcycle.price,
+                  quantity: trans.quantity,
+                  tenure: trans.tenure,
+                  amortization: loan.getAmortization,
+                  motorcycle: trans.motorcycle,
+                }}
+                load={loanLoading}
               />
             ))}
 
@@ -168,6 +176,11 @@ export default function LoanDetails({ setApproval }) {
                 status={loan.trackStatus("approve")}
                 extra={loan.status === "declined" && <SubtleIconBttn />}
               />
+              {/* <TrackList
+                label={loan.statusLabel("claim", 0)}
+                sublabel={loan.statusLabel("claim", 1)}
+                status={loan.trackStatus("investigation")}
+              /> */}
               <TrackList
                 label="Initial Payment"
                 sublabel="The loan application has been successful"
@@ -240,7 +253,7 @@ export default function LoanDetails({ setApproval }) {
                   )}
                   {role === "customer" && (
                     <CustomBttn
-                      text="Cancel Application"
+                      text="Request to Cancel"
                       icon={<XCircle className="w-4 h-4 mr-2" />}
                       onclick={() => {
                         setApproval({
@@ -248,12 +261,12 @@ export default function LoanDetails({ setApproval }) {
                             "Are you sure you want to cancel this application?",
                           text: "canceled",
                         });
-                        dispatch(
-                          toggleModal({
-                            name: "approvalApp",
-                            value: modals.approvalApp,
-                          })
-                        );
+                        // dispatch(
+                        //   toggleModal({
+                        //     name: "approvalApp",
+                        //     value: modals.approvalApp,
+                        //   })
+                        // );
                       }}
                       classname="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-400 transition-colors"
                     />

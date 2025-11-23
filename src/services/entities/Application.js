@@ -16,6 +16,7 @@ export class Application {
     residence,
     amortization = 0.0,
     rent = 0.0,
+    salary,
     sss,
     tin,
     birth_day,
@@ -42,6 +43,7 @@ export class Application {
     this.residence = residence;
     this.amortization = amortization;
     this.rent = rent;
+    this.salary = salary;
     this.sss = sss;
     this.tin = tin;
     this.birth_day = birth_day;
@@ -81,11 +83,15 @@ export class Application {
   }
 
   get getAmortization() {
-    return `₱${this.amortization}`;
+    return `₱${parseFloat(this.amortization).toLocaleString()}`;
   }
 
   get getRent() {
-    return `₱${this.rent}`;
+    return `₱${parseFloat(this.rent).toLocaleString()}`;
+  }
+
+  get getSalary() {
+    return `₱${parseFloat(this.salary).toLocaleString()}`;
   }
 
   get getResidence() {

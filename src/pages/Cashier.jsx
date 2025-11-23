@@ -16,22 +16,30 @@ import { LoanEntity } from "../services/entities/Loan";
 import { fetchPayment } from "../services/redux/slices/paymentSlice";
 import { PaymentEntity } from "../services/entities/Payment";
 import { fetchScore } from "../services/redux/slices/creditSlice";
+import { ApplicationEntity } from "../services/entities/Application";
+import { fetchSchedule } from "../services/redux/slices/scheduleSlice";
 
 export default function Cashier() {
   const [id, setId] = useState({ search: "" });
   const dispatch = useDispatch();
-  const { modals } = useSelector((state) => state.ui);
-  const { creditScore, creditLoading } = useSelector((state) => state.credit);
-  const { loan, loanLoading } = useSelector((state) => state.application);
-  const { initialBalance, unitImage, emi } = useSelector(LoanEntity);
   const payment = useSelector(PaymentEntity);
+  const loan = useSelector(ApplicationEntity);
+  const { modals } = useSelector((state) => state.ui);
+  const { loanLoading } = useSelector((state) => state.application);
+  const { initialBalance, unitImage, emi, transactions } =
+    useSelector(LoanEntity);
+  const { due_date, amount_due } = useSelector(
+    (state) => state.schedule.schedule
+  );
+  const { creditScore, creditLoading } = useSelector((state) => state.credit);
   const search = useDebounce(id.search, 500);
   const emptySearch = search !== "";
-  const emptyObj = Object.keys(loan).length === 0;
+  const emptyObj = transactions.length === 0;
 
   useEffect(() => {
     if (loan.id) {
       dispatch(fetchScore({ id: loan.user_id }));
+      dispatch(fetchSchedule({ id: loan.id }));
       dispatch(
         fetchPayment({ id: loan.id, by: "application_form_id", isLatest: true })
       );
@@ -91,8 +99,8 @@ export default function Cashier() {
                     </h2>
                     <span>
                       <CustomBadge
-                        text={loan.status.text}
-                        color={loan.status.color}
+                        text={loan.statusBadge.text}
+                        color={loan.statusBadge.color}
                       />
                     </span>
                   </div>
@@ -106,7 +114,7 @@ export default function Cashier() {
                     </h2>
                   </div>
                   <div className="grid gap-4 sm:col-span-2 sm:grid-cols-3">
-                    <PfpLabel caption="Salary" label={loan.parsedSalary} />
+                    <PfpLabel caption="Salary" label={loan.getSalary} />
                     <PfpLabel caption="Co-maker" label="John Doe" />
                     <PfpLabel
                       caption="Contact Number"
@@ -120,19 +128,24 @@ export default function Cashier() {
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Unit:
                   </h2>
-                  <div className="divide-y grid sm:col-span-2 sm:grid-cols-2 divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600">
-                    {loan.transactions.map((trans) => (
+                  <div className="divide-y grid sm:col-span-2 divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-600">
+                    {transactions.map((trans) => (
                       <LoanList
                         key={trans.id}
-                        downpayment={trans.downpayment}
-                        color={trans.color}
-                        due_date={loan.schedules[0].due_date}
-                        price={trans.motorcycle.price}
-                        units={trans.quantity}
-                        amortization={loan.amortization}
-                        tenure={trans.tenure}
-                        img={unitImage}
-                        motorcycle={trans.motorcycle}
+                        data={{
+                          name: trans.motorcycle.name,
+                          img: unitImage,
+                          due_date: due_date,
+                          amount_due: amount_due,
+                          downpayment: trans.downpayment,
+                          color: trans.color,
+                          price: trans.motorcycle.price,
+                          quantity: trans.quantity,
+                          tenure: trans.tenure,
+                          amortization: loan.getAmortization,
+                          motorcycle: trans.motorcycle,
+                        }}
+                        load={loanLoading}
                       />
                     ))}
                   </div>
@@ -215,10 +228,16 @@ export default function Cashier() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-bold text-gray-900 dark:text-white">
-                    Amount Paid
+                    Amount Paid {payment.amount === "N/A" && "(Down Payment)"}
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    {emptyObj ? "- - -" : payment.amount}
+                    {emptyObj
+                      ? "- - -"
+                      : payment.amount !== "N/A"
+                      ? payment.amount
+                      : `₱${parseFloat(
+                          transactions[0].downpayment
+                        ).toLocaleString()}`}
                   </dd>
                 </dl>
 

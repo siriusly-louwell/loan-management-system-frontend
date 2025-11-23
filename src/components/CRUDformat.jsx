@@ -10,6 +10,7 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import PageNav from "./PageNav";
 import BttnwithIcon from "./buttons/BttnwithIcon";
 import { ArrowBigLeftDash } from "lucide-react";
+import { UserEntity } from "../services/entities/User";
 
 export default function CRUDformat({
   children,
@@ -22,8 +23,11 @@ export default function CRUDformat({
   pagination,
   itemName,
   url = "",
+  showOptionsModal,
+  printMode,
 }) {
   const dispatch = useDispatch();
+  const { role } = useSelector(UserEntity);
   const { modals } = useSelector((state) => state.ui);
 
   return (
@@ -68,8 +72,7 @@ export default function CRUDformat({
                           value: modals[modalName],
                         })
                       )
-                    }
-                  >
+                    }>
                     <Plus />
                   </CustomBttn>
                 )}
@@ -82,8 +85,7 @@ export default function CRUDformat({
                     dispatch(
                       toggleModal({ name: "actions", value: modals?.actions })
                     )
-                  }
-                >
+                  }>
                   {modals.actions && (
                     <DropdownMenu>
                       <MenuLink pathName="Mass Edit" />
@@ -91,7 +93,28 @@ export default function CRUDformat({
                     </DropdownMenu>
                   )}
                 </DropdownBttn>
-                <div className="flex items-center space-x-3 w-full md:w-auto"></div>
+
+                {/* Added a button for printing a PDF/CSV */}
+                {role === "admin" && (
+                  <>
+                    <CustomBttn
+                      text="Print PDF"
+                      classname="flex items-center justify-center text-white bg-rose-600 hover:bg-rose-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      onclick={() => {
+                        printMode("pdf");
+                        showOptionsModal();
+                      }}
+                    />
+                    <CustomBttn
+                      text="Print CSV"
+                      classname="flex items-center justify-center text-white bg-green-600 hover:bg-green-600 focus:ring-4 focus:ring-rose-600 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      onclick={() => {
+                        printMode("csv");
+                        showOptionsModal();
+                      }}
+                    />
+                  </>
+                )}
               </div>
             </div>
 

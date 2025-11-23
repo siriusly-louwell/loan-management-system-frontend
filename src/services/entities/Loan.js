@@ -8,10 +8,11 @@ import {
 export class Loan {
   constructor({
     id,
+    user_id,
     record_id,
     first_name,
     last_name,
-    transactions,
+    transactions = [],
     rate,
     bills,
     living_exp,
@@ -27,6 +28,7 @@ export class Loan {
   }) {
     this.id = id;
     this.record_id = record_id;
+    this.user_id = user_id;
     this.first_name = first_name;
     this.last_name = last_name;
     this.transactions = transactions;
@@ -59,7 +61,9 @@ export class Loan {
   }
 
   get getAmortization() {
-    return `₱${parseFloat(this.amortization).toLocaleString()}`;
+    return this.amortization
+      ? `₱${parseFloat(this.amortization).toLocaleString()}`
+      : "N/A";
   }
 
   get getRent() {

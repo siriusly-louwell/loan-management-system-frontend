@@ -6,6 +6,7 @@ import { FamilyEntity } from "../services/entities/FamilyInfo";
 import { useNavigate } from "react-router-dom";
 import { UserEntity } from "../services/entities/User";
 import { LoanEntity } from "../services/entities/Loan";
+import { ArrowRight } from "lucide-react";
 
 export default function AppliedFormMini() {
   const navigate = useNavigate();
@@ -27,13 +28,14 @@ export default function AppliedFormMini() {
           Applicant Overview
         </h2>
         <button
-          className="text-sm px-3 py-1.5 rounded-md bg-rose-600 text-white hover:bg-rose-500 transition-colors duration-200"
+          className="text-sm px-3 py-1.5 flex items-center rounded-md bg-rose-600 text-white hover:bg-rose-500 transition-colors duration-200"
           onClick={() =>
             navigate(`/${role}/application`, {
               state: { id: loan.id },
             })
           }>
           View Full Details
+          <ArrowRight size={20} strokeWidth={2} />
         </button>
       </div>
 

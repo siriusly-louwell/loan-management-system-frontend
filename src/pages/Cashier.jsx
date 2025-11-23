@@ -145,6 +145,7 @@ export default function Cashier() {
                           amortization: loan.getAmortization,
                           motorcycle: trans.motorcycle,
                         }}
+                        load={loanLoading}
                       />
                     ))}
                   </div>

@@ -5,6 +5,14 @@ import AssignCI from "../components/AssignCI";
 import DeclineApplicant from "../components/DeclineApplicant";
 import Eligibility from "../components/modals/Eligibility";
 import { useDispatch, useSelector } from "react-redux";
+import { LoanEntity } from "../services/entities/Loan";
+import { fetchUnits } from "../services/redux/slices/unitSlice";
+import Dialog from "../components/modals/Dialog";
+import UnitRecommendation from "../components/UnitRecommendation";
+import LoanDetails from "../components/LoanDetails";
+import TextDialog from "../components/modals/TextDialog";
+import ApproveLoan from "../components/ApproveLoan";
+import { fetchSchedule } from "../services/redux/slices/scheduleSlice";
 import {
   fetchLoan,
   getLoanId,
@@ -15,27 +23,13 @@ import {
   setLoading,
   toggleModal,
 } from "../services/redux/slices/uiSlice";
-import { LoanEntity } from "../services/entities/Loan";
-import { fetchUnits } from "../services/redux/slices/unitSlice";
-import Dialog from "../components/modals/Dialog";
-import UnitRecommendation from "../components/UnitRecommendation";
-import LoanDetails from "../components/LoanDetails";
-import TextDialog from "../components/modals/TextDialog";
-import ApproveLoan from "../components/ApproveLoan";
-import BttnwithIcon from "../components/buttons/BttnwithIcon";
-import { ArrowBigLeftDash } from "lucide-react";
-import { UserEntity } from "../services/entities/User";
-import { useNavigate } from "react-router-dom";
-import { fetchSchedule } from "../services/redux/slices/scheduleSlice";
 
 export default function LoanInfo() {
   const dispatch = useDispatch();
-  const user = useSelector(UserEntity);
   const [approval, setApproval] = useState();
   const loan = useSelector(LoanEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanID } = useSelector((state) => state.application);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getLoanId());
@@ -105,19 +99,6 @@ export default function LoanInfo() {
   //   }
   // }
 
-  // Gi add nako para maka redirect ang mga different roles balik
-  function redirectByRole(role) {
-    if (role === "admin") {
-      navigate("/admin/loans");
-    } else if (role === "staff") {
-      navigate("/staff/app");
-    }
-    // Add more else-ifs kung napay roles na need ani
-    else {
-      navigate("/unauthorized");
-    }
-  }
-
   function staffAction(string) {
     dispatch(toggleModal({ name: "eligibility", value: modals.eligibility }));
     dispatch(
@@ -128,11 +109,6 @@ export default function LoanInfo() {
 
   return (
     <section className="bg-gray-200 py-8 antialiased dark:bg-gray-900 md:py-16">
-      <div className="mx-10 my-2">
-        <BttnwithIcon click={() => redirectByRole(user.role)}>
-          <ArrowBigLeftDash />
-        </BttnwithIcon>
-      </div>
       <LoanDetails setApproval={setApproval} />
       {(loan.status === "declined" || loan.status === "denied") && (
         <UnitRecommendation />

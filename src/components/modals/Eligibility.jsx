@@ -30,10 +30,10 @@ export default function Eligibility() {
   const loan = useSelector(LoanEntity);
   const { credits, creditsLoading } = useSelector((state) => state.credit);
   const [isVisible, setIsVisible] = useState(false);
+  const { modals } = useSelector((state) => state.ui);
   const { stability, loanDecision, loanResult } = useSelector(
     (state) => state.application
   );
-  const { modals } = useSelector((state) => state.ui);
 
   useEffect(() => {
     if (loan.id) {
@@ -62,7 +62,7 @@ export default function Eligibility() {
   return (
     <PopAnimate
       modalName={modals.eligibility}
-      classStyle="w-full max-w-5xl mt-80 overflow-y-auto bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
+      classStyle="w-full max-w-5xl max-h-[98vh] overflow-y-auto bg-gray-50 dark:bg-gray-800 border border-gray-500 rounded-xl shadow-xl">
       <div className="sticky top-0 z-20 px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Loan Eligibility Assessment

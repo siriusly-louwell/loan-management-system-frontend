@@ -9,6 +9,7 @@ import { toggleModal } from "../services/redux/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
 import { UserEntity } from "../services/entities/User";
 import SubtleIconBttn from "./buttons/SubtleIconBttn";
+import GoBackButton from "./buttons/GoBackButton";
 
 export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
@@ -27,7 +28,8 @@ export default function LoanDetails({ setApproval }) {
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <div className="flex justify-between w-full">
+      <div className="flex w-full space-x-3 items-center">
+        <GoBackButton />
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
           Track the loan {loan.record_id}
         </h2>

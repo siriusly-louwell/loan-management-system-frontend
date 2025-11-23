@@ -12,21 +12,16 @@ import FileButton from "../components/buttons/FileButton";
 import DeclineApplicant from "../components/DeclineApplicant";
 import AssignCI from "../components/AssignCI";
 import CustomBttn from "../components/buttons/CustomBttn";
-import {
-  ArrowRight,
-  ArrowBigLeftDash,
-  CheckCircle2,
-  ClipboardCheck,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, ClipboardCheck } from "lucide-react";
 import { UserEntity } from "../services/entities/User";
 import { toggleModal } from "../services/redux/slices/uiSlice";
 import Dialog from "../components/modals/Dialog";
-import BttnwithIcon from "../components/buttons/BttnwithIcon";
 import { Link } from "react-router-dom";
 import {
   fetchLoan,
   getLoanId,
 } from "../services/redux/slices/applicationSlice";
+import GoBackButton from "../components/buttons/GoBackButton";
 
 export default function AppliedForm() {
   const dispatch = useDispatch();
@@ -65,10 +60,7 @@ export default function AppliedForm() {
     <>
       <div className="w-100 bg-gray-100 dark:bg-gray-900">
         <section className="max-w-3xl mx-auto p-4">
-          <BttnwithIcon
-            click={() => (window.location = "../admin/accounts/applicants")}>
-            <ArrowBigLeftDash />
-          </BttnwithIcon>
+          <GoBackButton />
           <br />
           <ProfileHeader
             name={application.fullName}

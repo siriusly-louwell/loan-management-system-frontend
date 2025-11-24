@@ -112,7 +112,8 @@ export default function ProductList() {
               toggleMenu={() =>
                 dispatch(toggleModal({ name: "filter", value: modals?.filter }))
               }
-              text="Filter by Brand">
+              text="Filter by Brand"
+            >
               {modals.filter && (
                 <DropdownMenu>
                   <MenuLink pathName="All" click={() => toggleFilter(null)} />
@@ -132,7 +133,8 @@ export default function ProductList() {
               toggleMenu={() =>
                 dispatch(toggleModal({ name: "sort", value: modals?.sort }))
               }
-              text="Sort">
+              text="Sort"
+            >
               {modals.sort && (
                 <DropdownMenu pad={20}>
                   <MenuLink pathName="The most popular" />

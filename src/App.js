@@ -283,7 +283,7 @@ function App() {
             }
           />
           <Route
-            path="loan"
+            path="loan" 
             element={
               <ProtectedRoute type="staff">
                 <LoanInfo />

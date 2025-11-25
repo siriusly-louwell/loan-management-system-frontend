@@ -55,6 +55,9 @@ export class Application {
     this.valid_id = valid_id;
     this.residence_proof = residence_proof;
   }
+  get contactNumber() {
+    return this.contact_num ? `${this.contact_num}` : "";
+  }
 
   get fullName() {
     return `${this.first_name} ${this.last_name}`;

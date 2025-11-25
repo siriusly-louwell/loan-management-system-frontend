@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import RMCI from "../../assets/images/RMCI.png";
 import { useDispatch, useSelector } from "react-redux";
 import { LoanEntity } from "../../services/entities/Loan";
@@ -8,51 +8,25 @@ import { PaymentEntity } from "../../services/entities/Payment";
 import { toggleModal } from "../../services/redux/slices/uiSlice";
 import { FileDown } from "lucide-react";
 
+const calculateAdvancePayment = (amount_paid, ammortization) => {
+  return amount_paid - ammortization;
+};
+
 const Invoice = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();
-  const { transactions } = useSelector(LoanEntity);
+  const { transactions, getAmortization, getAmortizationInt } =
+    useSelector(LoanEntity);
   const payment = useSelector(PaymentEntity);
   const { paymentLoading } = useSelector((state) => state.payment);
-  const { email, fullName, address } = useSelector(ApplicationEntity);
+  const { email, fullName, address, contactNumber } =
+    useSelector(ApplicationEntity);
   const { loanLoading } = useSelector((state) => state.application);
   const { modals } = useSelector((state) => state.ui);
-
   const formattedDate = new Date(payment.created_at).toLocaleString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-
-  function calculateAmortization({
-    basePrice = 150000,
-    rebate = 500,
-    interestRate = 8,
-    tenureYears = 2,
-    downpayment = 20000,
-  }) {
-    // Step 1: Principal (Net Price)
-    const principal = basePrice - downpayment - rebate;
-
-    // Step 2: Monthly interest rate
-    const monthlyInterest = interestRate / 100 / 12;
-
-    // Step 3: Number of months
-    const months = tenureYears * 12;
-
-    // Step 4: Amortization formula
-    const numerator = monthlyInterest * Math.pow(1 + monthlyInterest, months);
-    const denominator = Math.pow(1 + monthlyInterest, months) - 1;
-
-    const monthlyPayment = principal * (numerator / denominator);
-
-    const totalMonthlyPayment = monthlyPayment;
-    return {
-      principal,
-      monthlyPayment,
-      totalPayable: monthlyPayment * months + downpayment,
-      totalMonthlyPayment,
-    };
-  }
 
   console.log(transactions);
   console.log(payment);
@@ -82,7 +56,6 @@ const Invoice = React.forwardRef((props, ref) => {
                 )}
               </dd>
             </dl>
-
             <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
               <dt className="min-w-36 max-w-50 text-gray-500">Date Issued</dt>
               <dd className="text-gray-800 dark:text-gray-200">
@@ -94,6 +67,18 @@ const Invoice = React.forwardRef((props, ref) => {
                   </span>
                 )}
               </dd>
+            </dl>{" "}
+            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
+              <dt className="min-w-36 max-w-50 text-gray-500">Cashier</dt>
+              <dd className="text-gray-800 dark:text-gray-200">
+                {loanLoading ? (
+                  <div className="w-40 h-4 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
+                ) : (
+                  <span className="inline-flex items-center cursor-pointer gap-x-1.5 text-rose-600 dark:text-rose-500 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium">
+                    Rhean Motor
+                  </span>
+                )}
+              </dd>
             </dl>
             <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
               <dt className="min-w-36 max-w-50 text-gray-500">Status</dt>
@@ -102,7 +87,7 @@ const Invoice = React.forwardRef((props, ref) => {
                   <div className="w-40 h-4 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
                 ) : (
                   <span className="inline-flex items-center cursor-pointer gap-x-1.5 text-rose-600 dark:text-rose-500 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium">
-                    {payment?.status}
+                    {payment?.balance ? "Down Payment" : "Full Payment"}
                   </span>
                 )}
               </dd>
@@ -126,7 +111,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 Contact Number:
               </dt>
               <dd className="font-medium text-gray-800 dark:text-gray-200">
-                {}
+                {contactNumber}
               </dd>
             </dl>
 
@@ -140,50 +125,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 </dd>
               )}
             </dl>
-
-            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt className="min-w-36 max-w-50 text-gray-500">
-                Loan Account Number:
-              </dt>
-              <dd className="font-medium text-gray-800 dark:text-gray-200">
-                {} Sample Account Number
-              </dd>
-            </dl>
           </div>
-        </div>
-      </div>
-      <div className="grid md:grid-cols-2 gap-3">
-        <div>
-          <div className="grid space-y-3">
-            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt className="min-w-36 max-w-50 text-gray-500">Billed to:</dt>
-              <dd className="text-gray-800 dark:text-gray-200">
-                {loanLoading ? (
-                  <div className="w-40 h-4 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-                ) : (
-                  <span className="inline-flex items-center cursor-pointer gap-x-1.5 text-rose-600 dark:text-rose-500 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium">
-                    {email}
-                  </span>
-                )}
-              </dd>
-            </dl>
-            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
-              <dt className="min-w-36 max-w-50 text-gray-500">Cashier:</dt>
-              <dd className="text-gray-800 dark:text-gray-200">
-                {loanLoading ? (
-                  <div className="w-40 h-4 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-                ) : (
-                  <span className="inline-flex items-center cursor-pointer gap-x-1.5 text-rose-600 dark:text-rose-500 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium">
-                    {fullName}
-                  </span>
-                )}
-              </dd>
-            </dl>
-          </div>
-        </div>
-
-        <div>
-          <div className="grid space-y-3"></div>
         </div>
       </div>
 
@@ -245,7 +187,7 @@ const Invoice = React.forwardRef((props, ref) => {
                         <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
                       ) : (
                         <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                          {payment?.amount}
+                          Plate Number
                         </dd>
                       )}
                     </dl>
@@ -267,109 +209,9 @@ const Invoice = React.forwardRef((props, ref) => {
         })}
       </div>
 
-      {false && (
-        <>
-          <div className="mt-6 border border-gray-200 dark:border-gray-500 p-4 rounded-lg space-y-4">
-            <div className="hidden sm:grid sm:grid-cols-5">
-              <div className="text-xs font-medium text-gray-500 uppercase">
-                Item
-              </div>
-              <div className="text-xs font-medium text-gray-500 uppercase">
-                Brand
-              </div>
-              <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                Qty
-              </div>
-              <div className="text-start text-xs font-medium text-gray-500 uppercase">
-                Color
-              </div>
-              <div className="text-end text-xs font-medium text-gray-500 uppercase">
-                Tenure
-              </div>
-            </div>
-
-            <div className="hidden sm:block border-b border-gray-200 dark:border-gray-500"></div>
-
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-              <div className="col-span-full sm:col-span-1">
-                <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                  Item
-                </h5>
-                {loanLoading ? (
-                  <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-                ) : (
-                  <p className="font-medium text-gray-800 dark:text-gray-200">
-                    {transactions[0].motorcycle?.name}
-                  </p>
-                )}
-              </div>
-              <div className="col-span-full sm:col-span-1">
-                <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                  Brand
-                </h5>
-                {loanLoading ? (
-                  <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-                ) : (
-                  <p className="font-medium text-gray-800 dark:text-gray-200">
-                    {transactions[0].motorcycle?.brand}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                  Qty
-                </h5>
-                {loanLoading ? (
-                  <div className="w-10 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-                ) : (
-                  <p className="font-medium text-gray-800 dark:text-gray-200">
-                    {transactions[0].quantity}
-                  </p>
-                )}
-              </div>
-              <div>
-                <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                  Color
-                </h5>
-                {loanLoading ? (
-                  <div className="w-5 h-5 bg-gray-100 dark:bg-gray-700 rounded-full animate-pulse" />
-                ) : (
-                  <ColorLabel style={transactions[0].color || ""} />
-                )}
-              </div>
-              <div>
-                <h5 className="sm:hidden text-xs font-medium text-gray-500 uppercase">
-                  Tenure
-                </h5>
-                {loanLoading ? (
-                  <div className="sm:self-end w-10 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-                ) : (
-                  <p className="sm:text-end text-gray-800 dark:text-gray-200">
-                    {transactions[0].tenure} years
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="sm:hidden border-b border-gray-200"></div>
-          </div>
-        </>
-      )}
-
       <div className="mt-8 flex sm:justify-end">
         <div className="w-full max-w-2xl sm:text-end space-y-2">
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2">
-            <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
-              <dt className="col-span-3 text-gray-500">Rebate:</dt>
-              {paymentLoading ? (
-                <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
-              ) : (
-                <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                  P{transactions[0] ? transactions[0].motorcycle.rebate : 500}
-                </dd>
-              )}
-            </dl>
             <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
               <dt className="col-span-3 text-gray-500">
                 Monthly Amortization:
@@ -378,16 +220,23 @@ const Invoice = React.forwardRef((props, ref) => {
                 <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
               ) : (
                 <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
-                  {calculateAmortization(
-                    transactions[0]?.motorcycle.price ?? 150000,
-                    transactions[0]?.motorcycle.rebate ?? 500,
-                    transactions[0]?.motorcycle.interest ?? 8,
-                    transactions[0]?.tenure ?? 2,
-                    transactions[0]?.motorcycle.downpayment ?? 20000
-                  ).monthlyPayment.toFixed(2)}
+                  {getAmortization}
                 </dd>
               )}
             </dl>
+            <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
+              <dt className="col-span-3 text-gray-500">Rebate:</dt>
+              {paymentLoading ? (
+                <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
+              ) : (
+                <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                  {`₱${parseFloat(
+                    transactions[0]?.motorcycle.rebate
+                  ).toLocaleString()}`}
+                </dd>
+              )}
+            </dl>
+
             <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
               <dt className="col-span-3 text-gray-500">Penalty:</dt>
               {paymentLoading ? (
@@ -410,6 +259,21 @@ const Invoice = React.forwardRef((props, ref) => {
               )}
             </dl>
             <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
+              <dt className="col-span-3 text-gray-500">Advance Payment:</dt>
+              {paymentLoading || !getAmortization ? (
+                <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
+              ) : (
+                <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200">
+                  {`₱${parseFloat(
+                    calculateAdvancePayment(
+                      payment.amount_paid,
+                      getAmortizationInt
+                    )
+                  ).toLocaleString()}`}
+                </dd>
+              )}
+            </dl>
+            <dl className="grid sm:grid-cols-5 gap-x-3 text-sm">
               <dt className="col-span-3 text-gray-800 font-bold text-lg">
                 Total Amount Paid:
               </dt>
@@ -417,13 +281,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
               ) : (
                 <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200 font-bold text-lg">
-                  {calculateAmortization(
-                    transactions[0]?.motorcycle.price ?? 150000,
-                    transactions[0]?.motorcycle.rebate ?? 500,
-                    transactions[0]?.motorcycle.interest ?? 8,
-                    transactions[0]?.tenure ?? 2,
-                    transactions[0]?.motorcycle.downpayment ?? 20000
-                  ).totalMonthlyPayment.toFixed(2)}
+                  {`₱${parseFloat(payment.amount_paid).toLocaleString()}`}
                 </dd>
               )}
             </dl>

@@ -23,13 +23,6 @@ const LoansPrint = React.forwardRef(
     const evaluatedCount = filteredLoans.filter(l => l.apply_status === "evaluated").length;
     const approvedCount = filteredLoans.filter(l => l.apply_status === "approved").length;
     const incompleteCount = filteredLoans.filter(l => l.apply_status === "incomplete").length;
-
-    useEffect(() => {
-      console.log("type is now:", filterType);
-      console.log("loans:", loans);
-      console.log("filtered loans:", filteredLoans);
-      // console.log("Units:", unitLoaned)
-    }, [filterType, loans]);
     
     return (
       <div ref={ref} className="p-4 bg-white w-full text-black">

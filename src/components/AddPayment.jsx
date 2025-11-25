@@ -26,13 +26,13 @@ export default function AddPayment() {
   const { emi, transactions } = useSelector(LoanEntity);
   const { cert_num } = useSelector(PaymentEntity);
   const { modals } = useSelector((state) => state.ui);
+  const [rebate, setRebate] = useState({});
   const { due_date, amount_due } = useSelector(
     (state) => state.schedule.schedule
   );
-  const [rebate, setRebate] = useState({});
+
   const now = new Date();
   const emptyTrans = transactions.length === 0;
-
   const [payment, setPayment] = useState({
     application_form_id: id,
     issued_at: "Rhean Motors Center",
@@ -92,7 +92,7 @@ export default function AddPayment() {
   }
 
   function afterRebate() {
-    const required = amount_due - transactions[0].motorcycle.rebate;
+    const required = amount_due - transactions[0]?.motorcycle?.rebate;
 
     setRebate({
       ...rebate,
@@ -112,6 +112,13 @@ export default function AddPayment() {
       dispatch(
         toggleModal({ name: "confirmPayment", value: modals.confirmPayment })
       );
+      setPayment({
+        application_form_id: id,
+        issued_at: "Rhean Motors Center",
+        status: "on_time",
+        user_id: user_id,
+        amount_paid: emi,
+      });
     } catch (error) {
       console.error("Error: ", error);
       dispatch(setLoading({ isActive: false }));
@@ -197,7 +204,7 @@ export default function AddPayment() {
 
           <dl className="flex items-center justify-between gap-4 py-3">
             <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-              Amount Due
+              Monthly Due
             </dt>
             <dd className="text-base font-medium text-red-500">
               ₱{parseFloat(emi).toLocaleString()}

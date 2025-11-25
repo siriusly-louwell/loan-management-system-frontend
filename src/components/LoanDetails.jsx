@@ -15,10 +15,12 @@ export default function LoanDetails({ setApproval }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loan = useSelector(LoanEntity);
-  const { due_date, amount_due } = useSelector((state) => state.schedule.schedule);
   const { isAdmin, role } = useSelector(UserEntity);
   const { modals } = useSelector((state) => state.ui);
   const { loanLoading } = useSelector((state) => state.application);
+  const { due_date, amount_due } = useSelector(
+    (state) => state.schedule.schedule
+  );
   const statusCondition =
     loan.status === "evaluated" ||
     loan.status === "approved" ||
@@ -28,8 +30,8 @@ export default function LoanDetails({ setApproval }) {
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <GoBackButton />
       <div className="flex w-full space-x-3 items-center">
-        <GoBackButton />
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
           Track the loan {loan.record_id}
         </h2>
@@ -90,7 +92,7 @@ export default function LoanDetails({ setApproval }) {
                   price: trans.motorcycle.price,
                   quantity: trans.quantity,
                   tenure: trans.tenure,
-                  amortization: loan.getAmortization,
+                  amortization: loan.emi,
                   motorcycle: trans.motorcycle,
                 }}
                 load={loanLoading}

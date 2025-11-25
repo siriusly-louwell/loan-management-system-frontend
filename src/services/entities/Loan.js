@@ -66,6 +66,10 @@ export class Loan {
       : "N/A";
   }
 
+  get getAmortizationInt() {
+    return this.amortization ?? 0;
+  }
+
   get getRent() {
     return `₱${parseFloat(this.rent).toLocaleString()}`;
   }

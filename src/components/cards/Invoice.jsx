@@ -28,9 +28,6 @@ const Invoice = React.forwardRef((props, ref) => {
     day: "numeric",
   });
 
-  console.log(transactions);
-  console.log(payment);
-
   return (
     <section ref={ref} className="p-4 bg-white dark:bg-gray-800/90 rounded-lg">
       <div className="mb-5 pb-5 flex justify-between items-center border-b border-rose-500 dark:border-rose-500">

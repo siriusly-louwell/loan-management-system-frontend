@@ -143,7 +143,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
               ) : (
                 <dd className="col-span-2 font-medium text-gray-800 dark:text-gray-200 border border-gray-800">
-                  {`₱${payment.amount_paid.toLocaleString()}`}
+                  {`₱${payment?.amount_paid?.toLocaleString()}`}
                 </dd>
               )}
             </dl>

@@ -46,6 +46,16 @@ export default function AddPayment() {
   }, [id, dispatch]);
 
   useEffect(() => {
+    setPayment({
+      application_form_id: id,
+      issued_at: "Rhean Motors Center",
+      status: "on_time",
+      user_id: user_id,
+      amount_paid: emi,
+    });
+  }, [])
+
+  useEffect(() => {
     if (due_date) checkRebate(due_date);
     if (rebate.onTime) afterRebate();
   }, [due_date, rebate.onTime]);

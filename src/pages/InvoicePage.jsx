@@ -36,7 +36,7 @@ export default function InvoicePage() {
   });
 
   return (
-    <div className="max-w-full min-h-screen px-4 sm:px-6 lg:px-28 mx-auto py-4 bg-gray-100 dark:bg-gray-900 sm:py-10">
+    <div className="max-w-full h-screen px-4 sm:px-6 lg:px-28 mx-auto py-4 bg-gray-100 dark:bg-gray-900 sm:py-10">
       <div className="flex justify-end mb-4">
         <BttnwithIcon text="Print Invoice" click={handlePrint}>
           <div className="mr-2">

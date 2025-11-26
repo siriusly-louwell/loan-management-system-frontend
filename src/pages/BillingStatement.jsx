@@ -67,7 +67,7 @@ export default function BillingStatement() {
         <Section title="CURRENT BILLING">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Field
-              label="Monthly Payment"
+              label="Monthly Amortization"
               value={currency(loan.amortization)}
             />
             <Field

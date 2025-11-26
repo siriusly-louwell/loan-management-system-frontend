@@ -42,7 +42,7 @@ const Invoice = React.forwardRef((props, ref) => {
         <div>
           <div className="grid space-y-3">
             <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
-              <dt className="min-w-36 max-w-50 text-gray-500">Invoice No.</dt>
+              <dt className="min-w-36 max-w-50 text-gray-500">Reference No.</dt>
               <dd className="text-gray-800 dark:text-gray-200">
                 {loanLoading ? (
                   <div className="w-40 h-4 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
@@ -116,8 +116,8 @@ const Invoice = React.forwardRef((props, ref) => {
               </dd>
             )}
           </dl>
-          <dl className="grid sm:grid-cols-5 gap-x-3 text-md">
-            <dt className="col-span-3 text-gray-500">Brand / Model:</dt>
+          <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+            <dt className="min-w-36 max-w-50 text-gray-500">Brand/Model</dt>
             {!transactions[0]?.motorcycle ? (
               <div className="w-20 h-5 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
             ) : (
@@ -130,7 +130,7 @@ const Invoice = React.forwardRef((props, ref) => {
           </dl>
         </div>
       </div>
-      <div>
+      <div className="mt-8">
         <div className="gap-3 grid-cols-1 w-full border">
           <div className="border border-gray-800 rounded overflow-hidden ">
             {/* Header Row */}
@@ -143,11 +143,11 @@ const Invoice = React.forwardRef((props, ref) => {
 
             {/* Monthly Payment */}
             <dl className="grid sm:grid-cols-5 gap-0 text-md border-b border-gray-800 w-full">
-              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800">
+              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800 dark:text-gray-200">
                 Monthly Payment:
               </dt>
 
-              <dd className="col-span-2 font-medium text-gray-800 p-2">
+              <dd className="col-span-2 font-medium text-gray-800 p-2 dark:text-gray-200">
                 {paymentLoading ? (
                   <div className="w-20 h-5 bg-gray-200 rounded animate-pulse" />
                 ) : (
@@ -158,10 +158,10 @@ const Invoice = React.forwardRef((props, ref) => {
 
             {/* Penalty */}
             <dl className="grid sm:grid-cols-5 gap-0 text-md border-b border-gray-800 w-full">
-              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800">
+              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800 dark:text-gray-200">
                 Penalty:
               </dt>
-              <dd className="col-span-2 font-medium text-gray-800 p-2">
+              <dd className="col-span-2 font-medium text-gray-800 p-2 dark:text-gray-200">
                 {paymentLoading ? (
                   <div className="w-20 h-5 bg-gray-200 rounded animate-pulse" />
                 ) : (
@@ -172,10 +172,10 @@ const Invoice = React.forwardRef((props, ref) => {
 
             {/* Other Charges */}
             <dl className="grid sm:grid-cols-5 gap-0 text-md border-b border-gray-800 w-full">
-              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800">
+              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800 dark:text-gray-200">
                 Other Charges:
               </dt>
-              <dd className="col-span-2 font-medium text-gray-800 p-2">
+              <dd className="col-span-2 font-medium text-gray-800 p-2 dark:text-gray-200">
                 {paymentLoading ? (
                   <div className="w-20 h-5 bg-gray-200 rounded animate-pulse" />
                 ) : (
@@ -186,10 +186,10 @@ const Invoice = React.forwardRef((props, ref) => {
 
             {/* Rebate */}
             <dl className="grid sm:grid-cols-5 gap-0 text-md border-b border-gray-800 w-full">
-              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800">
+              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-800 dark:text-gray-200">
                 Rebate:
               </dt>
-              <dd className="col-span-2 font-medium text-gray-800 p-2">
+              <dd className="col-span-2 font-medium text-gray-800 p-2 dark:text-gray-200">
                 {paymentLoading ? (
                   <div className="w-20 h-5 bg-gray-200 rounded animate-pulse" />
                 ) : (
@@ -202,10 +202,10 @@ const Invoice = React.forwardRef((props, ref) => {
 
             {/* Total Amount Paid */}
             <dl className="grid sm:grid-cols-5 gap-0 text-lg font-bold w-full">
-              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-900">
+              <dt className="col-span-2 text-gray-800 p-2 border-r border-gray-900 dark:text-gray-200">
                 Total Amount Paid:
               </dt>
-              <dd className="col-span-2 text-gray-800 p-2 border-gray-900">
+              <dd className="col-span-2 text-gray-800 p-2 border-gray-900 dark:text-gray-200">
                 {paymentLoading ? (
                   <div className="w-20 h-5 bg-gray-200 rounded animate-pulse" />
                 ) : (

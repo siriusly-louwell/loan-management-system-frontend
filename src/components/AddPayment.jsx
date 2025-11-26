@@ -44,16 +44,8 @@ export default function AddPayment() {
   useEffect(() => {
     if (id) dispatch(fetchSchedule({ id: id }));
   }, [id, dispatch]);
-
-  useEffect(() => {
-    setPayment({
-      application_form_id: id,
-      issued_at: "Rhean Motors Center",
-      status: "on_time",
-      user_id: user_id,
-      amount_paid: emi,
-    });
-  }, [emi])
+  
+  console.log(payment);
 
   useEffect(() => {
     if (due_date) checkRebate(due_date);
@@ -66,15 +58,17 @@ export default function AddPayment() {
         ...payment,
         application_form_id: id,
         user_id: user_id,
+        amount_paid: emi,
         total_amount: transactions[0].motorcycle.price,
       });
-  }, [id, user_id, emptyTrans]);
+  }, [id, user_id, emptyTrans, emi]);
 
   function handleChange(event) {
     setPayment({
       ...payment,
       [event.target.name]: event.target.value,
     });
+    console.log(event.target.value);
 
     setAlert({ text: `Please confirm the payment ₱${event.target.value}` });
   }

@@ -239,7 +239,8 @@ export default function Cashier() {
                         ).toLocaleString()}`}
                   </dd>
                 </dl>
-
+                
+                {!emptyObj &&
                 <dl className="mt-5">
                   <Button
                     text="Add Payment"
@@ -255,6 +256,8 @@ export default function Cashier() {
                     }}
                   />
                 </dl>
+                }
+                
               </div>
             </div>
           </div>

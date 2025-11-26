@@ -53,7 +53,7 @@ export default function AddPayment() {
       user_id: user_id,
       amount_paid: emi,
     });
-  }, [])
+  }, [emi])
 
   useEffect(() => {
     if (due_date) checkRebate(due_date);

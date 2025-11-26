@@ -38,7 +38,7 @@ const Invoice = React.forwardRef((props, ref) => {
           <img src={RMCI} className="h-8 rmci hidden" alt="Rhean Motor Logo" />
         </div>
       </div>
-      <div className="grid md:grid-cols-2 gap-3">
+      <div className="grid gap-3">
         <div>
           <div className="grid space-y-3">
             <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
@@ -221,7 +221,12 @@ const Invoice = React.forwardRef((props, ref) => {
         </div>
       </div>
 
-      <div className="mt-8 flex sm:justify-end">
+              
+      {/* 
+        IPATANNGAL DAW NI ANA SA CLIENT
+      
+      */}
+      {/* <div className="mt-8 flex sm:justify-end">
         <div className="w-full max-w-2xl sm:text-end space-y-2">
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2"></div>
           <button
@@ -234,7 +239,7 @@ const Invoice = React.forwardRef((props, ref) => {
             <span className="truncate max-w-[200px]">Receipt</span>
           </button>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 });

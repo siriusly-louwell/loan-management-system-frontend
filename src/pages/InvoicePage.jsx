@@ -36,16 +36,18 @@ export default function InvoicePage() {
   });
 
   return (
-    <div className="max-w-full h-screen px-4 sm:px-6 lg:px-28 mx-auto py-4 bg-gray-100 dark:bg-gray-900 sm:py-10">
-      <div className="flex justify-end mb-4">
-        <BttnwithIcon text="Print Invoice" click={handlePrint}>
-          <div className="mr-2">
-            <Printer className="w-4 h-4" />
-          </div>
-        </BttnwithIcon>
+    <div className="max-w-[640px] w-full h-full px-4 sm:px-6 lg:px-10 mx-auto py-4 sm:py-10">
+      <div className="bg-gray-100 dark:bg-gray-900 py-6 px-8 rounded-xl">
+        <div className="flex justify-end mb-4">
+          <BttnwithIcon text="Print Invoice" click={handlePrint}>
+            <div className="mr-2">
+              <Printer className="w-4 h-4" />
+            </div>
+          </BttnwithIcon>
+        </div>
+        <Invoice ref={componentRef} />
+        <CollectionReceipt />
       </div>
-      <Invoice ref={componentRef} />
-      <CollectionReceipt />
 
       <style>
         {`

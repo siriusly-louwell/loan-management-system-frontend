@@ -46,6 +46,16 @@ export default function AddPayment() {
   }, [id, dispatch]);
 
   useEffect(() => {
+    setPayment({
+      application_form_id: id,
+      issued_at: "Rhean Motors Center",
+      status: "on_time",
+      user_id: user_id,
+      amount_paid: emi,
+    });
+  }, [emi])
+
+  useEffect(() => {
     if (due_date) checkRebate(due_date);
     if (rebate.onTime) afterRebate();
   }, [due_date, rebate.onTime]);
@@ -217,9 +227,10 @@ export default function AddPayment() {
               label="Payment Amount"
               id="amount"
               name="amount_paid"
-              type="number"
+              type="text"
               placeholder="₱10,000"
               onchange={(e) => handleChange(e)}
+              step="any"
             />
             {rebate.onTime ? (
               <div className="text-green-500 flex space-x-2 items-center mt-1">

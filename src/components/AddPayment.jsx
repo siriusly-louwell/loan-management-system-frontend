@@ -39,6 +39,7 @@ export default function AddPayment() {
     status: "on_time",
     user_id: user_id,
     amount_paid: emi,
+    reciept_number: ""
   });
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function AddPayment() {
         application_form_id: id,
         user_id: user_id,
         amount_paid: emi,
+        reciept_number: '',
         total_amount: transactions[0].motorcycle.price,
       });
   }, [id, user_id, emptyTrans, emi]);
@@ -240,6 +242,18 @@ export default function AddPayment() {
                 </span>
               </div>
             )}
+          </dl>
+
+          <dl className="gap-4 py-3">
+            <FormInput
+              value={payment.reciept_number}
+              label="Official Receipt Number"
+              id="receipt_number"
+              name="receipt_number"
+              type="text"
+              placeholder="Official Receipt Number"
+              onchange={(e) => handleChange(e)}
+            />
           </dl>
 
           <dl className="mt-5">

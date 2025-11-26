@@ -29,7 +29,7 @@ const Invoice = React.forwardRef((props, ref) => {
   });
 
   return (
-    <section ref={ref} className="p-4 bg-white dark:bg-gray-800 rounded-lg">
+    <section ref={ref} className="p-4 bg-white dark:bg-gray-800/90 rounded-lg">
       <div className="mb-5 pb-5 flex justify-between items-center border-b border-rose-500 dark:border-rose-500">
         <div>
           <h2 className="print-title text-2xl font-semibold text-gray-800 dark:text-gray-200">
@@ -53,7 +53,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 )}
               </dd>
             </dl>
-            <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
               <dt className="min-w-36 max-w-50 text-gray-500">Date Issued</dt>
               <dd className="text-gray-800 dark:text-gray-200">
                 {loanLoading ? (
@@ -65,7 +65,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 )}
               </dd>
             </dl>{" "}
-            <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
               <dt className="min-w-36 max-w-50 text-gray-500">Cashier</dt>
               <dd className="text-gray-800 dark:text-gray-200">
                 {loanLoading ? (
@@ -77,7 +77,7 @@ const Invoice = React.forwardRef((props, ref) => {
                 )}
               </dd>
             </dl>
-            <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+            <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
               <dt className="min-w-36 max-w-50 text-gray-500">Status</dt>
               <dd className="text-gray-800 dark:text-gray-200">
                 {loanLoading ? (
@@ -91,22 +91,22 @@ const Invoice = React.forwardRef((props, ref) => {
             </dl>
           </div>
         </div>
-      </div>
-      <div className="grid md:grid-cols-2 gap-3">
+
+        <div></div>
         <div className="grid space-y-3">
-          <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+          <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
             <dt className="min-w-36 max-w-50 text-gray-500">Customer Name:</dt>
             <dd className="font-medium text-gray-800 dark:text-gray-200">
               {fullName}
             </dd>
           </dl>
-          <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+          <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
             <dt className="min-w-36 max-w-50 text-gray-500">Contact Number:</dt>
             <dd className="font-medium text-gray-800 dark:text-gray-200">
               {contactNumber}
             </dd>
           </dl>
-          <dl className="flex flex-col sm:flex-row gap-x-3 text-md">
+          <dl className="flex flex-col sm:flex-row gap-x-3 text-sm">
             <dt className="min-w-36 max-w-50 text-gray-500">Address:</dt>
             {loanLoading ? (
               <div className="w-20 h-4 bg-gray-100 dark:bg-gray-700 rounded-md animate-pulse" />
@@ -195,9 +195,9 @@ const Invoice = React.forwardRef((props, ref) => {
                 ) : (
                   `₱${parseFloat(
                     transactions[0]?.motorcycle.rebate
-                  ).toLocaleString()}`
-                )}
-              </dd>
+                  ).toLocaleString()}`}
+                </dd>
+              )}
             </dl>
 
             {/* Total Amount Paid */}
@@ -214,11 +214,26 @@ const Invoice = React.forwardRef((props, ref) => {
                       payment.amount_paid,
                       transactions[0]?.motorcycle.rebate
                     )
-                  ).toFixed(2)}`
-                )}
-              </dd>
+                  )}`}
+                </dd>
+              )}
             </dl>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-8 flex sm:justify-end">
+        <div className="w-full max-w-2xl sm:text-end space-y-2">
+          <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-2"></div>
+          <button
+            onClick={() =>
+              dispatch(toggleModal({ name: "receipt", value: modals.receipt }))
+            }
+            className="inline-flex items-center gap-2 py-3 text-sm text-gray-600 hover:text-rose-600 focus:text-gray-900 hover:bg-gray-100 rounded-md transition-colors duration-200 dark:text-gray-400 dark:hover:text-rose-500 dark:focus:text-white dark:hover:bg-gray-800"
+          >
+            <FileDown size={16} />
+            <span className="truncate max-w-[200px]">Receipt</span>
+          </button>
         </div>
       </div>
     </section>

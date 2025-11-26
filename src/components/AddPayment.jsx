@@ -227,9 +227,10 @@ export default function AddPayment() {
               label="Payment Amount"
               id="amount"
               name="amount_paid"
-              type="number"
+              type="text"
               placeholder="₱10,000"
               onchange={(e) => handleChange(e)}
+              step="any"
             />
             {rebate.onTime ? (
               <div className="text-green-500 flex space-x-2 items-center mt-1">

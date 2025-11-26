@@ -22,6 +22,10 @@ export default function CustomerHistoryDetails() {
     dispatch(fetchUserPayments({ userId }));
   }, [userId, dispatch]);
 
+  useEffect(() => {
+    console.log(payments);
+  })
+
   const navigate = useNavigate();
 
   return (

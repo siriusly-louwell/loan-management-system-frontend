@@ -19,6 +19,7 @@ import {
   disableAddress,
 } from "../services/redux/slices/formSlice";
 import { UserEntity } from "../services/entities/User";
+import { UnitEntity } from "../services/entities/Unit";
 
 export default function PersonalInfoForm() {
   const dispatch = useDispatch();
@@ -33,16 +34,55 @@ export default function PersonalInfoForm() {
     (state) => state.address
   );
   const [contactNumber, setContactNumber] = useState(formData.applicant.contact_num);
-
+  const [emi, setEmi] = useState(0);
 
   useEffect(() => {
     dispatch(setType("applicant"));
     if (role !== "customer") dispatch(initialForm({}));
   }, []);
 
+  // Recalculate EMI whenever formData or related fields change
   useEffect(() => {
+    const unitSelected = formData.unit;
+    const loanAmount = unitSelected?.price && unitSelected?.downpayment 
+      ? unitSelected.price - unitSelected.downpayment 
+      : 0;
+
+    // Monthly interest rate (annual interest rate of 10%)
+    const monthlyInterestRate = (unitSelected.interest ?? 10) / 12 / 100;  // 10% annual interest rate
+    const tenureInYears = unitSelected?.tenure || 3;  // Default tenure to 3 years if not specified
+    const tenureInMonths = tenureInYears * 12;  // Convert tenure from years to months
+    const quantity = unitSelected?.quantity || 1;  // Default quantity of 1 unit if not specified
+
+ 
+
+    // EMI calculation
+    const newEmi = loanAmount === 0 || monthlyInterestRate === 0
+      ? Math.ceil(loanAmount / tenureInMonths)  // If no loan or interest, simple division of loan amount by tenure (in months)
+      : Math.ceil(
+          (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenureInMonths)) /
+          (Math.pow(1 + monthlyInterestRate, tenureInMonths) - 1) * quantity
+        );
+
+    console.log("Loan Amount: ", loanAmount);
+    console.log("Monthly Interest Rate: ", monthlyInterestRate);
+    console.log("Tenure in Years: ", tenureInYears);
+    console.log("Tenure in Months: ", tenureInMonths);
+    console.log("Quantity: ", quantity);
+    console.log("Monthly Amortization: ", newEmi);
+
+
+    console.log(formData);
+    setEmi(newEmi);
+
+    // Dispatch action if needed, based on changes to formData
     dispatch(disableAddress());
-  }, [formData, dispatch]);
+  }, [formData, dispatch, emi]); 
+
+  
+  function currency(num) {
+    return `₱${parseFloat(num || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+  }
 
   // Apply dispatchInput, at the same, limits the character length
   function onChangeContact(event){
@@ -209,15 +249,20 @@ export default function PersonalInfoForm() {
             placeholder="Other reason"
           /> */}
         </div>
-        <FormInput
-          label="Amortization Monthly"
-          type="number"
+        
+        <input type="hidden" type="hidden"
           name="amortization"
           id="amortization"
-          value={formData.applicant.amortization}
-          onchange={(e) => dispatchInput(e)}
+          value={emi}
+        />
+        <FormInput
+          label="Amortization Monthly"
+          type="text"
+          name="fake_amortization"
+          id="fake_amortization"
+          value={currency(emi)}
           placeholder="₱5,000"
-          require={true}
+          readOnly
         />
         <FormInput
           label="Rent Monthly"

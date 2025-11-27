@@ -30,6 +30,17 @@ export default function AddPayment() {
   const { due_date, amount_due } = useSelector(
     (state) => state.schedule.schedule
   );
+  const loan = useSelector(LoanEntity);
+  const [downPayment, setDownPayment] = useState(0);
+  const [receiptNumber, setReceiptNumber] = useState('');
+  
+  useEffect(() => {
+    // Safely update downPayment using setDownPayment
+    if (loan && loan.downpayment) {
+      const parsedDownPayment = parseFloat(loan.downpayment.replace(/₱|,/g, ''));
+      setDownPayment(parsedDownPayment);
+    }
+  }, [loan]);
 
   const now = new Date();
   const emptyTrans = transactions.length === 0;
@@ -39,14 +50,13 @@ export default function AddPayment() {
     status: "on_time",
     user_id: user_id,
     amount_paid: emi,
-    reciept_number: ""
+    receipt_number: receiptNumber
   });
 
   useEffect(() => {
     if (id) dispatch(fetchSchedule({ id: id }));
   }, [id, dispatch]);
   
-  console.log(payment);
 
   useEffect(() => {
     if (due_date) checkRebate(due_date);
@@ -60,20 +70,25 @@ export default function AddPayment() {
         application_form_id: id,
         user_id: user_id,
         amount_paid: emi,
-        reciept_number: '',
+        receipt_number: receiptNumber,
         total_amount: transactions[0].motorcycle.price,
       });
   }, [id, user_id, emptyTrans, emi]);
 
   function handleChange(event) {
-    setPayment({
-      ...payment,
-      [event.target.name]: event.target.value,
-    });
-    console.log(event.target.value);
+    const { name, value } = event.target;
+    setPayment((prevPayment) => ({
+      ...prevPayment,
+      [name]: value,
+    }));
 
-    setAlert({ text: `Please confirm the payment ₱${event.target.value}` });
+    // Logging the value (optional for debugging)
+    console.log(value);
+
+    // Updating the alert message
+    setAlert({ text: `Please confirm the payment ₱${value}` });
   }
+
 
   function checkInput() {
     if (!payment.amount_paid || payment.amount_paid === "__EMPTY__") {
@@ -105,7 +120,7 @@ export default function AddPayment() {
       amount: `₱${parseFloat(required).toLocaleString()}`,
     });
 
-    setPayment({ ...payment, amount_paid: required });
+    setPayment({ ...payment, amount_paid: required, receipt_number: required });
   }
 
   async function handleSubmit(event) {
@@ -126,6 +141,7 @@ export default function AddPayment() {
         status: "on_time",
         user_id: user_id,
         amount_paid: emi,
+        receipt_number: receiptNumber,
       });
     } catch (error) {
       console.error("Error: ", error);
@@ -143,7 +159,7 @@ export default function AddPayment() {
     <>
       Add payment amount{" "}
       <strong className="text-rose-500">
-        ₱{parseFloat(payment.amount_paid).toLocaleString()}{" "}
+        ₱{parseFloat(loan.transactions ? payment.amount_paid : downPayment).toLocaleString()}{" "}
       </strong>
       <br />
       for loan <strong className="text-rose-500">{record_id}</strong>?
@@ -221,8 +237,8 @@ export default function AddPayment() {
 
           <dl className="gap-4 py-3">
             <FormInput
-              value={payment.amount_paid}
-              label="Payment Amount"
+              value={loan.transactions ? payment.amount_paid : downPayment}
+              label={loan.transactions ? 'Payment Amount' : 'Down Payment'}
               id="amount"
               name="amount_paid"
               type="text"
@@ -248,14 +264,16 @@ export default function AddPayment() {
 
           <dl className="gap-4 py-3">
             <FormInput
-              value={payment.reciept_number}
+              value={receiptNumber}
+              onChange={(e) => setReceiptNumber(e.target.value)}
               label="Official Receipt Number"
               id="receipt_number"
               name="receipt_number"
               type="text"
               placeholder="Official Receipt Number"
-              onchange={(e) => handleChange(e)}
+              required
             />
+
           </dl>
 
           <dl className="mt-5">

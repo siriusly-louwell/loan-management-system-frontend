@@ -80,6 +80,26 @@ export default function BillingStatement() {
           </button>
         </header>
 
+        
+
+        <Section title="STATEMENT SUMMARY">
+          <div className="grid grid-cols-3 gap-4">
+            <SummaryBox
+              label="Original Loan Amount"
+              value={currency(totals.initialLoanAmount)}
+            />
+            <SummaryBox
+              label="Total Payments"
+              value={currency(totals.totalPaid)}
+            />
+            <SummaryBox
+              label="Outstanding Balance"
+              value={currency(totals.lastBalance)}
+              highlight
+            />
+          </div>
+        </Section>
+
         <Section title="CURRENT BILLING">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Field
@@ -98,7 +118,9 @@ export default function BillingStatement() {
             <Field
               label="Interest"
               value={
-                loan.id && currency(loan.transactions[0].motorcycle.interest)
+                loan.id
+                  ? `${loan.transactions[0].motorcycle.interest}%`
+                  : ''
               }
             />
 
@@ -107,7 +129,7 @@ export default function BillingStatement() {
                 label="Total Amount Due"
                 value={
                   loan?.id
-                    ? currency(loan.emi + (loan.transactions?.[0]?.motorcycle?.interest ?? 0))
+                    ? currency(loan.emi)
                     : ''
                 }
               />
@@ -135,24 +157,6 @@ export default function BillingStatement() {
               )}
 
 
-          </div>
-        </Section>
-
-        <Section title="STATEMENT SUMMARY">
-          <div className="grid grid-cols-3 gap-4">
-            <SummaryBox
-              label="Original Loan Amount"
-              value={currency(totals.initialLoanAmount)}
-            />
-            <SummaryBox
-              label="Total Payments"
-              value={currency(totals.totalPaid)}
-            />
-            <SummaryBox
-              label="Outstanding Balance"
-              value={currency(totals.lastBalance)}
-              highlight
-            />
           </div>
         </Section>
 

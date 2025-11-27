@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
@@ -11,12 +11,16 @@ import {
   fetchLoan,
   getLoanId,
 } from "../services/redux/slices/applicationSlice";
+import CustomBttn from "../components/buttons/CustomBttn";
+import { useReactToPrint } from "react-to-print";
+import ComakerPrintable from "../components/ComakerFormPrint";
 
 export default function CoMakerForm() {
   const dispatch = useDispatch();
   const comaker = useSelector(ComakerEntity);
   const { address } = useSelector(ApplicationEntity);
   const { loanID, loanLoading } = useSelector((state) => state.application);
+  const printRef = useRef(null);
 
   useEffect(() => {
     dispatch(getLoanId());
@@ -26,6 +30,10 @@ export default function CoMakerForm() {
     if (loanID) dispatch(fetchLoan({ id: loanID, by: "id" }));
   }, [loanID, dispatch]);
 
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: "Comaker Form",
+  });
   return (
     <div className="w-full bg-gray-100 dark:bg-gray-900">
       <section className="max-w-3xl mx-auto p-4">
@@ -37,23 +45,36 @@ export default function CoMakerForm() {
           contact={comaker.contact_num}
           img={comaker.imgURL}
           loading={loanLoading}
-          address={address?.comaker_pres}>
-          {loanLoading ? (
-            <div className="flex space-x-3">
-              <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
-              <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
-              <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+          address={address?.comaker_pres}
+        >
+          <div className="flex justify-between flex-row">
+            {loanLoading ? (
+              <div className="flex space-x-3">
+                <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+                <div className="w-16 h-5 rounded-md bg-gray-100 dark:bg-gray-600 animate-pulse" />
+              </div>
+            ) : (
+              <div>
+                <FileButton name="Valid ID" link={comaker.sketch} />
+                <FileButton name="ID Picture" link={comaker.imgURL} />
+                <FileButton
+                  name="Proof of Residence"
+                  link={comaker.residenceImg}
+                />
+              </div>
+            )}
+            <div>
+              {" "}
+              {/* PRINT BUTTON */}
+              <button
+                className="ml-4 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                onClick={handlePrint}
+              >
+                Print Form
+              </button>
             </div>
-          ) : (
-            <>
-              <FileButton name="Valid ID" link={comaker.sketch} />
-              <FileButton name="ID Picture" link={comaker.imgURL} />
-              <FileButton
-                name="Proof of Residence"
-                link={comaker.residenceImg}
-              />
-            </>
-          )}
+          </div>
         </ProfileHeader>
 
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
@@ -162,6 +183,17 @@ export default function CoMakerForm() {
             </div>
           </div>
         </ApplicationInfoCard>
+        {/* ...your existing ApplicationInfoCard sections remain unchanged... */}
+
+        {/* PRINTABLE HIDDEN CONTENT */}
+        <div style={{ display: "none" }}>
+          <ComakerPrintable
+            ref={printRef}
+            comaker={comaker}
+            address={address}
+            FORM_LABELS={FORM_LABELS}
+          />
+        </div>
       </section>
     </div>
   );

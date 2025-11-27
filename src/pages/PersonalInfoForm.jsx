@@ -19,7 +19,6 @@ import {
   disableAddress,
 } from "../services/redux/slices/formSlice";
 import { UserEntity } from "../services/entities/User";
-import { UnitEntity } from "../services/entities/Unit";
 
 export default function PersonalInfoForm() {
   const dispatch = useDispatch();
@@ -38,8 +37,8 @@ export default function PersonalInfoForm() {
 
   useEffect(() => {
     dispatch(setType("applicant"));
-    if (role !== "customer") dispatch(initialForm({}));
-  }, []);
+    if (role !== "customer") dispatch(initialForm({amortization: emi}));
+  }, [emi]);
 
   // Recalculate EMI whenever formData or related fields change
   useEffect(() => {
@@ -64,15 +63,6 @@ export default function PersonalInfoForm() {
           (Math.pow(1 + monthlyInterestRate, tenureInMonths) - 1) * quantity
         );
 
-    console.log("Loan Amount: ", loanAmount);
-    console.log("Monthly Interest Rate: ", monthlyInterestRate);
-    console.log("Tenure in Years: ", tenureInYears);
-    console.log("Tenure in Months: ", tenureInMonths);
-    console.log("Quantity: ", quantity);
-    console.log("Monthly Amortization: ", newEmi);
-
-
-    console.log(formData);
     setEmi(newEmi);
 
     // Dispatch action if needed, based on changes to formData
@@ -250,7 +240,7 @@ export default function PersonalInfoForm() {
           /> */}
         </div>
         
-        <input type="hidden" type="hidden"
+        <input type="hidden"
           name="amortization"
           id="amortization"
           value={emi}

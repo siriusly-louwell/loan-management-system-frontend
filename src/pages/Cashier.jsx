@@ -153,7 +153,10 @@ export default function Cashier() {
             </div>
           </div>
 
-          <div className="mt-6 w-full sticky top-10 space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
+          <div className={[
+              "mt-6 w-full sticky top-10 space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md",
+              emptyObj && "hidden"
+            ].filter(Boolean).join(" ")}>
             <div className="flow-root">
               <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">

@@ -104,6 +104,8 @@ export default function AddPayment() {
       ...rebate,
       amount: `₱${parseFloat(required).toLocaleString()}`,
     });
+
+    setPayment({ ...payment, amount_paid: required });
   }
 
   async function handleSubmit(event) {

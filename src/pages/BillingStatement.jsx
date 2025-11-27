@@ -40,6 +40,22 @@ export default function BillingStatement() {
     return `₱${parseFloat(num || 0).toLocaleString()}`;
   }
 
+  const monthlyPayments = payments.filter((p) => {
+    const d = new Date(p.created_at);
+    const now = new Date();
+
+    return (
+      d.getMonth() === now.getMonth() &&
+      d.getFullYear() === now.getFullYear()
+    );
+  });
+
+  const monthlyTotal = monthlyPayments.reduce(
+    (sum, p) => sum + (Number(p.amount_paid) || 0),
+    0
+  );
+
+
   return (
     <section className="w-full h-full py-10 print:py-0">
       <div className="max-w-5xl mx-auto bg-white border border-gray-400 rounded-lg shadow-md p-8 print:shadow-none print:border-none print:p-0">
@@ -67,8 +83,17 @@ export default function BillingStatement() {
         <Section title="CURRENT BILLING">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Field
-              label="Monthly Payment"
-              value={currency(loan.amortization)}
+              label="Reference #"
+              value={payments?.[0]?.cert_num ?? ''}
+            />
+            <Field
+              label="Total Amount"
+              value={currency(loan.emi)}
+            />
+            
+            <Field
+              label="Payment Due Date"
+              value={loan.due_date || "2025-11-21"}
             />
             <Field
               label="Interest"
@@ -76,16 +101,40 @@ export default function BillingStatement() {
                 loan.id && currency(loan.transactions[0].motorcycle.interest)
               }
             />
+
+            
             <Field
-              label="Down Payment"
-              value={
-                loan.id && currency(loan.transactions[0].downpayment)
-              }
-            />
-            <Field
-              label="Payment Due Date"
-              value={loan.due_date || "2025-11-21"}
-            />
+                label="Total Amount Due"
+                value={
+                  loan?.id
+                    ? currency(loan.emi + (loan.transactions?.[0]?.motorcycle?.interest ?? 0))
+                    : ''
+                }
+              />
+              {paymentsLoading ? (
+                <Field
+                  label="Unpaid Amortization"
+                  value="Loading..."
+                />
+              ) : (
+                <Field
+                  label="Unpaid Amortization"
+                  value={
+                    loan?.id
+                      ? currency(
+                          Math.max(
+                            0,
+                            (loan.emi +
+                              (loan.transactions?.[0]?.motorcycle?.interest ?? 0)) -
+                              monthlyTotal
+                          )
+                        )
+                      : ''
+                  }
+                />
+              )}
+
+
           </div>
         </Section>
 
@@ -133,13 +182,24 @@ export default function BillingStatement() {
                     </td>
                   </tr>
                 ) : (
-                  payments.map((p) => (
+                  payments
+                  .filter((p) => {
+                    const d = new Date(p.created_at);
+                    const now = new Date();
+
+                    return (
+                      d.getMonth() === now.getMonth() &&
+                      d.getFullYear() === now.getFullYear()
+                    );
+                  })
+                  .map((p) => (
                     <tr
                       key={p.id}
-                      className="odd:bg-gray-50 hover:bg-gray-100 border-t">
+                      className="odd:bg-gray-50 hover:bg-gray-100 border-t"
+                    >
                       <Td>{p.date}</Td>
                       <Td>{p.cert_num}</Td>
-                      <Td>{p.applicable_month}</Td>
+                      <Td>{new Date(p.created_at).toLocaleString("en-US", { month: "long" })}</Td>
                       <Td>{currency(p.amount_paid)}</Td>
                       <Td>{currency(p.balance)}</Td>
                     </tr>

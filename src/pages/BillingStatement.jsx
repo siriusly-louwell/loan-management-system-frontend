@@ -13,7 +13,6 @@ export default function BillingStatement() {
   const user = useSelector(UserEntity);
   const { paymentsLoading } = useSelector((s) => s.payment);
 
-  // Fetch customer payments (reuses repository filter param 'customer')
   useEffect(() => {
     if (user?.id) dispatch(fetchPayments({ customer: user.id }));
     if (payments[0]?.application?.id)
@@ -45,8 +44,7 @@ export default function BillingStatement() {
     const now = new Date();
 
     return (
-      d.getMonth() === now.getMonth() &&
-      d.getFullYear() === now.getFullYear()
+      d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
     );
   });
 
@@ -54,7 +52,6 @@ export default function BillingStatement() {
     (sum, p) => sum + (Number(p.amount_paid) || 0),
     0
   );
-
 
   return (
     <section className="w-full h-full py-10 print:py-0">
@@ -80,8 +77,6 @@ export default function BillingStatement() {
           </button>
         </header>
 
-        
-
         <Section title="STATEMENT SUMMARY">
           <div className="grid grid-cols-3 gap-4">
             <SummaryBox
@@ -102,15 +97,9 @@ export default function BillingStatement() {
 
         <Section title="CURRENT BILLING">
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <Field
-              label="Reference #"
-              value={payments?.[0]?.cert_num ?? ''}
-            />
-            <Field
-              label="Total Amount"
-              value={currency(loan.emi)}
-            />
-            
+            <Field label="Reference #" value={payments?.[0]?.cert_num ?? ""} />
+            <Field label="Total Amount" value={currency(loan.emi)} />
+
             <Field
               label="Payment Due Date"
               value={loan.due_date || "2025-11-21"}
@@ -118,45 +107,34 @@ export default function BillingStatement() {
             <Field
               label="Interest"
               value={
-                loan.id
-                  ? `${loan.transactions[0].motorcycle.interest}%`
-                  : ''
+                loan.id ? `${loan.transactions[0].motorcycle.interest}%` : ""
               }
             />
 
-            
             <Field
-                label="Total Amount Due"
+              label="Total Amount Due"
+              value={loan?.id ? currency(loan.emi) : ""}
+            />
+            {paymentsLoading ? (
+              <Field label="Unpaid Amortization" value="Loading..." />
+            ) : (
+              <Field
+                label="Unpaid Amortization"
                 value={
                   loan?.id
-                    ? currency(loan.emi)
-                    : ''
+                    ? currency(
+                        Math.max(
+                          0,
+                          loan.emi +
+                            (loan.transactions?.[0]?.motorcycle?.interest ??
+                              0) -
+                            monthlyTotal
+                        )
+                      )
+                    : ""
                 }
               />
-              {paymentsLoading ? (
-                <Field
-                  label="Unpaid Amortization"
-                  value="Loading..."
-                />
-              ) : (
-                <Field
-                  label="Unpaid Amortization"
-                  value={
-                    loan?.id
-                      ? currency(
-                          Math.max(
-                            0,
-                            (loan.emi +
-                              (loan.transactions?.[0]?.motorcycle?.interest ?? 0)) -
-                              monthlyTotal
-                          )
-                        )
-                      : ''
-                  }
-                />
-              )}
-
-
+            )}
           </div>
         </Section>
 
@@ -187,27 +165,30 @@ export default function BillingStatement() {
                   </tr>
                 ) : (
                   payments
-                  .filter((p) => {
-                    const d = new Date(p.created_at);
-                    const now = new Date();
+                    .filter((p) => {
+                      const d = new Date(p.created_at);
+                      const now = new Date();
 
-                    return (
-                      d.getMonth() === now.getMonth() &&
-                      d.getFullYear() === now.getFullYear()
-                    );
-                  })
-                  .map((p) => (
-                    <tr
-                      key={p.id}
-                      className="odd:bg-gray-50 hover:bg-gray-100 border-t"
-                    >
-                      <Td>{p.date}</Td>
-                      <Td>{p.cert_num}</Td>
-                      <Td>{new Date(p.created_at).toLocaleString("en-US", { month: "long" })}</Td>
-                      <Td>{currency(p.amount_paid)}</Td>
-                      <Td>{currency(p.balance)}</Td>
-                    </tr>
-                  ))
+                      return (
+                        d.getMonth() === now.getMonth() &&
+                        d.getFullYear() === now.getFullYear()
+                      );
+                    })
+                    .map((p) => (
+                      <tr
+                        key={p.id}
+                        className="odd:bg-gray-50 hover:bg-gray-100 border-t">
+                        <Td>{p.date}</Td>
+                        <Td>{p.cert_num}</Td>
+                        <Td>
+                          {new Date(p.created_at).toLocaleString("en-US", {
+                            month: "long",
+                          })}
+                        </Td>
+                        <Td>{currency(p.amount_paid)}</Td>
+                        <Td>{currency(p.balance)}</Td>
+                      </tr>
+                    ))
                 )}
               </tbody>
             </table>

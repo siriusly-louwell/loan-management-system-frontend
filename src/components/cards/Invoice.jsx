@@ -193,7 +193,9 @@ const Invoice = React.forwardRef((props, ref) => {
                 {paymentLoading ? (
                   <div className="w-20 h-5 bg-gray-200 rounded animate-pulse" />
                 ) : (
-                  `₱${parseFloat(transactions[0]?.motorcycle.rebate).toLocaleString()}`
+                  `₱${parseFloat(
+                    transactions[0]?.motorcycle.rebate
+                  ).toLocaleString()}`
                 )}
               </dd>
             </dl>
@@ -216,12 +218,10 @@ const Invoice = React.forwardRef((props, ref) => {
                 )}
               </dd>
             </dl>
-
           </div>
         </div>
       </div>
 
-              
       {/* 
         IPATANNGAL DAW NI ANA SA CLIENT
       

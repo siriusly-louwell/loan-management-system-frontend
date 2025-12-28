@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ApplicationInfoCard from "../components/cards/ApplicationInfoCard";
@@ -11,7 +11,6 @@ import {
   fetchLoan,
   getLoanId,
 } from "../services/redux/slices/applicationSlice";
-import CustomBttn from "../components/buttons/CustomBttn";
 import { useReactToPrint } from "react-to-print";
 import ComakerPrintable from "../components/ComakerFormPrint";
 
@@ -45,8 +44,7 @@ export default function CoMakerForm() {
           contact={comaker.contact_num}
           img={comaker.imgURL}
           loading={loanLoading}
-          address={address?.comaker_pres}
-        >
+          address={address?.comaker_pres}>
           <div className="flex justify-between flex-row">
             {loanLoading ? (
               <div className="flex space-x-3">
@@ -65,12 +63,9 @@ export default function CoMakerForm() {
               </div>
             )}
             <div>
-              {" "}
-              {/* PRINT BUTTON */}
               <button
                 className="ml-4 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-                onClick={handlePrint}
-              >
+                onClick={handlePrint}>
                 Print Form
               </button>
             </div>
@@ -183,9 +178,6 @@ export default function CoMakerForm() {
             </div>
           </div>
         </ApplicationInfoCard>
-        {/* ...your existing ApplicationInfoCard sections remain unchanged... */}
-
-        {/* PRINTABLE HIDDEN CONTENT */}
         <div style={{ display: "none" }}>
           <ComakerPrintable
             ref={printRef}

@@ -24,7 +24,7 @@ export default function CustomerHistoryDetails() {
 
   useEffect(() => {
     console.log(payments);
-  })
+  });
 
   const navigate = useNavigate();
 

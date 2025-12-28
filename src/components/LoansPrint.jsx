@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import RMCI from "../assets/images/RMCI.png";
 import { filterLoanSwitch } from "../utils/exportHelper";
 import { LoanEntity } from "../services/entities/Loan";
@@ -6,24 +6,30 @@ import { useSelector } from "react-redux";
 
 const LoansPrint = React.forwardRef(
   ({ loans = [], title = "Loans Report", filterType = "all" }, ref) => {
-
-    /*
-      Try unta kog connect sa units, pero naglisod ko
-      wala may nagpakita sa JSON data about units gud each loans
-    */
     // const unitLoaned = useSelector(LoanEntity);
     const dateString = new Date().toISOString().slice(0, 10);
     const filteredLoans = filterLoanSwitch(filterType, loans);
 
-    // Count for notes, gikapoy nako, kapoy nag modularize ani
     const totalLengthOfLoans = filteredLoans.length;
-    const pendingCount = filteredLoans.filter(l => l.apply_status === "pending").length;
-    const deniedCount = filteredLoans.filter(l => l.apply_status === "denied").length;
-    const acceptedCount = filteredLoans.filter(l => l.apply_status === "accepted").length;
-    const evaluatedCount = filteredLoans.filter(l => l.apply_status === "evaluated").length;
-    const approvedCount = filteredLoans.filter(l => l.apply_status === "approved").length;
-    const incompleteCount = filteredLoans.filter(l => l.apply_status === "incomplete").length;
-    
+    const pendingCount = filteredLoans.filter(
+      (l) => l.apply_status === "pending"
+    ).length;
+    const deniedCount = filteredLoans.filter(
+      (l) => l.apply_status === "denied"
+    ).length;
+    const acceptedCount = filteredLoans.filter(
+      (l) => l.apply_status === "accepted"
+    ).length;
+    const evaluatedCount = filteredLoans.filter(
+      (l) => l.apply_status === "evaluated"
+    ).length;
+    const approvedCount = filteredLoans.filter(
+      (l) => l.apply_status === "approved"
+    ).length;
+    const incompleteCount = filteredLoans.filter(
+      (l) => l.apply_status === "incomplete"
+    ).length;
+
     return (
       <div ref={ref} className="p-4 bg-white w-full text-black">
         <div className="mb-5 pb-5 flex flex-col sm:flex-row sm:items-end sm:justify-between border-b border-rose-500">
@@ -56,27 +62,39 @@ const LoansPrint = React.forwardRef(
               </tr>
             ))}
 
-              <tr>
-                <td>Total Applications: {totalLengthOfLoans}</td>
-              </tr>
-              <tr>
-                <td><strong>Pending:</strong> {pendingCount || '0'}</td>
-              </tr>
-              <tr>
-                <td><strong>Denied:</strong> {deniedCount || '0'}</td>
-              </tr>
-              <tr>
-                <td><strong>Accepted:</strong> {acceptedCount || '0'}</td>
-              </tr>
-              <tr>
-                <td><strong>Evaluated:</strong> {evaluatedCount || '0'}</td>
-              </tr>
-              <tr>
-                <td><strong>Approved:</strong> {approvedCount || '0'}</td>
-              </tr>
-              <tr>
-                <td><strong>Incomplete</strong> {incompleteCount || '0'}</td>
-              </tr>
+            <tr>
+              <td>Total Applications: {totalLengthOfLoans}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Pending:</strong> {pendingCount || "0"}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Denied:</strong> {deniedCount || "0"}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Accepted:</strong> {acceptedCount || "0"}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Evaluated:</strong> {evaluatedCount || "0"}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Approved:</strong> {approvedCount || "0"}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Incomplete</strong> {incompleteCount || "0"}
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

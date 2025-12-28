@@ -41,7 +41,7 @@ export default function TransactionForm() {
         downpayment: unit.downpayment,
         quantity: 1,
         price: unit.price,
-        interest: unit.interest
+        interest: unit.interest,
       })
     );
   }, [transLoad, dispatch]);

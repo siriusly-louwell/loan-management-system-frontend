@@ -32,55 +32,56 @@ export default function PersonalInfoForm() {
   const { regions, provinces, cities, barangays } = useSelector(
     (state) => state.address
   );
-  const [contactNumber, setContactNumber] = useState(formData.applicant.contact_num);
+  const [contactNumber, setContactNumber] = useState(
+    formData.applicant.contact_num
+  );
   const [emi, setEmi] = useState(0);
 
   useEffect(() => {
     dispatch(setType("applicant"));
-    if (role !== "customer") dispatch(initialForm({amortization: emi}));
+    if (role !== "customer") dispatch(initialForm({ amortization: emi }));
   }, [emi]);
 
-  // Recalculate EMI whenever formData or related fields change
   useEffect(() => {
     const unitSelected = formData.unit;
-    const loanAmount = unitSelected?.price && unitSelected?.downpayment 
-      ? unitSelected.price - unitSelected.downpayment 
-      : 0;
+    const loanAmount =
+      unitSelected?.price && unitSelected?.downpayment
+        ? unitSelected.price - unitSelected.downpayment
+        : 0;
 
-    // Monthly interest rate (annual interest rate of 10%)
-    const monthlyInterestRate = (unitSelected.interest ?? 10) / 12 / 100;  // 10% annual interest rate
-    const tenureInYears = unitSelected?.tenure || 3;  // Default tenure to 3 years if not specified
-    const tenureInMonths = tenureInYears * 12;  // Convert tenure from years to months
-    const quantity = unitSelected?.quantity || 1;  // Default quantity of 1 unit if not specified
+    const monthlyInterestRate = (unitSelected.interest ?? 10) / 12 / 100;
+    const tenureInYears = unitSelected?.tenure || 3;
+    const tenureInMonths = tenureInYears * 12;
+    const quantity = unitSelected?.quantity || 1;
 
- 
-
-    // EMI calculation
-    const newEmi = loanAmount === 0 || monthlyInterestRate === 0
-      ? Math.ceil(loanAmount / tenureInMonths)  // If no loan or interest, simple division of loan amount by tenure (in months)
-      : Math.ceil(
-          (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenureInMonths)) /
-          (Math.pow(1 + monthlyInterestRate, tenureInMonths) - 1) * quantity
-        );
+    const newEmi =
+      loanAmount === 0 || monthlyInterestRate === 0
+        ? Math.ceil(loanAmount / tenureInMonths)
+        : Math.ceil(
+            ((loanAmount *
+              monthlyInterestRate *
+              Math.pow(1 + monthlyInterestRate, tenureInMonths)) /
+              (Math.pow(1 + monthlyInterestRate, tenureInMonths) - 1)) *
+              quantity
+          );
 
     setEmi(newEmi);
 
-    // Dispatch action if needed, based on changes to formData
     dispatch(disableAddress());
-  }, [formData, dispatch, emi]); 
+  }, [formData, dispatch, emi]);
 
-  
   function currency(num) {
-    return `₱${parseFloat(num || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    return `₱${parseFloat(num || 0)
+      .toFixed(2)
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   }
 
-  // Apply dispatchInput, at the same, limits the character length
-  function onChangeContact(event){
-      const input = event.target.value.replace(/\D/g, ""); // removes non-numeric chars
-      if (input.length <= 12) {
-        setContactNumber(input);
-        dispatchInput({ target: { name: "contact_num", value: input } });
-      }
+  function onChangeContact(event) {
+    const input = event.target.value.replace(/\D/g, "");
+    if (input.length <= 12) {
+      setContactNumber(input);
+      dispatchInput({ target: { name: "contact_num", value: input } });
+    }
   }
   return (
     <>
@@ -124,8 +125,7 @@ export default function PersonalInfoForm() {
           id="gender"
           value={formData.applicant.gender}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-        >
+          require={true}>
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="other">Prefer not to say</option>
@@ -157,8 +157,7 @@ export default function PersonalInfoForm() {
           id="status"
           value={formData.applicant.status}
           onchange={(e) => dispatchInput(e)}
-          require={true}
-        >
+          require={true}>
           <option value="single">Single</option>
           <option value="relationship">In a relationship</option>
           <option value="married">Married</option>
@@ -194,8 +193,7 @@ export default function PersonalInfoForm() {
             id="educ_attain"
             value={formData.applicant.educ_attain}
             onchange={(e) => dispatchInput(e)}
-            require={true}
-          >
+            require={true}>
             <option value="highschool">High School</option>
             <option value="college">College Level</option>
             <option value="graduate">College Graduate</option>
@@ -220,8 +218,7 @@ export default function PersonalInfoForm() {
             id="residence"
             value={formData.applicant.residence}
             onchange={(e) => dispatchInput(e)}
-            require={true}
-          >
+            require={true}>
             <option value="owned">Owned</option>
             <option value="mortgaged">Owned(Mortgaged)</option>
             <option value="rented">Rented</option>
@@ -239,8 +236,9 @@ export default function PersonalInfoForm() {
             placeholder="Other reason"
           /> */}
         </div>
-        
-        <input type="hidden"
+
+        <input
+          type="hidden"
           name="amortization"
           id="amortization"
           value={emi}
@@ -358,8 +356,7 @@ export default function PersonalInfoForm() {
               loading={addressLoading}
               value={formData.address.province}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.personal}
-            >
+              disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
                 provinces.map((prov, i) => (
@@ -376,8 +373,7 @@ export default function PersonalInfoForm() {
               loading={addressLoading}
               value={formData.address.city}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.personal}
-            >
+              disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
                 cities.map((cit, i) => (
@@ -394,8 +390,7 @@ export default function PersonalInfoForm() {
               loading={addressLoading}
               value={formData.address.brgy}
               onchange={(e) => dispatchInput(e, "address")}
-              disable={selectDisable.personal}
-            >
+              disable={selectDisable.personal}>
               {formData.address.region !== undefined &&
                 formData.address.region !== "__EMPTY__" &&
                 barangays.map((bgy, i) => (
@@ -554,8 +549,7 @@ export default function PersonalInfoForm() {
           <BttnwithIcon
             text="Add row"
             type="button"
-            click={() => setUnitApplied(unitApplied + 1)}
-          >
+            click={() => setUnitApplied(unitApplied + 1)}>
             <Plus />
           </BttnwithIcon>
         </div>

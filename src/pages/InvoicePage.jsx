@@ -2,6 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import CollectionReceipt from "../components/cards/CollectionReceipt";
 import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import Invoice from "../components/cards/Invoice";
+import BttnwithIcon from "../components/buttons/BttnwithIcon";
+import { Printer } from "lucide-react";
 import {
   fetchPayment,
   getPaymentId,
@@ -10,9 +13,6 @@ import {
   fetchLoan,
   getLoanId,
 } from "../services/redux/slices/applicationSlice";
-import Invoice from "../components/cards/Invoice";
-import BttnwithIcon from "../components/buttons/BttnwithIcon";
-import { Printer } from "lucide-react";
 
 export default function InvoicePage() {
   const dispatch = useDispatch();

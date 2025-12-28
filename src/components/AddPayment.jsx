@@ -32,12 +32,14 @@ export default function AddPayment() {
   );
   const loan = useSelector(LoanEntity);
   const [downPayment, setDownPayment] = useState(0);
-  const [receiptNumber, setReceiptNumber] = useState('');
-  
+  const [receiptNumber, setReceiptNumber] = useState("");
+
   useEffect(() => {
     // Safely update downPayment using setDownPayment
     if (loan && loan.downpayment) {
-      const parsedDownPayment = parseFloat(loan.downpayment.replace(/₱|,/g, ''));
+      const parsedDownPayment = parseFloat(
+        loan.downpayment.replace(/₱|,/g, "")
+      );
       setDownPayment(parsedDownPayment);
     }
   }, [loan]);
@@ -50,13 +52,12 @@ export default function AddPayment() {
     status: "on_time",
     user_id: user_id,
     amount_paid: emi,
-    receipt_number: receiptNumber
+    receipt_number: receiptNumber,
   });
 
   useEffect(() => {
     if (id) dispatch(fetchSchedule({ id: id }));
   }, [id, dispatch]);
-  
 
   useEffect(() => {
     if (due_date) checkRebate(due_date);
@@ -88,7 +89,6 @@ export default function AddPayment() {
     // Updating the alert message
     setAlert({ text: `Please confirm the payment ₱${value}` });
   }
-
 
   function checkInput() {
     if (!payment.amount_paid || payment.amount_paid === "__EMPTY__") {
@@ -159,7 +159,10 @@ export default function AddPayment() {
     <>
       Add payment amount{" "}
       <strong className="text-rose-500">
-        ₱{parseFloat(loan.transactions ? payment.amount_paid : downPayment).toLocaleString()}{" "}
+        ₱
+        {parseFloat(
+          loan.transactions ? payment.amount_paid : downPayment
+        ).toLocaleString()}{" "}
       </strong>
       <br />
       for loan <strong className="text-rose-500">{record_id}</strong>?
@@ -238,7 +241,7 @@ export default function AddPayment() {
           <dl className="gap-4 py-3">
             <FormInput
               value={loan.transactions ? payment.amount_paid : downPayment}
-              label={loan.transactions ? 'Payment Amount' : 'Down Payment'}
+              label={loan.transactions ? "Payment Amount" : "Down Payment"}
               id="amount"
               name="amount_paid"
               type="text"
@@ -273,7 +276,6 @@ export default function AddPayment() {
               placeholder="Official Receipt Number"
               required
             />
-
           </dl>
 
           <dl className="mt-5">
